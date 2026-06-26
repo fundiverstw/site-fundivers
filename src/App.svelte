@@ -27,7 +27,9 @@
 
 <svelte:window onclick={handleLinkClick} />
 
-<div class="flex min-h-screen flex-col">
+<div class="caustics" aria-hidden="true"></div>
+
+<div class="relative z-10 flex min-h-screen flex-col">
   <Nav />
   <main class="flex-1">
     <Current />
