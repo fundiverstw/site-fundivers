@@ -20,6 +20,7 @@ export type DiveSite = {
   longitude: number
   region: Region
   dive_type: 'shore' | 'boat' | null
+  wix_slug: string | null
 }
 
 // Display metadata for each region: a human label and a broad area grouping
@@ -44,7 +45,7 @@ export const AREA_ORDER: Array<'North' | 'South' | 'Outlying Islands'> = [
 export async function fetchDiveSites(): Promise<DiveSite[]> {
   const { data, error } = await supabase
     .from('dive_sites')
-    .select('id, name, tagline, latitude, longitude, region, dive_type')
+    .select('id, name, tagline, latitude, longitude, region, dive_type, wix_slug')
     .order('name')
   if (error) throw error
   return (data ?? []) as DiveSite[]

@@ -1,10 +1,12 @@
 <script lang="ts">
   import { fetchDiveSites, REGION_META, AREA_ORDER, type DiveSite, type Region } from '../lib/sites'
-  import { fetchDestinations } from '../lib/destinations'
+  import { fetchDestinations, type Destination } from '../lib/destinations'
   import PageHeader from '../components/PageHeader.svelte'
 
+  const WIX_BASE = 'https://www.fundiverstw.com'
+
   let sites = $state<DiveSite[]>([])
-  let destByTitle = $state<Map<string, string | null>>(new Map())
+  let destByName = $state<Map<string, Destination>>(new Map())
   let loading = $state(true)
   let error = $state<string | null>(null)
 
@@ -24,7 +26,7 @@
     Promise.all([fetchDiveSites(), fetchDestinations().catch(() => [])])
       .then(([s, dests]) => {
         sites = s
-        destByTitle = new Map(dests.map((d) => [d.title, d.image]))
+        destByName = new Map(dests.map((d) => [d.title, d]))
       })
       .catch((err) => (error = err?.message ?? 'Failed to load sites'))
       .finally(() => (loading = false))
@@ -33,7 +35,15 @@
   // Prefer a destination photo matching the site's own name; fall back to a
   // representative photo for its region.
   function siteImage(s: DiveSite): string | null {
-    return destByTitle.get(s.name) ?? destByTitle.get(REGION_DEST[s.region]) ?? null
+    return destByName.get(s.name)?.image ?? destByName.get(REGION_DEST[s.region])?.image ?? null
+  }
+
+  // "Read more" → the site's fundiverstw.com/traveldestinations/<slug> page.
+  function readMore(s: DiveSite): string | null {
+    const slug = destByName.get(s.name)?.slug
+    if (slug) return `${WIX_BASE}${slug}`
+    if (s.wix_slug) return `${WIX_BASE}/traveldestinations/${s.wix_slug}`
+    return null
   }
 
   // Group sites by broad area (North / South / Outlying Islands).
@@ -75,12 +85,8 @@
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {#each group.sites as s (s.id)}
             {@const img = siteImage(s)}
-            <a
-              href={mapsUrl(s)}
-              target="_blank"
-              rel="noopener"
-              class="group relative flex h-64 flex-col justify-end overflow-hidden rounded-2xl border border-white/15 shadow-sm transition-transform hover:-translate-y-0.5"
-            >
+            {@const more = readMore(s)}
+            <div class="group relative flex h-64 flex-col justify-end overflow-hidden rounded-2xl border border-white/15 shadow-sm">
               {#if img}
                 <img src={img} alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
               {:else}
@@ -98,11 +104,20 @@
                 </div>
                 <p class="mt-1 text-xs font-medium text-sky-300">{REGION_META[s.region]?.label ?? s.region}</p>
                 {#if s.tagline}
-                  <p class="mt-2 line-clamp-3 text-sm text-white/85">{s.tagline}</p>
+                  <p class="mt-2 line-clamp-2 text-sm text-white/85">{s.tagline}</p>
                 {/if}
-                <span class="mt-3 inline-block text-xs font-semibold text-reef-200">View on map →</span>
+                <div class="mt-3 flex flex-wrap gap-2">
+                  {#if more}
+                    <a href={more} target="_blank" rel="noopener" class="rounded-full bg-reef-400 px-4 py-1.5 text-xs font-bold text-brand-950 transition-colors hover:bg-reef-300">
+                      Read more
+                    </a>
+                  {/if}
+                  <a href={mapsUrl(s)} target="_blank" rel="noopener" class="rounded-full border border-white/40 px-4 py-1.5 text-xs font-bold text-white transition-colors hover:bg-white/15">
+                    View on map
+                  </a>
+                </div>
               </div>
-            </a>
+            </div>
           {/each}
         </div>
       </div>

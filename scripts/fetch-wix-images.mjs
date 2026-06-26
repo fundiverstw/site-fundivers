@@ -41,6 +41,31 @@ const SERVICE_MEDIA = [
   'b37fef_49df7d482eb44585a605a489e2b1d653~mv2.jpg', // EFR Courses
 ]
 
+// PADI course card photos — harvested from the live /courses page (kept in
+// sync with src/lib/courses.ts).
+const COURSE_MEDIA = [
+  'b37fef_9c73f7e0bb244570a119812991ef0ab9~mv2.jpg',
+  'b37fef_357153d63c3245819d71d68d9d2f1790~mv2.jpg',
+  'b37fef_2900ee49212d439c92922559b79ca105~mv2.jpg',
+  'b37fef_be75746689c74bf28fdd76aeed8451f6~mv2.jpg',
+  'b37fef_3fe5fa0d4b464f5c89a9300f2e818dc5~mv2.jpg',
+  'b37fef_46289275ed4042b19c10217d10672fc3~mv2.jpg',
+  'b37fef_d0c09f0b314d48608051723dc42edbda~mv2.jpg',
+  'b37fef_aa0190ec4359404db3362a851c7663bd~mv2.jpg',
+  'cfd7bffa5c38490ca6d89a820ee52d51.jpg',
+  'b37fef_6bb10d67326442318a8a597b14c807c5~mv2.jpg',
+  'b37fef_6f2950e52002422bbd2486a8d3bb41bb~mv2_d_2000_1333_s_2.jpg',
+  'b37fef_c011dec9802b4c93a9f9310fff82388d~mv2.jpg',
+  'b37fef_55d806ff58324fb9a99b60c738618e2c~mv2.jpg',
+  'b37fef_24b9e725e16b437e901ad76152f12c2c~mv2.jpg',
+  'b37fef_7b7bc72b68544b72b206b7da80db3eb9~mv2.jpg',
+  'b37fef_489bc4720a724dbb9d596ee856249869~mv2.jpg',
+  'b37fef_5936cf4b991e488fb1e6fe468d68efd9~mv2.jpg',
+  'b37fef_7d174a18b3704e05b5ef7da1d23e0b94~mv2.jpg',
+  'b37fef_10c43bcdd7344ea197cb5431bc9bd71f~mv2.jpg',
+  'b37fef_83fa06a85c954b23aa6ddda94c79786d~mv2.jpg',
+]
+
 const slug = (seg) => seg.replace(/[^a-zA-Z0-9]/g, '_')
 const segFromRef = (ref) =>
   ref && ref.startsWith('wix:image://')
@@ -60,7 +85,7 @@ const refs = [
   ...(await col('EO_courses', 'featured_image')),
   ...(await col('TravelDestinations', 'location_picture')),
 ]
-const segs = [...refs.map(segFromRef).filter(Boolean), ...SERVICE_MEDIA]
+const segs = [...refs.map(segFromRef).filter(Boolean), ...SERVICE_MEDIA, ...COURSE_MEDIA]
 const distinct = [...new Set(segs)]
 
 mkdirSync(OUT_DIR, { recursive: true })

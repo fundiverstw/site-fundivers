@@ -2,51 +2,8 @@
   import { fetchUpcomingEvents, type UpcomingEvent } from '../lib/events'
   import { formatSpan, twd } from '../lib/format'
   import { bookUrl, registerUrl } from '../lib/config'
+  import { COURSES } from '../lib/courses'
   import PageHeader from '../components/PageHeader.svelte'
-
-  // PADI recreational ladder — static catalog copy.
-  const catalog = [
-    {
-      name: 'Discover Scuba Diving',
-      level: 'Beginner',
-      desc: 'Try scuba in a single session, no certification required. The perfect first taste of diving.',
-    },
-    {
-      name: 'Open Water Diver',
-      level: 'Entry',
-      desc: 'Your first full certification — dive to 18m anywhere in the world with a buddy.',
-    },
-    {
-      name: 'Advanced Open Water',
-      level: 'Continuing',
-      desc: 'Five adventure dives including deep and navigation. Build confidence and reach 30m.',
-    },
-    {
-      name: 'Rescue Diver',
-      level: 'Continuing',
-      desc: 'Learn to prevent and manage problems in the water. The most rewarding course you’ll take.',
-    },
-    {
-      name: 'Divemaster',
-      level: 'Professional',
-      desc: 'Your first pro rating — lead certified divers and assist on courses.',
-    },
-    {
-      name: 'EFR — Emergency First Response',
-      level: 'First Aid',
-      desc: 'Primary and secondary care (CPR + first aid). Required before Rescue Diver.',
-    },
-    {
-      name: 'Specialties',
-      level: 'Various',
-      desc: 'Nitrox, Deep, Wreck, Night, Underwater Photography and more — dive your interests.',
-    },
-    {
-      name: 'Gear Sales, Service & Rental',
-      level: 'Shop',
-      desc: 'Quality scuba equipment for sale, full servicing, and rental sets for any trip.',
-    },
-  ]
 
   let upcoming = $state<UpcomingEvent[]>([])
   let loading = $state(true)
@@ -65,12 +22,15 @@
 />
 
 <section class="mx-auto max-w-[1600px] px-4 py-12 sm:px-6">
-  <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-    {#each catalog as c}
-      <div class="glass rounded-2xl p-6 shadow-sm">
-        <span class="text-xs font-semibold uppercase tracking-wide text-reef-300">{c.level}</span>
-        <h3 class="mt-1 text-lg font-semibold text-white">{c.name}</h3>
-        <p class="mt-2 text-sm text-brand-100">{c.desc}</p>
+  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    {#each COURSES as c}
+      <div class="group relative flex h-64 flex-col justify-end overflow-hidden rounded-2xl border border-white/15 shadow-sm transition-transform hover:-translate-y-0.5">
+        <img src={c.image} alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent"></div>
+        <div class="relative z-10 p-5">
+          <h3 class="text-lg font-bold text-white">{c.title}</h3>
+          <p class="mt-1 line-clamp-3 text-sm text-white/85">{c.desc}</p>
+        </div>
       </div>
     {/each}
   </div>

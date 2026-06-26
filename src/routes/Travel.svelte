@@ -41,7 +41,12 @@
             <div class="relative z-10 p-5">
               <h3 class="text-lg font-bold text-white">{d.title}</h3>
               {#if d.country}<p class="text-xs font-semibold uppercase tracking-wide text-sky-300">{d.country}</p>{/if}
-              {#if d.tagline}<p class="mt-1 line-clamp-3 text-sm text-white/85">{d.tagline}</p>{/if}
+              {#if d.tagline}<p class="mt-1 line-clamp-2 text-sm text-white/85">{d.tagline}</p>{/if}
+              {#if d.slug}
+                <a href={`https://www.fundiverstw.com${d.slug}`} target="_blank" rel="noopener" class="mt-3 inline-block rounded-full bg-reef-400 px-4 py-1.5 text-xs font-bold text-brand-950 transition-colors hover:bg-reef-300">
+                  Read more
+                </a>
+              {/if}
             </div>
           </div>
         {/each}
