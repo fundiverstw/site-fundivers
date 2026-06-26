@@ -45,10 +45,52 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Whole-site ocean-blue background. Everything else is transparent and
-     lets this show through — change this one value to retint the site. */
   color: var(--color-brand-50);
-  background: var(--color-brand-900);
+  /* Lighter, sunlit ocean blue — brighter near the "surface" (top), deeper
+     below. Fixed so it stays put while content scrolls over it. */
+  background: linear-gradient(180deg, #2f78de 0%, #1f5fc0 38%, #103a86 100%) fixed;
+}
+
+/* Animated water caustics — two SVG fractal-noise layers (different scale,
+   speed and direction) drifting and pulsing to mimic sunlight refracting
+   through the surface, seen from below. Sit behind all content (z-index -1)
+   and blend with the gradient so they read as bright veins of light. */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: -30%;
+  z-index: -1;
+  pointer-events: none;
+  background-repeat: repeat;
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+}
+body::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='700' height='700'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012 0.016' numOctaves='2' seed='7' stitchTiles='stitch' result='t'/%3E%3CfeColorMatrix in='t' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0 0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='table' tableValues='0 0 0.15 0.5 1 0.5 0.15 0 0 0.3 0.85 0.3 0'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='700' height='700' filter='url(%23c)' fill='%23cfeaff'/%3E%3C/svg%3E");
+  background-size: 540px 540px;
+  animation: caustic-a 24s ease-in-out infinite;
+}
+body::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='d'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.02 0.024' numOctaves='2' seed='19' stitchTiles='stitch' result='t'/%3E%3CfeColorMatrix in='t' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0 0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='table' tableValues='0 0 0.1 0.45 0.9 0.45 0.1 0 0 0.25 0.7 0.25 0'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='600' height='600' filter='url(%23d)' fill='%23eaf6ff'/%3E%3C/svg%3E");
+  background-size: 380px 380px;
+  animation: caustic-b 31s ease-in-out infinite;
+}
+
+@keyframes caustic-a {
+  0%   { transform: translate3d(-2%, -1%, 0) scale(1.12); opacity: 0.5; }
+  50%  { transform: translate3d(2%, 1.5%, 0) scale(1.26); opacity: 0.78; }
+  100% { transform: translate3d(-1%, 2%, 0) scale(1.12); opacity: 0.5; }
+}
+@keyframes caustic-b {
+  0%   { transform: translate3d(1.5%, 2%, 0) scale(1.28) rotate(0.6deg); opacity: 0.3; }
+  50%  { transform: translate3d(-2%, -1.5%, 0) scale(1.12) rotate(-0.6deg); opacity: 0.5; }
+  100% { transform: translate3d(2%, -1%, 0) scale(1.28) rotate(0.6deg); opacity: 0.3; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before,
+  body::after { animation: none; }
 }
 
 /* Translucent "glass" surface for content cards over the blue background. */
