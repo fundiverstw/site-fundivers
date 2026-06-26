@@ -1,11 +1,24 @@
 <script lang="ts">
-  import { fetchUpcomingEvents, type UpcomingEvent } from '../lib/events'
+  import { fetchUpcomingEvents, type UpcomingEvent, type ModalEvent } from '../lib/events'
   import { formatSpan, badge, twd } from '../lib/format'
-  import { registerUrl } from '../lib/config'
   import GetInTouch from '../components/GetInTouch.svelte'
+  import EventModal from '../components/calendar/EventModal.svelte'
 
   let upcoming = $state<UpcomingEvent[]>([])
   let loading = $state(true)
+  let selected = $state<ModalEvent | null>(null)
+
+  function open(ev: UpcomingEvent) {
+    selected = {
+      id: ev.id,
+      type: ev.type,
+      title: ev.title,
+      spanLabel: formatSpan(ev.startDate, ev.endDate, ev.time),
+      price: ev.startingAt,
+      currency: 'TWD',
+      fullyBooked: ev.fullyBooked,
+    }
+  }
 
   $effect(() => {
     fetchUpcomingEvents()
@@ -52,11 +65,9 @@
 {#snippet eventRow(ev: UpcomingEvent)}
   {@const b = badge(ev.startDate)}
   {@const price = twd(ev.startingAt)}
-  <a
-    href={registerUrl(ev.type, ev.id)}
-    target="_blank"
-    rel="noopener"
-    class="glass flex items-center gap-3 rounded-xl p-3 transition-all hover:-translate-y-0.5"
+  <button
+    onclick={() => open(ev)}
+    class="glass flex w-full items-center gap-3 rounded-xl p-3 text-left transition-all hover:-translate-y-0.5"
   >
     <div class="flex w-12 shrink-0 flex-col items-center rounded-lg bg-white/10 py-1.5 text-white">
       <span class="text-[10px] font-semibold">{b.month}</span>
@@ -67,7 +78,7 @@
       <p class="truncate text-xs text-brand-200">{formatSpan(ev.startDate, ev.endDate, ev.time)}</p>
     </div>
     {#if price}<span class="shrink-0 text-xs font-semibold text-reef-200">{price}</span>{/if}
-  </a>
+  </button>
 {/snippet}
 
 {#snippet listBlock(title: string, items: UpcomingEvent[], moreHref: string)}
@@ -102,11 +113,9 @@
         {:else}
           {#each featured as ev (ev.id)}
             {@const price = twd(ev.startingAt)}
-            <a
-              href={registerUrl(ev.type, ev.id)}
-              target="_blank"
-              rel="noopener"
-              class="glass group flex flex-col gap-2 rounded-2xl p-5 transition-all hover:-translate-y-0.5 hover:shadow-md"
+            <button
+              onclick={() => open(ev)}
+              class="glass group flex w-full flex-col gap-2 rounded-2xl p-5 text-left transition-all hover:-translate-y-0.5 hover:shadow-md"
             >
               <div class="flex items-center gap-2">
                 <span class={`rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide ${typePill(ev.type)}`}>
@@ -123,7 +132,7 @@
                   {ev.fullyBooked ? 'Join waitlist' : 'Book'}
                 </span>
               </div>
-            </a>
+            </button>
           {/each}
         {/if}
       </div>
@@ -195,3 +204,5 @@
     <p class="text-lg font-light text-reef-100">Explore with Confidence</p>
   </div>
 </section>
+
+<EventModal event={selected} onClose={() => (selected = null)} />

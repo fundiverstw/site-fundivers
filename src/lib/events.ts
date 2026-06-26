@@ -358,6 +358,18 @@ export async function fetchEventsInRange(fromDate: string, toDate: string): Prom
 // dives carry notes + a DiveTravel_reference whose row holds included/itinerary/
 // transportation/etc. (EO_dives has no schedule/included of its own).
 
+// Normalized shape the shared EventModal renders — both the calendar
+// (CalEvent) and the homepage (UpcomingEvent) map into this.
+export type ModalEvent = {
+  id: string
+  type: 'dive' | 'course'
+  title: string
+  spanLabel: string
+  price: number | null
+  currency: string
+  fullyBooked: boolean
+}
+
 export type EventDetails = {
   description: string | null
   included: string | null
@@ -387,7 +399,7 @@ async function certName(id: string | null | undefined): Promise<string | null> {
 }
 
 /** Descriptive copy for a single event, or null when it has none. */
-export async function fetchEventDetails(ev: CalEvent): Promise<EventDetails | null> {
+export async function fetchEventDetails(ev: Pick<CalEvent, 'id' | 'type'>): Promise<EventDetails | null> {
   if (ev.type === 'course') {
     const { data } = await supabase
       .from('EO_courses')
