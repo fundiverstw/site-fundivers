@@ -1,83 +1,111 @@
 <script lang="ts">
   import { path } from '../lib/router'
-  import { bookUrl } from '../lib/config'
+  import { RADIO_URL, SHOP_URL } from '../lib/config'
+  import SocialIcons from './SocialIcons.svelte'
+  import ShopIcon from './ShopIcon.svelte'
+  import MenuIcon from './MenuIcon.svelte'
 
-  const links = [
+  const leftLinks = [
     { href: '/courses', label: 'Courses' },
     { href: '/sites', label: 'Sites' },
     { href: '/photos', label: 'Photos' },
+  ]
+  const rightLinks = [
     { href: '/calendar', label: 'Calendar' },
     { href: '/team', label: 'Team' },
   ]
+  const allLinks = [...leftLinks, ...rightLinks]
 
   let open = $state(false)
   $effect(() => {
-    // Close the mobile menu on any route change.
     void $path
     open = false
   })
+
+  function linkClass(href: string): string {
+    const base = 'rounded-md px-3 py-2 text-sm font-medium transition-colors'
+    return $path === href
+      ? `${base} text-reef-600`
+      : `${base} text-brand-900 hover:text-reef-500`
+  }
 </script>
 
-<header class="sticky top-0 z-50 border-b border-brand-100 bg-white/90 backdrop-blur">
-  <nav class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
-    <a href="/" class="flex items-center gap-2 font-bold text-brand-900">
-      <img src="/imgs/fd_logo.png" alt="FunDivers TW" class="h-9 w-auto" />
-      <span class="hidden text-lg tracking-tight sm:inline">FunDivers TW</span>
-    </a>
+{#snippet shopIcon()}
+  <a href={SHOP_URL} aria-label="Gear shop" class="text-brand-800 transition-colors hover:text-reef-500">
+    <ShopIcon />
+  </a>
+{/snippet}
 
-    <div class="hidden items-center gap-1 md:flex">
-      {#each links as link}
-        <a
-          href={link.href}
-          class="rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-brand-50 hover:text-brand-700"
-          class:text-brand-700={$path === link.href}
-          class:bg-brand-50={$path === link.href}
-          class:text-brand-900={$path !== link.href}
-        >
-          {link.label}
-        </a>
-      {/each}
-      <a
-        href={bookUrl}
-        target="_blank"
-        rel="noopener"
-        class="ml-2 rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-700"
-      >
-        Book Now
-      </a>
+{#snippet radioIcon()}
+  <a
+    href={RADIO_URL}
+    target="_blank"
+    rel="noopener"
+    aria-label="FunDivers Radio"
+    class="block h-[22px] w-[22px] bg-red-500 transition-colors hover:bg-red-400"
+    style="-webkit-mask:url(/imgs/broadcast.png) center/contain no-repeat; mask:url(/imgs/broadcast.png) center/contain no-repeat;"
+  ></a>
+{/snippet}
+
+<header class="bg-transparent">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <!-- Desktop: utility strip (shop left · socials + radio right) -->
+    <div class="hidden items-center justify-between py-2 md:flex">
+      {@render shopIcon()}
+      <div class="flex items-center gap-4">
+        <SocialIcons size={18} />
+        {@render radioIcon()}
+      </div>
     </div>
 
-    <button
-      class="rounded-md p-2 text-brand-900 md:hidden"
-      aria-label="Toggle menu"
-      onclick={() => (open = !open)}
-    >
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d={open ? 'M6 6l12 12M18 6L6 18' : 'M4 7h16M4 12h16M4 17h16'} stroke-linecap="round" />
-      </svg>
-    </button>
-  </nav>
+    <!-- Desktop: primary nav (links flanking a centered logo) -->
+    <div class="hidden grid-cols-3 items-center pb-3 md:grid">
+      <nav class="flex items-center justify-start gap-1">
+        {#each leftLinks as link}
+          <a href={link.href} class={linkClass(link.href)}>{link.label}</a>
+        {/each}
+      </nav>
+      <div class="flex justify-center">
+        <a href="/" aria-label="FunDivers TW home">
+          <img src="/imgs/fd_logo.png" alt="FunDivers TW" class="h-14 w-auto" />
+        </a>
+      </div>
+      <nav class="flex items-center justify-end gap-1">
+        {#each rightLinks as link}
+          <a href={link.href} class={linkClass(link.href)}>{link.label}</a>
+        {/each}
+      </nav>
+    </div>
 
+    <!-- Mobile: shop · logo · menu toggle -->
+    <div class="flex items-center justify-between py-3 md:hidden">
+      {@render shopIcon()}
+      <a href="/" aria-label="FunDivers TW home">
+        <img src="/imgs/fd_logo.png" alt="FunDivers TW" class="h-10 w-auto" />
+      </a>
+      <button class="text-brand-900" aria-label="Toggle menu" onclick={() => (open = !open)}>
+        <MenuIcon {open} />
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
   {#if open}
     <div class="border-t border-brand-100 bg-white md:hidden">
-      <div class="mx-auto flex max-w-6xl flex-col px-4 py-2 sm:px-6">
-        {#each links as link}
+      <div class="mx-auto flex max-w-6xl flex-col px-4 py-3 sm:px-6">
+        {#each allLinks as link}
           <a
             href={link.href}
             class="rounded-md px-3 py-2.5 text-sm font-medium hover:bg-brand-50"
-            class:text-brand-700={$path === link.href}
+            class:text-reef-600={$path === link.href}
           >
             {link.label}
           </a>
         {/each}
-        <a
-          href={bookUrl}
-          target="_blank"
-          rel="noopener"
-          class="mt-2 rounded-full bg-brand-600 px-4 py-2.5 text-center text-sm font-semibold text-white"
-        >
-          Book Now
-        </a>
+        <div class="mt-3 flex items-center gap-4 border-t border-brand-100 px-3 pt-4">
+          <SocialIcons size={20} />
+          {@render radioIcon()}
+        </div>
       </div>
     </div>
   {/if}

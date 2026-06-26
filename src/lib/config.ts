@@ -21,9 +21,18 @@ export const CONTACT = {
 } as const
 
 export const SOCIAL = {
-  line: 'https://line.me/R/ti/p/@fundiverstw',
+  // Official LINE account + WhatsApp + Instagram handle confirmed from app-fundivers.
+  line: 'https://line.me/R/ti/p/%40lga0216c',
   whatsapp: 'https://wa.me/886909083683',
   instagram: 'https://www.instagram.com/fundiverstw/',
+  // TODO: confirm exact Facebook / YouTube URLs (best-guess handles for now).
   facebook: 'https://www.facebook.com/fundiverstw/',
   youtube: 'https://www.youtube.com/@fundiverstw',
 } as const
+
+// FunDivers Radio show (top-right icon) — same destination as the app's nav.
+export const RADIO_URL = 'https://radio.fundiverstw.com'
+
+// Gear shop (top-left icon). Placeholder until a store/destination is decided —
+// repoint here when ready (e.g. an online store or the shop's Google Maps page).
+export const SHOP_URL = '#'
