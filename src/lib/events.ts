@@ -45,11 +45,16 @@ type CourseRow = {
   featured_image: string | null
 }
 
-/** Resolve a Wix image ref (`wix:image://v1/…`) to its static CDN URL. */
-function wixImage(raw: string | null | undefined): string | null {
+/**
+ * Resolve an event's Wix image ref to our own bundled, optimized copy under
+ * /imgs/events/ (see scripts/fetch-event-images.mjs). The filename is the Wix
+ * media id slugified — must stay in sync with that script. No Wix dependency.
+ */
+function eventImage(raw: string | null | undefined): string | null {
   if (!raw || !raw.startsWith('wix:image://')) return null
-  const stripped = raw.replace(/^wix:image:\/\/v1\//, 'https://static.wixstatic.com/media/').split('#')[0]
-  return stripped.split('/').slice(0, -1).join('/') || null
+  const seg = raw.replace(/^wix:image:\/\/v1\//, '').split('#')[0].split('/')[0]
+  const id = seg.replace(/[^a-zA-Z0-9]/g, '_')
+  return id ? `/imgs/events/${id}.webp` : null
 }
 
 type PriceRow = { _id: string; starting_at: number | null }
@@ -121,7 +126,7 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
       fullyBooked: d.fully_booked ?? false,
       featured: d.featured ?? false,
       description: d.notes && d.notes.trim() ? d.notes.trim() : null,
-      image: wixImage(d.featured_image),
+      image: eventImage(d.featured_image),
     })
   }
 
@@ -144,7 +149,7 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
       fullyBooked: c.fully_booked ?? false,
       featured: false,
       description: c.schedule && c.schedule.trim() ? c.schedule.trim() : null,
-      image: wixImage(c.featured_image),
+      image: eventImage(c.featured_image),
     })
   }
 

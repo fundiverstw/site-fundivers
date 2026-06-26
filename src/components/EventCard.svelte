@@ -13,11 +13,12 @@
   let pill = $derived(
     ev.type === 'dive' ? 'bg-emerald-500/30 text-emerald-100' : 'bg-sky-500/30 text-sky-100',
   )
+  let imgFailed = $state(false)
 </script>
 
 <div class="group relative h-80 overflow-hidden rounded-2xl border border-white/15 bg-brand-900 shadow-sm transition-transform hover:-translate-y-0.5">
-  {#if ev.image}
-    <img src={ev.image} alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+  {#if ev.image && !imgFailed}
+    <img src={ev.image} alt="" loading="lazy" onerror={() => (imgFailed = true)} class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
   {:else}
     <div class="absolute inset-0 bg-gradient-to-br from-brand-700 to-reef-700"></div>
   {/if}
