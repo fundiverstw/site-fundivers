@@ -57,14 +57,29 @@ Data access lives in `src/lib/events.ts` and `src/lib/sites.ts`.
 ## Deploy (Cloudflare)
 
 `wrangler.toml` serves `./dist` with `not_found_handling = "single-page-application"`
-so client routes like `/calendar` resolve on direct load.
+so client routes like `/calendar` resolve on direct load. The Worker is named
+`site-fundiverstw` and deploys to the **same Cloudflare account as app-fundivers**.
 
 ```bash
-npm run deploy
+npm run deploy   # build + dotenv -e .env -- wrangler deploy
 ```
 
-Set the `VITE_*` vars in the Cloudflare build/deploy environment (or rely on the
-committed `.env` for local builds). The project name is `site-fundiverstw`.
+`npm run deploy` injects `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` from `.env`
+(same account/token as `app-fundivers`) so wrangler authenticates non-interactively —
+no `wrangler login` needed. Both vars are documented in `.env.example`.
+
+### URL
+
+With no custom domain or routes configured, the first deploy publishes to the
+account's workers.dev subdomain:
+
+```
+https://site-fundiverstw.<your-account-subdomain>.workers.dev
+```
+
+To put it on a custom domain (e.g. `www.fundiverstw.com`), add a route / custom
+domain in the Cloudflare dashboard or a `routes` entry in `wrangler.toml` — same
+as how `app-fundivers` maps to `app.fundiverstw.com`.
 
 ## Notes
 
