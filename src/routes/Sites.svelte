@@ -1,17 +1,40 @@
 <script lang="ts">
-  import { fetchDiveSites, REGION_META, AREA_ORDER, type DiveSite } from '../lib/sites'
+  import { fetchDiveSites, REGION_META, AREA_ORDER, type DiveSite, type Region } from '../lib/sites'
+  import { fetchDestinations } from '../lib/destinations'
   import PageHeader from '../components/PageHeader.svelte'
 
   let sites = $state<DiveSite[]>([])
+  let destByTitle = $state<Map<string, string | null>>(new Map())
   let loading = $state(true)
   let error = $state<string | null>(null)
 
+  // Fallback per-region cover photo when a site has no same-named destination.
+  const REGION_DEST: Record<Region, string> = {
+    keelung: 'Bat Cave',
+    longdong: 'Long Dong Bay',
+    yilan: 'Turtle Island',
+    greenisland: 'Green Island',
+    lanyu: 'Orchid Island',
+    xiaoliuqiu: 'Lambai Island',
+    kenting: 'Kenting',
+    penghu: 'Penghu',
+  }
+
   $effect(() => {
-    fetchDiveSites()
-      .then((s) => (sites = s))
+    Promise.all([fetchDiveSites(), fetchDestinations().catch(() => [])])
+      .then(([s, dests]) => {
+        sites = s
+        destByTitle = new Map(dests.map((d) => [d.title, d.image]))
+      })
       .catch((err) => (error = err?.message ?? 'Failed to load sites'))
       .finally(() => (loading = false))
   })
+
+  // Prefer a destination photo matching the site's own name; fall back to a
+  // representative photo for its region.
+  function siteImage(s: DiveSite): string | null {
+    return destByTitle.get(s.name) ?? destByTitle.get(REGION_DEST[s.region]) ?? null
+  }
 
   // Group sites by broad area (North / South / Outlying Islands).
   let byArea = $derived.by(() => {
@@ -51,25 +74,34 @@
         <h2 class="mb-5 text-2xl font-bold text-white">{group.area}</h2>
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {#each group.sites as s (s.id)}
+            {@const img = siteImage(s)}
             <a
               href={mapsUrl(s)}
               target="_blank"
               rel="noopener"
-              class="glass group flex flex-col rounded-xl p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+              class="group relative flex h-64 flex-col justify-end overflow-hidden rounded-2xl border border-white/15 shadow-sm transition-transform hover:-translate-y-0.5"
             >
-              <div class="flex items-center justify-between gap-2">
-                <h3 class="font-semibold text-white">{s.name}</h3>
-                {#if s.dive_type}
-                  <span class="rounded bg-reef-400/20 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-reef-200">
-                    {s.dive_type}
-                  </span>
-                {/if}
-              </div>
-              <p class="mt-1 text-xs font-medium text-brand-200">{REGION_META[s.region]?.label ?? s.region}</p>
-              {#if s.tagline}
-                <p class="mt-2 line-clamp-4 text-sm text-brand-100">{s.tagline}</p>
+              {#if img}
+                <img src={img} alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              {:else}
+                <div class="absolute inset-0 bg-gradient-to-br from-brand-700 to-reef-700"></div>
               {/if}
-              <span class="mt-3 text-xs font-semibold text-reef-300">View on map →</span>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+              <div class="relative z-10 p-5">
+                <div class="flex items-center justify-between gap-2">
+                  <h3 class="text-lg font-bold text-white">{s.name}</h3>
+                  {#if s.dive_type}
+                    <span class="rounded bg-reef-400/25 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-reef-100">
+                      {s.dive_type}
+                    </span>
+                  {/if}
+                </div>
+                <p class="mt-1 text-xs font-medium text-sky-300">{REGION_META[s.region]?.label ?? s.region}</p>
+                {#if s.tagline}
+                  <p class="mt-2 line-clamp-3 text-sm text-white/85">{s.tagline}</p>
+                {/if}
+                <span class="mt-3 inline-block text-xs font-semibold text-reef-200">View on map →</span>
+              </div>
             </a>
           {/each}
         </div>

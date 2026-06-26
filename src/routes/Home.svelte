@@ -4,6 +4,7 @@
   import GetInTouch from '../components/GetInTouch.svelte'
   import EventCard from '../components/EventCard.svelte'
   import EventModal from '../components/calendar/EventModal.svelte'
+  import { mediaIdLocal } from '../lib/images'
 
   let upcoming = $state<UpcomingEvent[]>([])
   let loading = $state(true)
@@ -40,12 +41,12 @@
   let courses = $derived(upcoming.filter((e) => e.type === 'course' && !featuredIds.has(e.id)).slice(0, 3))
 
   const services = [
-    { title: 'PADI Courses', desc: 'Fun Divers Tw offers the full range of PADI Certification Courses, from beginner to professional level! See the courses available here!', href: '/courses', gradient: 'from-brand-700 to-reef-600' },
-    { title: 'Dive sites', desc: 'Fun Divers Tw offers local shore and boat diving trips. There are many beautiful dive sites to visit here on the northeast coast of Taiwan.', href: '/sites', gradient: 'from-reef-600 to-brand-800' },
-    { title: 'Gear Sales, Service, & Rental', desc: 'Fun Divers Tw offers a range of Scuba diving and Free diving gear for Sale or Rental. We can also service regulators and BCDs! Contact us to find out more!', href: '#get-in-touch', gradient: 'from-brand-800 to-brand-500' },
-    { title: 'International Dive Tours', desc: 'Fun Divers Tw plans group tours to a variety of thrilling destinations! Join one of our planned dive trips or let us help you book your customized trip!', href: '/travel', gradient: 'from-reef-700 to-reef-400' },
-    { title: 'Domestic Dive tours', desc: 'Explore the amazing dive destinations around Taiwan with Fun Divers Tw! Join a planned trip or let us help you book a customized trip.', href: '/travel', gradient: 'from-brand-900 to-reef-700' },
-    { title: 'EFR Courses', desc: 'Fun Divers Tw offers the full range of EFR courses. Learn how to help yourself and others in an emergency.', href: '/courses', gradient: 'from-reef-500 to-brand-700' },
+    { title: 'PADI Courses', desc: 'Fun Divers Tw offers the full range of PADI Certification Courses, from beginner to professional level! See the courses available here!', href: '/courses', image: mediaIdLocal('b37fef_2ea720f3f0c94fb8bc703856514b0a6c~mv2.jpg') },
+    { title: 'Dive sites', desc: 'Fun Divers Tw offers local shore and boat diving trips. There are many beautiful dive sites to visit here on the northeast coast of Taiwan.', href: '/sites', image: mediaIdLocal('b37fef_7621a533ac1946a8b342bc5085cb1d28~mv2.jpg') },
+    { title: 'Gear Sales, Service, & Rental', desc: 'Fun Divers Tw offers a range of Scuba diving and Free diving gear for Sale or Rental. We can also service regulators and BCDs! Contact us to find out more!', href: '#get-in-touch', image: mediaIdLocal('b37fef_58237e6a633f472b8d419bd830abb854~mv2.jpg') },
+    { title: 'International Dive Tours', desc: 'Fun Divers Tw plans group tours to a variety of thrilling destinations! Join one of our planned dive trips or let us help you book your customized trip!', href: '/travel', image: mediaIdLocal('b37fef_80f90894e75f47f8809d14663dd8e8bd~mv2.jpg') },
+    { title: 'Domestic Dive tours', desc: 'Explore the amazing dive destinations around Taiwan with Fun Divers Tw! Join a planned trip or let us help you book a customized trip.', href: '/travel', image: mediaIdLocal('b37fef_c3c0324de5bb47b49843a8f63551b4e7~mv2.jpg') },
+    { title: 'EFR Courses', desc: 'Fun Divers Tw offers the full range of EFR courses. Learn how to help yourself and others in an emergency.', href: '/courses', image: mediaIdLocal('b37fef_49df7d482eb44585a605a489e2b1d653~mv2.jpg') },
   ]
 
   const divingInTaiwan = [
@@ -100,12 +101,13 @@
     {#each services as s}
       <a
         href={s.href}
-        class="glass group flex flex-col overflow-hidden rounded-2xl shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
+        class="group relative flex h-56 flex-col justify-end overflow-hidden rounded-2xl border border-white/15 shadow-sm transition-transform hover:-translate-y-1"
       >
-        <div class={`h-40 bg-gradient-to-br ${s.gradient}`}></div>
-        <div class="flex flex-1 flex-col p-6">
-          <h3 class="text-lg font-semibold text-white">{s.title}</h3>
-          <p class="mt-2 text-sm text-brand-100">{s.desc}</p>
+        <img src={s.image} alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+        <div class="relative z-10 p-5">
+          <h3 class="text-lg font-bold text-white">{s.title}</h3>
+          <p class="mt-1 line-clamp-3 text-sm text-white/85">{s.desc}</p>
         </div>
       </a>
     {/each}
