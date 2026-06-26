@@ -23,7 +23,7 @@
   })
 
   function linkClass(href: string): string {
-    const base = 'rounded-md px-3 py-2 text-sm font-medium transition-colors'
+    const base = 'rounded-md px-3.5 py-2 text-base font-semibold transition-colors lg:text-lg'
     return $path === href
       ? `${base} text-reef-300`
       : `${base} text-brand-50 hover:text-reef-300`
@@ -32,7 +32,7 @@
 
 {#snippet shopIcon()}
   <a href={SHOP_URL} aria-label="Gear shop" class="text-brand-50 transition-colors hover:text-reef-300">
-    <ShopIcon />
+    <ShopIcon size={28} />
   </a>
 {/snippet}
 
@@ -42,7 +42,7 @@
     target="_blank"
     rel="noopener"
     aria-label="FunDivers Radio"
-    class="block h-[22px] w-[22px] bg-red-500 transition-colors hover:bg-red-400"
+    class="block h-7 w-7 bg-red-500 transition-colors hover:bg-red-400"
     style="-webkit-mask:url(/imgs/broadcast.png) center/contain no-repeat; mask:url(/imgs/broadcast.png) center/contain no-repeat;"
   ></a>
 {/snippet}
@@ -53,7 +53,7 @@
     <div class="hidden items-center justify-between py-2 md:flex">
       {@render shopIcon()}
       <div class="flex items-center gap-4">
-        <SocialIcons size={18} />
+        <SocialIcons size={22} />
         {@render radioIcon()}
       </div>
     </div>
@@ -96,14 +96,14 @@
         {#each allLinks as link}
           <a
             href={link.href}
-            class="rounded-md px-3 py-2.5 text-sm font-medium text-brand-50 hover:bg-white/10"
+            class="rounded-md px-3 py-3 text-base font-semibold text-brand-50 hover:bg-white/10"
             class:text-reef-300={$path === link.href}
           >
             {link.label}
           </a>
         {/each}
-        <div class="mt-3 flex items-center gap-4 border-t border-white/10 px-3 pt-4">
-          <SocialIcons size={20} />
+        <div class="mt-3 flex items-center gap-5 border-t border-white/10 px-3 pt-4">
+          <SocialIcons size={24} />
           {@render radioIcon()}
         </div>
       </div>
