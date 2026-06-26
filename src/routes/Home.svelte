@@ -89,7 +89,7 @@
 {/snippet}
 
 <!-- Hero: featured (left) + upcoming dives/courses (right) -->
-<section class="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:h-[calc(100vh-13rem)] lg:py-6">
+<section class="mx-auto max-w-[1600px] px-4 py-6 sm:px-6 lg:h-[calc(100vh-13rem)] lg:py-6">
   <div class="grid h-full gap-6 lg:grid-cols-2 lg:gap-8">
     <!-- Featured -->
     <div class="flex min-h-0 flex-col">
@@ -138,7 +138,7 @@
 </section>
 
 <!-- Explore our Services -->
-<section class="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
+<section class="mx-auto max-w-[1600px] px-4 py-12 sm:px-6 sm:py-16">
   <div class="mx-auto max-w-3xl text-center">
     <h2 class="text-3xl font-bold tracking-tight text-white">Explore our Services</h2>
     <p class="mt-3 text-brand-100">
@@ -190,7 +190,7 @@
 
 <!-- Brand taglines -->
 <section>
-  <div class="mx-auto flex max-w-6xl flex-col items-center gap-1 px-4 py-12 text-center sm:px-6 sm:py-14">
+  <div class="mx-auto flex max-w-[1600px] flex-col items-center gap-1 px-4 py-12 text-center sm:px-6 sm:py-14">
     <p class="text-2xl font-bold text-white sm:text-3xl">Breathe the Adventure</p>
     <p class="text-lg font-light text-reef-100">Explore with Confidence</p>
   </div>

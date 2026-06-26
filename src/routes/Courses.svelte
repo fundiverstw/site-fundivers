@@ -64,7 +64,7 @@
   subtitle="Learn to dive, level up, or go pro — the full range of PADI recreational courses in Taiwan."
 />
 
-<section class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+<section class="mx-auto max-w-[1600px] px-4 py-12 sm:px-6">
   <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
     {#each catalog as c}
       <div class="glass rounded-2xl p-6 shadow-sm">
@@ -78,7 +78,7 @@
 
 <!-- Live upcoming course sessions -->
 <section>
-  <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+  <div class="mx-auto max-w-[1600px] px-4 py-12 sm:px-6">
     <h2 class="text-2xl font-bold text-white">Upcoming course dates</h2>
     {#if loading}
       <div class="mt-6 grid gap-3">

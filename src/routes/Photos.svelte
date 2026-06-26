@@ -28,7 +28,7 @@
 
 <PageHeader title="Photos" subtitle="A glimpse of life beneath the waves with FunDivers TW." />
 
-<section class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+<section class="mx-auto max-w-[1600px] px-4 py-12 sm:px-6">
   <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
     {#each tiles as caption, i}
       <div class={`relative aspect-square overflow-hidden rounded-xl bg-gradient-to-br ${gradients[i % gradients.length]}`}>

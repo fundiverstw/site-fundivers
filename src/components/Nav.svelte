@@ -49,7 +49,7 @@
 {/snippet}
 
 <header class="bg-transparent">
-  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+  <div class="mx-auto max-w-[1600px] px-4 sm:px-6">
     <!-- Desktop: utility strip (shop left · socials + radio right) -->
     <div class="hidden items-center justify-between py-2 md:flex">
       {@render shopIcon()}
@@ -93,7 +93,7 @@
   <!-- Mobile menu -->
   {#if open}
     <div class="border-t border-white/10 bg-brand-950/95 backdrop-blur md:hidden">
-      <div class="mx-auto flex max-w-6xl flex-col px-4 py-3 sm:px-6">
+      <div class="mx-auto flex max-w-[1600px] flex-col px-4 py-3 sm:px-6">
         {#each allLinks as link}
           <a
             href={link.href}

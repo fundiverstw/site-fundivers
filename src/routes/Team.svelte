@@ -42,7 +42,7 @@ Whether underwater or building something on the run.`,
   subtitle="Dedication. Expertise. Passion."
 />
 
-<section class="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
+<section class="mx-auto max-w-[1600px] px-4 py-12 sm:px-6 sm:py-16">
   <div class="grid gap-6 md:grid-cols-2">
     {#each team as m}
       <svelte:element
