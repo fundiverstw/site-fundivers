@@ -12,8 +12,8 @@
 </script>
 
 <PageHeader
-  title="Our Team"
-  subtitle="Experienced, certified, and passionate about safe diving and good times underwater."
+  title="Fun Divers Team"
+  subtitle="Dedication. Expertise. Passion."
 />
 
 <section class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
