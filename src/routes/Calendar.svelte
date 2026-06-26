@@ -28,11 +28,9 @@
   <div class="mb-6 flex flex-wrap items-center gap-2">
     {#each [['all', 'All'], ['dive', 'Dives'], ['course', 'Courses']] as [value, label]}
       <button
-        class="rounded-full px-4 py-1.5 text-sm font-medium transition-colors"
-        class:bg-brand-600={filter === value}
-        class:text-white={filter === value}
-        class:bg-brand-50={filter !== value}
-        class:text-brand-800={filter !== value}
+        class={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+          filter === value ? 'bg-brand-600 text-white' : 'bg-white/10 text-brand-100'
+        }`}
         onclick={() => (filter = value as typeof filter)}
       >
         {label}
@@ -43,49 +41,47 @@
   {#if loading}
     <div class="grid gap-3">
       {#each Array(5) as _}
-        <div class="h-24 animate-pulse rounded-xl bg-brand-50"></div>
+        <div class="h-24 animate-pulse rounded-xl bg-white/10"></div>
       {/each}
     </div>
   {:else if error}
-    <p class="rounded-lg bg-red-50 p-4 text-sm text-red-700">Couldn’t load the calendar: {error}</p>
+    <p class="rounded-lg bg-red-500/15 p-4 text-sm text-red-200">Couldn’t load the calendar: {error}</p>
   {:else if shown.length === 0}
-    <p class="rounded-lg bg-brand-50 p-6 text-center text-slate-600">
+    <p class="glass rounded-lg p-6 text-center text-brand-100">
       No upcoming events right now — check back soon, or
-      <a href={bookUrl} target="_blank" rel="noopener" class="font-semibold text-brand-700">contact us</a>.
+      <a href={bookUrl} target="_blank" rel="noopener" class="font-semibold text-reef-300">contact us</a>.
     </p>
   {:else}
     <ul class="grid gap-3">
       {#each shown as ev (ev.type + ev.id)}
         {@const b = badge(ev.startDate)}
         {@const price = twd(ev.startingAt)}
-        <li class="flex items-center gap-4 rounded-xl border border-brand-100 bg-white p-4 shadow-sm transition-shadow hover:shadow-md">
-          <div class="flex w-16 shrink-0 flex-col items-center rounded-lg bg-brand-50 py-2 text-brand-800">
+        <li class="glass flex items-center gap-3 rounded-xl p-3 shadow-sm transition-shadow hover:shadow-md sm:gap-4 sm:p-4">
+          <div class="flex w-14 shrink-0 flex-col items-center rounded-lg bg-white/10 py-2 text-white sm:w-16">
             <span class="text-xs font-semibold">{b.month}</span>
             <span class="text-2xl font-bold leading-none">{b.day}</span>
           </div>
           <div class="min-w-0 flex-1">
             <div class="flex items-center gap-2">
               <span
-                class="rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide"
-                class:bg-reef-100={ev.type === 'dive'}
-                class:text-reef-700={ev.type === 'dive'}
-                class:bg-brand-100={ev.type === 'course'}
-                class:text-brand-700={ev.type === 'course'}
+                class={`rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide ${
+                  ev.type === 'dive' ? 'bg-reef-400/20 text-reef-200' : 'bg-brand-400/20 text-brand-100'
+                }`}
               >
                 {ev.type}
               </span>
               {#if ev.fullyBooked}
-                <span class="rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-700">
+                <span class="rounded bg-amber-400/20 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-200">
                   Waitlist
                 </span>
               {/if}
             </div>
-            <h3 class="mt-1 truncate font-semibold text-brand-950">{ev.title}</h3>
-            <p class="text-sm text-slate-500">{formatSpan(ev.startDate, ev.endDate, ev.time)}</p>
+            <h3 class="mt-1 truncate font-semibold text-white">{ev.title}</h3>
+            <p class="text-sm text-brand-200">{formatSpan(ev.startDate, ev.endDate, ev.time)}</p>
           </div>
           <div class="flex shrink-0 flex-col items-end gap-1">
             {#if price}
-              <span class="text-sm font-semibold text-brand-800">from {price}</span>
+              <span class="text-sm font-semibold text-white">from {price}</span>
             {/if}
             <a
               href={registerUrl(ev.type, ev.id)}

@@ -67,41 +67,41 @@
 <section class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
   <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
     {#each catalog as c}
-      <div class="rounded-2xl border border-brand-100 bg-white p-6 shadow-sm">
-        <span class="text-xs font-semibold uppercase tracking-wide text-reef-600">{c.level}</span>
-        <h3 class="mt-1 text-lg font-semibold text-brand-900">{c.name}</h3>
-        <p class="mt-2 text-sm text-slate-600">{c.desc}</p>
+      <div class="glass rounded-2xl p-6 shadow-sm">
+        <span class="text-xs font-semibold uppercase tracking-wide text-reef-300">{c.level}</span>
+        <h3 class="mt-1 text-lg font-semibold text-white">{c.name}</h3>
+        <p class="mt-2 text-sm text-brand-100">{c.desc}</p>
       </div>
     {/each}
   </div>
 </section>
 
 <!-- Live upcoming course sessions -->
-<section class="bg-brand-50">
+<section>
   <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-    <h2 class="text-2xl font-bold text-brand-900">Upcoming course dates</h2>
+    <h2 class="text-2xl font-bold text-white">Upcoming course dates</h2>
     {#if loading}
       <div class="mt-6 grid gap-3">
         {#each Array(3) as _}
-          <div class="h-16 animate-pulse rounded-xl bg-white"></div>
+          <div class="h-16 animate-pulse rounded-xl bg-white/10"></div>
         {/each}
       </div>
     {:else if upcoming.length === 0}
-      <p class="mt-4 text-slate-600">
+      <p class="mt-4 text-brand-100">
         No scheduled course dates right now — courses also run on request.
-        <a href={bookUrl} target="_blank" rel="noopener" class="font-semibold text-brand-700">Get in touch</a>.
+        <a href={bookUrl} target="_blank" rel="noopener" class="font-semibold text-reef-300">Get in touch</a>.
       </p>
     {:else}
       <ul class="mt-6 grid gap-3">
         {#each upcoming as ev (ev.id)}
           {@const price = twd(ev.startingAt)}
-          <li class="flex items-center justify-between gap-4 rounded-xl bg-white p-4 shadow-sm">
+          <li class="glass flex items-center justify-between gap-4 rounded-xl p-4 shadow-sm">
             <div class="min-w-0">
-              <h3 class="truncate font-semibold text-brand-950">{ev.title}</h3>
-              <p class="text-sm text-slate-500">{formatSpan(ev.startDate, ev.endDate, ev.time)}</p>
+              <h3 class="truncate font-semibold text-white">{ev.title}</h3>
+              <p class="text-sm text-brand-200">{formatSpan(ev.startDate, ev.endDate, ev.time)}</p>
             </div>
             <div class="flex shrink-0 items-center gap-3">
-              {#if price}<span class="text-sm font-semibold text-brand-800">from {price}</span>{/if}
+              {#if price}<span class="text-sm font-semibold text-white">from {price}</span>{/if}
               <a
                 href={registerUrl('course', ev.id)}
                 target="_blank"

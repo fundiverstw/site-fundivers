@@ -40,7 +40,7 @@
       target="_blank"
       rel="noopener"
       aria-label={icon.name}
-      class="text-brand-700 transition-colors hover:text-reef-500"
+      class="text-brand-50 transition-colors hover:text-reef-300"
     >
       <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <path d={icon.path} />

@@ -45,6 +45,19 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: var(--color-brand-950);
-  background: #ffffff;
+  /* Whole-site ocean-blue background. Everything else is transparent and
+     lets this show through — change this one value to retint the site. */
+  color: var(--color-brand-50);
+  background: var(--color-brand-900);
+}
+
+/* Translucent "glass" surface for content cards over the blue background. */
+@layer components {
+  .glass {
+    background: color-mix(in oklab, #ffffff 8%, transparent);
+    border: 1px solid color-mix(in oklab, #ffffff 15%, transparent);
+  }
+  .glass:hover {
+    background: color-mix(in oklab, #ffffff 12%, transparent);
+  }
 }

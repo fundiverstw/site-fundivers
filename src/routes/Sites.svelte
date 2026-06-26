@@ -38,38 +38,38 @@
   {#if loading}
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {#each Array(6) as _}
-        <div class="h-40 animate-pulse rounded-xl bg-brand-50"></div>
+        <div class="h-40 animate-pulse rounded-xl bg-white/10"></div>
       {/each}
     </div>
   {:else if error}
-    <p class="rounded-lg bg-red-50 p-4 text-sm text-red-700">Couldn’t load dive sites: {error}</p>
+    <p class="rounded-lg bg-red-500/15 p-4 text-sm text-red-200">Couldn’t load dive sites: {error}</p>
   {:else if sites.length === 0}
-    <p class="rounded-lg bg-brand-50 p-6 text-center text-slate-600">No dive sites listed yet.</p>
+    <p class="glass rounded-lg p-6 text-center text-brand-100">No dive sites listed yet.</p>
   {:else}
     {#each byArea as group}
       <div class="mb-12">
-        <h2 class="mb-5 text-2xl font-bold text-brand-900">{group.area}</h2>
+        <h2 class="mb-5 text-2xl font-bold text-white">{group.area}</h2>
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {#each group.sites as s (s.id)}
             <a
               href={mapsUrl(s)}
               target="_blank"
               rel="noopener"
-              class="group flex flex-col rounded-xl border border-brand-100 bg-white p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+              class="glass group flex flex-col rounded-xl p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
             >
               <div class="flex items-center justify-between gap-2">
-                <h3 class="font-semibold text-brand-800 group-hover:text-brand-700">{s.name}</h3>
+                <h3 class="font-semibold text-white">{s.name}</h3>
                 {#if s.dive_type}
-                  <span class="rounded bg-reef-50 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-reef-700">
+                  <span class="rounded bg-reef-400/20 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-reef-200">
                     {s.dive_type}
                   </span>
                 {/if}
               </div>
-              <p class="mt-1 text-xs font-medium text-slate-400">{REGION_META[s.region]?.label ?? s.region}</p>
+              <p class="mt-1 text-xs font-medium text-brand-200">{REGION_META[s.region]?.label ?? s.region}</p>
               {#if s.tagline}
-                <p class="mt-2 line-clamp-4 text-sm text-slate-600">{s.tagline}</p>
+                <p class="mt-2 line-clamp-4 text-sm text-brand-100">{s.tagline}</p>
               {/if}
-              <span class="mt-3 text-xs font-semibold text-reef-600">View on map →</span>
+              <span class="mt-3 text-xs font-semibold text-reef-300">View on map →</span>
             </a>
           {/each}
         </div>

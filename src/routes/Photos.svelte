@@ -39,14 +39,14 @@
     {/each}
   </div>
 
-  <div class="mt-10 rounded-2xl bg-brand-50 p-8 text-center">
-    <h2 class="text-xl font-bold text-brand-900">See more on social</h2>
-    <p class="mt-2 text-slate-600">Follow along for trip recaps, marine life, and behind-the-scenes.</p>
+  <div class="glass mt-10 rounded-2xl p-8 text-center">
+    <h2 class="text-xl font-bold text-white">See more on social</h2>
+    <p class="mt-2 text-brand-100">Follow along for trip recaps, marine life, and behind-the-scenes.</p>
     <div class="mt-4 flex flex-wrap justify-center gap-3">
       <a href={SOCIAL.instagram} target="_blank" rel="noopener" class="rounded-full bg-brand-600 px-5 py-2 text-sm font-semibold text-white hover:bg-brand-700">
         Instagram
       </a>
-      <a href={SOCIAL.youtube} target="_blank" rel="noopener" class="rounded-full border border-brand-200 px-5 py-2 text-sm font-semibold text-brand-700 hover:bg-white">
+      <a href={SOCIAL.youtube} target="_blank" rel="noopener" class="rounded-full border border-white/30 px-5 py-2 text-sm font-semibold text-white hover:bg-white/10">
         YouTube
       </a>
     </div>

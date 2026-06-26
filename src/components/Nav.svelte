@@ -25,13 +25,13 @@
   function linkClass(href: string): string {
     const base = 'rounded-md px-3 py-2 text-sm font-medium transition-colors'
     return $path === href
-      ? `${base} text-reef-600`
-      : `${base} text-brand-900 hover:text-reef-500`
+      ? `${base} text-reef-300`
+      : `${base} text-brand-50 hover:text-reef-300`
   }
 </script>
 
 {#snippet shopIcon()}
-  <a href={SHOP_URL} aria-label="Gear shop" class="text-brand-800 transition-colors hover:text-reef-500">
+  <a href={SHOP_URL} aria-label="Gear shop" class="text-brand-50 transition-colors hover:text-reef-300">
     <ShopIcon />
   </a>
 {/snippet}
@@ -67,7 +67,7 @@
       </nav>
       <div class="flex justify-center">
         <a href="/" aria-label="FunDivers TW home">
-          <img src="/imgs/fd_logo.png" alt="FunDivers TW" class="h-14 w-auto" />
+          <img src="/imgs/fd_logo.png" alt="FunDivers TW" class="h-20 w-auto lg:h-24" />
         </a>
       </div>
       <nav class="flex items-center justify-end gap-1">
@@ -81,9 +81,9 @@
     <div class="flex items-center justify-between py-3 md:hidden">
       {@render shopIcon()}
       <a href="/" aria-label="FunDivers TW home">
-        <img src="/imgs/fd_logo.png" alt="FunDivers TW" class="h-10 w-auto" />
+        <img src="/imgs/fd_logo.png" alt="FunDivers TW" class="h-14 w-auto" />
       </a>
-      <button class="text-brand-900" aria-label="Toggle menu" onclick={() => (open = !open)}>
+      <button class="text-brand-50" aria-label="Toggle menu" onclick={() => (open = !open)}>
         <MenuIcon {open} />
       </button>
     </div>
@@ -91,18 +91,18 @@
 
   <!-- Mobile menu -->
   {#if open}
-    <div class="border-t border-brand-100 bg-white md:hidden">
+    <div class="border-t border-white/10 bg-brand-950/95 backdrop-blur md:hidden">
       <div class="mx-auto flex max-w-6xl flex-col px-4 py-3 sm:px-6">
         {#each allLinks as link}
           <a
             href={link.href}
-            class="rounded-md px-3 py-2.5 text-sm font-medium hover:bg-brand-50"
-            class:text-reef-600={$path === link.href}
+            class="rounded-md px-3 py-2.5 text-sm font-medium text-brand-50 hover:bg-white/10"
+            class:text-reef-300={$path === link.href}
           >
             {link.label}
           </a>
         {/each}
-        <div class="mt-3 flex items-center gap-4 border-t border-brand-100 px-3 pt-4">
+        <div class="mt-3 flex items-center gap-4 border-t border-white/10 px-3 pt-4">
           <SocialIcons size={20} />
           {@render radioIcon()}
         </div>

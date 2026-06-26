@@ -57,9 +57,8 @@
 </script>
 
 <!-- Hero -->
-<section class="relative overflow-hidden bg-brand-950 text-white">
-  <div class="absolute inset-0 bg-gradient-to-br from-brand-900 via-brand-800 to-reef-800 opacity-95"></div>
-  <div class="relative mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 py-24 text-center sm:px-6 md:py-28">
+<section class="text-white">
+  <div class="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 py-16 text-center sm:px-6 sm:py-24 md:py-28">
     <h1 class="text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl">
       Breathe the Adventure
     </h1>
@@ -76,10 +75,10 @@
 </section>
 
 <!-- Explore our Services -->
-<section class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+<section class="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
   <div class="mx-auto max-w-3xl text-center">
-    <h2 class="text-3xl font-bold tracking-tight text-brand-950">Explore our Services</h2>
-    <p class="mt-3 text-slate-600">
+    <h2 class="text-3xl font-bold tracking-tight text-white">Explore our Services</h2>
+    <p class="mt-3 text-brand-100">
       Discover the unique and valuable aspects that make Fun Divers TW the top choice for diving
       enthusiasts. With our extensive experience and dedication to customer satisfaction, we provide
       exceptional guided trips and convenient booking services as well as all PADI Recreational Dive
@@ -91,31 +90,31 @@
     {#each services as s}
       <a
         href={s.href}
-        class="group flex flex-col overflow-hidden rounded-2xl border border-brand-100 bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
+        class="glass group flex flex-col overflow-hidden rounded-2xl shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
       >
         <div class={`h-40 bg-gradient-to-br ${s.gradient}`}></div>
         <div class="flex flex-1 flex-col p-6">
-          <h3 class="text-lg font-semibold text-brand-800 group-hover:text-brand-700">{s.title}</h3>
-          <p class="mt-2 text-sm text-slate-600">{s.desc}</p>
+          <h3 class="text-lg font-semibold text-white">{s.title}</h3>
+          <p class="mt-2 text-sm text-brand-100">{s.desc}</p>
         </div>
       </a>
     {/each}
   </div>
 
   <div class="mt-10 text-center">
-    <a href="#contact" class="rounded-full bg-brand-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-brand-700">
+    <a href="#contact" class="rounded-full bg-reef-400 px-6 py-3 font-semibold text-brand-950 transition-colors hover:bg-reef-300">
       Contact us
     </a>
   </div>
 </section>
 
 <!-- Diving in Taiwan -->
-<section class="bg-brand-50">
-  <div class="mx-auto max-w-3xl px-4 py-16 sm:px-6">
-    <h2 class="text-3xl font-bold tracking-tight text-brand-950">
+<section>
+  <div class="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
+    <h2 class="text-3xl font-bold tracking-tight text-white">
       Diving in Taiwan: Exploring a World Beneath the Waves
     </h2>
-    <div class="mt-6 space-y-5 text-slate-700">
+    <div class="mt-6 space-y-5 text-brand-100">
       {#each divingInTaiwan as para}
         <p>{para}</p>
       {/each}
@@ -124,8 +123,8 @@
 </section>
 
 <!-- Brand taglines -->
-<section class="bg-gradient-to-r from-brand-700 to-reef-700">
-  <div class="mx-auto flex max-w-6xl flex-col items-center gap-1 px-4 py-14 text-center sm:px-6">
+<section>
+  <div class="mx-auto flex max-w-6xl flex-col items-center gap-1 px-4 py-12 text-center sm:px-6 sm:py-14">
     <p class="text-2xl font-bold text-white sm:text-3xl">Breathe the Adventure</p>
     <p class="text-lg font-light text-reef-100">Explore with Confidence</p>
   </div>
