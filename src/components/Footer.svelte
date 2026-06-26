@@ -28,7 +28,7 @@
       <ul class="mt-3 space-y-2 text-sm">
         <li><a class="hover:text-white" href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a></li>
         <li><a class="hover:text-white" href={CONTACT.phoneHref}>{CONTACT.phone}</a></li>
-        <li class="text-brand-200">{CONTACT.address}</li>
+        <li class="text-brand-200">{CONTACT.address}, 23446</li>
       </ul>
     </div>
 
@@ -43,8 +43,9 @@
   </div>
 
   <div class="border-t border-white/10">
-    <div class="mx-auto max-w-6xl px-4 py-4 text-xs text-brand-300 sm:px-6">
-      © {year} FunDivers TW. All rights reserved.
+    <div class="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-4 text-xs text-brand-300 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+      <span>© {year} by Fun Divers Taiwan.</span>
+      <span>Proudly created with 🤿 ❤️ in Taipei</span>
     </div>
   </div>
 </footer>

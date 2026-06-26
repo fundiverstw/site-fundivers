@@ -1,155 +1,132 @@
 <script lang="ts">
-  import { bookUrl } from '../lib/config'
-
+  // Service cards mirror the live fundiverstw.com homepage copy verbatim.
+  // `image` notes the photo to drop in later (gradient placeholder for now).
   const services = [
     {
       title: 'PADI Courses',
-      desc: 'From Open Water to Divemaster — all PADI recreational courses with experienced instructors.',
+      desc: 'Fun Divers Tw offers the full range of PADI Certification Courses, from beginner to professional level! See the courses available here!',
       href: '/courses',
+      image: 'Mathias mask clear.JPG',
+      gradient: 'from-brand-700 to-reef-600',
     },
     {
-      title: 'Dive Sites',
-      desc: 'Explore Taiwan’s best reefs, wrecks, and walls across the north, south, and outlying islands.',
+      title: 'Dive sites',
+      desc: 'Fun Divers Tw offers local shore and boat diving trips. There are many beautiful dive sites to visit here on the northeast coast of Taiwan.',
       href: '/sites',
+      image: 'Divers exiting the water.JPG',
+      gradient: 'from-reef-600 to-brand-800',
     },
     {
-      title: 'Gear Sales, Service & Rental',
-      desc: 'Quality scuba gear for sale, full servicing, and rental sets for every trip.',
-      href: '/courses',
+      title: 'Gear Sales, Service, & Rental',
+      desc: 'Fun Divers Tw offers a range of Scuba diving and Free diving gear for Sale or Rental. We can also service regulators and BCDs! Contact us to find out more!',
+      href: '#contact',
+      image: 'T3.jpg',
+      gradient: 'from-brand-800 to-brand-500',
     },
     {
       title: 'International Dive Tours',
-      desc: 'Guided trips to world-class destinations — Philippines, Indonesia, Palau, and more.',
+      desc: 'Fun Divers Tw plans group tours to a variety of thrilling destinations! Join one of our planned dive trips or let us help you book your customized trip!',
       href: '/calendar',
+      image: 'Rock Islands palau.jpg',
+      gradient: 'from-reef-700 to-reef-400',
     },
     {
-      title: 'Domestic Dive Tours',
-      desc: 'Weekend and day trips to Green Island, Kenting, Long Dong, Penghu, and beyond.',
+      title: 'Domestic Dive tours',
+      desc: 'Explore the amazing dive destinations around Taiwan with Fun Divers Tw! Join a planned trip or let us help you book a customized trip.',
       href: '/calendar',
+      image: 'Penghu Hearts enhanced',
+      gradient: 'from-brand-900 to-reef-700',
     },
     {
       title: 'EFR Courses',
-      desc: 'Emergency First Response training — CPR and first aid for divers and non-divers alike.',
+      desc: 'Fun Divers Tw offers the full range of EFR courses. Learn how to help yourself and others in an emergency.',
       href: '/courses',
+      image: '107870192.jpg',
+      gradient: 'from-reef-500 to-brand-700',
     },
   ]
 
-  const regions = [
-    {
-      title: 'The North',
-      body: 'Long Dong, Keelung, and Yilan offer easy shore access, dramatic rock formations, and macro life. The most convenient diving from Taipei, best from spring through autumn.',
-    },
-    {
-      title: 'The South',
-      body: 'Kenting’s warm waters and sprawling coral reefs have made it a top destination for decades — great year-round, with the calmest conditions in summer.',
-    },
-    {
-      title: 'Outlying Islands',
-      body: 'Green Island, Orchid Island, Xiaoliuqiu, and Penghu deliver Taiwan’s most spectacular diving — turtles, big fish, and visibility that rivals anywhere in Asia.',
-    },
+  const divingInTaiwan = [
+    'Taiwan, a treasure trove of cultural heritage and natural beauty, offers diving enthusiasts an unparalleled opportunity to delve into the depths of its azure waters. Taiwan caters to divers year round with dive seasons that vary across the regions. Taiwan is generally divided into three dive regions: The North (including Taipei, Keelung, and Yilan), The South (Lambai and Kenting), and the Outlying Islands (Penghu, Green Island, and Orchid Island).',
+    'The season in the north stretches from April until Early October, with the warmest months being July and August. Diving is possible during the winter months, but water temperatures drop to 16-18C and wave conditions can be very unpredictable, which make it very difficult to plan ahead of time.',
+    'The dive season in the south, however, is all year, since both Kenting and Lambai (Xiao Liuqiu) are sheltered from all but the worst of the winter winds and storms. The water temperature is warmer than the north, only dropping below 22C from January through March.',
+    'The outlying islands, with Penghu situated off the west coast, and Green Island and Orchid Island, nestled off the southeastern coast, beckon adventurers with their own dive seasons. The high season spans from April to November with the low season being December through March. During the high season, water temperatures are warmer (25-30C) and conditions are much calmer while the low season sees cooler waters (18-24C) and more unpredictable wave conditions.',
+    "Beyond Taiwan's shores, neighboring paradises like the Philippines and Indonesia offer complementary dive seasons, ensuring that the allure of underwater exploration knows no bounds.",
+    "Embark on a journey through Taiwan's dive seasons and beyond, where every descent promises a glimpse into a world of wonder beneath the waves.",
   ]
 </script>
 
 <!-- Hero -->
 <section class="relative overflow-hidden bg-brand-950 text-white">
   <div class="absolute inset-0 bg-gradient-to-br from-brand-900 via-brand-800 to-reef-800 opacity-95"></div>
-  <div class="relative mx-auto flex max-w-6xl flex-col items-start gap-6 px-4 py-24 sm:px-6 md:py-32">
-    <span class="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-reef-200">
-      PADI Dive Center · Taiwan
-    </span>
-    <h1 class="max-w-3xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl">
-      Explore a world beneath the waves.
+  <div class="relative mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 py-24 text-center sm:px-6 md:py-28">
+    <h1 class="text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl">
+      Breathe the Adventure
     </h1>
-    <p class="max-w-2xl text-lg text-brand-100">
-      FunDivers TW offers exceptional guided trips and convenient online booking, plus the
-      full range of PADI recreational dive courses — for first-timers and seasoned divers alike.
-    </p>
-    <div class="flex flex-wrap gap-3">
-      <a
-        href={bookUrl}
-        target="_blank"
-        rel="noopener"
-        class="rounded-full bg-reef-400 px-6 py-3 font-semibold text-brand-950 shadow-lg transition-colors hover:bg-reef-300"
-      >
-        Book a Trip
-      </a>
-      <a
-        href="/courses"
-        class="rounded-full border border-white/30 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/10"
-      >
+    <p class="text-xl font-light text-reef-200 sm:text-2xl">Explore with Confidence</p>
+    <div class="mt-4 flex flex-wrap justify-center gap-3">
+      <a href="/courses" class="rounded-full bg-reef-400 px-6 py-3 font-semibold text-brand-950 shadow-lg transition-colors hover:bg-reef-300">
         View Courses
+      </a>
+      <a href="/calendar" class="rounded-full border border-white/30 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/10">
+        See the Calendar
       </a>
     </div>
   </div>
 </section>
 
-<!-- Services -->
+<!-- Explore our Services -->
 <section class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-  <div class="max-w-2xl">
-    <h2 class="text-3xl font-bold tracking-tight text-brand-950">What we offer</h2>
-    <p class="mt-2 text-slate-600">Everything you need to start diving or to keep exploring.</p>
+  <div class="mx-auto max-w-3xl text-center">
+    <h2 class="text-3xl font-bold tracking-tight text-brand-950">Explore our Services</h2>
+    <p class="mt-3 text-slate-600">
+      Discover the unique and valuable aspects that make Fun Divers TW the top choice for diving
+      enthusiasts. With our extensive experience and dedication to customer satisfaction, we provide
+      exceptional guided trips and convenient booking services as well as all PADI Recreational Dive
+      Courses.
+    </p>
   </div>
-  <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+
+  <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
     {#each services as s}
       <a
         href={s.href}
-        class="group rounded-2xl border border-brand-100 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:border-brand-200 hover:shadow-md"
+        class="group flex flex-col overflow-hidden rounded-2xl border border-brand-100 bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
       >
-        <h3 class="text-lg font-semibold text-brand-800 group-hover:text-brand-700">{s.title}</h3>
-        <p class="mt-2 text-sm text-slate-600">{s.desc}</p>
-        <span class="mt-4 inline-block text-sm font-semibold text-reef-600">Learn more →</span>
+        <div class={`h-40 bg-gradient-to-br ${s.gradient}`}></div>
+        <div class="flex flex-1 flex-col p-6">
+          <h3 class="text-lg font-semibold text-brand-800 group-hover:text-brand-700">{s.title}</h3>
+          <p class="mt-2 text-sm text-slate-600">{s.desc}</p>
+        </div>
       </a>
     {/each}
+  </div>
+
+  <div class="mt-10 text-center">
+    <a href="#contact" class="rounded-full bg-brand-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-brand-700">
+      Contact us
+    </a>
   </div>
 </section>
 
 <!-- Diving in Taiwan -->
 <section class="bg-brand-50">
-  <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-    <div class="max-w-3xl">
-      <h2 class="text-3xl font-bold tracking-tight text-brand-950">
-        Diving in Taiwan: Exploring a World Beneath the Waves
-      </h2>
-      <p class="mt-4 text-slate-700">
-        Taiwan packs an astonishing variety of diving into a small island. Three distinct regions —
-        the North, the South, and the Outlying Islands — each offer their own character, marine life,
-        and best seasons. Water temperatures range from a cool 20°C in winter up north to a balmy 28°C
-        in summer down south, so there’s great diving somewhere on the island all year round.
-      </p>
-    </div>
-    <div class="mt-10 grid gap-6 md:grid-cols-3">
-      {#each regions as r}
-        <div class="rounded-2xl bg-white p-6 shadow-sm">
-          <h3 class="text-lg font-semibold text-reef-700">{r.title}</h3>
-          <p class="mt-2 text-sm text-slate-600">{r.body}</p>
-        </div>
+  <div class="mx-auto max-w-3xl px-4 py-16 sm:px-6">
+    <h2 class="text-3xl font-bold tracking-tight text-brand-950">
+      Diving in Taiwan: Exploring a World Beneath the Waves
+    </h2>
+    <div class="mt-6 space-y-5 text-slate-700">
+      {#each divingInTaiwan as para}
+        <p>{para}</p>
       {/each}
-    </div>
-    <div class="mt-8">
-      <a href="/sites" class="font-semibold text-brand-700 hover:text-brand-800">Browse all dive sites →</a>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
+<!-- Brand taglines -->
 <section class="bg-gradient-to-r from-brand-700 to-reef-700">
-  <div class="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 py-16 text-center sm:px-6">
-    <h2 class="text-3xl font-bold text-white">Ready to get in the water?</h2>
-    <p class="max-w-xl text-brand-100">
-      Check the upcoming calendar and reserve your spot online in minutes.
-    </p>
-    <div class="flex flex-wrap justify-center gap-3">
-      <a href="/calendar" class="rounded-full bg-white px-6 py-3 font-semibold text-brand-800 hover:bg-brand-50">
-        See the Calendar
-      </a>
-      <a
-        href={bookUrl}
-        target="_blank"
-        rel="noopener"
-        class="rounded-full border border-white/40 px-6 py-3 font-semibold text-white hover:bg-white/10"
-      >
-        Book Now
-      </a>
-    </div>
+  <div class="mx-auto flex max-w-6xl flex-col items-center gap-1 px-4 py-14 text-center sm:px-6">
+    <p class="text-2xl font-bold text-white sm:text-3xl">Breathe the Adventure</p>
+    <p class="text-lg font-light text-reef-100">Explore with Confidence</p>
   </div>
 </section>
