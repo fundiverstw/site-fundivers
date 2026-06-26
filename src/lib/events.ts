@@ -15,6 +15,8 @@ export type UpcomingEvent = {
   startingAt: number | null // TWD
   fullyBooked: boolean
   featured: boolean
+  description: string | null // short blurb for cards (dive notes / course schedule)
+  image: string | null // resolved cover image URL
 }
 
 type DiveRow = {
@@ -27,6 +29,8 @@ type DiveRow = {
   price: string | null
   fully_booked: boolean | null
   featured: boolean | null
+  notes: string | null
+  featured_image: string | null
 }
 
 type CourseRow = {
@@ -37,6 +41,15 @@ type CourseRow = {
   price: string | null
   course_days: string[] | null
   fully_booked: boolean | null
+  schedule: string | null
+  featured_image: string | null
+}
+
+/** Resolve a Wix image ref (`wix:image://v1/…`) to its static CDN URL. */
+function wixImage(raw: string | null | undefined): string | null {
+  if (!raw || !raw.startsWith('wix:image://')) return null
+  const stripped = raw.replace(/^wix:image:\/\/v1\//, 'https://static.wixstatic.com/media/').split('#')[0]
+  return stripped.split('/').slice(0, -1).join('/') || null
 }
 
 type PriceRow = { _id: string; starting_at: number | null }
@@ -74,14 +87,14 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
   const [divesResp, coursesResp] = await Promise.all([
     supabase
       .from('EO_dives')
-      .select('_id, display_title, admin_title, start_date, end_date, time, price, fully_booked, featured')
+      .select('_id, display_title, admin_title, start_date, end_date, time, price, fully_booked, featured, notes, featured_image')
       .is('cancelled_at', null)
       .eq('is_private', false)
       .gte('start_date', today)
       .order('start_date'),
     supabase
       .from('EO_courses')
-      .select('_id, display_title, admin_title, start_time, price, course_days, fully_booked')
+      .select('_id, display_title, admin_title, start_time, price, course_days, fully_booked, schedule, featured_image')
       .is('cancelled_at', null),
   ])
 
@@ -107,6 +120,8 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
       startingAt: d.price ? prices.get(d.price) ?? null : null,
       fullyBooked: d.fully_booked ?? false,
       featured: d.featured ?? false,
+      description: d.notes && d.notes.trim() ? d.notes.trim() : null,
+      image: wixImage(d.featured_image),
     })
   }
 
@@ -128,6 +143,8 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
       startingAt: c.price ? prices.get(c.price) ?? null : null,
       fullyBooked: c.fully_booked ?? false,
       featured: false,
+      description: c.schedule && c.schedule.trim() ? c.schedule.trim() : null,
+      image: wixImage(c.featured_image),
     })
   }
 

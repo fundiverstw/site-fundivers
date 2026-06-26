@@ -1,7 +1,8 @@
 <script lang="ts">
   import { fetchUpcomingEvents, type UpcomingEvent, type ModalEvent } from '../lib/events'
-  import { formatSpan, badge, twd } from '../lib/format'
+  import { formatSpan } from '../lib/format'
   import GetInTouch from '../components/GetInTouch.svelte'
+  import EventCard from '../components/EventCard.svelte'
   import EventModal from '../components/calendar/EventModal.svelte'
 
   let upcoming = $state<UpcomingEvent[]>([])
@@ -27,20 +28,16 @@
       .finally(() => (loading = false))
   })
 
-  // Three featured cards: real featured events first, padded with the soonest
-  // upcoming events so the prime spot is always full.
+  // Featured: real featured first, padded with the soonest upcoming events.
   let featured = $derived.by(() => {
     const feat = upcoming.filter((e) => e.featured)
     if (feat.length >= 3) return feat.slice(0, 3)
     const ids = new Set(feat.map((e) => e.id))
     return [...feat, ...upcoming.filter((e) => !ids.has(e.id)).slice(0, 3 - feat.length)]
   })
-  let dives = $derived(upcoming.filter((e) => e.type === 'dive').slice(0, 3))
-  let courses = $derived(upcoming.filter((e) => e.type === 'course').slice(0, 3))
-
-  function typePill(type: UpcomingEvent['type']): string {
-    return type === 'dive' ? 'bg-reef-400/20 text-reef-200' : 'bg-brand-400/20 text-brand-100'
-  }
+  let featuredIds = $derived(new Set(featured.map((e) => e.id)))
+  let dives = $derived(upcoming.filter((e) => e.type === 'dive' && !featuredIds.has(e.id)).slice(0, 3))
+  let courses = $derived(upcoming.filter((e) => e.type === 'course' && !featuredIds.has(e.id)).slice(0, 3))
 
   const services = [
     { title: 'PADI Courses', desc: 'Fun Divers Tw offers the full range of PADI Certification Courses, from beginner to professional level! See the courses available here!', href: '/courses', gradient: 'from-brand-700 to-reef-600' },
@@ -61,90 +58,31 @@
   ]
 </script>
 
-<!-- A compact list row used in the right-hand Dives / Courses stacks. -->
-{#snippet eventRow(ev: UpcomingEvent)}
-  {@const b = badge(ev.startDate)}
-  {@const price = twd(ev.startingAt)}
-  <button
-    onclick={() => open(ev)}
-    class="glass flex w-full items-center gap-3 rounded-xl p-3 text-left transition-all hover:-translate-y-0.5"
-  >
-    <div class="flex w-12 shrink-0 flex-col items-center rounded-lg bg-white/10 py-1.5 text-white">
-      <span class="text-[10px] font-semibold">{b.month}</span>
-      <span class="text-lg font-bold leading-none">{b.day}</span>
-    </div>
-    <div class="min-w-0 flex-1">
-      <h4 class="truncate text-sm font-semibold text-white">{ev.title}</h4>
-      <p class="truncate text-xs text-brand-200">{formatSpan(ev.startDate, ev.endDate, ev.time)}</p>
-    </div>
-    {#if price}<span class="shrink-0 text-xs font-semibold text-reef-200">{price}</span>{/if}
-  </button>
-{/snippet}
-
-{#snippet listBlock(title: string, items: UpcomingEvent[], moreHref: string)}
-  <div class="flex min-h-0 flex-1 flex-col">
-    <div class="mb-2 flex items-center justify-between">
-      <h2 class="text-lg font-bold text-white">{title}</h2>
-      <a href={moreHref} class="text-xs font-semibold text-reef-300 hover:text-reef-200">View all →</a>
-    </div>
-    <ul class="grid content-start gap-2">
-      {#if loading}
-        {#each Array(3) as _, i (i)}<li class="h-16 animate-pulse rounded-xl bg-white/10"></li>{/each}
-      {:else if items.length === 0}
-        <li class="text-sm text-brand-200">Nothing scheduled yet.</li>
-      {:else}
-        {#each items as ev (ev.id)}<li>{@render eventRow(ev)}</li>{/each}
-      {/if}
-    </ul>
-  </div>
-{/snippet}
-
-<!-- Hero: featured (left) + upcoming dives/courses (right) -->
-<section class="mx-auto max-w-[1600px] px-4 py-6 sm:px-6 lg:h-[calc(100vh-13rem)] lg:py-6">
-  <div class="grid h-full gap-6 lg:grid-cols-2 lg:gap-8">
-    <!-- Featured -->
-    <div class="flex min-h-0 flex-col">
-      <h2 class="mb-3 flex items-center gap-2 text-lg font-bold text-white">
-        <span class="text-reef-300">★</span> Featured
+{#snippet cardGrid(title: string, items: UpcomingEvent[], moreHref: string | null, star: boolean)}
+  <section class="mx-auto max-w-[1600px] px-4 pt-8 sm:px-6">
+    <div class="mb-4 flex items-center justify-between">
+      <h2 class="flex items-center gap-2 text-2xl font-bold text-white">
+        {#if star}<span class="text-reef-300">★</span>{/if}{title}
       </h2>
-      <div class="grid min-h-0 flex-1 gap-3 sm:grid-cols-3 lg:grid-cols-1">
-        {#if loading}
-          {#each Array(3) as _, i (i)}<div class="animate-pulse rounded-2xl bg-white/10 lg:min-h-[8rem]"></div>{/each}
-        {:else}
-          {#each featured as ev (ev.id)}
-            {@const price = twd(ev.startingAt)}
-            <button
-              onclick={() => open(ev)}
-              class="glass group flex w-full flex-col gap-2 rounded-2xl p-5 text-left transition-all hover:-translate-y-0.5 hover:shadow-md"
-            >
-              <div class="flex items-center gap-2">
-                <span class={`rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide ${typePill(ev.type)}`}>
-                  {ev.type}
-                </span>
-                {#if ev.featured}<span class="text-xs text-reef-300">★ Featured</span>{/if}
-                {#if ev.fullyBooked}<span class="rounded bg-amber-400/20 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-200">Waitlist</span>{/if}
-              </div>
-              <h3 class="line-clamp-2 text-lg font-bold leading-snug text-white">{ev.title}</h3>
-              <p class="text-sm text-brand-100">{formatSpan(ev.startDate, ev.endDate, ev.time)}</p>
-              <div class="mt-auto flex items-center justify-between pt-2">
-                <span class="text-sm font-semibold text-reef-200">{price ? `from ${price}` : ''}</span>
-                <span class="rounded-full bg-reef-400 px-4 py-1.5 text-sm font-semibold text-brand-950 transition-colors group-hover:bg-reef-300">
-                  {ev.fullyBooked ? 'Join waitlist' : 'Book'}
-                </span>
-              </div>
-            </button>
-          {/each}
-        {/if}
-      </div>
+      {#if moreHref}
+        <a href={moreHref} class="text-sm font-semibold text-reef-300 hover:text-reef-200">View all →</a>
+      {/if}
     </div>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {#if loading}
+        {#each Array(3) as _, i (i)}<div class="h-80 animate-pulse rounded-2xl bg-white/10"></div>{/each}
+      {:else if items.length === 0}
+        <p class="text-sm text-brand-200">Nothing scheduled yet.</p>
+      {:else}
+        {#each items as ev (ev.id)}<EventCard {ev} onDetails={open} />{/each}
+      {/if}
+    </div>
+  </section>
+{/snippet}
 
-    <!-- Upcoming dives (top) + courses (bottom) -->
-    <div class="flex min-h-0 flex-col gap-6">
-      {@render listBlock('Upcoming Dives', dives, '/calendar')}
-      {@render listBlock('Upcoming Courses', courses, '/courses')}
-    </div>
-  </div>
-</section>
+{@render cardGrid('Featured', featured, null, true)}
+{@render cardGrid('Upcoming Dives', dives, '/calendar', false)}
+{@render cardGrid('Upcoming Courses', courses, '/courses', false)}
 
 <!-- Explore our Services -->
 <section class="mx-auto max-w-[1600px] px-4 py-12 sm:px-6 sm:py-16">
