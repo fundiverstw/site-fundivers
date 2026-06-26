@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+/* Ocean brand palette — deep sea blues and reef teal. Tailwind v4 @theme
+   exposes these as utilities (bg-brand-600, text-reef-400, etc.). */
+@theme {
+  --color-brand-50: #eff8ff;
+  --color-brand-100: #dbeefe;
+  --color-brand-200: #bfe1fe;
+  --color-brand-300: #93cefd;
+  --color-brand-400: #60b0fa;
+  --color-brand-500: #3b91f6;
+  --color-brand-600: #2474eb;
+  --color-brand-700: #1d5dd8;
+  --color-brand-800: #1e4daf;
+  --color-brand-900: #0c2f6b;
+  --color-brand-950: #0a1f47;
+
+  --color-reef-50: #ecfdfb;
+  --color-reef-100: #cffaf3;
+  --color-reef-200: #a0f3e9;
+  --color-reef-300: #66e6da;
+  --color-reef-400: #2cd0c5;
+  --color-reef-500: #14b3aa;
+  --color-reef-600: #0d908b;
+  --color-reef-700: #107370;
+  --color-reef-800: #135b59;
+  --color-reef-900: #144b4a;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--color-brand-950);
+  background: #ffffff;
+}

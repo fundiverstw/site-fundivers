@@ -1,0 +1,72 @@
+# site-fundivers
+
+Public marketing site for **FunDivers TW** — a fast static SPA built with **Svelte + Vite**, deployed to **Cloudflare**. It reads public catalog data (dive sites, dives, courses, prices) from the **same Supabase project as [`app-fundivers`](../app-fundivers)** via the anon key, and links out to that app for booking and login.
+
+Structured to mirror [fundiverstw.com](https://www.fundiverstw.com/): **Courses · Sites · Photos · Calendar · Team**.
+
+## Stack
+
+- **Svelte 5** (runes) + **Vite 7** — client-rendered SPA
+- **Tailwind CSS 4** (via `@tailwindcss/vite`, no config file)
+- **@supabase/supabase-js** — read-only anon client, no auth
+- **Wrangler** — Cloudflare deploy with SPA fallback
+- Tiny dependency-free history router (`src/lib/router.ts`)
+
+## Getting started
+
+```bash
+npm install
+cp .env.example .env   # then fill in values (defaults already point at the prod project)
+npm run dev            # http://localhost:5173
+```
+
+### Scripts
+
+| Command           | What it does                                  |
+| ----------------- | --------------------------------------------- |
+| `npm run dev`     | Start the Vite dev server                     |
+| `npm run build`   | Type-check (`svelte-check`) then build `dist/`|
+| `npm run preview` | Preview the production build locally          |
+| `npm run check`   | Type-check only                               |
+| `npm run deploy`  | Build and `wrangler deploy` to Cloudflare     |
+
+## Environment
+
+| Var                      | Purpose                                                        |
+| ------------------------ | ------------------------------------------------------------- |
+| `VITE_SUPABASE_URL`      | Shared Supabase project URL (same DB as `app-fundivers`)      |
+| `VITE_SUPABASE_ANON_KEY` | Public anon key — RLS limits it to read-only public catalog   |
+| `VITE_APP_URL`           | The booking app that "Book Now" / "Enroll" CTAs link to       |
+
+The anon key is safe to ship to the browser: Row Level Security exposes only public
+catalog rows (`dive_sites`, `EO_dives`, `EO_courses`, `EO_prices`, `cert_levels`) to `anon`.
+This site never authenticates anyone — all booking/login happens in `app-fundivers`.
+
+## Data sources
+
+| Page     | Source                                                    |
+| -------- | --------------------------------------------------------- |
+| Calendar | `EO_dives` + `EO_courses` (upcoming), priced via `EO_prices` |
+| Sites    | `dive_sites`, grouped North / South / Outlying Islands    |
+| Courses  | Static PADI catalog + live upcoming course sessions       |
+| Photos   | Placeholder gallery (wire to storage/Instagram later)     |
+| Team     | Placeholder roster (swap in real names/photos)            |
+
+Data access lives in `src/lib/events.ts` and `src/lib/sites.ts`.
+
+## Deploy (Cloudflare)
+
+`wrangler.toml` serves `./dist` with `not_found_handling = "single-page-application"`
+so client routes like `/calendar` resolve on direct load.
+
+```bash
+npm run deploy
+```
+
+Set the `VITE_*` vars in the Cloudflare build/deploy environment (or rely on the
+committed `.env` for local builds). The project name is `site-fundiverstw`.
+
+## Notes
+
+- Routing is history-based with clean URLs; the Cloudflare SPA fallback handles reloads.
+- Booking, accounts, payments, and admin all live in `app-fundivers` — this site is read-only.

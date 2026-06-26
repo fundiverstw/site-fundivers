@@ -1,0 +1,12 @@
+<script lang="ts">
+  let { title, subtitle }: { title: string; subtitle?: string } = $props()
+</script>
+
+<section class="bg-gradient-to-br from-brand-900 to-brand-700 text-white">
+  <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+    <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">{title}</h1>
+    {#if subtitle}
+      <p class="mt-3 max-w-2xl text-brand-100">{subtitle}</p>
+    {/if}
+  </div>
+</section>
