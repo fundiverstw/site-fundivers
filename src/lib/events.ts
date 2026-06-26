@@ -351,3 +351,94 @@ export async function fetchEventsInRange(fromDate: string, toDate: string): Prom
     ...courses.flatMap((c) => courseToCalEvents(c, prices)),
   ].sort((a, b) => a.start_time.localeCompare(b.start_time))
 }
+
+// ── Per-event descriptive text (schedule, what's included, prereqs) ──────────
+// Fetched on demand when an event is opened. Column set reflects the live prod
+// schema (verified): courses carry included/schedule/req_dives/prereq_cert_id;
+// dives carry notes + a DiveTravel_reference whose row holds included/itinerary/
+// transportation/etc. (EO_dives has no schedule/included of its own).
+
+export type EventDetails = {
+  description: string | null
+  included: string | null
+  not_included: string | null
+  schedule: string | null
+  transportation: string | null
+  prerequisites: string | null
+  required_cert: string | null
+  required_dives: number | null
+}
+
+function cleanText(s: string | null | undefined): string | null {
+  return s && s.trim() ? s.trim() : null
+}
+
+function nonEmptyDetails(d: EventDetails): EventDetails | null {
+  const has =
+    d.description || d.included || d.not_included || d.schedule ||
+    d.transportation || d.prerequisites || d.required_cert || d.required_dives != null
+  return has ? d : null
+}
+
+async function certName(id: string | null | undefined): Promise<string | null> {
+  if (!id) return null
+  const { data } = await supabase.from('cert_levels').select('name').eq('id', id).maybeSingle()
+  return data?.name ?? null
+}
+
+/** Descriptive copy for a single event, or null when it has none. */
+export async function fetchEventDetails(ev: CalEvent): Promise<EventDetails | null> {
+  if (ev.type === 'course') {
+    const { data } = await supabase
+      .from('EO_courses')
+      .select('included, schedule, req_dives, prereq_cert_id')
+      .eq('_id', ev.id)
+      .maybeSingle()
+    if (!data) return null
+    const reqRaw = data.req_dives != null ? Number(String(data.req_dives).trim()) : NaN
+    return nonEmptyDetails({
+      description: null,
+      included: cleanText(data.included),
+      not_included: null,
+      schedule: cleanText(data.schedule),
+      transportation: null,
+      prerequisites: null,
+      required_cert: await certName(data.prereq_cert_id),
+      required_dives: Number.isFinite(reqRaw) ? reqRaw : null,
+    })
+  }
+
+  const { data } = await supabase
+    .from('EO_dives')
+    .select('notes, req_dives, prereq_cert_id, DiveTravel_reference')
+    .eq('_id', ev.id)
+    .maybeSingle()
+  if (!data) return null
+
+  let travel: {
+    included: string | null
+    not_included: string | null
+    transportation: string | null
+    itinerary: string | null
+    prerequisites: string | null
+  } | null = null
+  if (data.DiveTravel_reference) {
+    const { data: t } = await supabase
+      .from('DiveTravel')
+      .select('included, not_included, transportation, itinerary, prerequisites')
+      .eq('_id', data.DiveTravel_reference)
+      .maybeSingle()
+    travel = t
+  }
+
+  return nonEmptyDetails({
+    description: cleanText(data.notes),
+    included: cleanText(travel?.included),
+    not_included: cleanText(travel?.not_included),
+    schedule: cleanText(travel?.itinerary),
+    transportation: cleanText(travel?.transportation),
+    prerequisites: cleanText(travel?.prerequisites),
+    required_cert: await certName(data.prereq_cert_id),
+    required_dives: typeof data.req_dives === 'number' ? data.req_dives : null,
+  })
+}

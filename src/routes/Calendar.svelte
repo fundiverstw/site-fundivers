@@ -1,10 +1,11 @@
 <script lang="ts">
   import { startOfMonth, endOfMonth } from 'date-fns'
-  import { fetchEventsInRange, type CalEvent } from '../lib/events'
+  import { fetchEventsInRange, fetchEventDetails, type CalEvent, type EventDetails } from '../lib/events'
   import { formatEventSpan } from '../lib/format'
   import { registerUrl } from '../lib/config'
   import PageHeader from '../components/PageHeader.svelte'
   import MonthCalendar from '../components/calendar/MonthCalendar.svelte'
+  import EventDetailsView from '../components/calendar/EventDetails.svelte'
 
   let month = $state(new Date())
   let events = $state<CalEvent[]>([])
@@ -29,6 +30,22 @@
 
   $effect(() => {
     load(month)
+  })
+
+  // Fetch the opened event's descriptive text on demand.
+  let details = $state<EventDetails | null>(null)
+  let detailsLoading = $state(false)
+  $effect(() => {
+    const ev = selected
+    details = null
+    if (!ev) return
+    detailsLoading = true
+    let cancelled = false
+    fetchEventDetails(ev)
+      .then((d) => { if (!cancelled) details = d })
+      .catch(() => { if (!cancelled) details = null })
+      .finally(() => { if (!cancelled) detailsLoading = false })
+    return () => { cancelled = true }
   })
 
   const TYPE_DOT: Record<CalEvent['type'], string> = { dive: 'bg-emerald-600', course: 'bg-sky-500' }
@@ -78,6 +95,13 @@
           <p class="font-semibold text-amber-700">This event is full — join the waitlist.</p>
         {/if}
       </div>
+      {#if detailsLoading}
+        <p class="text-sm text-blue-900/70">Loading details…</p>
+      {:else if details}
+        <div class="border-t border-blue-900/10 pt-3">
+          <EventDetailsView {details} />
+        </div>
+      {/if}
       <a
         href={registerUrl(selected.type, selected.id)}
         target="_blank"
