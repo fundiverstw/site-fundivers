@@ -1,6 +1,7 @@
 <script lang="ts">
   import { fetchDestinations, type Destination } from '../lib/destinations'
   import { CONTACT } from '../lib/config'
+  import { t } from '../lib/i18n'
   import PageHeader from '../components/PageHeader.svelte'
 
   let all = $state<Destination[]>([])
@@ -20,10 +21,7 @@
   let domestic = $derived(all.filter((d) => !d.international && !d.northeastDiving))
 </script>
 
-<PageHeader
-  title="Dive Travel"
-  subtitle="Planned group tours and fully customized trips — around Taiwan and beyond."
-/>
+<PageHeader title={$t.travel.title} subtitle={$t.travel.subtitle} />
 
 {#snippet grid(title: string, items: Destination[])}
   {#if items.length}
@@ -44,7 +42,7 @@
               {#if d.tagline}<p class="mt-1 line-clamp-2 text-sm text-white/85">{d.tagline}</p>{/if}
               {#if d.slug}
                 <a href={`https://www.fundiverstw.com${d.slug}`} target="_blank" rel="noopener" class="mt-3 inline-block rounded-full bg-reef-400 px-4 py-1.5 text-xs font-bold text-brand-950 transition-colors hover:bg-reef-300">
-                  Read more
+                  {$t.common.readMore}
                 </a>
               {/if}
             </div>
@@ -61,23 +59,21 @@
       {#each Array(6) as _, i (i)}<div class="h-72 animate-pulse rounded-2xl bg-white/10"></div>{/each}
     </div>
   {:else if error}
-    <p class="rounded-lg bg-red-500/15 p-4 text-sm text-red-200">Couldn’t load destinations: {error}</p>
+    <p class="rounded-lg bg-red-500/15 p-4 text-sm text-red-200">{$t.travel.loadError}: {error}</p>
   {:else}
-    {@render grid('Around Taiwan', domestic)}
-    {@render grid('International Dive Tours', international)}
+    {@render grid($t.travel.aroundTaiwan, domestic)}
+    {@render grid($t.travel.international, international)}
   {/if}
 
   <div class="glass rounded-2xl p-8 text-center">
-    <h2 class="text-xl font-bold text-white">Ready to plan your next trip?</h2>
-    <p class="mt-2 text-brand-100">
-      Check upcoming departures on the calendar, or reach out and we’ll help arrange a custom trip.
-    </p>
+    <h2 class="text-xl font-bold text-white">{$t.travel.ctaTitle}</h2>
+    <p class="mt-2 text-brand-100">{$t.travel.ctaText}</p>
     <div class="mt-4 flex flex-wrap justify-center gap-3">
       <a href="/calendar" class="rounded-full bg-reef-400 px-6 py-3 font-semibold text-brand-950 transition-colors hover:bg-reef-300">
-        See the Calendar
+        {$t.travel.seeCalendar}
       </a>
       <a href={`mailto:${CONTACT.email}`} class="rounded-full border border-white/30 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/10">
-        Plan a custom trip
+        {$t.travel.planCustom}
       </a>
     </div>
   </div>

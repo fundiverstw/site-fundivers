@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Component } from 'svelte'
   import { path, handleLinkClick } from './lib/router'
+  import { locale } from './lib/i18n'
   import Nav from './components/Nav.svelte'
   import Footer from './components/Footer.svelte'
   import Home from './routes/Home.svelte'
@@ -23,6 +24,11 @@
   }
 
   let Current = $derived(routes[$path] ?? NotFound)
+
+  // Keep <html lang> in sync with the chosen locale.
+  $effect(() => {
+    document.documentElement.lang = $locale
+  })
 </script>
 
 <svelte:window onclick={handleLinkClick} />

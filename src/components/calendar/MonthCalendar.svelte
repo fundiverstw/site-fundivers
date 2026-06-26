@@ -7,6 +7,7 @@
   import { courseColor, diveIsTripOrBoat, type CourseColor } from '../../lib/event-colors'
   import { formatEventSpan } from '../../lib/format'
   import { isPastEvent, type CalEvent } from '../../lib/events'
+  import { t } from '../../lib/i18n'
 
   // Ported from app-fundivers MonthCalendar.tsx, trimmed to the public,
   // read-only feature set (no staff-busy overlay, drag-reschedule, or private
@@ -19,7 +20,6 @@
     onPickEvent,
     hidePastInList = true,
     disablePastEvents = true,
-    listTitle = 'This month',
   }: {
     month: Date
     events: CalEvent[]
@@ -27,7 +27,6 @@
     onPickEvent: (ev: CalEvent) => void
     hidePastInList?: boolean
     disablePastEvents?: boolean
-    listTitle?: string
   } = $props()
 
   const TRACK_HEIGHT = 18
@@ -51,7 +50,7 @@
   const COURSE_DOT: Record<CourseColor, string> = {
     ow: 'bg-blue-600', aow: 'bg-orange-500', rescue: 'bg-red-600', specialty: 'bg-purple-600',
   }
-  const TYPE_LABELS: Record<CalEvent['type'], string> = { dive: 'Dive', course: 'Course' }
+  let TYPE_LABELS = $derived<Record<CalEvent['type'], string>>({ dive: $t.common.dive, course: $t.common.course })
 
   function eventBarClass(ev: CalEvent, hovered: boolean): string {
     if (ev.type === 'dive') {
@@ -193,7 +192,7 @@
           <span class={`flex-1 ${COURSE_DOT.rescue}`}></span>
           <span class={`flex-1 ${COURSE_DOT.specialty}`}></span>
         </span>
-        Courses
+        {$t.calendar.courses}
         {#if hiddenCourses.size > 0 && !allCoursesHidden}
           <span class="ml-0.5 text-[10px] font-medium text-blue-900">({visibleCourses}/{courseCategories.length})</span>
         {/if}
@@ -284,9 +283,9 @@
 
   <!-- This-month list -->
   <div class="space-y-2">
-    <h3 class="text-sm font-semibold uppercase tracking-wider text-white/70">{listTitle}</h3>
+    <h3 class="text-sm font-semibold uppercase tracking-wider text-white/70">{$t.calendar.thisMonth}</h3>
     {#if inMonthEvents.length === 0}
-      <p class="text-sm font-medium text-white/80">No events scheduled.</p>
+      <p class="text-sm font-medium text-white/80">{$t.calendar.noEvents}</p>
     {/if}
     {#each inMonthEvents as ev (ev.id)}
       <button

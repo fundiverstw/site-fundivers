@@ -1,6 +1,7 @@
 <script lang="ts">
   import { fetchEventDetails, type EventDetails, type ModalEvent } from '../../lib/events'
   import { registerUrl } from '../../lib/config'
+  import { t } from '../../lib/i18n'
   import EventDetailsView from './EventDetails.svelte'
 
   // Shared event detail modal used by the calendar and the homepage. Fetches
@@ -8,7 +9,7 @@
   let { event, onClose }: { event: ModalEvent | null; onClose: () => void } = $props()
 
   const TYPE_DOT: Record<ModalEvent['type'], string> = { dive: 'bg-emerald-600', course: 'bg-sky-500' }
-  const TYPE_LABELS: Record<ModalEvent['type'], string> = { dive: 'Dive', course: 'Course' }
+  let TYPE_LABELS = $derived<Record<ModalEvent['type'], string>>({ dive: $t.common.dive, course: $t.common.course })
 
   let details = $state<EventDetails | null>(null)
   let detailsLoading = $state(false)
@@ -42,14 +43,14 @@
       <div class="space-y-1 text-sm font-medium text-blue-900">
         <p>{event.spanLabel}</p>
         {#if event.price != null}
-          <p>💰 From {event.currency} {event.price.toLocaleString('en-US')}</p>
+          <p>💰 {$t.common.from} {event.currency} {event.price.toLocaleString('en-US')}</p>
         {/if}
         {#if event.fullyBooked}
-          <p class="font-semibold text-amber-700">This event is full — join the waitlist.</p>
+          <p class="font-semibold text-amber-700">{$t.calendar.full}</p>
         {/if}
       </div>
       {#if detailsLoading}
-        <p class="text-sm text-blue-900/70">Loading details…</p>
+        <p class="text-sm text-blue-900/70">{$t.common.loadingDetails}</p>
       {:else if details}
         <div class="border-t border-blue-900/10 pt-3">
           <EventDetailsView {details} />
@@ -61,7 +62,7 @@
         rel="noopener"
         class="block w-full rounded-xl bg-blue-900 py-3 text-center font-semibold text-white transition-colors hover:bg-blue-950"
       >
-        {event.fullyBooked ? 'Join waitlist' : 'Register'}
+        {event.fullyBooked ? $t.common.joinWaitlist : $t.common.register}
       </a>
     </div>
   </div>

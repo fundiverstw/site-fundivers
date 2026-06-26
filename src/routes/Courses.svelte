@@ -3,6 +3,7 @@
   import { formatSpan, twd } from '../lib/format'
   import { bookUrl, registerUrl } from '../lib/config'
   import { COURSES } from '../lib/courses'
+  import { t } from '../lib/i18n'
   import PageHeader from '../components/PageHeader.svelte'
 
   let upcoming = $state<UpcomingEvent[]>([])
@@ -16,10 +17,7 @@
   })
 </script>
 
-<PageHeader
-  title="PADI Courses"
-  subtitle="Learn to dive, level up, or go pro — the full range of PADI recreational courses in Taiwan."
-/>
+<PageHeader title={$t.courses.title} subtitle={$t.courses.subtitle} />
 
 <section class="mx-auto max-w-[1600px] px-4 py-12 sm:px-6">
   <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -39,7 +37,7 @@
 <!-- Live upcoming course sessions -->
 <section>
   <div class="mx-auto max-w-[1600px] px-4 py-12 sm:px-6">
-    <h2 class="text-2xl font-bold text-white">Upcoming course dates</h2>
+    <h2 class="text-2xl font-bold text-white">{$t.courses.upcomingDates}</h2>
     {#if loading}
       <div class="mt-6 grid gap-3">
         {#each Array(3) as _}
@@ -48,8 +46,8 @@
       </div>
     {:else if upcoming.length === 0}
       <p class="mt-4 text-brand-100">
-        No scheduled course dates right now — courses also run on request.
-        <a href={bookUrl} target="_blank" rel="noopener" class="font-semibold text-reef-300">Get in touch</a>.
+        {$t.courses.noDates}
+        <a href={bookUrl} target="_blank" rel="noopener" class="font-semibold text-reef-300">{$t.courses.getInTouch}</a>.
       </p>
     {:else}
       <ul class="mt-6 grid gap-3">
@@ -68,7 +66,7 @@
                 rel="noopener"
                 class="rounded-full bg-brand-600 px-4 py-1.5 text-sm font-semibold text-white hover:bg-brand-700"
               >
-                Enroll
+                {$t.courses.enroll}
               </a>
             </div>
           </li>

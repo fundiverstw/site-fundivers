@@ -1,5 +1,6 @@
 <script lang="ts">
   import { SOCIAL } from '../lib/config'
+  import { t } from '../lib/i18n'
   import PageHeader from '../components/PageHeader.svelte'
 
   // Placeholder gallery tiles until real imagery is wired in (e.g. a Supabase
@@ -26,7 +27,7 @@
   ]
 </script>
 
-<PageHeader title="Photos" subtitle="A glimpse of life beneath the waves with FunDivers TW." />
+<PageHeader title={$t.photos.title} subtitle={$t.photos.subtitle} />
 
 <section class="mx-auto max-w-[1600px] px-4 py-12 sm:px-6">
   <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
@@ -40,8 +41,8 @@
   </div>
 
   <div class="glass mt-10 rounded-2xl p-8 text-center">
-    <h2 class="text-xl font-bold text-white">See more on social</h2>
-    <p class="mt-2 text-brand-100">Follow along for trip recaps, marine life, and behind-the-scenes.</p>
+    <h2 class="text-xl font-bold text-white">{$t.photos.seeMore}</h2>
+    <p class="mt-2 text-brand-100">{$t.photos.follow}</p>
     <div class="mt-4 flex flex-wrap justify-center gap-3">
       <a href={SOCIAL.instagram} target="_blank" rel="noopener" class="rounded-full bg-brand-600 px-5 py-2 text-sm font-semibold text-white hover:bg-brand-700">
         Instagram

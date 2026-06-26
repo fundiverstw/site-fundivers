@@ -2,6 +2,7 @@
   import { startOfMonth, endOfMonth } from 'date-fns'
   import { fetchEventsInRange, type CalEvent, type ModalEvent } from '../lib/events'
   import { formatEventSpan } from '../lib/format'
+  import { t } from '../lib/i18n'
   import PageHeader from '../components/PageHeader.svelte'
   import MonthCalendar from '../components/calendar/MonthCalendar.svelte'
   import EventModal from '../components/calendar/EventModal.svelte'
@@ -44,14 +45,11 @@
   }
 </script>
 
-<PageHeader
-  title="Calendar"
-  subtitle="Dives and courses on the schedule. Tap any event for details and to reserve your spot."
-/>
+<PageHeader title={$t.calendar.title} subtitle={$t.calendar.subtitle} />
 
 <section class="mx-auto max-w-5xl px-4 py-12 sm:px-6">
   {#if error}
-    <p class="mb-4 rounded-lg bg-red-500/15 p-4 text-sm text-red-200">Couldn’t load the calendar: {error}</p>
+    <p class="mb-4 rounded-lg bg-red-500/15 p-4 text-sm text-red-200">{$t.calendar.loadError}: {error}</p>
   {/if}
   {#if loading && events.length === 0}
     <div class="h-96 animate-pulse rounded-xl bg-white/10"></div>

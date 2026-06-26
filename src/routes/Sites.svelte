@@ -1,6 +1,7 @@
 <script lang="ts">
   import { fetchDiveSites, REGION_META, AREA_ORDER, type DiveSite, type Region } from '../lib/sites'
   import { fetchDestinations, type Destination } from '../lib/destinations'
+  import { t } from '../lib/i18n'
   import PageHeader from '../components/PageHeader.svelte'
 
   const WIX_BASE = 'https://www.fundiverstw.com'
@@ -62,10 +63,7 @@
   }
 </script>
 
-<PageHeader
-  title="Dive Sites"
-  subtitle="From convenient shore dives in the north to world-class island diving — Taiwan’s underwater highlights."
-/>
+<PageHeader title={$t.sites.title} subtitle={$t.sites.subtitle} />
 
 <section class="mx-auto max-w-[1600px] px-4 py-12 sm:px-6">
   {#if loading}
@@ -75,13 +73,13 @@
       {/each}
     </div>
   {:else if error}
-    <p class="rounded-lg bg-red-500/15 p-4 text-sm text-red-200">Couldn’t load dive sites: {error}</p>
+    <p class="rounded-lg bg-red-500/15 p-4 text-sm text-red-200">{$t.sites.loadError}: {error}</p>
   {:else if sites.length === 0}
-    <p class="glass rounded-lg p-6 text-center text-brand-100">No dive sites listed yet.</p>
+    <p class="glass rounded-lg p-6 text-center text-brand-100">{$t.sites.none}</p>
   {:else}
     {#each byArea as group}
       <div class="mb-12">
-        <h2 class="mb-5 text-2xl font-bold text-white">{group.area}</h2>
+        <h2 class="mb-5 text-2xl font-bold text-white">{$t.sites.areas[group.area]}</h2>
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {#each group.sites as s (s.id)}
             {@const img = siteImage(s)}
@@ -109,11 +107,11 @@
                 <div class="mt-3 flex flex-wrap gap-2">
                   {#if more}
                     <a href={more} target="_blank" rel="noopener" class="rounded-full bg-reef-400 px-4 py-1.5 text-xs font-bold text-brand-950 transition-colors hover:bg-reef-300">
-                      Read more
+                      {$t.common.readMore}
                     </a>
                   {/if}
                   <a href={mapsUrl(s)} target="_blank" rel="noopener" class="rounded-full border border-white/40 px-4 py-1.5 text-xs font-bold text-white transition-colors hover:bg-white/15">
-                    View on map
+                    {$t.common.viewOnMap}
                   </a>
                 </div>
               </div>
