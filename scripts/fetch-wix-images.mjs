@@ -85,7 +85,15 @@ const refs = [
   ...(await col('EO_courses', 'featured_image')),
   ...(await col('TravelDestinations', 'location_picture')),
 ]
-const segs = [...refs.map(segFromRef).filter(Boolean), ...SERVICE_MEDIA, ...COURSE_MEDIA]
+// Team headshots (Dennis, Billy, Mike) — empty-alt photos on the live /team
+// page, mapped by DOM order (kept in sync with src/routes/Team.svelte).
+const TEAM_MEDIA = [
+  'b37fef_594f84e342954c95b442c5b67f5fb454~mv2.jpg', // Dennis Wong
+  'b37fef_e2a651d4c1144d2286c2dbd0b9dc8018~mv2.jpg', // Billy Evalt
+  'b37fef_37847cf1b32a413990cb7b558835954f~mv2.jpg', // Mike Lee
+]
+
+const segs = [...refs.map(segFromRef).filter(Boolean), ...SERVICE_MEDIA, ...COURSE_MEDIA, ...TEAM_MEDIA]
 const distinct = [...new Set(segs)]
 
 mkdirSync(OUT_DIR, { recursive: true })
