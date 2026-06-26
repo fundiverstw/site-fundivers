@@ -14,6 +14,7 @@ export type UpcomingEvent = {
   time: string | null // 'HH:mm'
   startingAt: number | null // TWD
   fullyBooked: boolean
+  featured: boolean
 }
 
 type DiveRow = {
@@ -25,6 +26,7 @@ type DiveRow = {
   time: string | null
   price: string | null
   fully_booked: boolean | null
+  featured: boolean | null
 }
 
 type CourseRow = {
@@ -72,7 +74,7 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
   const [divesResp, coursesResp] = await Promise.all([
     supabase
       .from('EO_dives')
-      .select('_id, display_title, admin_title, start_date, end_date, time, price, fully_booked')
+      .select('_id, display_title, admin_title, start_date, end_date, time, price, fully_booked, featured')
       .is('cancelled_at', null)
       .eq('is_private', false)
       .gte('start_date', today)
@@ -104,6 +106,7 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
       time: toHhmm(d.time),
       startingAt: d.price ? prices.get(d.price) ?? null : null,
       fullyBooked: d.fully_booked ?? false,
+      featured: d.featured ?? false,
     })
   }
 
@@ -124,6 +127,7 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
       time: toHhmm(c.start_time),
       startingAt: c.price ? prices.get(c.price) ?? null : null,
       fullyBooked: c.fully_booked ?? false,
+      featured: false,
     })
   }
 
