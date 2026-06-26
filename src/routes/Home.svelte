@@ -65,7 +65,7 @@
     </div>
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {#if loading}
-        {#each Array(3) as _, i (i)}<div class="h-80 animate-pulse rounded-2xl bg-white/10"></div>{/each}
+        {#each Array(3) as _, i (i)}<div class="aspect-square animate-pulse rounded-3xl bg-white/10"></div>{/each}
       {:else if items.length === 0}
         <p class="text-sm text-brand-200">{$t.common.nothingScheduled}</p>
       {:else}
@@ -90,7 +90,7 @@
     {#each serviceLinks as s, i}
       <a
         href={s.href}
-        class="group relative flex h-56 flex-col justify-end overflow-hidden rounded-2xl border border-white/15 shadow-sm transition-transform hover:-translate-y-1"
+        class="group relative flex aspect-square flex-col justify-end overflow-hidden rounded-3xl border border-white/15 shadow-sm transition-transform hover:-translate-y-1"
       >
         <img src={s.image} alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>

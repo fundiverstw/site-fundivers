@@ -17,7 +17,7 @@
   let imgFailed = $state(false)
 </script>
 
-<div class="group relative h-80 overflow-hidden rounded-2xl border border-white/15 bg-brand-900 shadow-sm transition-transform hover:-translate-y-0.5">
+<div class="group relative aspect-square overflow-hidden rounded-3xl border border-white/15 bg-brand-900 shadow-sm transition-transform hover:-translate-y-0.5">
   {#if ev.image && !imgFailed}
     <img src={ev.image} alt="" loading="lazy" onerror={() => (imgFailed = true)} class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
   {:else}

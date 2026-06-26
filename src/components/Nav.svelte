@@ -3,6 +3,7 @@
   import { t, locale, setLocale, LOCALES } from '../lib/i18n'
   import MenuIcon from './MenuIcon.svelte'
   import GlobeIcon from './GlobeIcon.svelte'
+  import NavMascot from './NavMascot.svelte'
 
   let leftLinks = $derived([
     { href: '/courses', label: $t.nav.courses },
@@ -69,9 +70,12 @@
   <div class="mx-auto max-w-[1600px] px-4 sm:px-6">
     <!-- Desktop: logo at the far left, links + globe to its right -->
     <div class="hidden items-center justify-between gap-6 py-3 md:flex">
-      <a href="/" aria-label="FunDivers TW home" class="shrink-0">
-        <img src="/imgs/fd_logo.png" alt="FunDivers TW" class="h-28 w-auto lg:h-36" />
-      </a>
+      <div class="relative shrink-0">
+        <NavMascot />
+        <a href="/" aria-label="FunDivers TW home" class="relative z-20 block">
+          <img src="/imgs/fd_logo.png" alt="FunDivers TW" class="h-28 w-auto lg:h-36" />
+        </a>
+      </div>
       <nav class="flex items-center gap-2">
         {#each allLinks as link}
           <a href={link.href} class={linkClass(link.href)}>{link.label}</a>

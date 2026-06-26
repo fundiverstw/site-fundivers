@@ -49,7 +49,7 @@
   <div class="mt-8 grid gap-4 sm:grid-cols-3">
     <a
       href="/calendar"
-      class="glass flex aspect-[5/3] flex-col items-center justify-center gap-3 rounded-2xl p-4 text-center transition-all hover:-translate-y-0.5 hover:shadow-md"
+      class="glass flex aspect-square flex-col items-center justify-center gap-3 rounded-2xl p-4 text-center transition-all hover:-translate-y-0.5 hover:shadow-md"
     >
       <svg class="h-12 w-12 text-reef-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
@@ -63,7 +63,7 @@
     <button
       type="button"
       onclick={() => open('try-dive')}
-      class={`glass flex aspect-[5/3] flex-col items-center justify-center gap-3 rounded-2xl p-4 text-center transition-all hover:-translate-y-0.5 hover:shadow-md ${active === 'try-dive' ? 'ring-2 ring-reef-300' : ''}`}
+      class={`glass flex aspect-square flex-col items-center justify-center gap-3 rounded-2xl p-4 text-center transition-all hover:-translate-y-0.5 hover:shadow-md ${active === 'try-dive' ? 'ring-2 ring-reef-300' : ''}`}
     >
       <svg class="h-12 w-12 text-reef-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="12" cy="9" r="5" />
@@ -76,7 +76,7 @@
     <button
       type="button"
       onclick={() => open('course')}
-      class={`glass flex aspect-[5/3] flex-col items-center justify-center gap-3 rounded-2xl p-4 text-center transition-all hover:-translate-y-0.5 hover:shadow-md ${active === 'course' ? 'ring-2 ring-reef-300' : ''}`}
+      class={`glass flex aspect-square flex-col items-center justify-center gap-3 rounded-2xl p-4 text-center transition-all hover:-translate-y-0.5 hover:shadow-md ${active === 'course' ? 'ring-2 ring-reef-300' : ''}`}
     >
       <svg class="h-12 w-12 text-reef-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M22 10L12 5 2 10l10 5 10-5z" />

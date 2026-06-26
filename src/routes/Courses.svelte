@@ -22,7 +22,7 @@
 <section class="mx-auto max-w-[1600px] px-4 py-12 sm:px-6">
   <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
     {#each COURSES as c}
-      <div class="group relative flex h-64 flex-col justify-end overflow-hidden rounded-2xl border border-white/15 shadow-sm transition-transform hover:-translate-y-0.5">
+      <div class="group relative flex aspect-square flex-col justify-end overflow-hidden rounded-3xl border border-white/15 shadow-sm transition-transform hover:-translate-y-0.5">
         <img src={c.image} alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent"></div>
         <div class="relative z-10 p-5">

@@ -29,7 +29,7 @@
       <h2 class="mb-5 text-2xl font-bold text-white">{title}</h2>
       <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {#each items as d (d.id)}
-          <div class="group relative flex h-72 flex-col justify-end overflow-hidden rounded-2xl border border-white/15 shadow-sm">
+          <div class="group relative flex aspect-square flex-col justify-end overflow-hidden rounded-3xl border border-white/15 shadow-sm">
             {#if d.image}
               <img src={d.image} alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
             {:else}
@@ -56,7 +56,7 @@
 <section class="mx-auto max-w-[1600px] px-4 py-12 sm:px-6 sm:py-16">
   {#if loading}
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {#each Array(6) as _, i (i)}<div class="h-72 animate-pulse rounded-2xl bg-white/10"></div>{/each}
+      {#each Array(6) as _, i (i)}<div class="aspect-square animate-pulse rounded-3xl bg-white/10"></div>{/each}
     </div>
   {:else if error}
     <p class="rounded-lg bg-red-500/15 p-4 text-sm text-red-200">{$t.travel.loadError}: {error}</p>

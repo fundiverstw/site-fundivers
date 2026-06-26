@@ -20,6 +20,13 @@ export const CONTACT = {
   address: 'No. 8, Heping St, Yonghe District, New Taipei City',
 } as const
 
+// Rotating promo messages shown on the nav mascot's banner. Edit freely.
+export const ADS: Array<{ text: string; href: string }> = [
+  { text: '🤿 20% off wetsuits!', href: '#get-in-touch' },
+  { text: '🐢 Green Island — spots open!', href: '/calendar' },
+  { text: '🎓 Try Discover Scuba', href: '/courses' },
+]
+
 export const SOCIAL = {
   // Official LINE account + WhatsApp + Instagram handle confirmed from app-fundivers.
   line: 'https://line.me/R/ti/p/%40lga0216c',

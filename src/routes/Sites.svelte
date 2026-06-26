@@ -84,7 +84,7 @@
           {#each group.sites as s (s.id)}
             {@const img = siteImage(s)}
             {@const more = readMore(s)}
-            <div class="group relative flex h-64 flex-col justify-end overflow-hidden rounded-2xl border border-white/15 shadow-sm">
+            <div class="group relative flex aspect-square flex-col justify-end overflow-hidden rounded-3xl border border-white/15 shadow-sm">
               {#if img}
                 <img src={img} alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
               {:else}
