@@ -11,7 +11,7 @@
     { href: '/photos', label: 'Photos' },
   ]
   const rightLinks = [
-    { href: '/trips', label: 'Trips' },
+    { href: '/travel', label: 'Travel' },
     { href: '/calendar', label: 'Calendar' },
     { href: '/team', label: 'Team' },
   ]

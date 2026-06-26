@@ -19,7 +19,7 @@
 </script>
 
 <PageHeader
-  title="Dive Trips"
+  title="Dive Travel"
   subtitle="Planned group tours and fully customized trips — around Taiwan and beyond."
 />
 

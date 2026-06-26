@@ -7,7 +7,7 @@
   import Courses from './routes/Courses.svelte'
   import Sites from './routes/Sites.svelte'
   import Photos from './routes/Photos.svelte'
-  import Trips from './routes/Trips.svelte'
+  import Travel from './routes/Travel.svelte'
   import Calendar from './routes/Calendar.svelte'
   import Team from './routes/Team.svelte'
   import NotFound from './routes/NotFound.svelte'
@@ -17,7 +17,7 @@
     '/courses': Courses,
     '/sites': Sites,
     '/photos': Photos,
-    '/trips': Trips,
+    '/travel': Travel,
     '/calendar': Calendar,
     '/team': Team,
   }
