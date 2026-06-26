@@ -1,8 +1,6 @@
 <script lang="ts">
   import { path } from '../lib/router'
-  import { RADIO_URL } from '../lib/config'
   import { t, locale, setLocale, LOCALES } from '../lib/i18n'
-  import SocialIcons from './SocialIcons.svelte'
   import MenuIcon from './MenuIcon.svelte'
   import GlobeIcon from './GlobeIcon.svelte'
 
@@ -37,17 +35,6 @@
   }
 </script>
 
-{#snippet radioIcon()}
-  <a
-    href={RADIO_URL}
-    target="_blank"
-    rel="noopener"
-    aria-label="FunDivers Radio"
-    class="block h-14 w-14 bg-red-500 transition-colors hover:bg-red-400"
-    style="-webkit-mask:url(/imgs/broadcast.png) center/contain no-repeat; mask:url(/imgs/broadcast.png) center/contain no-repeat;"
-  ></a>
-{/snippet}
-
 {#snippet langSwitch()}
   <div class="lang-switch relative">
     <button
@@ -80,35 +67,30 @@
 
 <header class="bg-transparent">
   <div class="mx-auto max-w-[1600px] px-4 sm:px-6">
-    <!-- Desktop: logo at the far left, everything else to its right -->
+    <!-- Desktop: logo at the far left, links + globe to its right -->
     <div class="hidden items-center justify-between gap-6 py-3 md:flex">
       <a href="/" aria-label="FunDivers TW home" class="shrink-0">
         <img src="/imgs/fd_logo.png" alt="FunDivers TW" class="h-28 w-auto lg:h-36" />
       </a>
-      <div class="flex flex-col items-end gap-2">
-        <!-- utility row -->
-        <div class="flex items-center gap-6">
-          {@render langSwitch()}
-          <SocialIcons size={40} />
-          {@render radioIcon()}
-        </div>
-        <!-- nav links -->
-        <nav class="flex items-center gap-1">
-          {#each allLinks as link}
-            <a href={link.href} class={linkClass(link.href)}>{link.label}</a>
-          {/each}
-        </nav>
-      </div>
+      <nav class="flex items-center gap-2">
+        {#each allLinks as link}
+          <a href={link.href} class={linkClass(link.href)}>{link.label}</a>
+        {/each}
+        {@render langSwitch()}
+      </nav>
     </div>
 
-    <!-- Mobile: logo left · menu toggle right -->
+    <!-- Mobile: logo left · globe + menu toggle right -->
     <div class="flex items-center justify-between py-3 md:hidden">
       <a href="/" aria-label="FunDivers TW home">
         <img src="/imgs/fd_logo.png" alt="FunDivers TW" class="h-16 w-auto" />
       </a>
-      <button class="text-brand-50" aria-label="Toggle menu" onclick={() => (open = !open)}>
-        <MenuIcon {open} />
-      </button>
+      <div class="flex items-center gap-3">
+        {@render langSwitch()}
+        <button class="text-brand-50" aria-label="Toggle menu" onclick={() => (open = !open)}>
+          <MenuIcon {open} />
+        </button>
+      </div>
     </div>
   </div>
 
@@ -125,13 +107,6 @@
             {link.label}
           </a>
         {/each}
-        <div class="mt-3 flex items-center justify-between gap-4 border-t border-white/10 px-3 pt-4">
-          <div class="flex items-center gap-4">
-            <SocialIcons size={24} />
-            {@render radioIcon()}
-          </div>
-          {@render langSwitch()}
-        </div>
       </div>
     </div>
   {/if}

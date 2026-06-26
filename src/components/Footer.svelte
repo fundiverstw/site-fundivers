@@ -1,14 +1,8 @@
 <script lang="ts">
-  import { CONTACT, SOCIAL } from '../lib/config'
+  import { CONTACT } from '../lib/config'
   import { t } from '../lib/i18n'
+  import SocialIcons from './SocialIcons.svelte'
 
-  const socials = [
-    { href: SOCIAL.line, label: 'Line' },
-    { href: SOCIAL.whatsapp, label: 'WhatsApp' },
-    { href: SOCIAL.instagram, label: 'Instagram' },
-    { href: SOCIAL.facebook, label: 'Facebook' },
-    { href: SOCIAL.youtube, label: 'YouTube' },
-  ]
   const year = new Date().getFullYear()
 </script>
 
@@ -33,11 +27,7 @@
 
     <div>
       <h3 class="text-sm font-semibold uppercase tracking-wide text-white">{$t.footer.follow}</h3>
-      <ul class="mt-3 space-y-2 text-sm">
-        {#each socials as s}
-          <li><a class="hover:text-white" href={s.href} target="_blank" rel="noopener">{s.label}</a></li>
-        {/each}
-      </ul>
+      <SocialIcons size={26} class="mt-3" />
     </div>
   </div>
 
