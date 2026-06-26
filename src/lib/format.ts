@@ -1,4 +1,27 @@
+import { format as dfFormat, isSameDay, parseISO } from 'date-fns'
+
 // Display helpers shared across pages.
+
+/**
+ * Human date span for a calendar event (ISO start/end + optional HH:mm).
+ * Ported from app-fundivers/src/lib/events.ts formatEventSpan.
+ */
+export function formatEventSpan(
+  event: { start_time: string; end_time: string | null; start_time_hhmm: string | null },
+  opts: { style?: 'long' | 'short' | 'compact'; withYear?: boolean } = {},
+): string {
+  const style = opts.style ?? 'short'
+  const year = opts.withYear ? ' yyyy' : ''
+  const start = parseISO(event.start_time)
+  const end = event.end_time ? parseISO(event.end_time) : null
+  const singleDay = !end || isSameDay(start, end)
+  const startFmt =
+    ({ long: 'EEEE, MMMM d', short: 'EEE, MMM d', compact: 'MMM d' }[style]) + year
+  const timeSuffix = event.start_time_hhmm ? ` · ${event.start_time_hhmm}` : ''
+  if (singleDay) return dfFormat(start, startFmt) + timeSuffix
+  const endFmt = ({ long: 'MMMM d', short: 'MMM d', compact: 'MMM d' }[style]) + year
+  return `${dfFormat(start, startFmt)}${timeSuffix} → ${dfFormat(end!, endFmt)}`
+}
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']

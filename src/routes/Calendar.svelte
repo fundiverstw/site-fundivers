@@ -1,99 +1,91 @@
 <script lang="ts">
-  import { fetchUpcomingEvents, type UpcomingEvent } from '../lib/events'
-  import { formatSpan, badge, twd } from '../lib/format'
-  import { bookUrl, registerUrl } from '../lib/config'
+  import { startOfMonth, endOfMonth } from 'date-fns'
+  import { fetchEventsInRange, type CalEvent } from '../lib/events'
+  import { formatEventSpan } from '../lib/format'
+  import { registerUrl } from '../lib/config'
   import PageHeader from '../components/PageHeader.svelte'
+  import MonthCalendar from '../components/calendar/MonthCalendar.svelte'
 
-  let events = $state<UpcomingEvent[]>([])
+  let month = $state(new Date())
+  let events = $state<CalEvent[]>([])
+  let selected = $state<CalEvent | null>(null)
   let loading = $state(true)
   let error = $state<string | null>(null)
-  let filter = $state<'all' | 'dive' | 'course'>('all')
+
+  async function load(m: Date) {
+    loading = true
+    error = null
+    // Widen ±7 days so bars crossing the month boundary render continuously.
+    const fromDate = new Date(startOfMonth(m).getTime() - 7 * 86_400_000).toISOString().slice(0, 10)
+    const toDate = new Date(endOfMonth(m).getTime() + 7 * 86_400_000).toISOString().slice(0, 10)
+    try {
+      events = await fetchEventsInRange(fromDate, toDate)
+    } catch (e) {
+      error = (e as Error)?.message ?? 'Failed to load events'
+    } finally {
+      loading = false
+    }
+  }
 
   $effect(() => {
-    fetchUpcomingEvents()
-      .then((e) => (events = e))
-      .catch((err) => (error = err?.message ?? 'Failed to load events'))
-      .finally(() => (loading = false))
+    load(month)
   })
 
-  let shown = $derived(filter === 'all' ? events : events.filter((e) => e.type === filter))
+  const TYPE_DOT: Record<CalEvent['type'], string> = { dive: 'bg-emerald-600', course: 'bg-sky-500' }
+  const TYPE_LABELS: Record<CalEvent['type'], string> = { dive: 'Dive', course: 'Course' }
 </script>
 
+<svelte:window onkeydown={(e) => { if (e.key === 'Escape') selected = null }} />
+
 <PageHeader
-  title="Upcoming Calendar"
-  subtitle="Dives and courses scheduled in the weeks ahead. Reserve your spot online."
+  title="Calendar"
+  subtitle="Dives and courses on the schedule. Tap any event for details and to reserve your spot."
 />
 
-<section class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-  <div class="mb-6 flex flex-wrap items-center gap-2">
-    {#each [['all', 'All'], ['dive', 'Dives'], ['course', 'Courses']] as [value, label]}
-      <button
-        class={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
-          filter === value ? 'bg-brand-600 text-white' : 'bg-white/10 text-brand-100'
-        }`}
-        onclick={() => (filter = value as typeof filter)}
-      >
-        {label}
-      </button>
-    {/each}
-  </div>
-
-  {#if loading}
-    <div class="grid gap-3">
-      {#each Array(5) as _}
-        <div class="h-24 animate-pulse rounded-xl bg-white/10"></div>
-      {/each}
-    </div>
-  {:else if error}
-    <p class="rounded-lg bg-red-500/15 p-4 text-sm text-red-200">Couldn’t load the calendar: {error}</p>
-  {:else if shown.length === 0}
-    <p class="glass rounded-lg p-6 text-center text-brand-100">
-      No upcoming events right now — check back soon, or
-      <a href={bookUrl} target="_blank" rel="noopener" class="font-semibold text-reef-300">contact us</a>.
-    </p>
+<section class="mx-auto max-w-2xl px-4 py-12 sm:px-6">
+  {#if error}
+    <p class="mb-4 rounded-lg bg-red-500/15 p-4 text-sm text-red-200">Couldn’t load the calendar: {error}</p>
+  {/if}
+  {#if loading && events.length === 0}
+    <div class="h-96 animate-pulse rounded-xl bg-white/10"></div>
   {:else}
-    <ul class="grid gap-3">
-      {#each shown as ev (ev.type + ev.id)}
-        {@const b = badge(ev.startDate)}
-        {@const price = twd(ev.startingAt)}
-        <li class="glass flex items-center gap-3 rounded-xl p-3 shadow-sm transition-shadow hover:shadow-md sm:gap-4 sm:p-4">
-          <div class="flex w-14 shrink-0 flex-col items-center rounded-lg bg-white/10 py-2 text-white sm:w-16">
-            <span class="text-xs font-semibold">{b.month}</span>
-            <span class="text-2xl font-bold leading-none">{b.day}</span>
-          </div>
-          <div class="min-w-0 flex-1">
-            <div class="flex items-center gap-2">
-              <span
-                class={`rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide ${
-                  ev.type === 'dive' ? 'bg-reef-400/20 text-reef-200' : 'bg-brand-400/20 text-brand-100'
-                }`}
-              >
-                {ev.type}
-              </span>
-              {#if ev.fullyBooked}
-                <span class="rounded bg-amber-400/20 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-200">
-                  Waitlist
-                </span>
-              {/if}
-            </div>
-            <h3 class="mt-1 truncate font-semibold text-white">{ev.title}</h3>
-            <p class="text-sm text-brand-200">{formatSpan(ev.startDate, ev.endDate, ev.time)}</p>
-          </div>
-          <div class="flex shrink-0 flex-col items-end gap-1">
-            {#if price}
-              <span class="text-sm font-semibold text-white">from {price}</span>
-            {/if}
-            <a
-              href={registerUrl(ev.type, ev.id)}
-              target="_blank"
-              rel="noopener"
-              class="rounded-full bg-brand-600 px-4 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
-            >
-              {ev.fullyBooked ? 'Join waitlist' : 'Book'}
-            </a>
-          </div>
-        </li>
-      {/each}
-    </ul>
+    <MonthCalendar
+      {month}
+      {events}
+      onMonthChange={(d) => (month = d)}
+      onPickEvent={(ev) => (selected = ev)}
+    />
   {/if}
 </section>
+
+{#if selected}
+  <div class="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto px-4 pb-4 pt-8">
+    <button class="fixed inset-0 bg-blue-900/60 backdrop-blur-sm" aria-label="Close" onclick={() => (selected = null)}></button>
+    <div class="relative z-10 w-full max-w-lg space-y-4 rounded-2xl border border-red-500 bg-white/90 p-6 backdrop-blur-md">
+      <div class="flex items-center justify-between">
+        <span class={`rounded-full px-2 py-1 text-xs text-white ${TYPE_DOT[selected.type]}`}>
+          {TYPE_LABELS[selected.type]}
+        </span>
+        <button onclick={() => (selected = null)} aria-label="Close" class="text-xl leading-none text-blue-900 hover:text-red-600">×</button>
+      </div>
+      <h2 class="text-xl font-bold text-blue-900">{selected.title}</h2>
+      <div class="space-y-1 text-sm font-medium text-blue-900">
+        <p>{formatEventSpan(selected, { style: 'long' })}</p>
+        {#if selected.price != null}
+          <p>💰 From {selected.currency} {selected.price.toLocaleString('en-US')}</p>
+        {/if}
+        {#if selected.fully_booked}
+          <p class="font-semibold text-amber-700">This event is full — join the waitlist.</p>
+        {/if}
+      </div>
+      <a
+        href={registerUrl(selected.type, selected.id)}
+        target="_blank"
+        rel="noopener"
+        class="block w-full rounded-xl bg-blue-900 py-3 text-center font-semibold text-white transition-colors hover:bg-blue-950"
+      >
+        {selected.fully_booked ? 'Join waitlist' : 'Register'}
+      </a>
+    </div>
+  </div>
+{/if}

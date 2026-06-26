@@ -23,6 +23,7 @@
     "wrangler": "^4.83.0"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.103.2"
+    "@supabase/supabase-js": "^2.103.2",
+    "date-fns": "^4.4.0"
   }
 }

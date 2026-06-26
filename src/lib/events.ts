@@ -1,4 +1,5 @@
 import { supabase } from './supabase'
+import { diveOutingFromDestinations, type DiveOuting } from './event-colors'
 
 // Public, read-only view of the shared event catalog (EO_dives + EO_courses),
 // adapted from app-fundivers/src/lib/events.ts but trimmed to what a marketing
@@ -127,4 +128,222 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
   }
 
   return events.sort((a, b) => a.startDate.localeCompare(b.startDate)).slice(0, limit)
+}
+
+// ── Full month-grid calendar (ported & trimmed from app-fundivers) ──────────
+// Richer event shape the MonthCalendar needs: ISO span, color classification,
+// calendar title, featured flag. No booking/auth — this is read-only.
+
+export type CalEvent = {
+  id: string
+  type: 'dive' | 'course'
+  title: string
+  calendar_title: string | null
+  course_category: string | null
+  start_time: string // ISO
+  end_time: string | null
+  start_time_hhmm: string | null
+  featured: boolean
+  price: number | null
+  currency: 'TWD'
+  dive_outing: DiveOuting | null
+  fully_booked: boolean
+  capacity: number | null
+}
+
+/** True when an event's last day is before today in Asia/Taipei. */
+export function isPastEvent(
+  ev: { start_time: string; end_time: string | null },
+  now: Date = new Date(),
+): boolean {
+  const dayKey = (d: Date | string) =>
+    new Date(d).toLocaleDateString('en-CA', { timeZone: 'Asia/Taipei' })
+  return dayKey(ev.end_time ?? ev.start_time) < dayKey(now)
+}
+
+/** ISO timestamp from an EO_* date ('YYYY-MM-DD') + time ('HH:MM:SS'). */
+function toIso(date: string | null | undefined, time: string | null | undefined): string | null {
+  if (!date) return null
+  const t = time && time.trim() ? time.trim() : '00:00:00'
+  return new Date(`${date}T${t}`).toISOString()
+}
+
+function toDateKey(raw: string | null | undefined): string | null {
+  if (!raw) return null
+  const s = String(raw).trim()
+  return s ? s.slice(0, 10) : null
+}
+
+function dayDiff(a: string, b: string): number {
+  return Math.round((new Date(b).getTime() - new Date(a).getTime()) / 86_400_000)
+}
+
+/** Group sorted day keys into runs of consecutive calendar days. */
+function groupConsecutive(dayKeys: string[]): [string, string][] {
+  const sorted = [...new Set(dayKeys)].sort()
+  const runs: [string, string][] = []
+  for (const key of sorted) {
+    const last = runs[runs.length - 1]
+    if (last && dayDiff(last[1], key) === 1) last[1] = key
+    else runs.push([key, key])
+  }
+  return runs
+}
+
+/** Every 'YYYY-MM-DD' from fromDate to toDate inclusive. */
+function datesInRange(fromDate: string, toDate: string): string[] {
+  const out: string[] = []
+  const end = new Date(toDate + 'T00:00:00Z')
+  for (let d = new Date(fromDate + 'T00:00:00Z'); d <= end; d.setUTCDate(d.getUTCDate() + 1)) {
+    out.push(d.toISOString().slice(0, 10))
+  }
+  return out
+}
+
+/** Classify each dive 'local'|'trip' from its linked destinations (best-effort). */
+async function attachDiveOutings(diveIds: string[]): Promise<Map<string, DiveOuting>> {
+  const out = new Map<string, DiveOuting>()
+  if (!diveIds.length) return out
+  const { data: links } = await supabase
+    .from('eo_dive_destinations')
+    .select('eo_dive_id, destination_id')
+    .in('eo_dive_id', diveIds)
+  if (!links?.length) return out
+
+  const destIds = [...new Set(links.map((l) => l.destination_id))]
+  const { data: dests } = await supabase
+    .from('TravelDestinations')
+    .select('_id, divetype, northeast_diving')
+    .in('_id', destIds)
+  const destById = new Map((dests ?? []).map((d) => [d._id, d]))
+
+  const byDive = new Map<string, Array<{ divetype: string | null; northeast_diving: boolean | null }>>()
+  for (const l of links) {
+    const d = destById.get(l.destination_id)
+    if (!d) continue
+    const arr = byDive.get(l.eo_dive_id) ?? []
+    arr.push({ divetype: d.divetype, northeast_diving: d.northeast_diving })
+    byDive.set(l.eo_dive_id, arr)
+  }
+  for (const [id, ds] of byDive) {
+    const o = diveOutingFromDestinations(ds)
+    if (o) out.set(id, o)
+  }
+  return out
+}
+
+const DIVE_COLS =
+  '_id, admin_title, display_title, calendar_title, start_date, time, end_date, featured, fully_booked, capacity, price, is_private, cancelled_at'
+const COURSE_COLS =
+  '_id, admin_title, display_title, calendar_title, start_time, price, course_days, cancelled_at, fully_booked, capacity'
+
+type DiveRow2 = {
+  _id: string
+  admin_title: string | null
+  display_title: string | null
+  calendar_title: string | null
+  start_date: string | null
+  time: string | null
+  end_date: string | null
+  featured: boolean | null
+  fully_booked: boolean | null
+  capacity: number | null
+  price: string | null
+}
+type CourseRow2 = {
+  _id: string
+  admin_title: string | null
+  display_title: string | null
+  calendar_title: string | null
+  start_time: string | null
+  price: string | null
+  course_days: string[] | null
+  fully_booked: boolean | null
+  capacity: number | null
+}
+
+function diveToCalEvent(d: DiveRow2, prices: Map<string, number | null>, outing: DiveOuting | null): CalEvent | null {
+  const start = toIso(d.start_date, d.time)
+  if (!start) return null
+  return {
+    id: d._id,
+    type: 'dive',
+    title: d.display_title || d.admin_title || 'Dive',
+    calendar_title: d.calendar_title ?? null,
+    course_category: null,
+    start_time: start,
+    end_time: toIso(d.end_date, d.time),
+    start_time_hhmm: toHhmm(d.time),
+    featured: d.featured ?? false,
+    price: d.price ? prices.get(d.price) ?? null : null,
+    currency: 'TWD',
+    dive_outing: outing,
+    fully_booked: d.fully_booked ?? false,
+    capacity: d.capacity ?? null,
+  }
+}
+
+function courseToCalEvents(c: CourseRow2, prices: Map<string, number | null>): CalEvent[] {
+  const dayKeys = (c.course_days ?? []).map(toDateKey).filter((k): k is string => !!k)
+  if (!dayKeys.length) return []
+  const shared = {
+    id: c._id,
+    type: 'course' as const,
+    title: c.display_title || c.admin_title || 'Course',
+    calendar_title: c.calendar_title ?? null,
+    course_category: c.admin_title ?? null,
+    start_time_hhmm: toHhmm(c.start_time),
+    featured: false,
+    price: c.price ? prices.get(c.price) ?? null : null,
+    currency: 'TWD' as const,
+    dive_outing: null,
+    fully_booked: c.fully_booked ?? false,
+    capacity: c.capacity ?? null,
+  }
+  return groupConsecutive(dayKeys)
+    .map(([from, to]): CalEvent | null => {
+      const start = toIso(from, c.start_time)
+      if (!start) return null
+      return { ...shared, start_time: start, end_time: toIso(to, c.start_time) }
+    })
+    .filter((x): x is CalEvent => !!x)
+}
+
+/**
+ * Dives whose start_date is within [fromDate, toDate] plus courses with any
+ * session day in the window. Non-private, non-cancelled. Returns CalEvent[]
+ * sorted by start. Widen the range ±7 days at the call site so bars crossing
+ * the month boundary render continuously.
+ */
+export async function fetchEventsInRange(fromDate: string, toDate: string): Promise<CalEvent[]> {
+  const [divesResp, coursesResp] = await Promise.all([
+    supabase
+      .from('EO_dives')
+      .select(DIVE_COLS)
+      .is('cancelled_at', null)
+      .eq('is_private', false)
+      .gte('start_date', fromDate)
+      .lte('start_date', toDate)
+      .order('start_date'),
+    supabase
+      .from('EO_courses')
+      .select(COURSE_COLS)
+      .is('cancelled_at', null)
+      .overlaps('course_days', datesInRange(fromDate, toDate)),
+  ])
+
+  const dives = (divesResp.data ?? []) as DiveRow2[]
+  const courses = (coursesResp.data ?? []) as CourseRow2[]
+
+  const [prices, outings] = await Promise.all([
+    fetchPrices([...dives.map((d) => d.price), ...courses.map((c) => c.price)]),
+    attachDiveOutings(dives.map((d) => d._id)),
+  ])
+
+  return [
+    ...dives
+      .map((d) => diveToCalEvent(d, prices, outings.get(d._id) ?? null))
+      .filter((x): x is CalEvent => !!x),
+    ...courses.flatMap((c) => courseToCalEvents(c, prices)),
+  ].sort((a, b) => a.start_time.localeCompare(b.start_time))
 }

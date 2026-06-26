@@ -46,7 +46,7 @@ This site never authenticates anyone — all booking/login happens in `app-fundi
 
 | Page     | Source                                                    |
 | -------- | --------------------------------------------------------- |
-| Calendar | `EO_dives` + `EO_courses` (upcoming), priced via `EO_prices` |
+| Calendar | Month grid (ported from app-fundivers) — `EO_dives` + `EO_courses`, priced via `EO_prices`, dive trip/local color from `eo_dive_destinations`/`TravelDestinations` |
 | Sites    | `dive_sites`, grouped North / South / Outlying Islands    |
 | Courses  | Static PADI catalog + live upcoming course sessions       |
 | Photos   | Placeholder gallery (wire to storage/Instagram later)     |
