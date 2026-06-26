@@ -67,7 +67,7 @@
       </nav>
       <div class="flex justify-center">
         <a href="/" aria-label="FunDivers TW home">
-          <img src="/imgs/fd_logo.png" alt="FunDivers TW" class="h-20 w-auto lg:h-24" />
+          <img src="/imgs/fd_logo.png" alt="FunDivers TW" class="h-32 w-auto lg:h-40" />
         </a>
       </div>
       <nav class="flex items-center justify-end gap-1">
@@ -81,7 +81,7 @@
     <div class="flex items-center justify-between py-3 md:hidden">
       {@render shopIcon()}
       <a href="/" aria-label="FunDivers TW home">
-        <img src="/imgs/fd_logo.png" alt="FunDivers TW" class="h-14 w-auto" />
+        <img src="/imgs/fd_logo.png" alt="FunDivers TW" class="h-16 w-auto" />
       </a>
       <button class="text-brand-50" aria-label="Toggle menu" onclick={() => (open = !open)}>
         <MenuIcon {open} />
