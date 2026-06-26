@@ -65,44 +65,39 @@
 
 <header class="bg-transparent">
   <div class="mx-auto max-w-[1600px] px-4 sm:px-6">
-    <!-- Desktop: utility strip (shop left · socials + radio right) -->
-    <div class="hidden items-center justify-between py-2 md:flex">
-      {@render shopIcon()}
-      <div class="flex items-center gap-6">
-        {@render langSwitch()}
-        <SocialIcons size={44} />
-        {@render radioIcon()}
+    <!-- Desktop: logo at the far left, everything else to its right -->
+    <div class="hidden items-center justify-between gap-6 py-3 md:flex">
+      <a href="/" aria-label="FunDivers TW home" class="shrink-0">
+        <img src="/imgs/fd_logo.png" alt="FunDivers TW" class="h-28 w-auto lg:h-36" />
+      </a>
+      <div class="flex flex-col items-end gap-2">
+        <!-- utility row -->
+        <div class="flex items-center gap-6">
+          {@render shopIcon()}
+          {@render langSwitch()}
+          <SocialIcons size={40} />
+          {@render radioIcon()}
+        </div>
+        <!-- nav links -->
+        <nav class="flex items-center gap-1">
+          {#each allLinks as link}
+            <a href={link.href} class={linkClass(link.href)}>{link.label}</a>
+          {/each}
+        </nav>
       </div>
     </div>
 
-    <!-- Desktop: primary nav (links flanking a centered logo) -->
-    <div class="hidden grid-cols-3 items-center pb-3 md:grid">
-      <nav class="flex items-center justify-start gap-1">
-        {#each leftLinks as link}
-          <a href={link.href} class={linkClass(link.href)}>{link.label}</a>
-        {/each}
-      </nav>
-      <div class="flex justify-center">
-        <a href="/" aria-label="FunDivers TW home">
-          <img src="/imgs/fd_logo.png" alt="FunDivers TW" class="h-32 w-auto lg:h-40" />
-        </a>
-      </div>
-      <nav class="flex items-center justify-end gap-1">
-        {#each rightLinks as link}
-          <a href={link.href} class={linkClass(link.href)}>{link.label}</a>
-        {/each}
-      </nav>
-    </div>
-
-    <!-- Mobile: shop · logo · menu toggle -->
+    <!-- Mobile: logo left · menu toggle right -->
     <div class="flex items-center justify-between py-3 md:hidden">
-      {@render shopIcon()}
       <a href="/" aria-label="FunDivers TW home">
         <img src="/imgs/fd_logo.png" alt="FunDivers TW" class="h-16 w-auto" />
       </a>
-      <button class="text-brand-50" aria-label="Toggle menu" onclick={() => (open = !open)}>
-        <MenuIcon {open} />
-      </button>
+      <div class="flex items-center gap-4">
+        {@render shopIcon()}
+        <button class="text-brand-50" aria-label="Toggle menu" onclick={() => (open = !open)}>
+          <MenuIcon {open} />
+        </button>
+      </div>
     </div>
   </div>
 

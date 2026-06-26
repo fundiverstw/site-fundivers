@@ -48,7 +48,7 @@ body {
   color: var(--color-brand-50);
   /* Lighter, sunlit ocean blue — brighter near the "surface" (top), deeper
      below. Fixed so it stays put while content scrolls over it. */
-  background: linear-gradient(180deg, #2f78de 0%, #1f5fc0 38%, #103a86 100%) fixed;
+  background: linear-gradient(180deg, #57a0f6 0%, #357fe6 40%, #1f5fc8 100%) fixed;
 }
 
 /* Animated water caustics — two SVG fractal-noise layers (different scale,
@@ -68,7 +68,7 @@ body {
 .caustics::after {
   content: "";
   position: absolute;
-  inset: -40%;
+  inset: -50%;
   /* One large non-repeating tile scaled to cover — no visible tiling/seams. */
   background-repeat: no-repeat;
   background-position: center;
@@ -78,7 +78,7 @@ body {
 }
 .caustics::before {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1280' height='1280'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.011 0.014' numOctaves='3' seed='7' result='t'/%3E%3CfeColorMatrix in='t' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.33 0.33 0.33 0 0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='gamma' amplitude='2.5' exponent='5' offset='0'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='1280' height='1280' filter='url(%23c)' fill='%23ffffff'/%3E%3C/svg%3E");
-  animation: caustic-a 12s ease-in-out infinite;
+  animation: caustic-a 8s ease-in-out infinite;
 }
 /* Second layer DARKENS (multiply with deep navy) so the shadow regions
    between the bright veins go darker — real light/dark contrast, not just
@@ -86,20 +86,20 @@ body {
 .caustics::after {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1024' height='1024'%3E%3Cfilter id='d'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.016 0.02' numOctaves='2' seed='41' result='t'/%3E%3CfeColorMatrix in='t' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.33 0.33 0.33 0 0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='gamma' amplitude='2' exponent='5' offset='0'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='1024' height='1024' filter='url(%23d)' fill='%23061535'/%3E%3C/svg%3E");
   mix-blend-mode: multiply;
-  animation: caustic-b 16s ease-in-out infinite;
+  animation: caustic-b 11s ease-in-out infinite;
 }
 
 /* 0% and 100% are identical so the loop is seamless (a smooth out-and-back,
    no snap). */
 @keyframes caustic-a {
   0%,
-  100% { transform: translate3d(-5%, -3%, 0) scale(1.1); opacity: 0.6; }
-  50%  { transform: translate3d(5%, 4%, 0) scale(1.38); opacity: 1; }
+  100% { transform: translate3d(-9%, -5%, 0) scale(1.08); opacity: 0.55; }
+  50%  { transform: translate3d(9%, 7%, 0) scale(1.5); opacity: 1; }
 }
 @keyframes caustic-b {
   0%,
-  100% { transform: translate3d(4%, 5%, 0) scale(1.36) rotate(1.2deg); opacity: 0.4; }
-  50%  { transform: translate3d(-5%, -4%, 0) scale(1.1) rotate(-1.2deg); opacity: 0.7; }
+  100% { transform: translate3d(7%, 9%, 0) scale(1.48) rotate(2deg); opacity: 0.35; }
+  50%  { transform: translate3d(-9%, -7%, 0) scale(1.08) rotate(-2deg); opacity: 0.75; }
 }
 
 @media (prefers-reduced-motion: reduce) {
