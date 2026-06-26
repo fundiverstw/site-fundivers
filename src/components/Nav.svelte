@@ -1,10 +1,10 @@
 <script lang="ts">
   import { path } from '../lib/router'
-  import { RADIO_URL, SHOP_URL } from '../lib/config'
+  import { RADIO_URL } from '../lib/config'
   import { t, locale, setLocale, LOCALES } from '../lib/i18n'
   import SocialIcons from './SocialIcons.svelte'
-  import ShopIcon from './ShopIcon.svelte'
   import MenuIcon from './MenuIcon.svelte'
+  import GlobeIcon from './GlobeIcon.svelte'
 
   let leftLinks = $derived([
     { href: '/courses', label: $t.nav.courses },
@@ -19,10 +19,15 @@
   let allLinks = $derived([...leftLinks, ...rightLinks])
 
   let open = $state(false)
+  let langOpen = $state(false)
   $effect(() => {
     void $path
     open = false
   })
+
+  function onWindowClick(e: MouseEvent) {
+    if (langOpen && !(e.target as HTMLElement).closest('.lang-switch')) langOpen = false
+  }
 
   function linkClass(href: string): string {
     const base = 'rounded-md px-4 py-2 text-2xl font-semibold transition-colors lg:text-3xl'
@@ -31,12 +36,6 @@
       : `${base} text-brand-50 hover:text-reef-300`
   }
 </script>
-
-{#snippet shopIcon()}
-  <a href={SHOP_URL} aria-label="Gear shop" class="text-brand-50 transition-colors hover:text-reef-300">
-    <ShopIcon size={52} />
-  </a>
-{/snippet}
 
 {#snippet radioIcon()}
   <a
@@ -50,18 +49,34 @@
 {/snippet}
 
 {#snippet langSwitch()}
-  <div class="flex items-center gap-1 text-lg font-semibold">
-    {#each LOCALES as l (l.code)}
-      <button
-        type="button"
-        onclick={() => setLocale(l.code)}
-        class={`rounded px-3 py-1.5 transition-colors ${$locale === l.code ? 'bg-white/20 text-white' : 'text-brand-100 hover:text-white'}`}
-      >
-        {l.label}
-      </button>
-    {/each}
+  <div class="lang-switch relative">
+    <button
+      type="button"
+      onclick={() => (langOpen = !langOpen)}
+      aria-label="Language"
+      aria-haspopup="menu"
+      aria-expanded={langOpen}
+      class="flex items-center gap-1 text-brand-50 transition-colors hover:text-reef-300"
+    >
+      <GlobeIcon size={32} />
+    </button>
+    {#if langOpen}
+      <div class="absolute right-0 top-full z-50 mt-2 min-w-[8rem] rounded-lg border border-white/15 bg-brand-950/95 p-1 shadow-lg backdrop-blur" role="menu">
+        {#each LOCALES as l (l.code)}
+          <button
+            type="button"
+            onclick={() => { setLocale(l.code); langOpen = false }}
+            class={`block w-full rounded px-3 py-2 text-left text-base font-semibold transition-colors ${$locale === l.code ? 'bg-white/15 text-white' : 'text-brand-100 hover:bg-white/10'}`}
+          >
+            {l.label}
+          </button>
+        {/each}
+      </div>
+    {/if}
   </div>
 {/snippet}
+
+<svelte:window onclick={onWindowClick} />
 
 <header class="bg-transparent">
   <div class="mx-auto max-w-[1600px] px-4 sm:px-6">
@@ -73,7 +88,6 @@
       <div class="flex flex-col items-end gap-2">
         <!-- utility row -->
         <div class="flex items-center gap-6">
-          {@render shopIcon()}
           {@render langSwitch()}
           <SocialIcons size={40} />
           {@render radioIcon()}
@@ -92,12 +106,9 @@
       <a href="/" aria-label="FunDivers TW home">
         <img src="/imgs/fd_logo.png" alt="FunDivers TW" class="h-16 w-auto" />
       </a>
-      <div class="flex items-center gap-4">
-        {@render shopIcon()}
-        <button class="text-brand-50" aria-label="Toggle menu" onclick={() => (open = !open)}>
-          <MenuIcon {open} />
-        </button>
-      </div>
+      <button class="text-brand-50" aria-label="Toggle menu" onclick={() => (open = !open)}>
+        <MenuIcon {open} />
+      </button>
     </div>
   </div>
 
