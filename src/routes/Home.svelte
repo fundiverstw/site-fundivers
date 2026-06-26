@@ -1,8 +1,7 @@
 <script lang="ts">
   import { fetchUpcomingEvents, type UpcomingEvent, type ModalEvent } from '../lib/events'
-  import { formatSpan } from '../lib/format'
+  import { formatSpan, twd } from '../lib/format'
   import GetInTouch from '../components/GetInTouch.svelte'
-  import EventCard from '../components/EventCard.svelte'
   import EventModal from '../components/calendar/EventModal.svelte'
   import { mediaIdLocal } from '../lib/images'
   import { t } from '../lib/i18n'
@@ -53,31 +52,72 @@
   ]
 </script>
 
-{#snippet cardGrid(title: string, items: UpcomingEvent[], moreHref: string | null, star: boolean)}
-  <section class="mx-auto max-w-[1600px] px-4 pt-8 sm:px-6">
-    <div class="mb-4 flex items-center justify-between">
-      <h2 class="flex items-center gap-2 text-2xl font-bold text-white">
-        {#if star}<span class="text-reef-300">★</span>{/if}{title}
-      </h2>
-      {#if moreHref}
-        <a href={moreHref} class="text-sm font-semibold text-reef-300 hover:text-reef-200">{$t.common.viewAll} →</a>
+<!-- A compact image card; fills its grid cell on desktop, has an aspect on mobile. -->
+{#snippet heroCard(ev: UpcomingEvent, big: boolean)}
+  {@const price = twd(ev.startingAt)}
+  <button
+    type="button"
+    onclick={() => open(ev)}
+    class="group relative block aspect-[16/10] w-full overflow-hidden rounded-3xl border border-white/15 text-left lg:aspect-auto lg:h-full"
+  >
+    {#if ev.image}
+      <img src={ev.image} alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+    {:else}
+      <div class="absolute inset-0 bg-gradient-to-br from-brand-700 to-reef-700"></div>
+    {/if}
+    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
+    <div class="absolute inset-x-0 bottom-0 p-3">
+      {#if ev.fullyBooked}
+        <span class="rounded bg-amber-400/25 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-amber-200">{$t.common.waitlist}</span>
       {/if}
+      <h3 class={`line-clamp-2 font-bold leading-tight text-white ${big ? 'text-base lg:text-lg' : 'text-xs lg:text-sm'}`}>{ev.title}</h3>
+      <p class="truncate text-[11px] text-sky-300">{formatSpan(ev.startDate, ev.endDate, ev.time)}</p>
+      {#if price}<p class="text-xs font-bold text-amber-300">{$t.common.from} {price}</p>{/if}
     </div>
-    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {#if loading}
-        {#each Array(3) as _, i (i)}<div class="aspect-square animate-pulse rounded-3xl bg-white/10"></div>{/each}
-      {:else if items.length === 0}
-        <p class="text-sm text-brand-200">{$t.common.nothingScheduled}</p>
-      {:else}
-        {#each items as ev (ev.id)}<EventCard {ev} onDetails={open} />{/each}
-      {/if}
-    </div>
-  </section>
+  </button>
 {/snippet}
 
-{@render cardGrid($t.home.featured, featured, null, true)}
-{@render cardGrid($t.home.upcomingDives, dives, '/calendar', false)}
-{@render cardGrid($t.home.upcomingCourses, courses, '/courses', false)}
+{#snippet strip(title: string, items: UpcomingEvent[], moreHref: string)}
+  <div class="flex min-h-0 flex-1 flex-col">
+    <div class="mb-2 flex items-center justify-between">
+      <h2 class="text-xl font-bold text-white">{title}</h2>
+      <a href={moreHref} class="text-sm font-semibold text-reef-300 hover:text-reef-200">{$t.common.viewAll} →</a>
+    </div>
+    <div class="grid min-h-0 flex-1 grid-cols-1 gap-3 sm:grid-cols-3">
+      {#if loading}
+        {#each Array(3) as _, i (i)}<div class="aspect-[16/10] animate-pulse rounded-3xl bg-white/10 lg:aspect-auto"></div>{/each}
+      {:else if items.length === 0}
+        <p class="text-sm text-brand-200 sm:col-span-3">{$t.common.nothingScheduled}</p>
+      {:else}
+        {#each items as ev (ev.id)}{@render heroCard(ev, false)}{/each}
+      {/if}
+    </div>
+  </div>
+{/snippet}
+
+<!-- Hero: featured (left) + upcoming dives/courses (right), fits the viewport. -->
+<section class="mx-auto max-w-[1600px] px-4 py-4 sm:px-6 lg:h-[calc(100vh-11.5rem)]">
+  <div class="grid h-full gap-5 lg:grid-cols-2">
+    <!-- Featured -->
+    <div class="flex min-h-0 flex-col">
+      <h2 class="mb-2 flex items-center gap-2 text-xl font-bold text-white">
+        <span class="text-reef-300">★</span>{$t.home.featured}
+      </h2>
+      <div class="grid min-h-0 flex-1 grid-cols-1 gap-3 lg:grid-rows-3">
+        {#if loading}
+          {#each Array(3) as _, i (i)}<div class="aspect-[16/10] animate-pulse rounded-3xl bg-white/10 lg:aspect-auto"></div>{/each}
+        {:else}
+          {#each featured as ev (ev.id)}{@render heroCard(ev, true)}{/each}
+        {/if}
+      </div>
+    </div>
+    <!-- Upcoming dives (top) + courses (bottom) -->
+    <div class="flex min-h-0 flex-col gap-4">
+      {@render strip($t.home.upcomingDives, dives, '/calendar')}
+      {@render strip($t.home.upcomingCourses, courses, '/courses')}
+    </div>
+  </div>
+</section>
 
 <!-- Explore our Services -->
 <section class="mx-auto max-w-[1600px] px-4 py-12 sm:px-6 sm:py-16">
