@@ -33,11 +33,15 @@
     document.documentElement.lang = $locale
   })
 
-  // Honour reduced-motion: without it we morph the caustic noise (shimmer);
-  // with it we render the veins static.
-  let animate = $state(true)
+  // The animated caustics recompute fractal noise every frame — fine on
+  // desktop, far too heavy for phone GPUs. Only morph the noise on non-touch,
+  // wide screens that haven't asked for reduced motion. (On mobile the caustics
+  // element is hidden entirely in CSS, so this also stops the SMIL ticking.)
+  let animate = $state(false)
   $effect(() => {
-    animate = !(typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches)
+    const mm = (q: string) => typeof matchMedia !== 'undefined' && matchMedia(q).matches
+    animate = !mm('(prefers-reduced-motion: reduce)') &&
+      !mm('(hover: none) and (pointer: coarse)') && !mm('(max-width: 820px)')
   })
 
   // Hidden easter-egg game.
