@@ -13,6 +13,7 @@
   import Calendar from './routes/Calendar.svelte'
   import Team from './routes/Team.svelte'
   import NotFound from './routes/NotFound.svelte'
+  import DeepDive from './components/game/DeepDive.svelte'
 
   const routes: Record<string, Component> = {
     '/': Home,
@@ -38,6 +39,9 @@
   $effect(() => {
     animate = !(typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches)
   })
+
+  // Hidden easter-egg game.
+  let gameOpen = $state(false)
 </script>
 
 <svelte:window onclick={handleLinkClick} />
@@ -96,3 +100,16 @@
   </main>
   <Footer />
 </div>
+
+<!-- Easter egg: a stray bubble drifting in the corner. Click it to play Deep Dive. -->
+<button
+  type="button"
+  onclick={() => (gameOpen = true)}
+  aria-label="Play the hidden dive game"
+  title="?"
+  class="egg-bubble fixed bottom-4 right-4 z-40 h-8 w-8 rounded-full border border-reef-200/40 bg-reef-300/10 opacity-60 backdrop-blur-sm transition hover:scale-110 hover:border-reef-200/80 hover:bg-reef-300/25 hover:opacity-100"
+>
+  <span class="pointer-events-none absolute left-[7px] top-[6px] h-1.5 w-1.5 rounded-full bg-white/75"></span>
+</button>
+
+<DeepDive open={gameOpen} onClose={() => (gameOpen = false)} />
