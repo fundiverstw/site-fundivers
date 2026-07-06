@@ -3,6 +3,9 @@
   import { formatSpan, twd } from '../lib/format'
   import { bookUrl, registerUrl } from '../lib/config'
   import { COURSES } from '../lib/courses'
+
+  // Each card links to the course's page on the marketing site.
+  const COURSE_BASE = 'https://www.fundiverstw.com/courses-1/'
   import { t } from '../lib/i18n'
   import PageHeader from '../components/PageHeader.svelte'
 
@@ -22,14 +25,19 @@
 <section class="mx-auto max-w-[1600px] px-4 py-12 sm:px-6">
   <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
     {#each COURSES as c}
-      <div class="group relative flex aspect-square flex-col justify-end overflow-hidden rounded-3xl border border-white/15 shadow-sm transition-transform hover:-translate-y-0.5">
+      <a
+        href={`${COURSE_BASE}${c.slug}`}
+        target="_blank"
+        rel="noopener"
+        class="group relative flex aspect-square flex-col justify-end overflow-hidden rounded-3xl border border-white/15 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-reef-400/60 hover:shadow-[0_0_28px_-8px_rgba(44,208,197,0.6)]"
+      >
         <img src={c.image} alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent"></div>
         <div class="relative z-10 p-5">
           <h3 class="text-lg font-bold text-white">{c.title}</h3>
           <p class="mt-1 line-clamp-3 text-sm text-white/85">{c.desc}</p>
         </div>
-      </div>
+      </a>
     {/each}
   </div>
 </section>
