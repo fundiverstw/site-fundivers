@@ -42,38 +42,48 @@
 
 <svelte:window onclick={handleLinkClick} />
 
-<!-- Animated water caustics: two inline SVG layers whose fractal-turbulence
-     "net" continuously warps (baseFrequency morph = shimmer) while also drifting
-     via CSS. Turbulence ridges + a steep gamma give the sharp bright veins of
-     sunlight refracting through moving water. -->
+<!-- Animated water caustics. Each layer = long, horizontally-stretched
+     fractal ribbons (low + anisotropic baseFrequency → wave-like veins, not
+     round particles) that slowly warp in place (baseFrequency morph = shimmer)
+     and drift via CSS. A second, very-low-frequency "envelope" turbulence is
+     multiplied over the ribbons so brightness varies across the screen — dense
+     bright patches next to calm dark water — killing the uniform disco look. -->
 <div class="caustics" aria-hidden="true">
   <svg class="caustics-layer cl-a" xmlns="http://www.w3.org/2000/svg">
-    <filter id="caustic-a" x="-20%" y="-20%" width="140%" height="140%">
-      <feTurbulence type="turbulence" baseFrequency="0.013 0.018" numOctaves="2" seed="4" result="n">
+    <filter id="caustic-a" x="-30%" y="-30%" width="160%" height="160%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.0038 0.013" numOctaves="3" seed="4" result="wave">
         {#if animate}
-          <animate attributeName="baseFrequency" dur="17s" repeatCount="indefinite"
-            values="0.013 0.018;0.017 0.023;0.011 0.015;0.013 0.018" keyTimes="0;0.34;0.7;1" />
+          <animate attributeName="baseFrequency" dur="19s" repeatCount="indefinite"
+            values="0.0038 0.013;0.0050 0.011;0.0034 0.015;0.0038 0.013" keyTimes="0;0.35;0.7;1" />
         {/if}
       </feTurbulence>
-      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0.5 0.5 0 0" result="a" />
-      <feComponentTransfer in="a" result="v"><feFuncA type="gamma" amplitude="3.4" exponent="6" offset="0" /></feComponentTransfer>
+      <feColorMatrix in="wave" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.34 0.34 0.34 0 0" result="wa" />
+      <feComponentTransfer in="wa" result="veins"><feFuncA type="gamma" amplitude="2.6" exponent="4" offset="0" /></feComponentTransfer>
+      <feTurbulence type="fractalNoise" baseFrequency="0.0016 0.0016" numOctaves="2" seed="11" result="env" />
+      <feColorMatrix in="env" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0.5 0.5 0 0" result="ea" />
+      <feComponentTransfer in="ea" result="mask"><feFuncA type="gamma" amplitude="1.6" exponent="2.4" offset="0.1" /></feComponentTransfer>
+      <feComposite in="veins" in2="mask" operator="arithmetic" k1="1" k2="0" k3="0" k4="0" result="mod" />
       <feFlood flood-color="#a5f3ea" result="tint" />
-      <feComposite in="tint" in2="v" operator="in" />
+      <feComposite in="tint" in2="mod" operator="in" />
     </filter>
     <rect width="100%" height="100%" filter="url(#caustic-a)" />
   </svg>
   <svg class="caustics-layer cl-b" xmlns="http://www.w3.org/2000/svg">
-    <filter id="caustic-b" x="-20%" y="-20%" width="140%" height="140%">
-      <feTurbulence type="turbulence" baseFrequency="0.019 0.024" numOctaves="2" seed="23" result="n">
+    <filter id="caustic-b" x="-30%" y="-30%" width="160%" height="160%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.0052 0.017" numOctaves="3" seed="23" result="wave">
         {#if animate}
-          <animate attributeName="baseFrequency" dur="23s" repeatCount="indefinite"
-            values="0.019 0.024;0.015 0.019;0.022 0.027;0.019 0.024" keyTimes="0;0.4;0.72;1" />
+          <animate attributeName="baseFrequency" dur="26s" repeatCount="indefinite"
+            values="0.0052 0.017;0.0042 0.014;0.0060 0.020;0.0052 0.017" keyTimes="0;0.4;0.72;1" />
         {/if}
       </feTurbulence>
-      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0.5 0.5 0 0" result="a" />
-      <feComponentTransfer in="a" result="v"><feFuncA type="gamma" amplitude="3" exponent="7" offset="0" /></feComponentTransfer>
+      <feColorMatrix in="wave" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.34 0.34 0.34 0 0" result="wa" />
+      <feComponentTransfer in="wa" result="veins"><feFuncA type="gamma" amplitude="2.3" exponent="5" offset="0" /></feComponentTransfer>
+      <feTurbulence type="fractalNoise" baseFrequency="0.0013 0.0013" numOctaves="2" seed="5" result="env" />
+      <feColorMatrix in="env" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0.5 0.5 0 0" result="ea" />
+      <feComponentTransfer in="ea" result="mask"><feFuncA type="gamma" amplitude="1.7" exponent="2.6" offset="0.08" /></feComponentTransfer>
+      <feComposite in="veins" in2="mask" operator="arithmetic" k1="1" k2="0" k3="0" k4="0" result="mod" />
       <feFlood flood-color="#cba6f7" result="tint" />
-      <feComposite in="tint" in2="v" operator="in" />
+      <feComposite in="tint" in2="mod" operator="in" />
     </filter>
     <rect width="100%" height="100%" filter="url(#caustic-b)" />
   </svg>
