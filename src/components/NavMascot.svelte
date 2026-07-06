@@ -5,10 +5,16 @@
 
   // The character lives hidden behind the logo. Every so often he slides out
   // from the logo's right edge, wiggles around a little, then ducks back home.
-  // tx: horizontal position in % of his own width — -100 = fully behind the
-  // logo, ~-12 = peeked out. `wiggle` is the small random nudge while he's out.
+  // tx/ty: hidden position in % of his own width/height. HIDDEN tucks him far
+  // enough LEFT and UP that his dangling arms clear the logo PNG's transparent
+  // bottom padding (the mask graphic narrows there, so without the lift a leg
+  // peeked out below the logo). Peeked = translate(-12%, 0). `wiggle` is the
+  // small random nudge while he's out.
+  const HIDDEN_X = -135
+  const HIDDEN_Y = -34
   let i = $state(0)
-  let tx = $state(-100)
+  let tx = $state(HIDDEN_X)
+  let ty = $state(HIDDEN_Y)
   let wiggle = $state('')
 
   let ad = $derived(ADS[i])
@@ -24,14 +30,14 @@
     const reduce =
       typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduce) {
-      tx = -14 // just sit out, no motion
+      tx = -14; ty = 0 // just sit out, no motion
       return () => { if (adTimer) clearInterval(adTimer) }
     }
 
     let wigs = 0
     function retreat() {
       wiggle = ''
-      tx = -100
+      tx = HIDDEN_X; ty = HIDDEN_Y
       after(9000 + Math.random() * 9000, peek) // next peek after 9–18s
     }
     function doWiggle() {
@@ -43,7 +49,7 @@
       after(360, doWiggle)
     }
     function peek() {
-      tx = -12
+      tx = -12; ty = 0
       wigs = 0
       after(550, doWiggle)
     }
@@ -60,7 +66,7 @@
 {#if ADS.length}
   <div
     class="pointer-events-none absolute bottom-0 left-full z-10 hidden w-44 xl:block"
-    style={`transform: translateX(${tx}%); transition: transform 0.55s cubic-bezier(0.34, 1.3, 0.4, 1);`}
+    style={`transform: translate(${tx}%, ${ty}%); transition: transform 0.55s cubic-bezier(0.34, 1.3, 0.4, 1);`}
   >
     <div class="flex flex-col items-center" style={`transform: ${wiggle}; transition: transform 0.25s ease;`}>
       <a
