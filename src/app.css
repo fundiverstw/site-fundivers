@@ -26,8 +26,20 @@
   --color-reef-800: #135b59;
   --color-reef-900: #144b4a;
 
+  /* Catppuccin-flavoured neon accents for the "riced" look — used for glows,
+     borders, terminal-style metadata and active states. */
+  --color-mauve: #cba6f7;
+  --color-lav: #b4befe;
+  --color-pink: #f5c2e7;
+  --color-sky: #89dceb;
+  --color-peach: #fab387;
+  --color-green: #a6e3a1;
+
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
     Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* Monospace for the terminal/waybar flavour — dates, prices, labels. */
+  --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, "SF Mono",
+    "Cascadia Code", Menlo, Consolas, monospace;
 
   /* Aggressive, squircle-style rounding site-wide — every rounded-* utility
      gets larger so cards/panels read as soft squares, not rectangles.
@@ -56,17 +68,47 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: var(--color-brand-50);
-  /* Lighter, sunlit ocean blue — brighter near the "surface" (top), deeper
-     below. Fixed so it stays put while content scrolls over it. */
-  background: linear-gradient(180deg, #57a0f6 0%, #357fe6 40%, #1f5fc8 100%) fixed;
+  /* Riced dark base: a deep ocean-night (catppuccin-crust meets midnight sea)
+     with two soft neon spotlights bleeding in from the corners — the tell-tale
+     "unixporn wallpaper" glow. Fixed so it stays put while content scrolls. */
+  background-color: #0a1120;
+  background-image:
+    radial-gradient(120% 90% at 12% -10%, rgba(203, 166, 247, 0.22) 0%, transparent 55%),
+    radial-gradient(120% 90% at 92% 8%, rgba(44, 208, 197, 0.2) 0%, transparent 55%),
+    radial-gradient(140% 120% at 50% 120%, rgba(29, 93, 216, 0.28) 0%, transparent 60%),
+    linear-gradient(180deg, #0b1426 0%, #0a1120 45%, #070b16 100%);
+  background-attachment: fixed;
+}
+
+::selection {
+  background: rgba(203, 166, 247, 0.35);
+  color: #fff;
+}
+
+/* Riced scrollbar — thin, dark trough, accent-gradient thumb. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #2cd0c5 transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #cba6f7, #2cd0c5);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
 }
 
 /* Animated water caustics — two SVG fractal-noise layers (different scale,
    speed and direction) drifting and pulsing to mimic sunlight refracting
-   through the surface, seen from below. Rendered in a dedicated fixed layer
-   (.caustics, see App.svelte) that sits above the body gradient but below
-   content (which is z-10). A z-index:-1 pseudo on <body> would be painted
-   behind the body's own background and never show. */
+   through the surface. On the dark riced base the bright "screen" layer reads
+   as faint neon light veins. Rendered in a dedicated fixed layer (.caustics,
+   see App.svelte) above the body background but below content (z-10). */
 .caustics {
   position: fixed;
   inset: 0;
@@ -87,15 +129,15 @@ body {
   will-change: transform, opacity;
 }
 .caustics::before {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1280' height='1280'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.011 0.014' numOctaves='3' seed='7' result='t'/%3E%3CfeColorMatrix in='t' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.33 0.33 0.33 0 0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='gamma' amplitude='2.5' exponent='5' offset='0'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='1280' height='1280' filter='url(%23c)' fill='%23ffffff'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1280' height='1280'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.011 0.014' numOctaves='3' seed='7' result='t'/%3E%3CfeColorMatrix in='t' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.33 0.33 0.33 0 0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='gamma' amplitude='2.5' exponent='5' offset='0'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='1280' height='1280' filter='url(%23c)' fill='%2366e6da'/%3E%3C/svg%3E");
+  opacity: 0.5;
   animation: caustic-a 8s ease-in-out infinite;
 }
-/* Second layer DARKENS (multiply with deep navy) so the shadow regions
-   between the bright veins go darker — real light/dark contrast, not just
-   added light. */
+/* Second layer tinted mauve so the two neon accents (teal + mauve) both drift
+   across the scene — the signature riced dual-tone glow. */
 .caustics::after {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1024' height='1024'%3E%3Cfilter id='d'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.016 0.02' numOctaves='2' seed='41' result='t'/%3E%3CfeColorMatrix in='t' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.33 0.33 0.33 0 0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='gamma' amplitude='2' exponent='5' offset='0'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='1024' height='1024' filter='url(%23d)' fill='%23061535'/%3E%3C/svg%3E");
-  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1024' height='1024'%3E%3Cfilter id='d'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.016 0.02' numOctaves='2' seed='41' result='t'/%3E%3CfeColorMatrix in='t' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.33 0.33 0.33 0 0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='gamma' amplitude='2' exponent='5' offset='0'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='1024' height='1024' filter='url(%23d)' fill='%23cba6f7'/%3E%3C/svg%3E");
+  opacity: 0.4;
   animation: caustic-b 11s ease-in-out infinite;
 }
 
@@ -103,13 +145,13 @@ body {
    no snap). */
 @keyframes caustic-a {
   0%,
-  100% { transform: translate3d(-9%, -5%, 0) scale(1.08); opacity: 0.55; }
-  50%  { transform: translate3d(9%, 7%, 0) scale(1.5); opacity: 1; }
+  100% { transform: translate3d(-9%, -5%, 0) scale(1.08); opacity: 0.28; }
+  50%  { transform: translate3d(9%, 7%, 0) scale(1.5); opacity: 0.5; }
 }
 @keyframes caustic-b {
   0%,
-  100% { transform: translate3d(7%, 9%, 0) scale(1.48) rotate(2deg); opacity: 0.35; }
-  50%  { transform: translate3d(-9%, -7%, 0) scale(1.08) rotate(-2deg); opacity: 0.75; }
+  100% { transform: translate3d(7%, 9%, 0) scale(1.48) rotate(2deg); opacity: 0.18; }
+  50%  { transform: translate3d(-9%, -7%, 0) scale(1.08) rotate(-2deg); opacity: 0.4; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -117,14 +159,58 @@ body {
   .caustics::after { animation: none; }
 }
 
-
-/* Translucent "glass" surface for content cards over the blue background. */
 @layer components {
+  /* Frosted "window" surface — the riced glassmorphism: blurred translucent
+     fill + hairline top highlight, like a Hyprland floating window. */
   .glass {
-    background: color-mix(in oklab, #ffffff 8%, transparent);
-    border: 1px solid color-mix(in oklab, #ffffff 15%, transparent);
+    background: color-mix(in oklab, #0d1a2e 62%, transparent);
+    border: 1px solid color-mix(in oklab, #ffffff 12%, transparent);
+    backdrop-filter: blur(12px) saturate(1.2);
+    -webkit-backdrop-filter: blur(12px) saturate(1.2);
   }
   .glass:hover {
-    background: color-mix(in oklab, #ffffff 12%, transparent);
+    background: color-mix(in oklab, #0d1a2e 72%, transparent);
+    border-color: color-mix(in oklab, var(--color-reef-400) 55%, transparent);
+  }
+
+  /* Neon-glow accent border — the "active window" look. Pair with a card. */
+  .glow-teal {
+    box-shadow: 0 0 0 1px rgba(44, 208, 197, 0.35),
+      0 0 22px -4px rgba(44, 208, 197, 0.5);
+  }
+  .glow-mauve {
+    box-shadow: 0 0 0 1px rgba(203, 166, 247, 0.35),
+      0 0 22px -4px rgba(203, 166, 247, 0.5);
+  }
+
+  /* Terminal-style metadata: monospace + faint tracking. */
+  .mono {
+    font-family: var(--font-mono);
+    font-feature-settings: "ss01", "cv01";
+    letter-spacing: -0.01em;
+  }
+
+  /* Waybar module — a rounded pill nav item with a subtle inset fill; the
+     active module lights up with an accent underglow. */
+  .waybar {
+    background: color-mix(in oklab, #0d1a2e 55%, transparent);
+    border: 1px solid color-mix(in oklab, #ffffff 10%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .module {
+    border: 1px solid transparent;
+    transition: color 0.15s, background-color 0.15s, border-color 0.15s,
+      box-shadow 0.15s;
+  }
+  .module:hover {
+    background: color-mix(in oklab, #ffffff 8%, transparent);
+    border-color: color-mix(in oklab, #ffffff 12%, transparent);
+  }
+  .module-active {
+    color: var(--color-reef-300);
+    background: color-mix(in oklab, var(--color-reef-400) 14%, transparent);
+    border-color: color-mix(in oklab, var(--color-reef-400) 45%, transparent);
+    box-shadow: 0 0 18px -6px rgba(44, 208, 197, 0.7);
   }
 }

@@ -58,7 +58,7 @@
   <button
     type="button"
     onclick={() => open(ev)}
-    class="group relative block aspect-[16/10] w-full overflow-hidden rounded-3xl border border-white/15 text-left lg:aspect-auto lg:h-full"
+    class={`group relative block aspect-[16/10] w-full overflow-hidden rounded-3xl border border-white/15 text-left transition-all duration-300 hover:-translate-y-0.5 lg:aspect-auto lg:h-full ${big ? 'hover:border-mauve/60 hover:shadow-[0_0_26px_-6px_rgba(203,166,247,0.7)]' : 'hover:border-reef-400/60 hover:shadow-[0_0_26px_-6px_rgba(44,208,197,0.65)]'}`}
   >
     {#if ev.image}
       <img src={ev.image} alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
@@ -71,8 +71,8 @@
         <span class="rounded bg-amber-400/25 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-amber-200">{$t.common.waitlist}</span>
       {/if}
       <h3 class={`line-clamp-2 font-bold leading-tight text-white ${big ? 'text-base lg:text-lg' : 'text-xs lg:text-sm'}`}>{ev.title}</h3>
-      <p class="truncate text-[11px] text-sky-300">{formatSpan(ev.startDate, ev.endDate, ev.time)}</p>
-      {#if price}<p class="text-xs font-bold text-amber-300">{$t.common.from} {price}</p>{/if}
+      <p class="mono truncate text-[11px] text-sky-300">{formatSpan(ev.startDate, ev.endDate, ev.time)}</p>
+      {#if price}<p class="mono text-xs font-bold text-peach">{$t.common.from} {price}</p>{/if}
     </div>
   </button>
 {/snippet}
@@ -80,8 +80,10 @@
 {#snippet strip(title: string, items: UpcomingEvent[], moreHref: string)}
   <div class="flex min-h-0 flex-1 flex-col">
     <div class="mb-2 flex items-center justify-between">
-      <h2 class="text-xl font-bold text-white">{title}</h2>
-      <a href={moreHref} class="text-sm font-semibold text-reef-300 hover:text-reef-200">{$t.common.viewAll} →</a>
+      <h2 class="flex items-center gap-2 text-xl font-bold text-white">
+        <span class="mono text-reef-400">▹</span>{title}
+      </h2>
+      <a href={moreHref} class="mono text-sm font-semibold text-reef-300 hover:text-reef-200">{$t.common.viewAll} →</a>
     </div>
     <div class="grid min-h-0 flex-1 grid-cols-1 gap-3 sm:grid-cols-3">
       {#if loading}
@@ -101,7 +103,7 @@
     <!-- Featured -->
     <div class="flex min-h-0 flex-col">
       <h2 class="mb-2 flex items-center gap-2 text-xl font-bold text-white">
-        <span class="text-reef-300">★</span>{$t.home.featured}
+        <span class="mono text-mauve">★</span>{$t.home.featured}
       </h2>
       <div class="grid min-h-0 flex-1 grid-cols-1 gap-3 lg:grid-rows-3">
         {#if loading}
@@ -130,7 +132,7 @@
     {#each serviceLinks as s, i}
       <a
         href={s.href}
-        class="group relative flex aspect-square flex-col justify-end overflow-hidden rounded-3xl border border-white/15 shadow-sm transition-transform hover:-translate-y-1"
+        class="group relative flex aspect-square flex-col justify-end overflow-hidden rounded-3xl border border-white/15 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-reef-400/60 hover:shadow-[0_0_30px_-8px_rgba(44,208,197,0.6)]"
       >
         <img src={s.image} alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
@@ -143,7 +145,7 @@
   </div>
 
   <div class="mt-10 text-center">
-    <a href="#get-in-touch" class="rounded-full bg-reef-400 px-6 py-3 font-semibold text-brand-950 transition-colors hover:bg-reef-300">
+    <a href="#get-in-touch" class="mono rounded-full bg-reef-400 px-6 py-3 font-semibold text-brand-950 shadow-[0_0_24px_-6px_rgba(44,208,197,0.8)] transition-colors hover:bg-reef-300">
       {$t.common.contactUs}
     </a>
   </div>
