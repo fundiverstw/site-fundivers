@@ -146,8 +146,6 @@
   // --- State ---------------------------------------------------------------
   let selected = $state<Region | null>(null)
   let sites = $state<DiveSite[]>([])
-  let showShore = $state(true)
-  let showBoat = $state(true)
 
   $effect(() => {
     fetchDiveSites()
@@ -155,18 +153,10 @@
       .catch(() => (sites = [])) // empty list still renders region pins
   })
 
-  let filteredSites = $derived(
-    sites.filter((s) => {
-      if (s.dive_type === 'shore') return showShore
-      if (s.dive_type === 'boat') return showBoat
-      return true // unspecified type stays visible
-    }),
-  )
-
   let sitesByRegion = $derived.by(() => {
     const m = new Map<Region, DiveSite[]>()
     REGION_ORDER.forEach((r) => m.set(r, []))
-    for (const s of filteredSites) if (m.has(s.region)) m.get(s.region)!.push(s)
+    for (const s of sites) if (m.has(s.region)) m.get(s.region)!.push(s)
     return m
   })
 
@@ -201,32 +191,13 @@
 <PageHeader title={$t.map.title} subtitle={$t.map.hint} />
 
 <section class="mx-auto max-w-2xl space-y-4 px-4 py-8 sm:px-6">
-  <!-- Shore / boat filter -->
-  <div class="flex items-center justify-between gap-3">
-    <div class="flex items-center gap-2">
-      <button
-        type="button"
-        onclick={() => (showShore = !showShore)}
-        aria-pressed={showShore}
-        class={`mono flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs transition-colors ${showShore ? 'border-white bg-white text-brand-900' : 'border-white/30 bg-white/10 text-white/70 line-through'}`}
-      >
-        <span class="h-2 w-2 rounded-full bg-amber-400"></span>{$t.map.shore}
-      </button>
-      <button
-        type="button"
-        onclick={() => (showBoat = !showBoat)}
-        aria-pressed={showBoat}
-        class={`mono flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs transition-colors ${showBoat ? 'border-white bg-white text-brand-900' : 'border-white/30 bg-white/10 text-white/70 line-through'}`}
-      >
-        <span class="h-2 w-2 rounded-full bg-sky-400"></span>{$t.map.boat}
-      </button>
-    </div>
-    {#if selected}
+  {#if selected}
+    <div class="flex justify-end">
       <button type="button" onclick={() => (selected = null)} class="mono text-xs font-semibold text-reef-300 hover:text-reef-200">
         {$t.map.back}
       </button>
-    {/if}
-  </div>
+    </div>
+  {/if}
 
   <!-- The map -->
   <div class="glass flex justify-center rounded-2xl p-4">
