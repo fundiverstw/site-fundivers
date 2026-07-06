@@ -30,7 +30,11 @@ export function setLocale(l: Locale) {
 }
 
 const en = {
-  nav: { courses: 'Courses', sites: 'Sites', photos: 'Photos', travel: 'Travel', calendar: 'Calendar', team: 'Team' },
+  nav: { courses: 'Courses', sites: 'Sites', map: 'Map', photos: 'Photos', travel: 'Travel', calendar: 'Calendar', team: 'Team' },
+  map: {
+    title: 'Dive Sites of Taiwan', hint: 'Tap a marker or a region below to zoom in.',
+    back: '← Back to overview', shore: 'Shore', boat: 'Boat', diveSites: 'Dive sites', close: 'Close',
+  },
   common: {
     readMore: 'Read more', viewOnMap: 'View on map', details: 'Details', book: 'Book', bookNow: 'Book Now',
     register: 'Register', joinWaitlist: 'Join waitlist', waitlist: 'Waitlist', viewAll: 'View all',
@@ -110,7 +114,11 @@ const en = {
 export type Dict = typeof en
 
 const zhTW: Dict = {
-  nav: { courses: '課程', sites: '潛點', photos: '相片', travel: '旅遊', calendar: '行事曆', team: '團隊' },
+  nav: { courses: '課程', sites: '潛點', map: '地圖', photos: '相片', travel: '旅遊', calendar: '行事曆', team: '團隊' },
+  map: {
+    title: '台灣潛點地圖', hint: '點選標記或下方地區以放大。',
+    back: '← 返回總覽', shore: '岸潛', boat: '船潛', diveSites: '潛點', close: '關閉',
+  },
   common: {
     readMore: '了解更多', viewOnMap: '查看地圖', details: '詳情', book: '預約', bookNow: '立即預約',
     register: '報名', joinWaitlist: '加入候補', waitlist: '候補', viewAll: '查看全部',
@@ -188,7 +196,11 @@ const zhTW: Dict = {
 }
 
 const ja: Dict = {
-  nav: { courses: 'コース', sites: 'ダイブサイト', photos: 'フォト', travel: 'ツアー', calendar: 'カレンダー', team: 'チーム' },
+  nav: { courses: 'コース', sites: 'ダイブサイト', map: 'マップ', photos: 'フォト', travel: 'ツアー', calendar: 'カレンダー', team: 'チーム' },
+  map: {
+    title: '台湾のダイブサイト', hint: 'マーカーまたは下の地域をタップして拡大します。',
+    back: '← 概要に戻る', shore: 'ビーチ', boat: 'ボート', diveSites: 'ダイブサイト', close: '閉じる',
+  },
   common: {
     readMore: '詳しく見る', viewOnMap: '地図で見る', details: '詳細', book: '予約', bookNow: '今すぐ予約',
     register: '申し込む', joinWaitlist: 'キャンセル待ち', waitlist: 'キャンセル待ち', viewAll: 'すべて見る',

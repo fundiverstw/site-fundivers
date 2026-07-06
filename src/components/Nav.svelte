@@ -8,6 +8,7 @@
   let leftLinks = $derived([
     { href: '/courses', label: $t.nav.courses },
     { href: '/sites', label: $t.nav.sites },
+    { href: '/map', label: $t.nav.map },
     { href: '/photos', label: $t.nav.photos },
   ])
   let rightLinks = $derived([

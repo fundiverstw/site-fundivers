@@ -7,6 +7,7 @@
   import Home from './routes/Home.svelte'
   import Courses from './routes/Courses.svelte'
   import Sites from './routes/Sites.svelte'
+  import Map from './routes/Map.svelte'
   import Photos from './routes/Photos.svelte'
   import Travel from './routes/Travel.svelte'
   import Calendar from './routes/Calendar.svelte'
@@ -17,6 +18,7 @@
     '/': Home,
     '/courses': Courses,
     '/sites': Sites,
+    '/map': Map,
     '/photos': Photos,
     '/travel': Travel,
     '/calendar': Calendar,
