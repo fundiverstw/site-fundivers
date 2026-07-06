@@ -129,29 +129,32 @@ body {
   will-change: transform, opacity;
 }
 .caustics::before {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1280' height='1280'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.011 0.014' numOctaves='3' seed='7' result='t'/%3E%3CfeColorMatrix in='t' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.33 0.33 0.33 0 0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='gamma' amplitude='2.5' exponent='5' offset='0'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='1280' height='1280' filter='url(%23c)' fill='%2366e6da'/%3E%3C/svg%3E");
-  opacity: 0.5;
-  animation: caustic-a 8s ease-in-out infinite;
+  /* Steeper gamma (higher exponent) squeezes the noise into thin, bright veins
+     with dark gaps between — sharp high-contrast caustics rather than a soft
+     haze. Brighter fill pushes the peaks harder. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1280' height='1280'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.009 0.013' numOctaves='2' seed='7' result='t'/%3E%3CfeColorMatrix in='t' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.33 0.33 0.33 0 0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='gamma' amplitude='4' exponent='9' offset='0'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='1280' height='1280' filter='url(%23c)' fill='%2399f6ea'/%3E%3C/svg%3E");
+  opacity: 0.85;
+  animation: caustic-a 7s ease-in-out infinite;
 }
 /* Second layer tinted mauve so the two neon accents (teal + mauve) both drift
    across the scene — the signature riced dual-tone glow. */
 .caustics::after {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1024' height='1024'%3E%3Cfilter id='d'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.016 0.02' numOctaves='2' seed='41' result='t'/%3E%3CfeColorMatrix in='t' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.33 0.33 0.33 0 0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='gamma' amplitude='2' exponent='5' offset='0'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='1024' height='1024' filter='url(%23d)' fill='%23cba6f7'/%3E%3C/svg%3E");
-  opacity: 0.4;
-  animation: caustic-b 11s ease-in-out infinite;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1024' height='1024'%3E%3Cfilter id='d'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.014 0.018' numOctaves='2' seed='41' result='t'/%3E%3CfeColorMatrix in='t' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.33 0.33 0.33 0 0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='gamma' amplitude='3.5' exponent='8' offset='0'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='1024' height='1024' filter='url(%23d)' fill='%23cba6f7'/%3E%3C/svg%3E");
+  opacity: 0.7;
+  animation: caustic-b 9s ease-in-out infinite;
 }
 
 /* 0% and 100% are identical so the loop is seamless (a smooth out-and-back,
    no snap). */
 @keyframes caustic-a {
   0%,
-  100% { transform: translate3d(-9%, -5%, 0) scale(1.08); opacity: 0.28; }
-  50%  { transform: translate3d(9%, 7%, 0) scale(1.5); opacity: 0.5; }
+  100% { transform: translate3d(-14%, -9%, 0) scale(1.0); opacity: 0.55; }
+  50%  { transform: translate3d(14%, 11%, 0) scale(1.7); opacity: 0.9; }
 }
 @keyframes caustic-b {
   0%,
-  100% { transform: translate3d(7%, 9%, 0) scale(1.48) rotate(2deg); opacity: 0.18; }
-  50%  { transform: translate3d(-9%, -7%, 0) scale(1.08) rotate(-2deg); opacity: 0.4; }
+  100% { transform: translate3d(12%, 13%, 0) scale(1.65) rotate(4deg); opacity: 0.35; }
+  50%  { transform: translate3d(-14%, -11%, 0) scale(1.0) rotate(-4deg); opacity: 0.75; }
 }
 
 @media (prefers-reduced-motion: reduce) {

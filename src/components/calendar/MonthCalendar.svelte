@@ -287,7 +287,7 @@
     {#if inMonthEvents.length === 0}
       <p class="text-sm font-medium text-white/80">{$t.calendar.noEvents}</p>
     {/if}
-    {#each inMonthEvents as ev (ev.id)}
+    {#each inMonthEvents as ev (`${ev.id}_${ev.start_time}`)}
       <button
         onclick={() => onPickEvent(ev)}
         class="w-full rounded-xl border border-sky-200 bg-white/80 p-3 text-left backdrop-blur-md transition-colors hover:border-red-500"
