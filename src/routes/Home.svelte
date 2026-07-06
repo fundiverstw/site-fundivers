@@ -66,7 +66,7 @@
       <div class="absolute inset-0 bg-gradient-to-br from-brand-700 to-reef-700"></div>
     {/if}
     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
-    <div class="absolute inset-x-0 bottom-0 p-3">
+    <div class={`absolute inset-x-0 bottom-0 ${big ? 'px-6 pb-6 pt-5' : 'px-5 pb-5 pt-4'}`}>
       {#if ev.fullyBooked}
         <span class="rounded bg-amber-400/25 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-amber-200">{$t.common.waitlist}</span>
       {/if}
@@ -136,7 +136,7 @@
       >
         <img src={s.image} alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
-        <div class="relative z-10 p-5">
+        <div class="relative z-10 p-6 sm:p-7">
           <h3 class="text-lg font-bold text-white">{$t.home.services[i].title}</h3>
           <p class="mt-1 line-clamp-3 text-sm text-white/85">{$t.home.services[i].desc}</p>
         </div>
