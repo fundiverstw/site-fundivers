@@ -14,13 +14,15 @@ export type Destination = {
   country: string | null
   international: boolean
   diveType: string | null
-  image: string | null
+  requirements: string | null // diver_requirements — cert / experience needed
+  image: string | null // location_picture — card / cover photo
+  background: string | null // background_picture — wide hero photo
 }
 
 export async function fetchDestinations(): Promise<Destination[]> {
   const { data, error } = await supabase
     .from('travel_destinations')
-    .select('id, admin_title, slug, tagline, country, international, divetype, location_picture, sort_order')
+    .select('id, admin_title, slug, tagline, country, international, divetype, diver_requirements, location_picture, background_picture, sort_order')
     .order('sort_order')
   if (error) throw error
   return (data ?? []).map((d) => ({
@@ -31,6 +33,8 @@ export async function fetchDestinations(): Promise<Destination[]> {
     country: d.country,
     international: d.international === true,
     diveType: d.divetype,
+    requirements: d.diver_requirements,
     image: wixImageLocal(d.location_picture),
+    background: wixImageLocal(d.background_picture),
   }))
 }

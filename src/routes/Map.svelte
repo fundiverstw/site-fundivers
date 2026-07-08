@@ -1,8 +1,7 @@
 <script lang="ts">
   import taiwanGeo from '../lib/taiwan.geo.json'
-  import { fetchDiveSites, type DiveSite, type Region } from '../lib/sites'
+  import { fetchDiveSites, diveSitePath, type DiveSite, type Region } from '../lib/sites'
   import { placeLabels } from '../lib/map-layout'
-  import { wixSiteUrl } from '../lib/dive-site-links'
   import { t } from '../lib/i18n'
   import PageHeader from '../components/PageHeader.svelte'
 
@@ -237,22 +236,16 @@
       <!-- Site markers (zoomed in) -->
       {#if selected}
         {#each visibleSiteLayout as item (item.site.id)}
-          {@const url = wixSiteUrl(item.site.wix_slug)}
           <g class="pointer-events-none">
             <line
               x1={item.leaderStart[0]} y1={item.leaderStart[1]}
               x2={item.leaderEnd[0]} y2={item.leaderEnd[1]}
               stroke="#dc2626" stroke-width="1.4" stroke-opacity="0.8" marker-end="url(#site-arrow)"
             />
-            {#if url}
-              <a href={url} target="_blank" rel="noopener noreferrer" aria-label={item.site.name} class="pointer-events-auto cursor-pointer">
-                <circle cx={item.vx} cy={item.vy} r="3" fill="#dc2626" stroke="white" stroke-width="1.2" />
-                <text x={item.labelX} y={item.labelY} text-anchor={item.anchor} font-size="10" font-weight="700" fill="#1e3a8a" stroke="white" stroke-width="3.2" paint-order="stroke fill" stroke-linejoin="round" style="text-decoration: underline">{item.site.name}</text>
-              </a>
-            {:else}
+            <a href={diveSitePath(item.site)} aria-label={item.site.name} class="pointer-events-auto cursor-pointer">
               <circle cx={item.vx} cy={item.vy} r="3" fill="#dc2626" stroke="white" stroke-width="1.2" />
-              <text x={item.labelX} y={item.labelY} text-anchor={item.anchor} font-size="10" font-weight="700" fill="#1e3a8a" stroke="white" stroke-width="3.2" paint-order="stroke fill" stroke-linejoin="round">{item.site.name}</text>
-            {/if}
+              <text x={item.labelX} y={item.labelY} text-anchor={item.anchor} font-size="10" font-weight="700" fill="#1e3a8a" stroke="white" stroke-width="3.2" paint-order="stroke fill" stroke-linejoin="round" style="text-decoration: underline">{item.site.name}</text>
+            </a>
           </g>
         {/each}
       {/if}
@@ -285,13 +278,8 @@
         <h3 class="mono mb-2 text-xs font-semibold uppercase tracking-wider text-reef-300">{$t.map.diveSites}</h3>
         <ul class="space-y-2 text-sm text-brand-50">
           {#each visibleSites as s (s.id)}
-            {@const url = wixSiteUrl(s.wix_slug)}
             <li>
-              {#if url}
-                <a href={url} target="_blank" rel="noopener noreferrer" class="font-semibold text-white underline decoration-reef-400/50 underline-offset-2 hover:decoration-reef-300">{s.name}</a>
-              {:else}
-                <strong class="font-semibold text-white">{s.name}</strong>
-              {/if}
+              <a href={diveSitePath(s)} class="font-semibold text-white underline decoration-reef-400/50 underline-offset-2 hover:decoration-reef-300">{s.name}</a>
               {#if s.tagline}<p class="mt-0.5 text-xs text-brand-200">{s.tagline}</p>{/if}
             </li>
           {/each}

@@ -48,3 +48,13 @@ export const AREA_ORDER: Array<'North' | 'South' | 'Outlying Islands'> = [
 export async function fetchDiveSites(): Promise<DiveSite[]> {
   return [...DIVE_SITES].sort((a, b) => a.name.localeCompare(b.name))
 }
+
+/** A single dive site by its id (the /sites/<id> route param), or null. */
+export function diveSiteById(id: string): DiveSite | null {
+  return DIVE_SITES.find((s) => s.id === id) ?? null
+}
+
+/** Path to a dive site's dedicated detail page. */
+export function diveSitePath(site: Pick<DiveSite, 'id'>): string {
+  return `/sites/${site.id}`
+}

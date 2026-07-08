@@ -7,6 +7,7 @@
   import Home from './routes/Home.svelte'
   import Courses from './routes/Courses.svelte'
   import Sites from './routes/Sites.svelte'
+  import DiveSiteDetail from './routes/DiveSiteDetail.svelte'
   import Map from './routes/Map.svelte'
   import Photos from './routes/Photos.svelte'
   import Travel from './routes/Travel.svelte'
@@ -26,7 +27,13 @@
     '/team': Team,
   }
 
-  let Current = $derived(routes[$path] ?? NotFound)
+  // /sites/<id> renders the dedicated dive-site page; it reads the id from the
+  // path itself. All other paths use the exact-match table above.
+  let Current = $derived(
+    $path.startsWith('/sites/') && $path.length > '/sites/'.length
+      ? DiveSiteDetail
+      : routes[$path] ?? NotFound,
+  )
 
   // Keep <html lang> in sync with the chosen locale.
   $effect(() => {

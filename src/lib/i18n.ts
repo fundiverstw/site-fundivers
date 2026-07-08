@@ -82,6 +82,14 @@ const en = {
     none: 'No dive sites listed yet.', loadError: 'Couldn’t load dive sites',
     areas: { North: 'North', South: 'South', 'Outlying Islands': 'Outlying Islands' },
   },
+  siteDetail: {
+    back: '← All dive sites', overview: 'About this site', highlights: 'Highlights', marineLife: 'Marine life',
+    quickFacts: 'Quick facts', depth: 'Depth', difficulty: 'Level', season: 'Best season', waterTemp: 'Water temp',
+    visibility: 'Visibility', requirements: 'Diver requirements', diveType: 'Dive type', region: 'Region',
+    directions: 'Open in Google Maps', morePage: 'Full site page', cta: 'Dive this site',
+    ctaText: 'See it on our calendar or ask us about a trip.', seeCalendar: 'See the calendar', contact: 'Get in touch',
+    notFound: 'That dive site couldn’t be found.',
+  },
   travel: {
     title: 'Dive Travel', subtitle: 'Planned group tours and fully customized trips — around Taiwan and beyond.',
     aroundTaiwan: 'Around Taiwan', international: 'International Dive Tours', loadError: 'Couldn’t load destinations',
@@ -166,6 +174,14 @@ const zhTW: Dict = {
     none: '尚未列出任何潛點。', loadError: '無法載入潛點',
     areas: { North: '北部', South: '南部', 'Outlying Islands': '離島' },
   },
+  siteDetail: {
+    back: '← 所有潛點', overview: '潛點介紹', highlights: '亮點', marineLife: '海洋生物',
+    quickFacts: '重點資訊', depth: '深度', difficulty: '等級', season: '最佳季節', waterTemp: '水溫',
+    visibility: '能見度', requirements: '潛水員資格', diveType: '潛水類型', region: '區域',
+    directions: '在 Google 地圖開啟', morePage: '完整潛點頁面', cta: '來潛這個點',
+    ctaText: '在行事曆上查看，或詢問我們的行程。', seeCalendar: '查看行事曆', contact: '聯絡我們',
+    notFound: '找不到這個潛點。',
+  },
   travel: {
     title: '潛旅', subtitle: '既定團體行程與完全客製化的旅程——台灣與更遠的地方。',
     aroundTaiwan: '台灣周邊', international: '國際潛旅', loadError: '無法載入目的地',
@@ -247,6 +263,14 @@ const ja: Dict = {
     title: 'ダイブサイト', subtitle: '北部の手軽なビーチダイブから世界クラスの離島ダイビングまで——台湾の水中ハイライト。',
     none: 'まだダイブサイトが登録されていません。', loadError: 'ダイブサイトを読み込めませんでした',
     areas: { North: '北部', South: '南部', 'Outlying Islands': '離島' },
+  },
+  siteDetail: {
+    back: '← すべてのダイブサイト', overview: 'サイト紹介', highlights: '見どころ', marineLife: '海の生き物',
+    quickFacts: '基本情報', depth: '水深', difficulty: 'レベル', season: 'ベストシーズン', waterTemp: '水温',
+    visibility: '透明度', requirements: 'ダイバー要件', diveType: 'ダイブタイプ', region: 'エリア',
+    directions: 'Google マップで開く', morePage: 'サイト詳細ページ', cta: 'このサイトで潜る',
+    ctaText: 'カレンダーで確認するか、ツアーについてお問い合わせください。', seeCalendar: 'カレンダーを見る', contact: 'お問い合わせ',
+    notFound: 'そのダイブサイトが見つかりませんでした。',
   },
   travel: {
     title: 'ダイブツアー', subtitle: '企画グループツアーから完全オーダーメイドの旅まで——台湾、そしてその先へ。',
