@@ -2,10 +2,7 @@
   import { fetchUpcomingEvents, type UpcomingEvent } from '../lib/events'
   import { formatSpan, twd } from '../lib/format'
   import { bookUrl, registerUrl } from '../lib/config'
-  import { COURSES } from '../lib/courses'
-
-  // Each card links to the course's page on the marketing site.
-  const COURSE_BASE = 'https://www.fundiverstw.com/courses-1/'
+  import { COURSES, coursePath } from '../lib/courses'
   import { t } from '../lib/i18n'
   import PageHeader from '../components/PageHeader.svelte'
 
@@ -26,9 +23,7 @@
   <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
     {#each COURSES as c}
       <a
-        href={`${COURSE_BASE}${c.slug}`}
-        target="_blank"
-        rel="noopener"
+        href={coursePath(c)}
         class="group relative flex aspect-square flex-col justify-end overflow-hidden rounded-3xl border border-white/15 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-reef-400/60 hover:shadow-[0_0_28px_-8px_rgba(44,208,197,0.6)]"
       >
         <img src={c.image} alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />

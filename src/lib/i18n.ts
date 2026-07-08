@@ -77,6 +77,13 @@ const en = {
     upcomingDates: 'Upcoming course dates',
     noDates: 'No scheduled course dates right now — courses also run on request.', getInTouch: 'Get in touch', enroll: 'Enroll',
   },
+  courseDetail: {
+    back: '← All courses', overview: 'About this course', youWillLearn: "What you'll learn", quickFacts: 'Course facts',
+    prerequisites: 'Prerequisites', minAge: 'Minimum age', duration: 'Duration', depth: 'Max depth', certifies: 'You earn',
+    upcoming: 'Upcoming dates', noDates: 'No scheduled dates right now — this course also runs on request.',
+    next: 'Where to next', fullPage: 'Full course page', cta: 'Ready to start?',
+    ctaText: 'Book a date or ask us anything about this course.', contact: 'Get in touch', notFound: 'That course couldn’t be found.',
+  },
   sites: {
     title: 'Dive Sites', subtitle: 'From convenient shore dives in the north to world-class island diving — Taiwan’s underwater highlights.',
     none: 'No dive sites listed yet.', loadError: 'Couldn’t load dive sites',
@@ -114,7 +121,7 @@ const en = {
   },
   footer: {
     blurb: 'Guided dive trips, PADI courses, and the best dive sites across Taiwan and beyond.',
-    contact: 'Contact', follow: 'Follow', rights: 'by Fun Divers Taiwan.', proudly: 'Proudly created with 🤿 ❤️ in Taipei', openSource: 'Open source',
+    contact: 'Contact', follow: 'Follow', rights: 'Fun Divers Taiwan. All rights reserved.', proudly: 'Proudly created with 🤿 ❤️ in Taipei', openSource: 'Open source',
     openSourceBlurb: 'We proudly develop FunDive, our open-source dive-shop management software.',
   },
   notFound: { code: '404', title: 'Page not found', text: 'That page has drifted off with the current.', back: 'Back to home' },
@@ -169,6 +176,13 @@ const zhTW: Dict = {
     title: 'PADI 課程', subtitle: '學習潛水、提升等級或邁向專業——台灣全系列 PADI 休閒潛水課程。',
     upcomingDates: '近期課程日期',
     noDates: '目前沒有排定的課程日期——課程亦可依需求安排。', getInTouch: '與我們聯絡', enroll: '報名',
+  },
+  courseDetail: {
+    back: '← 所有課程', overview: '課程介紹', youWillLearn: '你將學到', quickFacts: '課程資訊',
+    prerequisites: '先修資格', minAge: '最低年齡', duration: '時長', depth: '最大深度', certifies: '取得資格',
+    upcoming: '近期日期', noDates: '目前沒有排定的日期——本課程亦可依需求安排。',
+    next: '接下來', fullPage: '完整課程頁面', cta: '準備好開始了嗎？',
+    ctaText: '預約日期，或詢問我們關於這門課程的任何問題。', contact: '與我們聯絡', notFound: '找不到這門課程。',
   },
   sites: {
     title: '潛點', subtitle: '從北部便利的岸潛到世界級的離島潛水——台灣水下的精華亮點。',
@@ -261,6 +275,13 @@ const ja: Dict = {
     upcomingDates: '今後のコース日程',
     noDates: '現在予定されているコース日程はありません——コースはリクエストでも開催します。', getInTouch: 'お問い合わせ', enroll: '申し込む',
   },
+  courseDetail: {
+    back: '← すべてのコース', overview: 'コース紹介', youWillLearn: '学べること', quickFacts: 'コース情報',
+    prerequisites: '受講条件', minAge: '最低年齢', duration: '所要日数', depth: '最大水深', certifies: '取得資格',
+    upcoming: '開催予定', noDates: '現在予定されている日程はありません——このコースはリクエストでも開催します。',
+    next: '次のステップ', fullPage: 'コース詳細ページ', cta: '始めませんか？',
+    ctaText: '日程を予約するか、このコースについてお気軽にお問い合わせください。', contact: 'お問い合わせ', notFound: 'そのコースが見つかりませんでした。',
+  },
   sites: {
     title: 'ダイブサイト', subtitle: '北部の手軽なビーチダイブから世界クラスの離島ダイビングまで——台湾の水中ハイライト。',
     none: 'まだダイブサイトが登録されていません。', loadError: 'ダイブサイトを読み込めませんでした',
@@ -298,7 +319,7 @@ const ja: Dict = {
   },
   footer: {
     blurb: 'ガイド付きダイブツアー、PADI コース、そして台湾とその先の最高のダイブサイト。',
-    contact: '連絡先', follow: 'フォロー', rights: 'by Fun Divers Taiwan.', proudly: '台北で 🤿 ❤️ を込めて制作', openSource: 'オープンソース',
+    contact: '連絡先', follow: 'フォロー', rights: 'Fun Divers Taiwan. All rights reserved.', proudly: '台北で 🤿 ❤️ を込めて制作', openSource: 'オープンソース',
     openSourceBlurb: 'オープンソースのダイビングショップ管理ソフト「FunDive」を開発しています。',
   },
   notFound: { code: '404', title: 'ページが見つかりません', text: 'そのページは潮に流されてしまったようです。', back: 'ホームへ戻る' },

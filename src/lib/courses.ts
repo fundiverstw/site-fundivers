@@ -12,6 +12,23 @@ export type CourseCard = { title: string; slug: string; image: string; desc: str
 
 const img = (seg: string) => mediaIdLocal(seg)
 
+// Clean route id for a course's /courses/<id> detail page. The Wix `slug` can
+// contain percent-encoding (e.g. %26 for '&'); collapse those to hyphens so the
+// internal URL stays tidy. The original slug is still used for the outbound
+// fundiverstw.com/courses-1/<slug> link.
+export function courseId(slug: string): string {
+  return slug.replace(/%[0-9a-f]{2}/gi, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')
+}
+
+export function coursePath(c: CourseCard): string {
+  return `/courses/${courseId(c.slug)}`
+}
+
+/** The course whose route id matches the /courses/<id> param, or null. */
+export function courseByRouteId(id: string): CourseCard | null {
+  return COURSES.find((c) => courseId(c.slug) === id) ?? null
+}
+
 export const COURSES: CourseCard[] = [
   { title: 'PADI Open Water Course', slug: 'padi-open-water-course', image: img('b37fef_9c73f7e0bb244570a119812991ef0ab9~mv2.jpg'), desc: 'Your scuba adventure starts here — your first full certification, diving to 18m anywhere in the world.' },
   { title: 'PADI Advanced Open Water', slug: 'padi-advanced-course', image: img('b37fef_357153d63c3245819d71d68d9d2f1790~mv2.jpg'), desc: 'Five adventure dives including deep and navigation. Build skills and confidence down to 30m.' },

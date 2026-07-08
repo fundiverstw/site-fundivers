@@ -6,6 +6,7 @@
   import Footer from './components/Footer.svelte'
   import Home from './routes/Home.svelte'
   import Courses from './routes/Courses.svelte'
+  import CourseDetail from './routes/CourseDetail.svelte'
   import Sites from './routes/Sites.svelte'
   import DiveSiteDetail from './routes/DiveSiteDetail.svelte'
   import Map from './routes/Map.svelte'
@@ -27,13 +28,13 @@
     '/team': Team,
   }
 
-  // /sites/<id> renders the dedicated dive-site page; it reads the id from the
-  // path itself. All other paths use the exact-match table above.
-  let Current = $derived(
-    $path.startsWith('/sites/') && $path.length > '/sites/'.length
-      ? DiveSiteDetail
-      : routes[$path] ?? NotFound,
-  )
+  // /sites/<id> and /courses/<id> render dedicated detail pages; each reads the
+  // id from the path itself. All other paths use the exact-match table above.
+  let Current = $derived.by(() => {
+    if ($path.startsWith('/sites/') && $path.length > '/sites/'.length) return DiveSiteDetail
+    if ($path.startsWith('/courses/') && $path.length > '/courses/'.length) return CourseDetail
+    return routes[$path] ?? NotFound
+  })
 
   // Keep <html lang> in sync with the chosen locale.
   $effect(() => {

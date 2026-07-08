@@ -43,8 +43,8 @@
       >
         <img
           src="/imgs/fundive-logo-dark.svg"
-          alt="FunDive"
-          class="h-9 w-auto opacity-90 transition-opacity group-hover:opacity-100 sm:h-11"
+          alt="FunDive — dive shop management software"
+          class="h-20 w-auto opacity-90 transition-opacity group-hover:opacity-100 sm:h-28"
         />
         <span class="max-w-md text-xs leading-relaxed text-brand-300 transition-colors group-hover:text-brand-100 sm:text-sm">
           {$t.footer.openSourceBlurb}

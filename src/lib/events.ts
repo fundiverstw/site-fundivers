@@ -13,6 +13,7 @@ export type UpcomingEvent = {
   id: string
   type: 'dive' | 'course'
   title: string
+  category: string | null // admin_title short code (e.g. 'OW', 'AOW') — course-page matching
   startDate: string // 'YYYY-MM-DD'
   endDate: string | null
   time: string | null // 'HH:mm'
@@ -116,6 +117,7 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
       id: d.id,
       type: 'dive',
       title: d.display_title || d.admin_title || 'Dive',
+      category: d.admin_title,
       startDate: d.start_date,
       endDate: d.end_date,
       time: toHhmm(d.start_time),
@@ -139,6 +141,7 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
       id: c.id,
       type: 'course',
       title: c.display_title || c.admin_title || 'Course',
+      category: c.admin_title,
       startDate: future[0],
       endDate: future[future.length - 1] !== future[0] ? future[future.length - 1] : null,
       time: toHhmm(c.start_time),
