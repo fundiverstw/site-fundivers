@@ -115,6 +115,7 @@ const en = {
   footer: {
     blurb: 'Guided dive trips, PADI courses, and the best dive sites across Taiwan and beyond.',
     contact: 'Contact', follow: 'Follow', rights: 'by Fun Divers Taiwan.', proudly: 'Proudly created with 🤿 ❤️ in Taipei', openSource: 'Open source',
+    openSourceBlurb: 'We proudly develop FunDive, our open-source dive-shop management software.',
   },
   notFound: { code: '404', title: 'Page not found', text: 'That page has drifted off with the current.', back: 'Back to home' },
 }
@@ -207,6 +208,7 @@ const zhTW: Dict = {
   footer: {
     blurb: '導潛行程、PADI 課程，以及台灣與更遠方最棒的潛點。',
     contact: '聯絡', follow: '追蹤', rights: 'Fun Divers Taiwan 版權所有。', proudly: '在台北以 🤿 ❤️ 用心打造', openSource: '開源專案',
+    openSourceBlurb: '我們自豪地開發 FunDive——我們的開源潛水店管理軟體。',
   },
   notFound: { code: '404', title: '找不到頁面', text: '這個頁面隨著洋流漂走了。', back: '回到首頁' },
 }
@@ -297,6 +299,7 @@ const ja: Dict = {
   footer: {
     blurb: 'ガイド付きダイブツアー、PADI コース、そして台湾とその先の最高のダイブサイト。',
     contact: '連絡先', follow: 'フォロー', rights: 'by Fun Divers Taiwan.', proudly: '台北で 🤿 ❤️ を込めて制作', openSource: 'オープンソース',
+    openSourceBlurb: 'オープンソースのダイビングショップ管理ソフト「FunDive」を開発しています。',
   },
   notFound: { code: '404', title: 'ページが見つかりません', text: 'そのページは潮に流されてしまったようです。', back: 'ホームへ戻る' },
 }
