@@ -9,7 +9,8 @@ if (!supabaseUrl || !supabaseAnonKey) {
 
 // Read-only public client for the same Supabase project as app-fundivers.
 // No auth: this site never signs anyone in — RLS exposes only public catalog
-// rows (dive_sites, EO_dives, EO_courses, EO_prices, cert_levels) to `anon`.
+// rows (events, travel_destinations, prices, cert_levels) to `anon`. Dive-site
+// map data is bundled locally now (see dive-sites.data.ts), not read from here.
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     persistSession: false,

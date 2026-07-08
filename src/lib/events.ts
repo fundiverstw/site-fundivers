@@ -1,10 +1,13 @@
 import { supabase } from './supabase'
-import { diveOutingFromDestinations, type DiveOuting } from './event-colors'
+import { type DiveOuting } from './event-colors'
 import { wixImageLocal } from './images'
 
-// Public, read-only view of the shared event catalog (EO_dives + EO_courses),
-// adapted from app-fundivers/src/lib/events.ts but trimmed to what a marketing
-// calendar needs: title, date span, starting price, and full/cancelled flags.
+// Public, read-only view of the shared event catalog. The app consolidated the
+// old EO_dives + EO_courses Wix-sync tables into a single `events` table keyed
+// on `id` and discriminated by `kind` ('dive' | 'course'); descriptive copy
+// (included / schedule / prereqs) is now inline on the row rather than joined
+// from DiveTravel. Trimmed to what a marketing calendar needs: title, date
+// span, starting price, and full/cancelled flags.
 
 export type UpcomingEvent = {
   id: string
@@ -21,12 +24,12 @@ export type UpcomingEvent = {
 }
 
 type DiveRow = {
-  _id: string
+  id: string
   display_title: string | null
   admin_title: string | null
   start_date: string | null
   end_date: string | null
-  time: string | null
+  start_time: string | null
   price: string | null
   fully_booked: boolean | null
   featured: boolean | null
@@ -35,7 +38,7 @@ type DiveRow = {
 }
 
 type CourseRow = {
-  _id: string
+  id: string
   display_title: string | null
   admin_title: string | null
   start_time: string | null
@@ -46,7 +49,7 @@ type CourseRow = {
   featured_image: string | null
 }
 
-type PriceRow = { _id: string; starting_at: number | null }
+type PriceRow = { id: string; starting_at: number | null }
 
 /** Today in the shop's timezone (Asia/Taipei), as 'YYYY-MM-DD'. */
 function todayKey(): string {
@@ -60,14 +63,17 @@ function toHhmm(raw: string | null | undefined): string | null {
   return m ? `${m[1].padStart(2, '0')}:${m[2]}` : null
 }
 
+// Starting prices live in the shared `prices` table (anon-readable), referenced
+// by `events.price` (a uuid). The inline `events.starting_at` column is not
+// populated, so we always resolve through the price row.
 async function fetchPrices(ids: Array<string | null>): Promise<Map<string, number | null>> {
   const priceIds = [...new Set(ids.filter((x): x is string => !!x))]
   if (!priceIds.length) return new Map()
   const { data } = await supabase
-    .from('EO_prices')
-    .select('_id, starting_at')
-    .in('_id', priceIds)
-  return new Map((data ?? []).map((p: PriceRow) => [p._id, p.starting_at]))
+    .from('prices')
+    .select('id, starting_at')
+    .in('id', priceIds)
+  return new Map((data ?? []).map((p: PriceRow) => [p.id, p.starting_at]))
 }
 
 /**
@@ -80,15 +86,17 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
 
   const [divesResp, coursesResp] = await Promise.all([
     supabase
-      .from('EO_dives')
-      .select('_id, display_title, admin_title, start_date, end_date, time, price, fully_booked, featured, notes, featured_image')
+      .from('events')
+      .select('id, display_title, admin_title, start_date, end_date, start_time, price, fully_booked, featured, notes, featured_image')
+      .eq('kind', 'dive')
       .is('cancelled_at', null)
       .eq('is_private', false)
       .gte('start_date', today)
       .order('start_date'),
     supabase
-      .from('EO_courses')
-      .select('_id, display_title, admin_title, start_time, price, course_days, fully_booked, schedule, featured_image')
+      .from('events')
+      .select('id, display_title, admin_title, start_time, price, course_days, fully_booked, schedule, featured_image')
+      .eq('kind', 'course')
       .is('cancelled_at', null),
   ])
 
@@ -105,12 +113,12 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
   for (const d of dives) {
     if (!d.start_date) continue
     events.push({
-      id: d._id,
+      id: d.id,
       type: 'dive',
       title: d.display_title || d.admin_title || 'Dive',
       startDate: d.start_date,
       endDate: d.end_date,
-      time: toHhmm(d.time),
+      time: toHhmm(d.start_time),
       startingAt: d.price ? prices.get(d.price) ?? null : null,
       fullyBooked: d.fully_booked ?? false,
       featured: d.featured ?? false,
@@ -128,7 +136,7 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
       .sort()
     if (!future.length) continue
     events.push({
-      id: c._id,
+      id: c.id,
       type: 'course',
       title: c.display_title || c.admin_title || 'Course',
       startDate: future[0],
@@ -176,7 +184,7 @@ export function isPastEvent(
   return dayKey(ev.end_time ?? ev.start_time) < dayKey(now)
 }
 
-/** ISO timestamp from an EO_* date ('YYYY-MM-DD') + time ('HH:MM:SS'). */
+/** ISO timestamp from an event date ('YYYY-MM-DD') + time ('HH:MM:SS'). */
 function toIso(date: string | null | undefined, time: string | null | undefined): string | null {
   if (!date) return null
   const t = time && time.trim() ? time.trim() : '00:00:00'
@@ -215,58 +223,32 @@ function datesInRange(fromDate: string, toDate: string): string[] {
   return out
 }
 
-/** Classify each dive 'local'|'trip' from its linked destinations (best-effort). */
-async function attachDiveOutings(diveIds: string[]): Promise<Map<string, DiveOuting>> {
-  const out = new Map<string, DiveOuting>()
-  if (!diveIds.length) return out
-  const { data: links } = await supabase
-    .from('eo_dive_destinations')
-    .select('eo_dive_id, destination_id')
-    .in('eo_dive_id', diveIds)
-  if (!links?.length) return out
-
-  const destIds = [...new Set(links.map((l) => l.destination_id))]
-  const { data: dests } = await supabase
-    .from('TravelDestinations')
-    .select('_id, divetype, northeast_diving')
-    .in('_id', destIds)
-  const destById = new Map((dests ?? []).map((d) => [d._id, d]))
-
-  const byDive = new Map<string, Array<{ divetype: string | null; northeast_diving: boolean | null }>>()
-  for (const l of links) {
-    const d = destById.get(l.destination_id)
-    if (!d) continue
-    const arr = byDive.get(l.eo_dive_id) ?? []
-    arr.push({ divetype: d.divetype, northeast_diving: d.northeast_diving })
-    byDive.set(l.eo_dive_id, arr)
-  }
-  for (const [id, ds] of byDive) {
-    const o = diveOutingFromDestinations(ds)
-    if (o) out.set(id, o)
-  }
-  return out
-}
-
+// Dive/course share the `events` table. `is_trip`/`is_boat_dive` (populated,
+// NOT NULL) replace the old destination-join heuristic that read the now-dropped
+// travel_destinations.northeast_diving flag: a boat dive or an out-of-town trip
+// colors yellow; otherwise leave null so diveIsTripOrBoat() can title-sniff.
 const DIVE_COLS =
-  '_id, admin_title, display_title, calendar_title, start_date, time, end_date, featured, fully_booked, capacity, price, is_private, cancelled_at'
+  'id, admin_title, display_title, calendar_title, start_date, start_time, end_date, featured, fully_booked, capacity, price, is_trip, is_boat_dive'
 const COURSE_COLS =
-  '_id, admin_title, display_title, calendar_title, start_time, price, course_days, cancelled_at, fully_booked, capacity'
+  'id, admin_title, display_title, calendar_title, start_time, price, course_days, fully_booked, capacity'
 
 type DiveRow2 = {
-  _id: string
+  id: string
   admin_title: string | null
   display_title: string | null
   calendar_title: string | null
   start_date: string | null
-  time: string | null
+  start_time: string | null
   end_date: string | null
   featured: boolean | null
   fully_booked: boolean | null
   capacity: number | null
   price: string | null
+  is_trip: boolean | null
+  is_boat_dive: boolean | null
 }
 type CourseRow2 = {
-  _id: string
+  id: string
   admin_title: string | null
   display_title: string | null
   calendar_title: string | null
@@ -277,22 +259,22 @@ type CourseRow2 = {
   capacity: number | null
 }
 
-function diveToCalEvent(d: DiveRow2, prices: Map<string, number | null>, outing: DiveOuting | null): CalEvent | null {
-  const start = toIso(d.start_date, d.time)
+function diveToCalEvent(d: DiveRow2, prices: Map<string, number | null>): CalEvent | null {
+  const start = toIso(d.start_date, d.start_time)
   if (!start) return null
   return {
-    id: d._id,
+    id: d.id,
     type: 'dive',
     title: d.display_title || d.admin_title || 'Dive',
     calendar_title: d.calendar_title ?? null,
     course_category: null,
     start_time: start,
-    end_time: toIso(d.end_date, d.time),
-    start_time_hhmm: toHhmm(d.time),
+    end_time: toIso(d.end_date, d.start_time),
+    start_time_hhmm: toHhmm(d.start_time),
     featured: d.featured ?? false,
     price: d.price ? prices.get(d.price) ?? null : null,
     currency: 'TWD',
-    dive_outing: outing,
+    dive_outing: d.is_trip || d.is_boat_dive ? 'trip' : null,
     fully_booked: d.fully_booked ?? false,
     capacity: d.capacity ?? null,
   }
@@ -302,7 +284,7 @@ function courseToCalEvents(c: CourseRow2, prices: Map<string, number | null>): C
   const dayKeys = (c.course_days ?? []).map(toDateKey).filter((k): k is string => !!k)
   if (!dayKeys.length) return []
   const shared = {
-    id: c._id,
+    id: c.id,
     type: 'course' as const,
     title: c.display_title || c.admin_title || 'Course',
     calendar_title: c.calendar_title ?? null,
@@ -333,16 +315,18 @@ function courseToCalEvents(c: CourseRow2, prices: Map<string, number | null>): C
 export async function fetchEventsInRange(fromDate: string, toDate: string): Promise<CalEvent[]> {
   const [divesResp, coursesResp] = await Promise.all([
     supabase
-      .from('EO_dives')
+      .from('events')
       .select(DIVE_COLS)
+      .eq('kind', 'dive')
       .is('cancelled_at', null)
       .eq('is_private', false)
       .gte('start_date', fromDate)
       .lte('start_date', toDate)
       .order('start_date'),
     supabase
-      .from('EO_courses')
+      .from('events')
       .select(COURSE_COLS)
+      .eq('kind', 'course')
       .is('cancelled_at', null)
       .overlaps('course_days', datesInRange(fromDate, toDate)),
   ])
@@ -350,24 +334,21 @@ export async function fetchEventsInRange(fromDate: string, toDate: string): Prom
   const dives = (divesResp.data ?? []) as DiveRow2[]
   const courses = (coursesResp.data ?? []) as CourseRow2[]
 
-  const [prices, outings] = await Promise.all([
-    fetchPrices([...dives.map((d) => d.price), ...courses.map((c) => c.price)]),
-    attachDiveOutings(dives.map((d) => d._id)),
-  ])
+  const prices = await fetchPrices([...dives.map((d) => d.price), ...courses.map((c) => c.price)])
 
   return [
     ...dives
-      .map((d) => diveToCalEvent(d, prices, outings.get(d._id) ?? null))
+      .map((d) => diveToCalEvent(d, prices))
       .filter((x): x is CalEvent => !!x),
     ...courses.flatMap((c) => courseToCalEvents(c, prices)),
   ].sort((a, b) => a.start_time.localeCompare(b.start_time))
 }
 
 // ── Per-event descriptive text (schedule, what's included, prereqs) ──────────
-// Fetched on demand when an event is opened. Column set reflects the live prod
-// schema (verified): courses carry included/schedule/req_dives/prereq_cert_id;
-// dives carry notes + a DiveTravel_reference whose row holds included/itinerary/
-// transportation/etc. (EO_dives has no schedule/included of its own).
+// Fetched on demand when an event is opened. The consolidated `events` table
+// carries the copy inline (notes / included / schedule / prereqs / req_dives /
+// prereq_cert_id) for both dives and courses — the old EO_dives→DiveTravel join
+// is gone, so `not_included` and `transportation` no longer have a source.
 
 // Normalized shape the shared EventModal renders — both the calendar
 // (CalEvent) and the homepage (UpcomingEvent) map into this.
@@ -411,56 +392,20 @@ async function certName(id: string | null | undefined): Promise<string | null> {
 
 /** Descriptive copy for a single event, or null when it has none. */
 export async function fetchEventDetails(ev: Pick<CalEvent, 'id' | 'type'>): Promise<EventDetails | null> {
-  if (ev.type === 'course') {
-    const { data } = await supabase
-      .from('EO_courses')
-      .select('included, schedule, req_dives, prereq_cert_id')
-      .eq('_id', ev.id)
-      .maybeSingle()
-    if (!data) return null
-    const reqRaw = data.req_dives != null ? Number(String(data.req_dives).trim()) : NaN
-    return nonEmptyDetails({
-      description: null,
-      included: cleanText(data.included),
-      not_included: null,
-      schedule: cleanText(data.schedule),
-      transportation: null,
-      prerequisites: null,
-      required_cert: await certName(data.prereq_cert_id),
-      required_dives: Number.isFinite(reqRaw) ? reqRaw : null,
-    })
-  }
-
   const { data } = await supabase
-    .from('EO_dives')
-    .select('notes, req_dives, prereq_cert_id, DiveTravel_reference')
-    .eq('_id', ev.id)
+    .from('events')
+    .select('notes, included, schedule, prereqs, req_dives, prereq_cert_id')
+    .eq('id', ev.id)
     .maybeSingle()
   if (!data) return null
 
-  let travel: {
-    included: string | null
-    not_included: string | null
-    transportation: string | null
-    itinerary: string | null
-    prerequisites: string | null
-  } | null = null
-  if (data.DiveTravel_reference) {
-    const { data: t } = await supabase
-      .from('DiveTravel')
-      .select('included, not_included, transportation, itinerary, prerequisites')
-      .eq('_id', data.DiveTravel_reference)
-      .maybeSingle()
-    travel = t
-  }
-
   return nonEmptyDetails({
     description: cleanText(data.notes),
-    included: cleanText(travel?.included),
-    not_included: cleanText(travel?.not_included),
-    schedule: cleanText(travel?.itinerary),
-    transportation: cleanText(travel?.transportation),
-    prerequisites: cleanText(travel?.prerequisites),
+    included: cleanText(data.included),
+    not_included: null,
+    schedule: cleanText(data.schedule),
+    transportation: null,
+    prerequisites: cleanText(data.prereqs),
     required_cert: await certName(data.prereq_cert_id),
     required_dives: typeof data.req_dives === 'number' ? data.req_dives : null,
   })

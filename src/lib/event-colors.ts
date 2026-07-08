@@ -18,19 +18,11 @@ export function courseColor(title: string): CourseColor {
   return 'specialty'
 }
 
-/**
- * 'trip' (→ yellow) when ANY linked destination is a boat-diving site or sits
- * outside the Northeast coast; 'local' (→ green) when every destination is a
- * Northeast shore site; null when no destination is tagged (caller falls back
- * to title matching).
- */
-export function diveOutingFromDestinations(
-  dests: Array<{ divetype: string | null; northeast_diving: boolean | null }>,
-): DiveOuting | null {
-  if (!dests.length) return null
-  const trip = dests.some((d) => d.divetype === 'Boat Diving' || d.northeast_diving !== true)
-  return trip ? 'trip' : 'local'
-}
+// Dive 'outing' classification now comes straight off the event row's
+// is_trip/is_boat_dive flags (see events.ts) — the old destination-join
+// heuristic that read travel_destinations.northeast_diving was removed when that
+// column was dropped upstream. diveIsTripOrBoat() still title-sniffs as a
+// fallback when the row leaves the outing null.
 
 const TRIP_TITLE_RE =
   /\bboat\b|green island|kenting|penghu|lambai|xiao\s?liuqiu|orchid island|anilao|palau|panglao|bohol|tubbataha|puerto galera/i

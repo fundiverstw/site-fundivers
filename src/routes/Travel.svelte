@@ -15,10 +15,11 @@
       .finally(() => (loading = false))
   })
 
-  // International tours vs. trips around Taiwan. The northeast-coast day-dive
-  // sites (northeastDiving) live on the Sites page, not here.
+  // International tours vs. trips around Taiwan. (The old northeast_diving flag
+  // that split out the day-dive sites was dropped upstream, so domestic is now
+  // simply the non-international destinations.)
   let international = $derived(all.filter((d) => d.international))
-  let domestic = $derived(all.filter((d) => !d.international && !d.northeastDiving))
+  let domestic = $derived(all.filter((d) => !d.international))
 </script>
 
 <PageHeader title={$t.travel.title} subtitle={$t.travel.subtitle} />

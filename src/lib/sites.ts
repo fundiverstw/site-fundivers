@@ -1,6 +1,7 @@
-import { supabase } from './supabase'
+import { DIVE_SITES } from './dive-sites.data'
 
-// Dive sites come straight from the shared `dive_sites` table (anon-readable).
+// Dive sites are a static, bundled catalog (see dive-sites.data.ts) — the shared
+// `dive_sites` Supabase table they used to come from was dropped upstream.
 
 export type Region =
   | 'keelung'
@@ -42,11 +43,8 @@ export const AREA_ORDER: Array<'North' | 'South' | 'Outlying Islands'> = [
   'Outlying Islands',
 ]
 
+// Async to preserve the call sites (Map/Sites await it) even though the data is
+// now local and needs no round-trip.
 export async function fetchDiveSites(): Promise<DiveSite[]> {
-  const { data, error } = await supabase
-    .from('dive_sites')
-    .select('id, name, tagline, latitude, longitude, region, dive_type, wix_slug')
-    .order('name')
-  if (error) throw error
-  return (data ?? []) as DiveSite[]
+  return [...DIVE_SITES].sort((a, b) => a.name.localeCompare(b.name))
 }
