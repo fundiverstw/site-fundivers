@@ -12,6 +12,7 @@
   import Map from './routes/Map.svelte'
   import Photos from './routes/Photos.svelte'
   import Travel from './routes/Travel.svelte'
+  import Gear from './routes/Gear.svelte'
   import Calendar from './routes/Calendar.svelte'
   import Team from './routes/Team.svelte'
   import NotFound from './routes/NotFound.svelte'
@@ -24,6 +25,7 @@
     '/map': Map,
     '/photos': Photos,
     '/travel': Travel,
+    '/gear': Gear,
     '/calendar': Calendar,
     '/team': Team,
   }

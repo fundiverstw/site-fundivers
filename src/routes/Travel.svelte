@@ -15,6 +15,18 @@
       .finally(() => (loading = false))
   })
 
+  // Snap to the section named in the URL hash (e.g. /travel#international) once
+  // the destinations have loaded — the native browser jump fires before the
+  // async data renders the target section, so it never lands otherwise.
+  $effect(() => {
+    if (loading) return
+    const id = window.location.hash.slice(1)
+    if (!id) return
+    requestAnimationFrame(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    })
+  })
+
   // International tours vs. trips around Taiwan. (The old northeast_diving flag
   // that split out the day-dive sites was dropped upstream, so domestic is now
   // simply the non-international destinations.)
@@ -24,9 +36,9 @@
 
 <PageHeader title={$t.travel.title} subtitle={$t.travel.subtitle} />
 
-{#snippet grid(title: string, items: Destination[])}
+{#snippet grid(title: string, items: Destination[], id?: string)}
   {#if items.length}
-    <div class="mb-12">
+    <div class="mb-12 scroll-mt-24" {id}>
       <h2 class="mb-5 text-2xl font-bold text-white">{title}</h2>
       <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {#each items as d (d.id)}
@@ -63,7 +75,7 @@
     <p class="rounded-lg bg-red-500/15 p-4 text-sm text-red-200">{$t.travel.loadError}: {error}</p>
   {:else}
     {@render grid($t.travel.aroundTaiwan, domestic)}
-    {@render grid($t.travel.international, international)}
+    {@render grid($t.travel.international, international, 'international')}
   {/if}
 
   <div class="glass rounded-2xl p-8 text-center">

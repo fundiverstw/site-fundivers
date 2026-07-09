@@ -14,6 +14,7 @@
   ])
   let rightLinks = $derived([
     { href: '/travel', label: $t.nav.travel },
+    { href: '/gear', label: $t.nav.gear },
     { href: '/team', label: $t.nav.team },
   ])
   let allLinks = $derived([...leftLinks, ...rightLinks])

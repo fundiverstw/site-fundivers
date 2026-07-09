@@ -30,7 +30,26 @@ export function setLocale(l: Locale) {
 }
 
 const en = {
-  nav: { courses: 'Courses', sites: 'Sites', map: 'Map', photos: 'Photos', travel: 'Travel', calendar: 'Calendar', team: 'Team' },
+  nav: { courses: 'Courses', sites: 'Sites', map: 'Map', photos: 'Photos', travel: 'Travel', calendar: 'Calendar', team: 'Team', gear: 'Gear' },
+  gear: {
+    title: 'Gear Sales, Service & Rental',
+    subtitle:
+      'Everything you need to dive — quality scuba and freediving equipment for sale or rent, plus expert servicing to keep your kit safe and dive-ready.',
+    salesTitle: 'Sales',
+    salesText:
+      'From your first mask and fins to a full technical setup, we help you choose gear that fits you and the way you dive. Try before you buy in-store and get honest advice from working instructors — not a sales script.',
+    salesItems: ['Masks, snorkels, fins & booties', 'Wetsuits, hoods, gloves & rash guards', 'BCDs, regulators & dive computers', 'Freediving gear & accessories', 'Tanks, weights & save-a-dive spares'],
+    serviceTitle: 'Service',
+    serviceText:
+      'Keep your life-support gear working the way it should. Our technicians service regulators and BCDs, swap batteries and O-rings, and pressure-check tanks so small problems never become in-water ones.',
+    serviceItems: ['Annual regulator service & rebuilds', 'BCD inspection & repair', 'Dive-computer battery replacement', 'Tank visual inspection & fills', 'Wetsuit & drysuit minor repairs'],
+    rentalTitle: 'Rental',
+    rentalText:
+      'Travelling light or trying something before you buy? Rent well-maintained gear by the day or the trip — full sets or single pieces, sized and checked before you leave the shop.',
+    rentalItems: ['Full scuba sets & individual pieces', 'Wetsuits in a full range of sizes', 'Dive computers & torches', 'Daily, weekend & trip rates', 'Included with many courses & guided dives'],
+    ctaTitle: 'Not sure what you need?',
+    ctaText: 'Drop by the shop or message us — we’ll help you find, fit, or fix the right gear.',
+  },
   map: {
     title: 'Dive Sites of Taiwan', hint: 'Tap a marker or a region below to zoom in.',
     back: '← Back to overview', shore: 'Shore', boat: 'Boat', diveSites: 'Dive sites', close: 'Close',
@@ -130,7 +149,22 @@ const en = {
 export type Dict = typeof en
 
 const zhTW: Dict = {
-  nav: { courses: '課程', sites: '潛點', map: '地圖', photos: '相片', travel: '旅遊', calendar: '行事曆', team: '團隊' },
+  nav: { courses: '課程', sites: '潛點', map: '地圖', photos: '相片', travel: '旅遊', calendar: '行事曆', team: '團隊', gear: '裝備' },
+  gear: {
+    title: '裝備銷售、維修與租借',
+    subtitle: '潛水所需的一切——優質的水肺與自由潛水裝備，可購買或租借，並提供專業維修保養，讓你的裝備隨時安全、隨時可下水。',
+    salesTitle: '銷售',
+    salesText: '從你的第一副面鏡與蛙鞋，到完整的技術潛水配置，我們協助你挑選最適合自己與潛水方式的裝備。可在店內試用，並由現役教練提供誠實建議，而非制式推銷。',
+    salesItems: ['面鏡、呼吸管、蛙鞋與潛水靴', '防寒衣、頭套、手套與防磨衣', 'BCD、調節器與潛水電腦錶', '自由潛水裝備與配件', '氣瓶、配重與備用小物'],
+    serviceTitle: '維修',
+    serviceText: '讓你的生命支持裝備維持在最佳狀態。我們的技師維修調節器與 BCD，更換電池與 O 環，並檢測氣瓶壓力，讓小問題不會在水下變成大麻煩。',
+    serviceItems: ['調節器年度保養與翻修', 'BCD 檢查與維修', '潛水電腦錶更換電池', '氣瓶目視檢查與充氣', '防寒衣與乾衣小修'],
+    rentalTitle: '租借',
+    rentalText: '輕裝旅行，或想在購買前先試用？可依天數或行程租借保養良好的裝備——整套或單件，出店前皆已調整尺寸並檢查完畢。',
+    rentalItems: ['整套水肺裝備與單件租借', '各種尺寸的防寒衣', '潛水電腦錶與手電筒', '單日、週末與行程費率', '多數課程與帶領潛水已含裝備'],
+    ctaTitle: '不確定需要什麼？',
+    ctaText: '歡迎到店或傳訊給我們——我們會協助你找到、試穿或維修合適的裝備。',
+  },
   map: {
     title: '台灣潛點地圖', hint: '點選標記或下方地區以放大。',
     back: '← 返回總覽', shore: '岸潛', boat: '船潛', diveSites: '潛點', close: '關閉',
@@ -228,7 +262,22 @@ const zhTW: Dict = {
 }
 
 const ja: Dict = {
-  nav: { courses: 'コース', sites: 'ダイブサイト', map: 'マップ', photos: 'フォト', travel: 'ツアー', calendar: 'カレンダー', team: 'チーム' },
+  nav: { courses: 'コース', sites: 'ダイブサイト', map: 'マップ', photos: 'フォト', travel: 'ツアー', calendar: 'カレンダー', team: 'チーム', gear: 'ギア' },
+  gear: {
+    title: 'ギアの販売・メンテナンス・レンタル',
+    subtitle: 'ダイビングに必要なものすべて——高品質なスキューバ＆フリーダイビング用品の販売とレンタル、そして装備を安全でいつでも潜れる状態に保つ専門メンテナンス。',
+    salesTitle: '販売',
+    salesText: '最初のマスクとフィンから本格的なテクニカル構成まで、あなたとダイビングスタイルに合ったギア選びをお手伝いします。店内で試してから購入でき、現役インストラクターが台本ではなく本音でアドバイスします。',
+    salesItems: ['マスク・スノーケル・フィン・ブーツ', 'ウェットスーツ・フード・グローブ・ラッシュガード', 'BCD・レギュレーター・ダイブコンピューター', 'フリーダイビング用品・アクセサリー', 'タンク・ウェイト・予備パーツ'],
+    serviceTitle: 'メンテナンス',
+    serviceText: '生命維持装置であるギアを最適な状態に保ちます。レギュレーターやBCDのオーバーホール、電池やOリングの交換、タンクの圧力チェックを行い、小さな不具合が水中で大きな問題にならないようにします。',
+    serviceItems: ['レギュレーターの年次点検・オーバーホール', 'BCDの点検・修理', 'ダイブコンピューターの電池交換', 'タンクの目視点検・充填', 'ウェット／ドライスーツの軽微な修理'],
+    rentalTitle: 'レンタル',
+    rentalText: '身軽に旅したい、購入前に試したい方へ。よく整備されたギアを日単位・ツアー単位でレンタルできます。フルセットも単品も、お渡し前にサイズ合わせと点検を行います。',
+    rentalItems: ['スキューバフルセット・単品レンタル', '各サイズのウェットスーツ', 'ダイブコンピューター・ライト', '1日・週末・ツアー料金', '多くのコース・ガイドダイブに込み'],
+    ctaTitle: '何が必要かお悩みですか？',
+    ctaText: 'お店にお立ち寄りいただくか、メッセージをどうぞ——最適なギア選び・フィッティング・修理をお手伝いします。',
+  },
   map: {
     title: '台湾のダイブサイト', hint: 'マーカーまたは下の地域をタップして拡大します。',
     back: '← 概要に戻る', shore: 'ビーチ', boat: 'ボート', diveSites: 'ダイブサイト', close: '閉じる',
