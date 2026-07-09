@@ -41,6 +41,20 @@ const SERVICE_MEDIA = [
   'b37fef_49df7d482eb44585a605a489e2b1d653~mv2.jpg', // EFR Courses
 ]
 
+// "Diving in Taiwan" homepage section photos (decorative dive/reef shots).
+// Kept in sync with src/routes/Home.svelte (diveScenes + marineLife).
+const DIVING_MEDIA = [
+  'b37fef_62e3ef3bf39c43189066945900e212ec~mv2.jpg', // diver on the wall
+  'b37fef_336fa72d68ae4cd19dcf205ba6cc555a~mv2.jpg', // divers in the blue
+  'b37fef_544484389a4b4ce4a8ceed361a49989b~mv2.jpg', // diver + fish school
+  '9f20fa_d7e84b19892441b18febc6c321746bde~mv2.jpg', // octopus
+  'b37fef_6194a1794e5540239e0327d2e92cfa3d~mv2.jpg', // boxfish
+  'b37fef_7b0eff53c74d41ed80dc27ea77462778~mv2.jpg', // tube anemone
+  'b37fef_bf3a6e799829427fb4f2b57eb9346869~mv2.jpg', // moray eel
+  'b37fef_ce80a7ab6e3f468e870a2321b382cd57~mv2.jpg', // pufferfish
+  'b37fef_7635de3c5357483999a169b65282ebe4~mv2.jpg', // leaf scorpionfish
+]
+
 // PADI course card photos — harvested from the live /courses page (kept in
 // sync with src/lib/courses.ts).
 const COURSE_MEDIA = [
@@ -93,7 +107,7 @@ const TEAM_MEDIA = [
   'b37fef_37847cf1b32a413990cb7b558835954f~mv2.jpg', // Mike Lee
 ]
 
-const segs = [...refs.map(segFromRef).filter(Boolean), ...SERVICE_MEDIA, ...COURSE_MEDIA, ...TEAM_MEDIA]
+const segs = [...refs.map(segFromRef).filter(Boolean), ...SERVICE_MEDIA, ...DIVING_MEDIA, ...COURSE_MEDIA, ...TEAM_MEDIA]
 const distinct = [...new Set(segs)]
 
 mkdirSync(OUT_DIR, { recursive: true })

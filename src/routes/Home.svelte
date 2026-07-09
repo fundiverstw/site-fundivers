@@ -50,6 +50,24 @@
     { href: '/travel', image: mediaIdLocal('b37fef_c3c0324de5bb47b49843a8f63551b4e7~mv2.jpg') },
     { href: 'https://site-fundiverstw.fundiverstw.workers.dev/courses/padi-efr-course', image: mediaIdLocal('b37fef_49df7d482eb44585a605a489e2b1d653~mv2.jpg') },
   ]
+
+  // Decorative photography for the "Diving in Taiwan" section. These are dive
+  // shots already bundled on disk but not shown anywhere else on the site (past
+  // events / marine life), so the section gets some colour without repeating the
+  // service or event cards. Divers-in-the-blue up top; reef critters below.
+  const diveScenes = [
+    mediaIdLocal('b37fef_62e3ef3bf39c43189066945900e212ec~mv2.jpg'), // diver on the wall
+    mediaIdLocal('b37fef_336fa72d68ae4cd19dcf205ba6cc555a~mv2.jpg'), // divers in the blue
+    mediaIdLocal('b37fef_544484389a4b4ce4a8ceed361a49989b~mv2.jpg'), // diver + fish school
+  ]
+  const marineLife = [
+    mediaIdLocal('9f20fa_d7e84b19892441b18febc6c321746bde~mv2.jpg'), // octopus
+    mediaIdLocal('b37fef_6194a1794e5540239e0327d2e92cfa3d~mv2.jpg'), // boxfish
+    mediaIdLocal('b37fef_7b0eff53c74d41ed80dc27ea77462778~mv2.jpg'), // tube anemone
+    mediaIdLocal('b37fef_bf3a6e799829427fb4f2b57eb9346869~mv2.jpg'), // moray eel
+    mediaIdLocal('b37fef_ce80a7ab6e3f468e870a2321b382cd57~mv2.jpg'), // pufferfish
+    mediaIdLocal('b37fef_7635de3c5357483999a169b65282ebe4~mv2.jpg'), // leaf scorpionfish
+  ]
 </script>
 
 <!-- A compact image card; fills its grid cell on desktop, has an aspect on mobile. -->
@@ -151,15 +169,40 @@
   </div>
 </section>
 
-<!-- Diving in Taiwan -->
-<section>
-  <div class="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
-    <h2 class="text-3xl font-bold tracking-tight text-white">{$t.home.divingTitle}</h2>
-    <div class="mt-6 space-y-5 text-brand-100">
-      {#each $t.home.divingParas as para}
-        <p>{para}</p>
-      {/each}
+<!-- Diving in Taiwan — text wrapped by a sticky photo mosaic + a reef-life rail -->
+<section class="mx-auto max-w-[1600px] px-4 py-12 sm:px-6 sm:py-16">
+  <div class="grid gap-8 lg:grid-cols-12 lg:items-start">
+    <div class="lg:col-span-7">
+      <h2 class="text-3xl font-bold tracking-tight text-white">{$t.home.divingTitle}</h2>
+      <div class="mt-6 space-y-5 text-brand-100">
+        {#each $t.home.divingParas as para}
+          <p>{para}</p>
+        {/each}
+      </div>
     </div>
+
+    <!-- Divers-in-the-blue mosaic, sticks alongside the copy on desktop -->
+    <div class="lg:col-span-5 lg:sticky lg:top-24">
+      <div class="grid grid-cols-2 gap-3">
+        <figure class="group col-span-2 aspect-[16/10] overflow-hidden rounded-3xl border border-white/10 shadow-sm">
+          <img src={diveScenes[0]} alt="" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+        </figure>
+        {#each diveScenes.slice(1) as src}
+          <figure class="group aspect-square overflow-hidden rounded-2xl border border-white/10 shadow-sm">
+            <img src={src} alt="" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          </figure>
+        {/each}
+      </div>
+    </div>
+  </div>
+
+  <!-- A glimpse of the reef life beneath the waves -->
+  <div class="mt-8 grid grid-cols-3 gap-3 sm:mt-10 sm:grid-cols-6">
+    {#each marineLife as src}
+      <figure class="group aspect-square overflow-hidden rounded-2xl border border-white/10 shadow-sm">
+        <img src={src} alt="" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 group-hover:brightness-105" />
+      </figure>
+    {/each}
   </div>
 </section>
 
