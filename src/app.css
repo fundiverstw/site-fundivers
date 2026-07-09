@@ -169,15 +169,8 @@ body {
 }
 
 /* Easter-egg trigger bubble — bobs gently in the corner. */
-.egg-bubble { animation: egg-bob 4.5s ease-in-out infinite; }
-@keyframes egg-bob {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-7px); }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .caustics-layer,
-  .egg-bubble { animation: none; }
+  .caustics-layer { animation: none; }
 }
 
 @layer components {

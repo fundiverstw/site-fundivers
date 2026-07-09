@@ -1,6 +1,7 @@
 <script lang="ts">
   import { fade } from 'svelte/transition'
   import { ADS } from '../lib/config'
+  import { openGame } from '../lib/game'
   import MascotChar from './MascotChar.svelte'
 
   // The character lives hidden behind the logo. Every so often he slides out
@@ -16,6 +17,9 @@
   let tx = $state(HIDDEN_X)
   let ty = $state(HIDDEN_Y)
   let wiggle = $state('')
+  // Tucked away he still occupies a box behind the logo, so nothing in here may
+  // take a click until he's actually peeked out.
+  let out = $derived(tx !== HIDDEN_X)
 
   let ad = $derived(ADS[i])
 
@@ -38,7 +42,7 @@
     function retreat() {
       wiggle = ''
       tx = HIDDEN_X; ty = HIDDEN_Y
-      after(9000 + Math.random() * 9000, peek) // next peek after 9–18s
+      after(45000 + Math.random() * 45000, peek) // next peek after 45–90s
     }
     function doWiggle() {
       if (wigs++ >= 5) {
@@ -54,7 +58,7 @@
       after(550, doWiggle)
     }
 
-    after(3000, peek) // first appearance 3s after load
+    after(12000, peek) // first appearance 12s after load
 
     return () => {
       timers.forEach(clearTimeout)
@@ -68,18 +72,28 @@
     class="pointer-events-none absolute bottom-0 left-full z-10 hidden w-44 xl:block"
     style={`transform: translate(${tx}%, ${ty}%); transition: transform 0.55s cubic-bezier(0.34, 1.3, 0.4, 1);`}
   >
-    <div class="flex flex-col items-center" style={`transform: ${wiggle}; transition: transform 0.25s ease;`}>
+    <div
+      class="flex flex-col items-center {out ? 'pointer-events-auto' : 'pointer-events-none'}"
+      style={`transform: ${wiggle}; transition: transform 0.25s ease;`}
+    >
       <a
         href={ad.href}
-        class="pointer-events-auto block w-full rounded-2xl border-2 border-amber-300 bg-amber-400 px-3 py-1.5 text-center text-xs font-bold leading-tight text-brand-950 shadow-lg"
+        class="block w-full rounded-2xl border-2 border-amber-300 bg-amber-400 px-3 py-1.5 text-center text-xs font-bold leading-tight text-brand-950 shadow-lg"
       >
         {#key i}
           <span in:fade={{ duration: 250 }} class="block">{ad.text}</span>
         {/key}
       </a>
-      <div class="-mt-1">
+      <!-- The octopus is the way into the Deep Dive easter egg. -->
+      <button
+        type="button"
+        onclick={openGame}
+        aria-label="Play Deep Dive"
+        title="Play Deep Dive"
+        class="-mt-1 cursor-pointer rounded-full transition-transform duration-200 hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-reef-300"
+      >
         <MascotChar size={54} />
-      </div>
+      </button>
     </div>
   </div>
 {/if}

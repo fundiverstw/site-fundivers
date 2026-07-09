@@ -2,6 +2,8 @@
   import type { Component } from 'svelte'
   import { path, handleLinkClick } from './lib/router'
   import { locale } from './lib/i18n'
+  // Easter-egg game state — opened by clicking the nav mascot (NavMascot.svelte).
+  import { gameOpen } from './lib/game'
   import Nav from './components/Nav.svelte'
   import Footer from './components/Footer.svelte'
   import Home from './routes/Home.svelte'
@@ -54,8 +56,6 @@
       !mm('(hover: none) and (pointer: coarse)') && !mm('(max-width: 820px)')
   })
 
-  // Hidden easter-egg game.
-  let gameOpen = $state(false)
 </script>
 
 <svelte:window onclick={handleLinkClick} />
@@ -115,15 +115,4 @@
   <Footer />
 </div>
 
-<!-- Easter egg: a stray bubble drifting in the corner. Click it to play Deep Dive. -->
-<button
-  type="button"
-  onclick={() => (gameOpen = true)}
-  aria-label="Play the hidden dive game"
-  title="?"
-  class="egg-bubble fixed bottom-4 right-4 z-40 h-8 w-8 rounded-full border border-reef-200/40 bg-reef-300/10 opacity-60 backdrop-blur-sm transition hover:scale-110 hover:border-reef-200/80 hover:bg-reef-300/25 hover:opacity-100"
->
-  <span class="pointer-events-none absolute left-[7px] top-[6px] h-1.5 w-1.5 rounded-full bg-white/75"></span>
-</button>
-
-<DeepDive open={gameOpen} onClose={() => (gameOpen = false)} />
+<DeepDive open={$gameOpen} onClose={() => gameOpen.set(false)} />
