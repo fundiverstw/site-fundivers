@@ -1,6 +1,7 @@
 <script lang="ts">
   import { fetchDestinations, type Destination } from '../lib/destinations'
   import { fetchUpcomingTripTitles } from '../lib/events'
+  import { siteImage } from '../lib/event-pool'
   import { CONTACT } from '../lib/config'
   import { t } from '../lib/i18n'
   import PageHeader from '../components/PageHeader.svelte'
@@ -55,7 +56,7 @@
     const chosen = scheduled.length ? scheduled : TRIP_LOCATIONS
     return chosen.flatMap((loc) => {
       const dest = all.find((d) => d.title === loc.title)
-      return dest ? [{ ...dest, href: `/sites/${loc.siteId}`, internal: true }] : []
+      return dest ? [{ ...dest, image: siteImage(loc.siteId), href: `/sites/${loc.siteId}`, internal: true }] : []
     })
   })
 

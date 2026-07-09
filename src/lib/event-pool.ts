@@ -1,59 +1,43 @@
-// Local photo pool for event cards. The app is phasing out per-event images, so
-// the site assigns each event a photo from images it already bundles — no
-// duplicate files. This is a manifest that references the photos in place under
-// /imgs/media (and could point anywhere under /public/imgs), grouped by dive
-// site, plus a general fallback and a course set.
+// Local photo pool for the whole site's dive imagery. The app is phasing out
+// per-event images, so photos live here, bundled, organised into subdirectories:
 //
-// To give a site more variety, add image paths to its array; a dive event picks
-// randomly from its site's list, minimizing repeats on screen. Add the file to
-// public/imgs once and reference it here — don't copy it around.
+//   src/lib/event-pool/sites/<dive-site-id>/   one or more photos per dive site
+//   src/lib/event-pool/_general/               fallback dive shots (unmatched / trips)
+//   src/lib/event-pool/courses/                course-class photos
+//
+// Drop more photos into any folder and they're picked up automatically (the
+// glob runs at build time — no manifest to edit, no duplicated files). Used two
+// ways: `siteImage(id)` gives a dive site its cover (Sites / Travel / detail
+// pages); `eventImage(ev)` gives an event card a photo — a dive matches its site
+// by title keyword and gets a random photo (repeats minimised on screen);
+// courses draw from the course folder.
 
-const img = (slug: string) => `/imgs/media/${slug}.webp`
+const files = import.meta.glob('./event-pool/**/*.{webp,avif,jpg,jpeg,png}', {
+  eager: true,
+  query: '?url',
+  import: 'default',
+}) as Record<string, string>
 
-// One or more photos per dive site (keyed by the /sites/<id> id). Seeded with
-// each site's own cover photo; append more paths for variety.
-const SITE_PHOTOS: Record<string, string[]> = {
-  'bat-cave': [img('b37fef_f6fcbc5a749741af99c3fef4b8ea7a9d_mv2_jpg')],
-  'long-dong-bay': [img('b37fef_e2975ca5e18b4669a1f480a8c20ba872_mv2_jpg')],
-  'secret-garden': [img('b37fef_1d51bc48dbe64b13974e2e42cc5a0eb0_mv2_jpg')],
-  'canyons': [img('b37fef_d9cab6f1c752479098c35ed5d6901280_mv2_jpg')],
-  '82-5': [img('b37fef_845ffda9d96b4f24bf1083f369cd850c_mv2_jpg')],
-  'rainbow-reef': [img('b37fef_8b2bae6712a644cfa0464e7420bc3597_mv2_jpg')],
-  'wan-an-jian-navy-wreck': [img('b37fef_e6233d5e9ab746e88cc2054e58642ec5_mv2_jpg')],
-  'crystal-temple-wall': [img('b37fef_1d060fa54c0a447ebfedc5d6c34f78fc_mv2_jpg')],
-  'iron-house-2': [img('b37fef_60ddb1f8b0a54547a9ce4b45f18c2715_mv2_png')],
-  'shipwrecks': [img('b37fef_48516a4e92fa43398e849382d8ae002e_mv2_jpg')],
-  'cathedral': [img('b37fef_757bf97dabf14263bb215a8b4f7848f8_mv2_jpg')],
-  'turtle-island': [img('b37fef_08800163ce0a42eb9cecfbf26133c457_mv2_jpg')],
-  'iron-house-iron-reef': [img('b37fef_2017559b29b447eea2e1fb906ace863f_mv2_jpg')],
-  'cauliflower-garden': [img('b37fef_ff042e91927d4e8695e4cbd811fdc2a5_mv2_jpg')],
-  'lambai-island': [img('b37fef_1bd8b45dfdd84c2092af24957897caf6_mv2_jpg')],
-  'kenting': [img('b37fef_87e95d0417b44597b86897cf2825a07f_mv2_jpg')],
-  'green-island': [img('b37fef_60f0aee8faef48e7bd0853c51f83f84a_mv2_jpg')],
-  'penghu': [img('b37fef_c3c0324de5bb47b49843a8f63551b4e7_mv2_jpg')],
-  'orchid-island': [img('b37fef_51df0bc6686a40829cad1eb790acb3cf_mv2_jpg')],
+const sitePools: Record<string, string[]> = {}
+const generalPool: string[] = []
+const coursePool: string[] = []
+
+for (const [path, url] of Object.entries(files)) {
+  if (path.includes('/_general/')) generalPool.push(url)
+  else if (path.includes('/courses/')) coursePool.push(url)
+  else {
+    const m = path.match(/\/sites\/([^/]+)\//)
+    if (m) (sitePools[m[1]] ??= []).push(url)
+  }
 }
+// Stable order so a site's "cover" (first photo) doesn't change between builds.
+for (const k of Object.keys(sitePools)) sitePools[k].sort()
 
-// Fallback dive shots for events whose spot isn't a catalog site (Yehliu, Milky
-// Sea, Flower Wall, out-of-Taiwan trips…).
-const GENERAL_PHOTOS: string[] = [
-  img('b37fef_62e3ef3bf39c43189066945900e212ec_mv2_jpg'), // diver on the wall
-  img('b37fef_336fa72d68ae4cd19dcf205ba6cc555a_mv2_jpg'), // divers in the blue
-  img('b37fef_544484389a4b4ce4a8ceed361a49989b_mv2_jpg'), // diver + fish school
-  img('b37fef_5a2fa90d23cb4698b2583e85cf67ff65_mv2_jpg'), // diver ascending
-  img('b37fef_0dffada76b234b76b906813aa39bde86_mv2_jpg'), // divers at the surface
-  img('b37fef_6cbdfe09ae2e41eb869ce0e29dcc21ce_mv2_jpg'), // school of fish
-]
-
-// Course-class photos for course events.
-const COURSE_PHOTOS: string[] = [
-  img('b37fef_9c73f7e0bb244570a119812991ef0ab9_mv2_jpg'),
-  img('b37fef_357153d63c3245819d71d68d9d2f1790_mv2_jpg'),
-  img('b37fef_2900ee49212d439c92922559b79ca105_mv2_jpg'),
-  img('b37fef_46289275ed4042b19c10217d10672fc3_mv2_jpg'),
-  img('b37fef_aa0190ec4359404db3362a851c7663bd_mv2_jpg'),
-  img('b37fef_6bb10d67326442318a8a597b14c807c5_mv2_jpg'),
-]
+/** A dive site's cover photo (first in its folder), or null if it has none. */
+export function siteImage(siteId: string): string | null {
+  const pool = sitePools[siteId]
+  return pool && pool.length ? pool[0] : null
+}
 
 // Map an event title to a dive-site id. Ordered most-specific first so, e.g.,
 // "Iron House 2" wins over the generic "Iron House / Iron Reef". Titles name
@@ -105,7 +89,7 @@ function pick(pool: string[]): string | null {
 /**
  * A pool photo for an event, or null if the pool is empty (→ "Image coming
  * soon" placeholder). Dives resolve to their dive site's photos (else general);
- * courses draw from the course set.
+ * courses draw from the course folder.
  */
 export function eventImage(ev: { id: string; type: 'dive' | 'course'; title: string }): string | null {
   const cached = assigned.get(ev.id)
@@ -113,10 +97,10 @@ export function eventImage(ev: { id: string; type: 'dive' | 'course'; title: str
 
   let pool: string[]
   if (ev.type === 'course') {
-    pool = COURSE_PHOTOS.length ? COURSE_PHOTOS : GENERAL_PHOTOS
+    pool = coursePool.length ? coursePool : generalPool
   } else {
     const site = siteIdForTitle(ev.title)
-    pool = site && SITE_PHOTOS[site]?.length ? SITE_PHOTOS[site] : GENERAL_PHOTOS
+    pool = site && sitePools[site]?.length ? sitePools[site] : generalPool
   }
 
   const url = pick(pool)

@@ -1,42 +1,20 @@
 <script lang="ts">
-  import { fetchDiveSites, diveSitePath, REGION_META, type DiveSite, type Region } from '../lib/sites'
-  import { fetchDestinations, type Destination } from '../lib/destinations'
+  import { fetchDiveSites, diveSitePath, REGION_META, type DiveSite } from '../lib/sites'
+  import { siteImage } from '../lib/event-pool'
   import { t } from '../lib/i18n'
   import PageHeader from '../components/PageHeader.svelte'
   import CoverPhoto from '../components/CoverPhoto.svelte'
 
   let sites = $state<DiveSite[]>([])
-  let destByName = $state<Map<string, Destination>>(new Map())
   let loading = $state(true)
   let error = $state<string | null>(null)
 
-  // Fallback per-region cover photo when a site has no same-named destination.
-  const REGION_DEST: Record<Region, string> = {
-    keelung: 'Bat Cave',
-    longdong: 'Long Dong Bay',
-    yilan: 'Turtle Island',
-    greenisland: 'Green Island',
-    lanyu: 'Orchid Island',
-    xiaoliuqiu: 'Lambai Island',
-    kenting: 'Kenting',
-    penghu: 'Penghu',
-  }
-
   $effect(() => {
-    Promise.all([fetchDiveSites(), fetchDestinations().catch(() => [])])
-      .then(([s, dests]) => {
-        sites = s
-        destByName = new Map(dests.map((d) => [d.title, d]))
-      })
+    fetchDiveSites()
+      .then((s) => (sites = s))
       .catch((err) => (error = err?.message ?? 'Failed to load sites'))
       .finally(() => (loading = false))
   })
-
-  // Prefer a destination photo matching the site's own name; fall back to a
-  // representative photo for its region.
-  function siteImage(s: DiveSite): string | null {
-    return destByName.get(s.name)?.image ?? destByName.get(REGION_DEST[s.region])?.image ?? null
-  }
 
   // Every dive site is in Taiwan, so they all sit under a single "Domestic"
   // heading — no North / South / Islands split.
@@ -68,7 +46,7 @@
         <h2 class="mb-5 text-2xl font-bold text-white">{$t.sites.areas[group.area]}</h2>
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {#each group.sites as s (s.id)}
-            {@const img = siteImage(s)}
+            {@const img = siteImage(s.id)}
             <div class="group relative flex aspect-square flex-col justify-end overflow-hidden rounded-3xl border border-white/15 shadow-sm transition-colors hover:border-reef-400/50">
               <CoverPhoto src={img} alt={s.name} />
               <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>

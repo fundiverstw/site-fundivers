@@ -2,6 +2,7 @@
   import { path } from '../lib/router'
   import { diveSiteById, REGION_META } from '../lib/sites'
   import { fetchDestinations, type Destination } from '../lib/destinations'
+  import { siteImage } from '../lib/event-pool'
   import { DIVE_SITE_GUIDES } from '../lib/dive-site-guides'
   import { wixSiteUrl } from '../lib/dive-site-links'
   import { t } from '../lib/i18n'
@@ -33,7 +34,7 @@
     if (site) document.title = `${site.name} — FunDivers TW`
   })
 
-  let heroImg = $derived(dest?.image ?? null)
+  let heroImg = $derived(site ? siteImage(site.id) : null)
   let tagline = $derived(dest?.tagline ?? site?.tagline ?? null)
   let regionLabel = $derived(site ? REGION_META[site.region]?.label ?? site.region : '')
   let mapsUrl = $derived(

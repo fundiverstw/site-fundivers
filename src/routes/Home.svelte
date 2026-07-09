@@ -4,6 +4,7 @@
   import GetInTouch from '../components/GetInTouch.svelte'
   import EventModal from '../components/calendar/EventModal.svelte'
   import { mediaIdLocal } from '../lib/images'
+  import { siteImage } from '../lib/event-pool'
   import { t } from '../lib/i18n'
   import CoverPhoto from '../components/CoverPhoto.svelte'
 
@@ -48,7 +49,7 @@
     { href: '/sites', image: mediaIdLocal('b37fef_7621a533ac1946a8b342bc5085cb1d28~mv2.jpg') },
     { href: '/gear', image: mediaIdLocal('b37fef_58237e6a633f472b8d419bd830abb854~mv2.jpg') },
     { href: 'https://site-fundiverstw.fundiverstw.workers.dev/travel#international', image: mediaIdLocal('b37fef_80f90894e75f47f8809d14663dd8e8bd~mv2.jpg') },
-    { href: '/travel', image: mediaIdLocal('b37fef_c3c0324de5bb47b49843a8f63551b4e7~mv2.jpg') },
+    { href: '/travel', image: siteImage('penghu') ?? '' },
     { href: 'https://site-fundiverstw.fundiverstw.workers.dev/courses/padi-efr-course', image: mediaIdLocal('b37fef_49df7d482eb44585a605a489e2b1d653~mv2.jpg') },
   ]
 
