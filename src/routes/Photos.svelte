@@ -31,8 +31,20 @@
 <PageHeader title={$t.photos.title} subtitle={$t.photos.subtitle} />
 
 <section class="mx-auto max-w-[1600px] px-4 py-12 sm:px-6">
+  <!-- Jump-to-section pills -->
+  <div class="mb-8 flex flex-wrap gap-3">
+    {#each GALLERY as sect (sect.key)}
+      <a
+        href={`#${sect.key}`}
+        class="waybar mono rounded-full px-5 py-2 text-sm font-semibold text-brand-50 transition-colors hover:text-reef-300"
+      >
+        {$t.photos.sections[sect.key as keyof typeof $t.photos.sections]}
+      </a>
+    {/each}
+  </div>
+
   {#each GALLERY as sect (sect.key)}
-    <div class="mb-12">
+    <div id={sect.key} class="mb-12 scroll-mt-24">
       <h2 class="mb-5 flex items-center gap-2 text-2xl font-bold text-white">
         <span class="mono text-reef-400">▹</span>{$t.photos.sections[sect.key as keyof typeof $t.photos.sections]}
       </h2>
