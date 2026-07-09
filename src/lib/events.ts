@@ -1,6 +1,6 @@
 import { supabase } from './supabase'
 import { type DiveOuting } from './event-colors'
-import { wixImageLocal } from './images'
+import { eventImage } from './event-pool'
 
 // Public, read-only view of the shared event catalog. The app consolidated the
 // old EO_dives + EO_courses Wix-sync tables into a single `events` table keyed
@@ -35,7 +35,6 @@ type DiveRow = {
   fully_booked: boolean | null
   featured: boolean | null
   notes: string | null
-  featured_image: string | null
 }
 
 type CourseRow = {
@@ -47,7 +46,6 @@ type CourseRow = {
   course_days: string[] | null
   fully_booked: boolean | null
   schedule: string | null
-  featured_image: string | null
 }
 
 type PriceRow = { id: string; starting_at: number | null }
@@ -88,7 +86,7 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
   const [divesResp, coursesResp] = await Promise.all([
     supabase
       .from('events')
-      .select('id, display_title, admin_title, start_date, end_date, start_time, price, fully_booked, featured, notes, featured_image')
+      .select('id, display_title, admin_title, start_date, end_date, start_time, price, fully_booked, featured, notes')
       .eq('kind', 'dive')
       .is('cancelled_at', null)
       .eq('is_private', false)
@@ -96,7 +94,7 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
       .order('start_date'),
     supabase
       .from('events')
-      .select('id, display_title, admin_title, start_time, price, course_days, fully_booked, schedule, featured_image')
+      .select('id, display_title, admin_title, start_time, price, course_days, fully_booked, schedule')
       .eq('kind', 'course')
       .is('cancelled_at', null),
   ])
@@ -125,7 +123,7 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
       fullyBooked: d.fully_booked ?? false,
       featured: d.featured ?? false,
       description: d.notes && d.notes.trim() ? d.notes.trim() : null,
-      image: wixImageLocal(d.featured_image),
+      image: eventImage({ id: d.id, type: 'dive', title: d.display_title || d.admin_title || '' }),
     })
   }
 
@@ -149,7 +147,7 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
       fullyBooked: c.fully_booked ?? false,
       featured: false,
       description: c.schedule && c.schedule.trim() ? c.schedule.trim() : null,
-      image: wixImageLocal(c.featured_image),
+      image: eventImage({ id: c.id, type: 'course', title: c.display_title || c.admin_title || '' }),
     })
   }
 
