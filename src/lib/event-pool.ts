@@ -44,6 +44,7 @@ export function siteImage(siteId: string): string | null {
 // spots that aren't all catalog sites (Yehliu, Milky Sea, Flower Wall…); those
 // fall through to the general pool.
 const SITE_MATCHERS: Array<{ id: string; re: RegExp }> = [
+  { id: 'malapascua', re: /malapascua/i },
   { id: 'iron-house-2', re: /iron\s*(house|reef)\s*2/i },
   { id: 'rainbow-reef', re: /rainbow\s*reef/i },
   { id: 'crystal-temple-wall', re: /crystal\s*(temple|palace|wall)/i },
@@ -100,10 +101,24 @@ export function eventImage(ev: { id: string; type: 'dive' | 'course'; title: str
     pool = coursePool.length ? coursePool : generalPool
   } else {
     const site = siteIdForTitle(ev.title)
-    pool = site && sitePools[site]?.length ? sitePools[site] : generalPool
+    const sitePool = (site && sitePools[site]) || []
+    // A well-stocked site (2+ photos) shows only its own; a site with just its
+    // seed cover also draws from the general pool so its cards still vary.
+    pool = sitePool.length >= 2 ? sitePool : [...sitePool, ...generalPool]
   }
 
   const url = pick(pool)
   if (url) assigned.set(ev.id, url)
+  return url
+}
+
+/** A general dive photo for anything without its own image (keyed + memoized so
+ *  it stays stable across re-renders). Used so no card ever shows a placeholder. */
+export function fallbackImage(seed: string): string | null {
+  const key = `fb:${seed}`
+  const cached = assigned.get(key)
+  if (cached) return cached
+  const url = pick(generalPool)
+  if (url) assigned.set(key, url)
   return url
 }

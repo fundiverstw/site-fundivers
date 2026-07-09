@@ -197,5 +197,16 @@ export const DIVE_SITES: DiveSite[] = [
     "region": "keelung",
     "dive_type": "shore",
     "wix_slug": "bat-cave"
+  },
+  {
+    "id": "malapascua",
+    "name": "Malapascua",
+    "tagline": "A small island off the northern tip of Cebu, Malapascua is world-famous for daily encounters with thresher sharks at Monad Shoal, plus vibrant reefs and rich macro life.",
+    "latitude": 11.3208,
+    "longitude": 124.1156,
+    "region": "malapascua",
+    "dive_type": "boat",
+    "wix_slug": null,
+    "international": true
   }
 ]

@@ -12,6 +12,7 @@ export type Region =
   | 'xiaoliuqiu'
   | 'kenting'
   | 'penghu'
+  | 'malapascua'
 
 export type DiveSite = {
   id: string
@@ -22,6 +23,7 @@ export type DiveSite = {
   region: Region
   dive_type: 'shore' | 'boat' | null
   wix_slug: string | null
+  international?: boolean // outside Taiwan (trip destination), grouped separately
 }
 
 // Display metadata for each region: a human label and a broad area grouping
@@ -35,6 +37,7 @@ export const REGION_META: Record<Region, { label: string; area: 'North' | 'South
   lanyu: { label: 'Orchid Island (Lanyu)', area: 'Outlying Islands' },
   xiaoliuqiu: { label: 'Xiaoliuqiu', area: 'Outlying Islands' },
   penghu: { label: 'Penghu', area: 'Outlying Islands' },
+  malapascua: { label: 'Malapascua, Philippines', area: 'Outlying Islands' },
 }
 
 export const AREA_ORDER: Array<'North' | 'South' | 'Outlying Islands'> = [

@@ -66,6 +66,12 @@
         'Of all the dive locations in Taiwan, Penghu has the most fish in numbers, size, and diversity! If you have the ' +
         "experience and time, it's a definite must-see!",
     },
+    // International — never placed on this Taiwan map (omitted from REGION_ORDER,
+    // and sitesByRegion only keeps sites whose region is in REGION_ORDER).
+    malapascua: {
+      name: 'Malapascua', center: [124.1156, 11.3208], bbox: [124.10, 11.31, 124.13, 11.34],
+      description: 'Off Cebu, Philippines — a FunDivers international trip destination.',
+    },
   }
 
   const REGION_ORDER: Region[] = [

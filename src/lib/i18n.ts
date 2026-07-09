@@ -107,7 +107,7 @@ const en = {
   sites: {
     title: 'Dive Sites', subtitle: 'From convenient shore dives in the north to world-class island diving — Taiwan’s underwater highlights.',
     none: 'No dive sites listed yet.', loadError: 'Couldn’t load dive sites',
-    areas: { Domestic: 'Domestic' },
+    areas: { Domestic: 'Domestic', International: 'International' },
   },
   siteDetail: {
     back: '← All dive sites', overview: 'About this site', highlights: 'Highlights', marineLife: 'Marine life',
@@ -225,7 +225,7 @@ const zhTW: Dict = {
   sites: {
     title: '潛點', subtitle: '從北部便利的岸潛到世界級的離島潛水——台灣水下的精華亮點。',
     none: '尚未列出任何潛點。', loadError: '無法載入潛點',
-    areas: { Domestic: '國內' },
+    areas: { Domestic: '國內', International: '國際' },
   },
   siteDetail: {
     back: '← 所有潛點', overview: '潛點介紹', highlights: '亮點', marineLife: '海洋生物',
@@ -341,7 +341,7 @@ const ja: Dict = {
   sites: {
     title: 'ダイブサイト', subtitle: '北部の手軽なビーチダイブから世界クラスの離島ダイビングまで——台湾の水中ハイライト。',
     none: 'まだダイブサイトが登録されていません。', loadError: 'ダイブサイトを読み込めませんでした',
-    areas: { Domestic: '国内' },
+    areas: { Domestic: '国内', International: '海外' },
   },
   siteDetail: {
     back: '← すべてのダイブサイト', overview: 'サイト紹介', highlights: '見どころ', marineLife: '海の生き物',

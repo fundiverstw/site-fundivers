@@ -16,11 +16,16 @@
       .finally(() => (loading = false))
   })
 
-  // Every dive site is in Taiwan, so they all sit under a single "Domestic"
-  // heading — no North / South / Islands split.
-  let byArea = $derived.by(() =>
-    sites.length ? [{ area: 'Domestic' as const, sites }] : []
-  )
+  // Taiwan sites under one "Domestic" heading; trip destinations abroad (e.g.
+  // Malapascua) under "International".
+  let byArea = $derived.by(() => {
+    const domestic = sites.filter((s) => !s.international)
+    const international = sites.filter((s) => s.international)
+    const groups: Array<{ area: 'Domestic' | 'International'; sites: DiveSite[] }> = []
+    if (domestic.length) groups.push({ area: 'Domestic', sites: domestic })
+    if (international.length) groups.push({ area: 'International', sites: international })
+    return groups
+  })
 
   function mapsUrl(s: DiveSite): string {
     return `https://www.google.com/maps/search/?api=1&query=${s.latitude},${s.longitude}`

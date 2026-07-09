@@ -1,7 +1,6 @@
-// All event/destination/service photos are self-hosted under /imgs/media/
-// (see scripts/fetch-wix-images.mjs). We store only the original Wix image ref
-// (or media id) in/alongside the data and resolve it to our local optimized
-// copy here — no Wix CDN dependency at runtime.
+// Self-hosted photos live under /imgs/media/ (and event photos under the
+// event-pool folders). We store the original Wix image ref (or media id) and
+// resolve it to our local optimized copy here — no Wix CDN dependency at runtime.
 
 /** Slugify a Wix media id segment (e.g. `b37fef_abc~mv2.jpg`) to a filename. */
 function slug(seg: string): string {

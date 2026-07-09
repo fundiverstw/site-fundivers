@@ -1,7 +1,8 @@
 <script lang="ts">
   import { fetchDestinations, type Destination } from '../lib/destinations'
   import { fetchUpcomingTripTitles } from '../lib/events'
-  import { siteImage } from '../lib/event-pool'
+  import { siteImage, fallbackImage } from '../lib/event-pool'
+  import { DIVE_SITES } from '../lib/dive-sites.data'
   import { CONTACT } from '../lib/config'
   import { t } from '../lib/i18n'
   import PageHeader from '../components/PageHeader.svelte'
@@ -60,11 +61,23 @@
     })
   })
 
-  // International tours keep their existing outbound links to fundiverstw.com.
+  // An international destination that we also have as a dive site (e.g.
+  // Malapascua) links to its /sites page and uses its pool photo; the rest keep
+  // their outbound fundiverstw.com links, with a fallback photo so none are bare.
+  const siteByName = new Map(DIVE_SITES.map((s) => [s.name.toLowerCase(), s]))
   let international = $derived<Card[]>(
     all
       .filter((d) => d.international)
-      .map((d) => ({ ...d, href: d.slug ? `https://www.fundiverstw.com${d.slug}` : null, internal: false })),
+      .map((d) => {
+        const site = siteByName.get(d.title.toLowerCase())
+        if (site) return { ...d, image: siteImage(site.id), href: `/sites/${site.id}`, internal: true }
+        return {
+          ...d,
+          image: d.image ?? fallbackImage(d.id),
+          href: d.slug ? `https://www.fundiverstw.com${d.slug}` : null,
+          internal: false,
+        }
+      }),
   )
 
   // Jump pills — only for sections that have cards.
