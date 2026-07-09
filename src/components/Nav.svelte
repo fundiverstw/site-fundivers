@@ -74,8 +74,8 @@
     <div class="hidden items-center justify-between gap-6 py-3 md:flex">
       <div class="relative shrink-0">
         <NavMascot />
-        <a href="/" aria-label="FunDivers TW home" class="relative z-20 block">
-          <img src="/imgs/fd_logo.png" alt="FunDivers TW" class="h-28 w-auto lg:h-36" />
+        <a href="/" aria-label="FunDivers TW home" class="group relative z-20 block">
+          <img src="/imgs/fd_logo.png" alt="FunDivers TW" class="h-28 w-auto transition-all duration-300 group-hover:scale-105 group-hover:brightness-110 group-hover:drop-shadow-[0_0_18px_rgba(44,208,197,0.55)] lg:h-36" />
         </a>
       </div>
       <nav class="waybar flex items-center gap-1.5 rounded-2xl px-2 py-1.5 shadow-lg">
@@ -89,8 +89,8 @@
 
     <!-- Mobile: logo left · globe + menu toggle right -->
     <div class="flex items-center justify-between py-3 md:hidden">
-      <a href="/" aria-label="FunDivers TW home">
-        <img src="/imgs/fd_logo.png" alt="FunDivers TW" class="h-16 w-auto" />
+      <a href="/" aria-label="FunDivers TW home" class="group block">
+        <img src="/imgs/fd_logo.png" alt="FunDivers TW" class="h-16 w-auto transition-all duration-300 group-hover:scale-105 group-hover:brightness-110 group-hover:drop-shadow-[0_0_18px_rgba(44,208,197,0.55)]" />
       </a>
       <div class="flex items-center gap-3">
         {@render langSwitch()}
