@@ -84,12 +84,12 @@
           <span in:fade={{ duration: 250 }} class="block">{ad.text}</span>
         {/key}
       </a>
-      <!-- The octopus is the way into the Deep Dive easter egg. -->
+      <!-- The octopus is the way into the Wreck Maze easter egg. -->
       <button
         type="button"
         onclick={openGame}
-        aria-label="Play Deep Dive"
-        title="Play Deep Dive"
+        aria-label="Play Wreck Maze"
+        title="Play Wreck Maze"
         class="-mt-1 cursor-pointer rounded-full transition-transform duration-200 hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-reef-300"
       >
         <MascotChar size={54} />

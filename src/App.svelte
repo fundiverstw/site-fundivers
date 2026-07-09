@@ -18,7 +18,7 @@
   import Calendar from './routes/Calendar.svelte'
   import Team from './routes/Team.svelte'
   import NotFound from './routes/NotFound.svelte'
-  import DeepDive from './components/game/DeepDive.svelte'
+  import WreckMaze from './components/game/WreckMaze.svelte'
 
   const routes: Record<string, Component> = {
     '/': Home,
@@ -115,4 +115,4 @@
   <Footer />
 </div>
 
-<DeepDive open={$gameOpen} onClose={() => gameOpen.set(false)} />
+<WreckMaze open={$gameOpen} onClose={() => gameOpen.set(false)} />
