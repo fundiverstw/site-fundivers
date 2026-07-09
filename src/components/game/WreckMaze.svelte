@@ -7,6 +7,13 @@
   //
   // Everything is drawn procedurally onto a canvas — no image assets. The maze
   // is regenerated on every run, so the route is never the same twice.
+  //
+  // Two things make it feel like a dungeon rather than a grid of identical
+  // boxes: the carver strongly prefers to keep going straight (long hallways
+  // that recede into the dark), and every wall of every compartment picks its
+  // fixture — portholes, a hatch wheel, pipes, coral, crates, a ladder, a grate
+  // — from an RNG seeded on (run, cell, direction). Those fixtures are stable
+  // for the whole run, so you learn the wreck by landmark, not just by minimap.
 
   import { untrack } from 'svelte'
   import { QUESTIONS, type Question } from './questions'
@@ -15,18 +22,22 @@
 
   const W = 720
   const H = 480
-  const N = 5 // maze is N x N compartments
+  const N = 6 // maze is N x N compartments
 
   // Facing / direction indices: 0 = north, 1 = east, 2 = south, 3 = west.
   const DX = [0, 1, 0, -1]
   const DY = [-1, 0, 1, 0]
   const COMPASS = ['N', 'E', 'S', 'W']
 
-  // Tuned by playtesting: a maze you cannot see through needs a lot of
-  // backtracking, so movement has to be cheap. Mistakes are what hurt.
+  // Tuned by bot playtesting. A maze you cannot see through needs a lot of
+  // backtracking, so movement stays cheap; a competent navigator surfaces with
+  // most of the tank. What actually kills you is guessing — hence the steep
+  // mistake cost and the high chance that any given compartment is guarded.
   const AIR_START = 240
-  const AIR_PER_MOVE = 3
-  const AIR_PER_MISTAKE = 25
+  const AIR_PER_MOVE = 4
+  const AIR_PER_MISTAKE = 40
+  const GUARD_CHANCE = 0.72
+  const STRAIGHT_BIAS = 0.9 // carve corridors, not a knot of one-cell turns
 
   type Species = 'moray' | 'octopus' | 'shark' | 'turtle'
   const SPECIES: Species[] = ['moray', 'octopus', 'shark', 'turtle']
@@ -54,6 +65,7 @@
   let score = $state(0)
   let found = $state(0)
   let best = $state(0)
+  let seed = $state(1) // seeds the per-room fixtures, so rooms stay recognisable
 
   let pending = $state<{ q: Question; options: string[]; correct: number; tx: number; ty: number } | null>(null)
   let chosen = $state<number | null>(null)
@@ -76,6 +88,7 @@
     const cells: Cell[] = Array.from({ length: N * N }, () => ({ walls: [true, true, true, true] }))
     const seen = new Set<number>()
     const stack = [idx(0, N - 1)]
+    const lastDir = new Map<number, number>() // how we arrived at each cell
     seen.add(stack[0])
 
     while (stack.length) {
@@ -90,18 +103,26 @@
         if (!seen.has(idx(nx, ny))) options.push(d)
       }
       if (!options.length) { stack.pop(); continue }
-      const d = options[Math.floor(Math.random() * options.length)]
+
+      // Keep going the way we were heading when we can — that is what turns a
+      // knot of one-cell turns into long, dungeon-like hallways.
+      const prev = lastDir.get(cur)
+      const d = prev !== undefined && options.includes(prev) && Math.random() < STRAIGHT_BIAS
+        ? prev
+        : options[Math.floor(Math.random() * options.length)]
+
       const nx = cx + DX[d]
       const ny = cy + DY[d]
       cells[cur].walls[d] = false
       cells[idx(nx, ny)].walls[(d + 2) % 4] = false
       seen.add(idx(nx, ny))
+      lastDir.set(idx(nx, ny), d)
       stack.push(idx(nx, ny))
     }
 
     // A perfect maze is a tree — every wrong turn is a dead end. Punching a few
     // extra holes gives it loops, which makes wandering feel less punishing.
-    for (let k = 0; k < 4; k++) {
+    for (let k = 0; k < 5; k++) {
       const x = Math.floor(rnd(0, N))
       const y = Math.floor(rnd(0, N))
       const d = Math.floor(rnd(0, 4))
@@ -115,6 +136,7 @@
   }
 
   function reset() {
+    seed = 1 + Math.floor(Math.random() * 1e9)
     maze = buildMaze()
     px = 0; py = N - 1; facing = 0
     ex = N - 1; ey = 0
@@ -131,7 +153,7 @@
 
     // Most compartments have a guardian; the ascent line always does.
     guards = Array.from({ length: N * N }, (_, i) =>
-      i === start ? null : i === exit || Math.random() < 0.62
+      i === start ? null : i === exit || Math.random() < GUARD_CHANCE
         ? SPECIES[Math.floor(Math.random() * SPECIES.length)]
         : null,
     )
@@ -242,18 +264,45 @@
   }
 
   // ── Drawing ───────────────────────────────────────────────────────────────
-  // The compartment is a box in one-point perspective: a back wall rectangle,
-  // with ceiling / floor / side walls fanning out to the edges of the canvas.
-  const BX1 = W * 0.3, BX2 = W * 0.7, BY1 = H * 0.24, BY2 = H * 0.78
-  const lerp = (a: number, b: number, t: number) => a + (b - a) * t
+  // One-point perspective, but rendered as a *corridor*: we walk the cells
+  // straight ahead until a wall stops us and draw each as a nested frame, so a
+  // long hallway recedes into the dark instead of ending at the next wall.
+  //
+  // Every wall of every compartment picks its fixture from a seeded RNG, so a
+  // room always looks the way you last saw it. That is what makes the wreck
+  // navigable by memory rather than by minimap alone.
+  const R = 0.58 // each cell deeper shrinks the frame by this factor
+  const MAX_DEPTH = 6
 
-  /** A point on a side wall, `t` running 0 (back corner) → 1 (at the viewer). */
-  function wallPt(side: -1 | 1, t: number, edge: 'top' | 'bot'): [number, number] {
-    const x = lerp(side < 0 ? BX1 : BX2, side < 0 ? 0 : W, t)
-    const yTop = lerp(BY1, 0, t)
-    const yBot = lerp(BY2, H, t)
-    const h = yBot - yTop
-    return edge === 'top' ? [x, yTop + h * 0.1] : [x, yBot - h * 0.05]
+  // Eye level sits a little above centre, so you see more floor than ceiling.
+  const EYE_Y = H * 0.46
+  const frame = (d: number) => {
+    const k = Math.pow(R, d)
+    return { x1: W / 2 - (W / 2) * k, x2: W / 2 + (W / 2) * k, y1: EYE_Y - H * 0.54 * k, y2: EYE_Y + H * 0.54 * k }
+  }
+
+  function mulberry32(a: number) {
+    return () => {
+      a |= 0; a = (a + 0x6d2b79f5) | 0
+      let t = Math.imul(a ^ (a >>> 15), 1 | a)
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+    }
+  }
+
+  const TINTS = ['#0b2537', '#0c2a33', '#10263a', '#0a2b2f', '#132436', '#0d2140', '#0e2b3c']
+  type Fixture = 'portholes' | 'hatch' | 'pipes' | 'coral' | 'crates' | 'ladder' | 'grate'
+  const FIXTURES: Fixture[] = ['portholes', 'hatch', 'pipes', 'coral', 'crates', 'ladder', 'grate']
+
+  const roomTint = (cell: number) => TINTS[Math.floor(mulberry32(seed * 104729 + cell)() * TINTS.length)]
+  const wallFixture = (cell: number, dir: number): Fixture =>
+    FIXTURES[Math.floor(mulberry32(seed * 7919 + cell * 4 + dir)() * FIXTURES.length)]
+
+  /** Multiply a #rrggbb by `f` (depth fog + per-surface shading). */
+  function shade(hex: string, f: number) {
+    const n = parseInt(hex.slice(1), 16)
+    const c = (v: number) => Math.max(0, Math.min(255, Math.round(v * f)))
+    return `rgb(${c((n >> 16) & 255)},${c((n >> 8) & 255)},${c(n & 255)})`
   }
 
   function quad(ctx: CanvasRenderingContext2D, pts: [number, number][], fill: string) {
@@ -265,17 +314,18 @@
     ctx.fill()
   }
 
+  const OPENING = '#02060c'
+
   function drawScene(ctx: CanvasRenderingContext2D) {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
     ctx.fillStyle = '#03080f'
     ctx.fillRect(0, 0, W, H)
 
     ctx.save()
-    // Step / turn / bump feedback, applied to the whole compartment.
     if (anim) {
       const t = anim.t
       if (anim.kind === 'move') {
-        const s = 1 + 0.3 * t
+        const s = 1 + 0.42 * t
         ctx.translate(W / 2, H / 2); ctx.scale(s, s); ctx.translate(-W / 2, -H / 2)
       } else if (anim.kind === 'turnL' || anim.kind === 'turnR') {
         ctx.translate((anim.kind === 'turnL' ? -1 : 1) * W * 0.45 * t, 0)
@@ -284,58 +334,84 @@
       }
     }
 
-    const cell = maze[idx(px, py)]
-    const rel = (d: number) => (facing + d) % 4 // 0 ahead, 1 right, 2 behind, 3 left
-    const openAhead = !cell.walls[rel(0)]
-    const openRight = !cell.walls[rel(1)]
-    const openLeft = !cell.walls[rel(3)]
+    // Walk straight ahead collecting the visible run of compartments.
+    const run: number[] = []
+    let cx = px, cy = py
+    let blocked = false
+    for (let d = 0; d < MAX_DEPTH; d++) {
+      run.push(idx(cx, cy))
+      if (maze[idx(cx, cy)].walls[facing]) { blocked = true; break }
+      cx += DX[facing]; cy += DY[facing]
+    }
+    const L = run.length
+    const fog = (d: number) => 1 / (1 + 0.42 * d)
+    const dirL = (facing + 3) % 4
+    const dirR = (facing + 1) % 4
 
-    // Ceiling, floor, side walls, back wall.
-    quad(ctx, [[0, 0], [W, 0], [BX2, BY1], [BX1, BY1]], '#071624')
-    quad(ctx, [[0, H], [W, H], [BX2, BY2], [BX1, BY2]], '#0a2133')
-    quad(ctx, [[0, 0], [BX1, BY1], [BX1, BY2], [0, H]], '#0b2537')
-    quad(ctx, [[W, 0], [BX2, BY1], [BX2, BY2], [W, H]], '#092030')
-    quad(ctx, [[BX1, BY1], [BX2, BY1], [BX2, BY2], [BX1, BY2]], '#0d2e43')
-
-    // Rivet seams on the back wall, so it reads as a steel hull.
-    ctx.strokeStyle = 'rgba(44,208,197,0.13)'
-    ctx.lineWidth = 1
-    for (let i = 1; i < 4; i++) {
-      const y = lerp(BY1, BY2, i / 4)
-      ctx.beginPath(); ctx.moveTo(BX1, y); ctx.lineTo(BX2, y); ctx.stroke()
+    // Far end: a wall (with its fixture) if the run stopped, else darkness.
+    const far = frame(L)
+    if (blocked) {
+      const tint = roomTint(run[L - 1])
+      ctx.fillStyle = shade(tint, 1.05 * fog(L - 1))
+      ctx.fillRect(far.x1, far.y1, far.x2 - far.x1, far.y2 - far.y1)
+      drawFixture(ctx, wallFixture(run[L - 1], facing), far, fog(L - 1))
+    } else {
+      ctx.fillStyle = OPENING
+      ctx.fillRect(far.x1, far.y1, far.x2 - far.x1, far.y2 - far.y1)
     }
 
-    // Openings.
-    if (openLeft) quad(ctx, [wallPt(-1, 0.12, 'top'), wallPt(-1, 0.86, 'top'), wallPt(-1, 0.86, 'bot'), wallPt(-1, 0.12, 'bot')], '#02060c')
-    if (openRight) quad(ctx, [wallPt(1, 0.12, 'top'), wallPt(1, 0.86, 'top'), wallPt(1, 0.86, 'bot'), wallPt(1, 0.12, 'bot')], '#02060c')
+    // Slices, far to near, so nearer geometry overlaps.
+    for (let d = L - 1; d >= 0; d--) {
+      const cell = run[d]
+      const a = frame(d)
+      const b = frame(d + 1)
+      const tint = roomTint(cell)
+      const f = fog(d)
+      const w = maze[cell].walls
 
-    let doorCx = W / 2
-    let doorCy = (BY1 + BY2) / 2
-    if (openAhead) {
-      const dw = (BX2 - BX1) * 0.54
-      const dx = W / 2 - dw / 2
-      const dy = BY1 + (BY2 - BY1) * 0.14
-      const g = ctx.createLinearGradient(0, dy, 0, BY2)
-      g.addColorStop(0, '#02060c')
-      g.addColorStop(1, '#061726')
-      ctx.fillStyle = g
-      ctx.fillRect(dx, dy, dw, BY2 - dy)
-      ctx.strokeStyle = 'rgba(44,208,197,0.3)'
+      quad(ctx, [[a.x1, a.y1], [a.x2, a.y1], [b.x2, b.y1], [b.x1, b.y1]], shade(tint, 0.55 * f))   // ceiling
+      quad(ctx, [[a.x1, a.y2], [a.x2, a.y2], [b.x2, b.y2], [b.x1, b.y2]], shade(tint, 0.9 * f))    // floor
+      const leftQ: [number, number][] = [[a.x1, a.y1], [b.x1, b.y1], [b.x1, b.y2], [a.x1, a.y2]]
+      const rightQ: [number, number][] = [[a.x2, a.y1], [b.x2, b.y1], [b.x2, b.y2], [a.x2, a.y2]]
+      quad(ctx, leftQ, w[dirL] ? shade(tint, 1.05 * f) : OPENING)
+      quad(ctx, rightQ, w[dirR] ? shade(tint, 0.72 * f) : OPENING)
+
+      // Corner edges running away from the viewer are the depth cue; a bright
+      // rectangle at every boundary just reads as nested boxes.
+      ctx.lineWidth = 1.5
+      ctx.strokeStyle = `rgba(44,208,197,${0.17 * f})`
+      for (const [ax, ay, bx, by] of [
+        [a.x1, a.y1, b.x1, b.y1], [a.x2, a.y1, b.x2, b.y1],
+        [a.x1, a.y2, b.x1, b.y2], [a.x2, a.y2, b.x2, b.y2],
+      ]) { ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(bx, by); ctx.stroke() }
+
+      // A side passage gets an outline, so you notice the turning.
+      ctx.strokeStyle = `rgba(44,208,197,${0.34 * f})`
       ctx.lineWidth = 2
-      ctx.strokeRect(dx, dy, dw, BY2 - dy)
-      doorCx = W / 2
-      doorCy = dy + (BY2 - dy) * 0.55
+      for (const [openq, q] of [[!w[dirL], leftQ], [!w[dirR], rightQ]] as [boolean, [number, number][]][]) {
+        if (!openq) continue
+        ctx.beginPath(); ctx.moveTo(q[0][0], q[0][1])
+        for (let i = 1; i < 4; i++) ctx.lineTo(q[i][0], q[i][1])
+        ctx.closePath(); ctx.stroke()
+      }
 
-      const nx = px + DX[facing]
-      const ny = py + DY[facing]
-      if (nx >= 0 && ny >= 0 && nx < N && ny < N) {
-        if (treasures[idx(nx, ny)]) drawGlint(ctx, doorCx + dw * 0.28, BY2 - 18)
-        const g2 = guards[idx(nx, ny)]
-        if (g2 && phase === 'explore') drawCreature(ctx, g2, doorCx, doorCy + 10, 0.62, 0.75)
+      // Faint lip on the bulkhead you are about to swim through.
+      ctx.strokeStyle = `rgba(44,208,197,${0.12 * f})`
+      ctx.lineWidth = 1.5
+      ctx.strokeRect(b.x1, b.y1, b.x2 - b.x1, b.y2 - b.y1)
+
+      if (d === 0) drawDebris(ctx, cell, a, b, f)
+
+      // Whatever waits in the compartment ahead, drawn at its own depth.
+      if (d >= 1) {
+        const mid = { x: W / 2, y: (b.y1 + b.y2) / 2 }
+        if (treasures[cell]) drawGlint(ctx, mid.x + (b.x2 - b.x1) * 0.3, b.y2 - (b.y2 - b.y1) * 0.06)
+        const g = guards[cell]
+        if (g && phase === 'explore') drawCreature(ctx, g, mid.x, mid.y + (b.y2 - b.y1) * 0.06, 1.9 * Math.pow(R, d), 0.85 * f + 0.2)
       }
     }
 
-    // The guardian you are being questioned by looms in the doorway.
+    // The guardian questioning you swims right up into your mask.
     if ((phase === 'question' || phase === 'result') && pending) {
       const g = guards[idx(pending.tx, pending.ty)]
       if (g) drawCreature(ctx, g, W / 2, H * 0.4, 1.5, 1)
@@ -343,18 +419,97 @@
 
     ctx.restore()
 
-    // Drifting bubbles, over everything.
     ctx.fillStyle = 'rgba(153,246,234,0.14)'
     for (const d of deco) {
       ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2); ctx.fill()
     }
 
-    // Vignette.
     const v = ctx.createRadialGradient(W / 2, H / 2, H * 0.25, W / 2, H / 2, H * 0.85)
     v.addColorStop(0, 'rgba(0,0,0,0)')
     v.addColorStop(1, 'rgba(0,0,0,0.72)')
     ctx.fillStyle = v
     ctx.fillRect(0, 0, W, H)
+  }
+
+  /** Silt and rubble on the floor of the compartment you are standing in. */
+  function drawDebris(ctx: CanvasRenderingContext2D, cell: number, a: ReturnType<typeof frame>, b: ReturnType<typeof frame>, f: number) {
+    const rng = mulberry32(seed * 31337 + cell)
+    ctx.fillStyle = `rgba(6,20,32,${0.75 * f})`
+    for (let i = 0; i < 7; i++) {
+      const t = 0.15 + rng() * 0.8
+      const x = lerpN(b.x1 + (b.x2 - b.x1) * rng(), rng() < 0.5 ? a.x1 : a.x2, t * 0.55)
+      const y = lerpN(b.y2, a.y2, t)
+      ctx.beginPath(); ctx.ellipse(x, y, 6 + rng() * 16 * t, 2 + rng() * 5 * t, 0, 0, Math.PI * 2); ctx.fill()
+    }
+  }
+
+  const lerpN = (p: number, q: number, t: number) => p + (q - p) * t
+
+  /** The fixture on a back wall — the landmark that tells rooms apart. */
+  function drawFixture(ctx: CanvasRenderingContext2D, kind: Fixture, r: ReturnType<typeof frame>, f: number) {
+    const w = r.x2 - r.x1
+    const h = r.y2 - r.y1
+    const cx = (r.x1 + r.x2) / 2
+    const cy = (r.y1 + r.y2) / 2
+    ctx.save()
+    ctx.beginPath(); ctx.rect(r.x1, r.y1, w, h); ctx.clip()
+    const line = `rgba(44,208,197,${0.5 * f})`
+    const dark = `rgba(2,7,14,${0.85 * f})`
+    ctx.lineWidth = Math.max(1, 2 * f)
+    ctx.strokeStyle = line
+    ctx.fillStyle = dark
+
+    if (kind === 'portholes') {
+      for (const dx of [-0.26, 0.26]) {
+        ctx.beginPath(); ctx.arc(cx + dx * w, cy - h * 0.08, h * 0.13, 0, Math.PI * 2); ctx.fill(); ctx.stroke()
+        ctx.beginPath(); ctx.arc(cx + dx * w, cy - h * 0.08, h * 0.09, 0, Math.PI * 2); ctx.stroke()
+      }
+    } else if (kind === 'hatch') {
+      ctx.beginPath(); ctx.rect(cx - w * 0.2, cy - h * 0.26, w * 0.4, h * 0.56); ctx.fill(); ctx.stroke()
+      ctx.beginPath(); ctx.arc(cx, cy, h * 0.1, 0, Math.PI * 2); ctx.stroke()
+      for (let i = 0; i < 4; i++) {
+        const ang = (i / 4) * Math.PI * 2 + 0.4
+        ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + Math.cos(ang) * h * 0.1, cy + Math.sin(ang) * h * 0.1); ctx.stroke()
+      }
+    } else if (kind === 'pipes') {
+      for (const dx of [-0.3, -0.12, 0.16]) {
+        ctx.beginPath(); ctx.rect(cx + dx * w, r.y1, w * 0.07, h); ctx.fill(); ctx.stroke()
+        for (let i = 1; i < 4; i++) {
+          const y = r.y1 + (h * i) / 4
+          ctx.beginPath(); ctx.rect(cx + dx * w - w * 0.02, y, w * 0.11, h * 0.05); ctx.fill(); ctx.stroke()
+        }
+      }
+    } else if (kind === 'coral') {
+      ctx.strokeStyle = `rgba(203,166,247,${0.6 * f})`
+      for (const dx of [-0.3, 0, 0.3]) {
+        const bx = cx + dx * w
+        for (let i = -3; i <= 3; i++) {
+          ctx.beginPath()
+          ctx.moveTo(bx, r.y2)
+          ctx.quadraticCurveTo(bx + i * w * 0.02, cy + h * 0.1, bx + i * w * 0.05, cy - h * 0.12)
+          ctx.stroke()
+        }
+      }
+    } else if (kind === 'crates') {
+      ctx.beginPath(); ctx.rect(cx - w * 0.34, r.y2 - h * 0.34, w * 0.3, h * 0.34); ctx.fill(); ctx.stroke()
+      ctx.beginPath(); ctx.rect(cx - w * 0.3, r.y2 - h * 0.62, w * 0.22, h * 0.28); ctx.fill(); ctx.stroke()
+      ctx.beginPath(); ctx.rect(cx + w * 0.06, r.y2 - h * 0.28, w * 0.28, h * 0.28); ctx.fill(); ctx.stroke()
+    } else if (kind === 'ladder') {
+      ctx.beginPath(); ctx.moveTo(cx - w * 0.1, r.y1); ctx.lineTo(cx - w * 0.1, r.y2); ctx.stroke()
+      ctx.beginPath(); ctx.moveTo(cx + w * 0.1, r.y1); ctx.lineTo(cx + w * 0.1, r.y2); ctx.stroke()
+      for (let i = 1; i < 7; i++) {
+        const y = r.y1 + (h * i) / 7
+        ctx.beginPath(); ctx.moveTo(cx - w * 0.1, y); ctx.lineTo(cx + w * 0.1, y); ctx.stroke()
+      }
+    } else {
+      // grate
+      ctx.beginPath(); ctx.rect(cx - w * 0.22, cy - h * 0.2, w * 0.44, h * 0.4); ctx.fill(); ctx.stroke()
+      for (let i = 1; i < 5; i++) {
+        const y = cy - h * 0.2 + (h * 0.4 * i) / 5
+        ctx.beginPath(); ctx.moveTo(cx - w * 0.22, y); ctx.lineTo(cx + w * 0.22, y); ctx.stroke()
+      }
+    }
+    ctx.restore()
   }
 
   function drawGlint(ctx: CanvasRenderingContext2D, x: number, y: number) {
@@ -568,7 +723,7 @@
               </div>
 
               <!-- Minimap: only compartments you have entered are drawn. -->
-              <svg viewBox="0 0 {N * 16 + 8} {N * 16 + 8}" class="h-[92px] w-[92px] rounded-lg bg-black/55 p-1">
+              <svg viewBox="0 0 {N * 16 + 8} {N * 16 + 8}" class="h-[104px] w-[104px] rounded-lg bg-black/55 p-1">
                 {#each maze as c, i (i)}
                   {@const cx = (i % N) * 16 + 4}
                   {@const cy = Math.floor(i / N) * 16 + 4}
