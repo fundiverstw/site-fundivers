@@ -4,6 +4,7 @@
   import { twd } from '../lib/format'
   import { registerUrl } from '../lib/config'
   import { t } from '../lib/i18n'
+  import CoverPhoto from './CoverPhoto.svelte'
 
   // Image-backed event card (modeled on app-fundivers/wix/home/upcoming_courses.html):
   // cover image + dark overlay with title, date, schedule blurb, price, and
@@ -14,15 +15,10 @@
   let pill = $derived(
     ev.type === 'dive' ? 'bg-emerald-500/30 text-emerald-100' : 'bg-sky-500/30 text-sky-100',
   )
-  let imgFailed = $state(false)
 </script>
 
 <div class="group relative aspect-square overflow-hidden rounded-3xl border border-white/15 bg-brand-900 shadow-sm transition-transform hover:-translate-y-0.5">
-  {#if ev.image && !imgFailed}
-    <img src={ev.image} alt="" loading="lazy" onerror={() => (imgFailed = true)} class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-  {:else}
-    <div class="absolute inset-0 bg-gradient-to-br from-brand-700 to-reef-700"></div>
-  {/if}
+  <CoverPhoto src={ev.image} />
   <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
 
   <div class="absolute inset-x-0 bottom-0 z-10 flex flex-col gap-1 p-4">

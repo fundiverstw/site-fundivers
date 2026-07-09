@@ -5,6 +5,7 @@
   import EventModal from '../components/calendar/EventModal.svelte'
   import { mediaIdLocal } from '../lib/images'
   import { t } from '../lib/i18n'
+  import CoverPhoto from '../components/CoverPhoto.svelte'
 
   let upcoming = $state<UpcomingEvent[]>([])
   let loading = $state(true)
@@ -78,11 +79,7 @@
     onclick={() => open(ev)}
     class={`group relative block aspect-[16/10] w-full overflow-hidden rounded-3xl border border-white/15 text-left transition-all duration-300 hover:-translate-y-0.5 lg:aspect-auto lg:h-full ${big ? 'hover:border-mauve/60 hover:shadow-[0_0_26px_-6px_rgba(203,166,247,0.7)]' : 'hover:border-reef-400/60 hover:shadow-[0_0_26px_-6px_rgba(44,208,197,0.65)]'}`}
   >
-    {#if ev.image}
-      <img src={ev.image} alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-    {:else}
-      <div class="absolute inset-0 bg-gradient-to-br from-brand-700 to-reef-700"></div>
-    {/if}
+    <CoverPhoto src={ev.image} />
     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
     <div class={`absolute inset-x-0 bottom-0 ${big ? 'px-6 pb-6 pt-5' : 'px-5 pb-5 pt-4'}`}>
       {#if ev.fullyBooked}

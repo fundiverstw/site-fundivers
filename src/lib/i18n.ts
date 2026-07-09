@@ -58,7 +58,7 @@ const en = {
     readMore: 'Read more', viewOnMap: 'View on map', details: 'Details', book: 'Book', bookNow: 'Book Now',
     register: 'Register', joinWaitlist: 'Join waitlist', waitlist: 'Waitlist', viewAll: 'View all',
     contactUs: 'Contact us', from: 'From', nothingScheduled: 'Nothing scheduled yet.', featured: 'Featured',
-    dive: 'Dive', course: 'Course', loadingDetails: 'Loading details…',
+    dive: 'Dive', course: 'Course', loadingDetails: 'Loading details…', pendingImage: 'Image coming soon',
   },
   home: {
     featured: 'Featured', upcomingDives: 'Upcoming Dives', upcomingCourses: 'Upcoming Courses',
@@ -176,7 +176,7 @@ const zhTW: Dict = {
     readMore: '了解更多', viewOnMap: '查看地圖', details: '詳情', book: '預約', bookNow: '立即預約',
     register: '報名', joinWaitlist: '加入候補', waitlist: '候補', viewAll: '查看全部',
     contactUs: '聯絡我們', from: '起', nothingScheduled: '目前尚未安排。', featured: '精選',
-    dive: '潛水', course: '課程', loadingDetails: '載入詳情中…',
+    dive: '潛水', course: '課程', loadingDetails: '載入詳情中…', pendingImage: '照片即將上架',
   },
   home: {
     featured: '精選', upcomingDives: '近期潛水', upcomingCourses: '近期課程',
@@ -292,7 +292,7 @@ const ja: Dict = {
     readMore: '詳しく見る', viewOnMap: '地図で見る', details: '詳細', book: '予約', bookNow: '今すぐ予約',
     register: '申し込む', joinWaitlist: 'キャンセル待ち', waitlist: 'キャンセル待ち', viewAll: 'すべて見る',
     contactUs: 'お問い合わせ', from: '〜', nothingScheduled: '現在予定はありません。', featured: 'おすすめ',
-    dive: 'ダイブ', course: 'コース', loadingDetails: '詳細を読み込み中…',
+    dive: 'ダイブ', course: 'コース', loadingDetails: '詳細を読み込み中…', pendingImage: '写真は近日公開',
   },
   home: {
     featured: 'おすすめ', upcomingDives: '今後のダイビング', upcomingCourses: '今後のコース',

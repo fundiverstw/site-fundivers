@@ -5,6 +5,7 @@
   import { DIVE_SITE_GUIDES } from '../lib/dive-site-guides'
   import { wixSiteUrl } from '../lib/dive-site-links'
   import { t } from '../lib/i18n'
+  import CoverPhoto from '../components/CoverPhoto.svelte'
 
   // The route param: /sites/<id>. The router serves this component for any
   // /sites/<something> path, so we resolve the id from the current path.
@@ -72,11 +73,7 @@
 
     <!-- Hero -->
     <div class="relative mt-4 flex min-h-[16rem] flex-col justify-end overflow-hidden rounded-3xl border border-white/15 sm:min-h-[22rem]">
-      {#if heroImg}
-        <img src={heroImg} alt={site.name} class="absolute inset-0 h-full w-full object-cover" />
-      {:else}
-        <div class="absolute inset-0 bg-gradient-to-br from-brand-700 to-reef-700"></div>
-      {/if}
+      <CoverPhoto src={heroImg} alt={site.name} imgClass="absolute inset-0 h-full w-full object-cover" />
       <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent"></div>
       <div class="relative z-10 p-6 sm:p-8">
         <div class="flex flex-wrap items-center gap-2">

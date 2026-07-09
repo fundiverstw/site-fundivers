@@ -4,6 +4,7 @@
   import { CONTACT } from '../lib/config'
   import { t } from '../lib/i18n'
   import PageHeader from '../components/PageHeader.svelte'
+  import CoverPhoto from '../components/CoverPhoto.svelte'
 
   let all = $state<Destination[]>([])
   let tripTitles = $state<string[]>([])
@@ -83,11 +84,7 @@
       <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {#each items as d (d.id)}
           <div class="group relative flex aspect-square flex-col justify-end overflow-hidden rounded-3xl border border-white/15 shadow-sm transition-colors hover:border-reef-400/50">
-            {#if d.image}
-              <img src={d.image} alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-            {:else}
-              <div class="absolute inset-0 bg-gradient-to-br from-brand-700 to-reef-700"></div>
-            {/if}
+            <CoverPhoto src={d.image} alt={d.title} />
             <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
             <!-- Whole card is the link: in-Taiwan spots go to the dive-site page
                  (internal), international tours open fundiverstw.com. -->

@@ -3,6 +3,7 @@
   import { fetchDestinations, type Destination } from '../lib/destinations'
   import { t } from '../lib/i18n'
   import PageHeader from '../components/PageHeader.svelte'
+  import CoverPhoto from '../components/CoverPhoto.svelte'
 
   let sites = $state<DiveSite[]>([])
   let destByName = $state<Map<string, Destination>>(new Map())
@@ -69,11 +70,7 @@
           {#each group.sites as s (s.id)}
             {@const img = siteImage(s)}
             <div class="group relative flex aspect-square flex-col justify-end overflow-hidden rounded-3xl border border-white/15 shadow-sm transition-colors hover:border-reef-400/50">
-              {#if img}
-                <img src={img} alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-              {:else}
-                <div class="absolute inset-0 bg-gradient-to-br from-brand-700 to-reef-700"></div>
-              {/if}
+              <CoverPhoto src={img} alt={s.name} />
               <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
               <!-- Stretched link: the whole card opens the dive-site detail page. -->
               <a href={diveSitePath(s)} class="absolute inset-0 z-10" aria-label={s.name}></a>
