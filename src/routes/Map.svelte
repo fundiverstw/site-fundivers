@@ -1,6 +1,6 @@
 <script lang="ts">
   import taiwanGeo from '../lib/taiwan.geo.json'
-  import { fetchDiveSites, diveSitePath, type DiveSite, type Region } from '../lib/sites'
+  import { fetchDiveSites, diveSitePath, type DiveSite, type TaiwanRegion } from '../lib/sites'
   import { placeLabels } from '../lib/map-layout'
   import { t } from '../lib/i18n'
   import PageHeader from '../components/PageHeader.svelte'
@@ -18,7 +18,7 @@
     maxZoom?: number
   }
 
-  const REGIONS: Record<Region, RegionInfo> = {
+  const REGIONS: Record<TaiwanRegion, RegionInfo> = {
     keelung: {
       name: 'Keelung / Badouzi', center: [121.81, 25.15], bbox: [121.785, 25.122, 121.836, 25.195],
       description: 'Northern port-area diving — Badouzi Bay reefs and shipwrecks, with Keelung Islet just offshore.',
@@ -66,15 +66,9 @@
         'Of all the dive locations in Taiwan, Penghu has the most fish in numbers, size, and diversity! If you have the ' +
         "experience and time, it's a definite must-see!",
     },
-    // International — never placed on this Taiwan map (omitted from REGION_ORDER,
-    // and sitesByRegion only keeps sites whose region is in REGION_ORDER).
-    malapascua: {
-      name: 'Malapascua', center: [124.1156, 11.3208], bbox: [124.10, 11.31, 124.13, 11.34],
-      description: 'Off Cebu, Philippines — a FunDivers international trip destination.',
-    },
   }
 
-  const REGION_ORDER: Region[] = [
+  const REGION_ORDER: TaiwanRegion[] = [
     'keelung', 'longdong', 'yilan', 'greenisland', 'lanyu', 'xiaoliuqiu', 'kenting', 'penghu',
   ]
 
@@ -100,17 +94,17 @@
 
   const REGION_BBOX_SVG = Object.fromEntries(
     REGION_ORDER.map((r) => [r, bboxToSvgRect(REGIONS[r].bbox)]),
-  ) as Record<Region, { x: number; y: number; w: number; h: number }>
+  ) as Record<TaiwanRegion, { x: number; y: number; w: number; h: number }>
 
   const MAX_ZOOM = 18
 
-  function scaleForRegion(r: Region): number {
+  function scaleForRegion(r: TaiwanRegion): number {
     const b = REGION_BBOX_SVG[r]
     const cap = REGIONS[r].maxZoom ?? MAX_ZOOM
     return Math.min(VIEW_W / b.w, VIEW_H / b.h, cap)
   }
 
-  function transformForRegion(r: Region | null): string {
+  function transformForRegion(r: TaiwanRegion | null): string {
     if (!r) return 'translate(0px, 0px) scale(1)'
     const b = REGION_BBOX_SVG[r]
     const scale = scaleForRegion(r)
@@ -119,7 +113,7 @@
     return `translate(${VIEW_W / 2 - scale * cx}px, ${VIEW_H / 2 - scale * cy}px) scale(${scale})`
   }
 
-  function siteToViewBoxXY(lon: number, lat: number, region: Region): [number, number] {
+  function siteToViewBoxXY(lon: number, lat: number, region: TaiwanRegion): [number, number] {
     const px = projectX(lon)
     const py = projectY(lat)
     const b = REGION_BBOX_SVG[region]
@@ -144,12 +138,12 @@
   const features = (taiwanGeo as { features: Feature[] }).features
   const allPaths = features.map((f) => ringToPath((f.geometry.coordinates as Ring[])[0]))
 
-  function strokeWidthForZoom(r: Region | null): number {
+  function strokeWidthForZoom(r: TaiwanRegion | null): number {
     return r ? 0.5 / scaleForRegion(r) : 0.5
   }
 
   // --- State ---------------------------------------------------------------
-  let selected = $state<Region | null>(null)
+  let selected = $state<TaiwanRegion | null>(null)
   let sites = $state<DiveSite[]>([])
 
   $effect(() => {
@@ -159,9 +153,13 @@
   })
 
   let sitesByRegion = $derived.by(() => {
-    const m = new Map<Region, DiveSite[]>()
+    const m = new Map<TaiwanRegion, DiveSite[]>()
     REGION_ORDER.forEach((r) => m.set(r, []))
-    for (const s of sites) if (m.has(s.region)) m.get(s.region)!.push(s)
+    // International sites carry a region this map doesn't draw, so they drop out.
+    for (const s of sites) {
+      const r = s.region as TaiwanRegion
+      if (m.has(r)) m.get(r)!.push(s)
+    }
     return m
   })
 
@@ -182,10 +180,10 @@
     }))
   })
 
-  function pick(r: Region) {
+  function pick(r: TaiwanRegion) {
     selected = selected === r ? null : r
   }
-  function regionKeyDown(e: KeyboardEvent, r: Region) {
+  function regionKeyDown(e: KeyboardEvent, r: TaiwanRegion) {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault()
       pick(r)

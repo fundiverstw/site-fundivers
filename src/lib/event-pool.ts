@@ -45,6 +45,10 @@ export function siteImage(siteId: string): string | null {
 // fall through to the general pool.
 const SITE_MATCHERS: Array<{ id: string; re: RegExp }> = [
   { id: 'malapascua', re: /malapascua/i },
+  { id: 'puerto-galera', re: /puerto\s*galera/i },
+  { id: 'panglao-bohol', re: /panglao|bohol/i },
+  { id: 'anilao', re: /anilao/i },
+  { id: 'palau', re: /palau/i },
   { id: 'iron-house-2', re: /iron\s*(house|reef)\s*2/i },
   { id: 'rainbow-reef', re: /rainbow\s*reef/i },
   { id: 'crystal-temple-wall', re: /crystal\s*(temple|palace|wall)/i },

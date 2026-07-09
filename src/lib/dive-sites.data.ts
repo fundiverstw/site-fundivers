@@ -201,12 +201,56 @@ export const DIVE_SITES: DiveSite[] = [
   {
     "id": "malapascua",
     "name": "Malapascua",
-    "tagline": "A small island off the northern tip of Cebu, Malapascua is world-famous for daily encounters with thresher sharks at Monad Shoal, plus vibrant reefs and rich macro life.",
+    "tagline": "Malapascua is home to thresher sharks, eagle rays, and the occasional tiger shark. It is a destination on every diver's bucket list!",
     "latitude": 11.3208,
     "longitude": 124.1156,
     "region": "malapascua",
     "dive_type": "boat",
-    "wix_slug": null,
+    "wix_slug": "malapascua",
+    "international": true
+  },
+  {
+    "id": "puerto-galera",
+    "name": "Puerto Galera",
+    "tagline": "Puerto Galera is a top dive destination in the Mindoro Province of the Philippines. It offers exciting nightlife and restaurants serving Western or Filipino cuisine.",
+    "latitude": 13.5127,
+    "longitude": 120.9647,
+    "region": "puerto-galera",
+    "dive_type": "boat",
+    "wix_slug": "puerto-galera",
+    "international": true
+  },
+  {
+    "id": "panglao-bohol",
+    "name": "Panglao, Bohol",
+    "tagline": "Panglao is a diver’s paradise with a variety of dive sites and an abundance of sea life! Located in the Bohol Province of the Philippines, it is on the list of must-see places for all divers!",
+    "latitude": 9.5787,
+    "longitude": 123.75,
+    "region": "panglao-bohol",
+    "dive_type": "boat",
+    "wix_slug": "panglao%2C-bohol",
+    "international": true
+  },
+  {
+    "id": "anilao",
+    "name": "Anilao",
+    "tagline": "Just a few hours from Manila, in the Batangas Province, lies Anilao. Anilao has long been considered one of the best diving spots in the Philippines, attracting both beginners and experienced divers.",
+    "latitude": 13.7561,
+    "longitude": 120.8567,
+    "region": "anilao",
+    "dive_type": "boat",
+    "wix_slug": "anilao",
+    "international": true
+  },
+  {
+    "id": "palau",
+    "name": "Palau",
+    "tagline": "Palau is an archipelago located in Micronesia, in the western Pacific Ocean. It is a world-class diving experience that draws divers from all over the globe. It is a top ten destination and a must-see for all avid divers.",
+    "latitude": 7.3436,
+    "longitude": 134.479,
+    "region": "palau",
+    "dive_type": "boat",
+    "wix_slug": "palau",
     "international": true
   }
 ]

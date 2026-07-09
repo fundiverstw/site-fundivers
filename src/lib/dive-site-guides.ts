@@ -411,31 +411,95 @@ export const DIVE_SITE_GUIDES: Record<string, DiveSiteGuide> = {
     visibility: '15–30 m',
   },
 
-  // ── International ─────────────────────────────────────────────────────────
-  // Malapascua has no travel_destinations page on the marketing site, so unlike
-  // every entry above, this copy is ours, not the shop's. Worth a rewrite.
+  // ── International trip destinations ───────────────────────────────────────
   malapascua: {
     overview:
-      'Malapascua is a small island off the northern tip of Cebu in the Philippines, and one of the only places in the world where thresher sharks are seen almost every morning of the year. They rise from the deep to Monad Shoal, a sunken island plateau, to be cleaned by wrasse — a ritual worth getting up before dawn for.\n\nThe island itself is barely 2.5 km long, with white sand beaches and no cars. Beyond the sharks, the surrounding reefs, walls and wrecks hold some of the best macro diving in the region.',
+      'Diving with thresher sharks is the highlight of diving in Malapascua. However, divers also love the relaxed island atmosphere and cruising the archipelago between dives!',
     belowSurface:
-      'Thresher sharks patrol the cleaning stations at Monad Shoal at first light, joined by devil rays and eagle rays. Kimud Shoal draws schooling hammerheads in season, and Gato Island offers a shark-filled tunnel, whitetip reef sharks and banded sea kraits.\n\nThe macro life is exceptional: mandarinfish, pygmy seahorses, frogfish, blue-ringed octopus, flamboyant cuttlefish, and dozens of nudibranch species.',
+      'Monad Shoal: A great spot to see Thresher Sharks year-round. The sharks can be seen cruising and visiting cleaning stations. If you are lucky, you may even see them breaching the surface!\n\nGato Island: Known for its swim-throughs and vibrant sea life. Sea Snakes and Sea Horses are also common there.\n\nKimud Shoal: Another spot where Thresher Sharks are often see. There is also a chance to see Tiger Sharks and Whale Sharks if you are lucky!',
     aboveSurface:
-      'Malapascua is a slow, walkable island of white sand and palm trees, with no cars and a single main beach. Bounty Beach is the place to end the day, and the fishing villages around it are an easy stroll from the dive shops.',
+      'There are many beautiful beaches to visit and a lot of good snorkeling as well. Malapascua is a quiet, relaxing place to visit and unwind.',
     gettingThere:
-      'Fly to Cebu, then travel roughly four hours north by road to Maya Port, where a short banca boat ride crosses to the island. Transfers are arranged as part of our tour package.',
-    requirements: 'Advanced Open Water with Nitrox certification.',
-    highlights: [
-      'Daily thresher shark encounters at Monad Shoal',
-      'Hammerheads in season at Kimud Shoal',
-      'Gato Island shark tunnel and sea snakes',
-      'World-class macro and muck diving',
-      'Car-free white sand island',
-    ],
-    marineLife: ['Thresher sharks', 'Whitetip reef sharks', 'Scalloped hammerheads (seasonal)', 'Devil and eagle rays', 'Mandarinfish', 'Pygmy seahorses', 'Frogfish', 'Blue-ringed octopus', 'Flamboyant cuttlefish', 'Nudibranchs'],
+      'You can fly into Cebu Airport and the dive resort will arrange pickup and drop off.',
+    requirements: 'Advanced Open Water Divers with Enriched Air Nitrox.',
+    highlights: ['Thresher sharks at Monad Shoal year-round', 'Gato Island swim-throughs and sea snakes', 'Tiger and whale shark chances at Kimud Shoal', 'Quiet, relaxed island atmosphere', 'Cruising the archipelago between dives'],
+    marineLife: ['Thresher sharks', 'Tiger sharks', 'Whale sharks', 'Eagle rays', 'Sea snakes', 'Seahorses', 'Nudibranchs', 'Reef fish'],
     depthRange: '5–30 m',
     difficulty: 'Advanced (AOW + Nitrox)',
     bestSeason: 'Year-round (best October–May)',
     waterTemp: '26–30 °C',
     visibility: '15–30 m',
+  },
+  'puerto-galera': {
+    overview:
+      'Puerto Galera is a top dive destination in the Mindoro Province of the Philippines. It offers exciting nightlife and restaurants serving Western or Filipino cuisine.\n\nThere is a variety of dives available, including some wreck dives, undersea walls, drift dives, and day trips to Verde Island, where you can often see schools of jacks among other schools of bigger fish.',
+    belowSurface:
+      'Puerto Galera is renowned for its variety of sea life, including turtles, jackfish, trevally, and stingrays. You can also see Napolean Wrass and Thresher Sharks if you are lucky.\n\nSpecial Dive Sites:\n\nGrand Canyon: A coral reef with a 30m canyon and sloped terrain. Considered by most to be the best dive site in the area. Schools of Amberjacks, Stone Bass, and Wanderer Trevally often appear. Can have strong currents\n\nMamoods Reef: A favorite spot for experienced divers with strong currents. You can spot large sponges, guppies, and stingrays.\n\nVerde Island: The terrain here is mostly cliffs at 20~35M. There are large tuna/sea hen/black and white hair school/Jack school/giant grouper/Napoleon. You will often encounter monsters, and sometimes you will encounter rising or falling currents like washing machines, which will leave you with beautiful memories.',
+    aboveSurface:
+      'Puerto Galera is well known for its night life with many restaurants and bars for those that want to go out after a day of diving.\n\nSebang beach is excellent for snorkeling and relaxing in the sun and working on your holiday tan!',
+    gettingThere:
+      'You can fly to Manila Airport and then take a bus/car to Batangas Port. From the port, it is a 60 minute private boat ride or 90 minute public ferry ride to Sabang. Most hotels/resorts will arrange pickup from the dock.',
+    requirements: 'Advanced Open Water Certification is recommended and Deep Specialty is required to reach some of the deeper sites.',
+    highlights: ['Grand Canyon — the area’s signature drift', 'Wrecks, walls and drift dives', 'Day trips to Verde Island', 'Lively nightlife in Sabang', 'Deep specialty opens the best sites'],
+    marineLife: ['Sea turtles', 'Jackfish', 'Trevally', 'Stingrays', 'Napoleon wrasse', 'Thresher sharks (rare)', 'Giant grouper', 'Tuna'],
+    depthRange: '10–35 m',
+    difficulty: 'Advanced (Deep specialty for some sites)',
+    bestSeason: 'Year-round (best November–May)',
+    waterTemp: '25–30 °C',
+    visibility: '10–30 m',
+  },
+  'panglao-bohol': {
+    overview:
+      'Panglao is a diver’s paradise with a variety of dive sites and an abundance of sea life! Located in the Bohol Province of the Philippines, it is on the list of must-see places for all divers!',
+    belowSurface:
+      'Some of the bests sites to visit include:\n\nBalicasag Island, home to a marine sanctuary and filled with colorful coral and visited by many pelagic species, including Jackfish, Giant Barracuda, and Sea Turtles. You can also spot Reef Sharks and swim along the wall at the edge of the reef. Strong currents are possible as well.\n\nPamilacan Island, home to vibrant coral reefs, abundant marine life. You will see Sea Turtles, Rays, and schools of reef fish. It is also possible to see Dolphins and Whale Sharks if you are lucky.\n\nNapaling Reef is home to massive schools of Sardines! You can dive, surrounded by the fish balls and enjoy this unforgettable sight!',
+    aboveSurface:
+      'There are many beautiful beaches to visit and a lot of good snorkeling as well. Panglao is known as a quiet, relaxing place to visit and unwind.',
+    gettingThere:
+      'You can fly into Panglao International Airport (TAG) and most hotels and dive shops will arrange pickup at the hotel.',
+    requirements: 'AOW Certification recommended so you can visit some of the deeper sites. However, there several sites that are accessible to OW certified divers.',
+    highlights: ['Napaling Reef sardine ball', 'Balicasag Island marine sanctuary', 'Pamilacan Island turtles and rays', 'Dolphin and whale shark chances', 'Quiet beaches between dives'],
+    marineLife: ['Sardine schools', 'Jackfish', 'Giant barracuda', 'Sea turtles', 'Reef sharks', 'Rays', 'Dolphins', 'Whale sharks (rare)'],
+    depthRange: '5–35 m',
+    difficulty: 'Open Water (AOW for the deeper sites)',
+    bestSeason: 'Year-round (best March–June)',
+    waterTemp: '26–30 °C',
+    visibility: '15–30 m',
+  },
+  anilao: {
+    overview:
+      'The area’s reefs are part of the Coral Triangle, known as the "global epicenter of marine biodiversity," which helps explain the incredible variety of marine life. Anilao is particularly well-known for its macro diving opportunities, making it a paradise for photography lovers. Its 26-30C water temperature, along with its 15-30m visibility between December to May, also makes Anilao a top-notch dive destination for anyone who lives in Asia.',
+    belowSurface:
+      'This location offers an exceptional variety of smaller marine creatures. Many colorful and diverse nudibranchs can be found in abundance. Seahorses, especially pygmy seahorses, are sought after by macro photographers. Look carefully at the black, white, yellow, grey, and orange of what appears to be sponges along the reef; they’re often frogfish. Harlequin and mantis shrimps are also common sightings.\n\nSpecial Dive Site:\n\nMatu Point – A deeper dive with impressive drop-offs where pelagic species, including mantas, sharks, and schooling jackfish can be seen\n\nSecret Bay – A must-see for macro enthusiasts. Famous for its muck diving, where you can see fascinating creatures such as frogfish, pygmy seahorses, and juvenile fish.',
+    aboveSurface:
+      'Taal Volcano – A short drive from Anilao, it’s one of the world’s smallest active volcanoes. After a trek up to the rim for a spectacular view, you can explore the Crater Lake in a boat. A short distance away is a volcanic hot spring where you can relax after the day’s journey.\n\nMarikaban or Sombrero Island – A short boat ride away, you can visit either of these islands for some clear water, perfect for snorkeling and swimming.',
+    gettingThere:
+      'You can get flights to Manila from almost any major city in Asia. You can then organize your hotel to pick you up and take you directly to Anilao.',
+    requirements: 'Open water diver (Advanced certification and SMB are recommended for all boat diving).',
+    highlights: ['World-class macro and muck diving', 'Inside the Coral Triangle', 'Secret Bay muck site', 'Matu Point drop-offs and pelagics', 'A few hours from Manila'],
+    marineLife: ['Nudibranchs', 'Pygmy seahorses', 'Frogfish', 'Harlequin shrimp', 'Mantis shrimp', 'Manta rays', 'Sharks', 'Schooling jackfish'],
+    depthRange: '5–30 m',
+    difficulty: 'Open Water (Advanced + SMB for boat dives)',
+    bestSeason: 'December–May',
+    waterTemp: '26–30 °C',
+    visibility: '15–30 m',
+  },
+  palau: {
+    overview:
+      'Palau is known for its pristine underwater environment and crystal-clear waters. It is full of lush coral reef ecosystems and an abundance of tropical fish of all varieties at every site. Palau boasts over 1,300 species of fish and 700 species of coral. The Palau National Marine Sanctuary covers 80% of its exclusive economic zone and is a leader in sustainable diving practices. With up to 30m in visibility and 26-30C waters, it’s comfortable all year round.',
+    belowSurface:
+      'You\'ll encounter everything from tiny nudibranchs and macro critters to large pelagic species like blacktip, whitetip, and grey reef sharks, manta, devil and sting rays, and large schools of snappers, barracudas, jackfish, fusiliers, batfish, bigeyes and much more. If you’re lucky, it’s possible to encounter hammerheads and whale sharks.\n\nSpecial Dive Sites:\n\nBlue Corner – Widely considered as one of the best dive sites in the whole world, Blue Corner offers thrilling drift dives where you’ll see an array of marine life of all kinds. It’s a dynamic site that offers a dramatic drop-off to coral gardens creating a stunning environment for all to enjoy!\n\nThe Rock Islands - The Rock Islands of Palau are a UNESCO World Heritage site, known for their lush, forested limestone formations above the water and stunning coral gardens beneath. These islands offer a wide variety of dive sites, ranging from shallow reefs teeming with fish to deep drop-offs where you can encounter pelagic species. Many dive trips will take you to remote sites only accessible by boat.',
+    aboveSurface:
+      'Ngermeskang Bird Sanctuary – You need to pay a few dollars at the entrance to get in. You can also ask a ranger to guide you. There is a trekking course built along the Garmiskan River. It has the highest concentration of wild birds in Palau. If you go early in the morning, you can also see fruit bats and the national bird, the green pigeon. Binoculars required. If you\'re lucky, you might even see a crocodile. There are also the remains of a large launch boat of the former Japanese army.\n\nNgardmau Waterfalls – A 30-minute hike to reach the beautiful waterfall! It is an interesting hike through the jungle. The trail is mostly dirt, so I do not recommend this hike after heavy rain. The waterfall is well worth the 10$ entrance fee.',
+    gettingThere:
+      'Flights by China Airlines are available from Taoyuan International Airport in Taiwan. From Koror Airport, it’s a short distance to the main town. You can book a shuttle through your dive shop or hotel to pick you up upon arrival.',
+    requirements: 'Open water diver (Advanced certification and SMB are recommended for all boat diving).',
+    highlights: ['Blue Corner — a top-ten dive site worldwide', 'UNESCO Rock Islands', '1,300 fish and 700 coral species', 'Palau National Marine Sanctuary', 'Sharks, mantas and pelagics'],
+    marineLife: ['Grey reef sharks', 'Blacktip and whitetip reef sharks', 'Manta rays', 'Devil rays', 'Barracuda', 'Jackfish', 'Bumphead parrotfish', 'Hammerheads (rare)', 'Whale sharks (rare)', 'Nudibranchs'],
+    depthRange: '5–30 m',
+    difficulty: 'Open Water (Advanced + SMB for boat dives)',
+    bestSeason: 'Year-round',
+    waterTemp: '26–30 °C',
+    visibility: '20–30 m',
   },
 }
