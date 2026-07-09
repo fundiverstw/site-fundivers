@@ -16,6 +16,17 @@ export type DiveSiteGuide = {
   bestSeason: string
   waterTemp: string
   visibility: string
+  // The shop's own "above / below the surface" copy. Optional: a site without
+  // them falls back to the overview + marine-life chips alone.
+  /** What you'll see underwater, in prose. Rendered above the marine-life chips. */
+  belowSurface?: string
+  /** The site's setting on land — scenery, wildlife, what makes the trip worth it. */
+  aboveSurface?: string
+  /** Getting to the entry point: driving, bus, train. */
+  gettingThere?: string
+  /** Certification / experience needed, in the shop's words. Shown in Quick facts,
+   *  in preference to the travel_destinations copy. */
+  requirements?: string
 }
 
 export const DIVE_SITE_GUIDES: Record<string, DiveSiteGuide> = {
@@ -120,9 +131,16 @@ export const DIVE_SITE_GUIDES: Record<string, DiveSiteGuide> = {
   },
   'bat-cave': {
     overview:
-      'Bat Cave is an approachable Northeast Coast shore site suited to all experience levels, offering easy exploration among boulders and reef in the sheltered Long Dong / Keelung area. Its forgiving terrain makes it a favourite for training dives and relaxed fun dives alike.\n\nLike the wider region, it comes alive in the warmer months, with nudibranchs, morays and reef fish tucked into the rock. Visibility is best in summer and autumn, when the northeast monsoon that churns the coast in winter has eased and the sea settles into calmer, clearer conditions.',
-    highlights: ['Suitable for all levels', 'Easy boulder-and-reef terrain', 'Great for training and fun dives', 'Reliable macro life'],
-    marineLife: ['Nudibranchs', 'Moray eels', 'Lionfish', 'Scorpionfish', 'Wrasses', 'Shrimp and crabs', 'Soft corals', 'Occasional sea turtles'],
+      'Bat Cave is an excellent site suitable for all experience levels!\n\nThis dive site is best known for its maze of crevices in the rocks. You can swim between many of them, and they can be as much as 10 m tall and 2 m wide. The entrance is relatively easy and starts shallow with a gradual descent. That makes it an ideal site for divers of all levels.',
+    belowSurface:
+      "You'll find all kinds of nudibranchs, schools of several species of damselfish, trumpetfish, lionfish, and often octopus or cuttlefish. Spring and early summer are good times to spot schools of juvenile fish, including barracuda and squid.",
+    aboveSurface:
+      'Bat Cave has hundreds of miniature bats living in the mountains. They will come out to feed at dusk.',
+    gettingThere:
+      'Driving is the easiest way to get there, but there are also buses from Keelung, as well as a nearby train station at Badouzi Bay.',
+    requirements: 'All levels of divers.',
+    highlights: ['Suitable for all levels', 'A maze of swim-through rock crevices', 'Easy, shallow entry with a gradual descent', 'Great for training and fun dives', 'Reliable macro life'],
+    marineLife: ['Nudibranchs', 'Damselfish', 'Trumpetfish', 'Lionfish', 'Octopus', 'Cuttlefish', 'Juvenile barracuda (spring–early summer)', 'Squid'],
     depthRange: '5–16 m',
     difficulty: 'All levels',
     bestSeason: 'April–November',

@@ -111,6 +111,7 @@ const en = {
   },
   siteDetail: {
     back: '← All dive sites', overview: 'About this site', highlights: 'Highlights', marineLife: 'Marine life',
+    belowSurface: 'Below the Surface', aboveSurface: 'Above the Surface', gettingThere: 'How to Get There',
     quickFacts: 'Quick facts', depth: 'Depth', difficulty: 'Level', season: 'Best season', waterTemp: 'Water temp',
     visibility: 'Visibility', requirements: 'Diver requirements', diveType: 'Dive type', region: 'Region',
     directions: 'Open in Google Maps', morePage: 'Full site page', cta: 'Dive this site',
@@ -229,6 +230,7 @@ const zhTW: Dict = {
   },
   siteDetail: {
     back: '← 所有潛點', overview: '潛點介紹', highlights: '亮點', marineLife: '海洋生物',
+    belowSurface: '水面下', aboveSurface: '水面上', gettingThere: '如何前往',
     quickFacts: '重點資訊', depth: '深度', difficulty: '等級', season: '最佳季節', waterTemp: '水溫',
     visibility: '能見度', requirements: '潛水員資格', diveType: '潛水類型', region: '區域',
     directions: '在 Google 地圖開啟', morePage: '完整潛點頁面', cta: '來潛這個點',
@@ -345,6 +347,7 @@ const ja: Dict = {
   },
   siteDetail: {
     back: '← すべてのダイブサイト', overview: 'サイト紹介', highlights: '見どころ', marineLife: '海の生き物',
+    belowSurface: '水面下', aboveSurface: '水面上', gettingThere: 'アクセス',
     quickFacts: '基本情報', depth: '水深', difficulty: 'レベル', season: 'ベストシーズン', waterTemp: '水温',
     visibility: '透明度', requirements: 'ダイバー要件', diveType: 'ダイブタイプ', region: 'エリア',
     directions: 'Google マップで開く', morePage: 'サイト詳細ページ', cta: 'このサイトで潜る',

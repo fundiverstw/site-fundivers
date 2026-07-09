@@ -58,7 +58,11 @@
     return rows
   })
 
-  let paragraphs = $derived((guide?.overview ?? '').split('\n\n').filter(Boolean))
+  const paras = (text: string | undefined | null) => (text ?? '').split('\n\n').filter(Boolean)
+  let paragraphs = $derived(paras(guide?.overview))
+
+  // Our own copy wins over the app's travel_destinations text (the DB is app-first).
+  let requirements = $derived(guide?.requirements ?? dest?.requirements ?? null)
 </script>
 
 {#if !site}
@@ -116,13 +120,47 @@
           </ul>
         {/if}
 
-        {#if guide?.marineLife?.length}
-          <h2 class="mt-8 text-xl font-bold text-white">{$t.siteDetail.marineLife}</h2>
-          <div class="mt-3 flex flex-wrap gap-2">
-            {#each guide.marineLife as m}
-              <span class="rounded-full border border-reef-400/40 bg-reef-400/10 px-3 py-1 text-sm text-reef-100">{m}</span>
+        <!-- Below the Surface: the shop's prose where we have it, otherwise the
+             marine-life chips stand on their own under their old heading. -->
+        {#if guide?.belowSurface || guide?.marineLife?.length}
+          <h2 class="mt-8 text-xl font-bold text-white">
+            {guide?.belowSurface ? $t.siteDetail.belowSurface : $t.siteDetail.marineLife}
+          </h2>
+          {#if guide?.belowSurface}
+            <div class="mt-3 space-y-3 text-brand-100">
+              {#each paras(guide.belowSurface) as p}
+                <p class="leading-relaxed">{p}</p>
+              {/each}
+            </div>
+          {/if}
+          {#if guide?.marineLife?.length}
+            <div class="mt-4 flex flex-wrap gap-2">
+              {#each guide.marineLife as m}
+                <span class="rounded-full border border-reef-400/40 bg-reef-400/10 px-3 py-1 text-sm text-reef-100">{m}</span>
+              {/each}
+            </div>
+          {/if}
+        {/if}
+
+        {#if guide?.aboveSurface}
+          <h2 class="mt-8 text-xl font-bold text-white">{$t.siteDetail.aboveSurface}</h2>
+          <div class="mt-3 space-y-3 text-brand-100">
+            {#each paras(guide.aboveSurface) as p}
+              <p class="leading-relaxed">{p}</p>
             {/each}
           </div>
+        {/if}
+
+        {#if guide?.gettingThere}
+          <h2 class="mt-8 text-xl font-bold text-white">{$t.siteDetail.gettingThere}</h2>
+          <div class="mt-3 space-y-3 text-brand-100">
+            {#each paras(guide.gettingThere) as p}
+              <p class="leading-relaxed">{p}</p>
+            {/each}
+          </div>
+          <a href={mapsUrl} target="_blank" rel="noopener" class="mt-3 inline-block text-sm font-semibold text-reef-300 transition-colors hover:text-reef-200">
+            {$t.siteDetail.directions} →
+          </a>
         {/if}
       </div>
 
@@ -139,10 +177,10 @@
             {/each}
           </dl>
 
-          {#if dest?.requirements}
+          {#if requirements}
             <div class="mt-4 border-t border-white/10 pt-3">
               <dt class="text-brand-300">{$t.siteDetail.requirements}</dt>
-              <dd class="mt-1 text-sm text-white/90">{dest.requirements}</dd>
+              <dd class="mt-1 text-sm text-white/90">{requirements}</dd>
             </div>
           {/if}
 
