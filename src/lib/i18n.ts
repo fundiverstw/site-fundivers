@@ -133,6 +133,8 @@ const en = {
   photos: {
     title: 'Photos', subtitle: 'A glimpse of life beneath the waves with FunDivers TW.',
     seeMore: 'See more on social', follow: 'Follow along for trip recaps, marine life, and behind-the-scenes.',
+    sections: { nudibranchs: 'Nudibranchs', reef: 'Reef Life' },
+    close: 'Close', prev: 'Previous', next: 'Next',
   },
   team: {
     title: 'Fun Divers Team', subtitle: 'Dedication. Expertise. Passion.', visitWebsite: 'Visit website →',
@@ -249,6 +251,8 @@ const zhTW: Dict = {
   photos: {
     title: '相片', subtitle: '與 FunDivers TW 一起一窺波濤之下的精彩。',
     seeMore: '在社群看更多', follow: '追蹤我們，看行程回顧、海洋生物與幕後花絮。',
+    sections: { nudibranchs: '海蛞蝓', reef: '珊瑚礁生態' },
+    close: '關閉', prev: '上一張', next: '下一張',
   },
   team: {
     title: 'Fun Divers 團隊', subtitle: '專注。專業。熱情。', visitWebsite: '造訪網站 →',
@@ -363,6 +367,8 @@ const ja: Dict = {
   photos: {
     title: 'フォト', subtitle: 'FunDivers TW と一緒に、波の下の世界をのぞいてみましょう。',
     seeMore: 'SNS でもっと見る', follow: 'ツアーの様子や海の生き物、舞台裏をフォローしてチェック。',
+    sections: { nudibranchs: 'ウミウシ', reef: 'リーフの生き物' },
+    close: '閉じる', prev: '前へ', next: '次へ',
   },
   team: {
     title: 'Fun Divers チーム', subtitle: '献身。専門性。情熱。', visitWebsite: 'ウェブサイトへ →',
