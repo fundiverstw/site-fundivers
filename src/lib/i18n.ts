@@ -67,10 +67,10 @@ const en = {
       'Discover the unique and valuable aspects that make Fun Divers TW the top choice for diving enthusiasts. With our extensive experience and dedication to customer satisfaction, we provide exceptional guided trips and convenient booking services as well as all PADI Recreational Dive Courses.',
     services: [
       { title: 'PADI Courses', desc: 'Fun Divers Tw offers the full range of PADI Certification Courses, from beginner to professional level! See the courses available here!' },
-      { title: 'Dive sites', desc: 'Fun Divers Tw offers local shore and boat diving trips. There are many beautiful dive sites to visit here on the northeast coast of Taiwan.' },
+      { title: 'Dive Sites', desc: 'Fun Divers Tw offers local shore and boat diving trips. There are many beautiful dive sites to visit here on the northeast coast of Taiwan.' },
       { title: 'Gear Sales, Service, & Rental', desc: 'Fun Divers Tw offers a range of Scuba diving and Free diving gear for Sale or Rental. We can also service regulators and BCDs! Contact us to find out more!' },
       { title: 'International Dive Tours', desc: 'Fun Divers Tw plans group tours to a variety of thrilling destinations! Join one of our planned dive trips or let us help you book your customized trip!' },
-      { title: 'Domestic Dive tours', desc: 'Explore the amazing dive destinations around Taiwan with Fun Divers Tw! Join a planned trip or let us help you book a customized trip.' },
+      { title: 'Domestic Dive Tours', desc: 'Explore the amazing dive destinations around Taiwan with Fun Divers Tw! Join a planned trip or let us help you book a customized trip.' },
       { title: 'EFR Courses', desc: 'Fun Divers Tw offers the full range of EFR courses. Learn how to help yourself and others in an emergency.' },
     ],
     divingTitle: 'Diving in Taiwan: Exploring a World Beneath the Waves',
@@ -90,6 +90,7 @@ const en = {
     requestPlaceholder: "Dates you're interested in, experience level, anything else we should know...",
     cancel: 'Cancel', send: 'Send Request',
     sent: 'Your email app should have opened with your request ready to send. If it didn’t, email {email} directly.',
+    orMessage: 'Or message us directly:',
   },
   courses: {
     title: 'PADI Courses', subtitle: 'Learn to dive, level up, or go pro — the full range of PADI recreational courses in Taiwan.',
@@ -106,7 +107,7 @@ const en = {
   sites: {
     title: 'Dive Sites', subtitle: 'From convenient shore dives in the north to world-class island diving — Taiwan’s underwater highlights.',
     none: 'No dive sites listed yet.', loadError: 'Couldn’t load dive sites',
-    areas: { North: 'North', South: 'South', 'Outlying Islands': 'Outlying Islands' },
+    areas: { Domestic: 'Domestic' },
   },
   siteDetail: {
     back: '← All dive sites', overview: 'About this site', highlights: 'Highlights', marineLife: 'Marine life',
@@ -205,6 +206,7 @@ const zhTW: Dict = {
     requestPlaceholder: '您感興趣的日期、潛水經驗，或其他想讓我們知道的事…',
     cancel: '取消', send: '送出需求',
     sent: '您的郵件程式應已開啟並填好需求內容，等待寄出。若未開啟，請直接寄信至 {email}。',
+    orMessage: '或直接傳訊給我們：',
   },
   courses: {
     title: 'PADI 課程', subtitle: '學習潛水、提升等級或邁向專業——台灣全系列 PADI 休閒潛水課程。',
@@ -221,7 +223,7 @@ const zhTW: Dict = {
   sites: {
     title: '潛點', subtitle: '從北部便利的岸潛到世界級的離島潛水——台灣水下的精華亮點。',
     none: '尚未列出任何潛點。', loadError: '無法載入潛點',
-    areas: { North: '北部', South: '南部', 'Outlying Islands': '離島' },
+    areas: { Domestic: '國內' },
   },
   siteDetail: {
     back: '← 所有潛點', overview: '潛點介紹', highlights: '亮點', marineLife: '海洋生物',
@@ -318,6 +320,7 @@ const ja: Dict = {
     requestPlaceholder: 'ご希望の日程、経験レベル、その他お伝えいただきたいこと…',
     cancel: 'キャンセル', send: '送信する',
     sent: 'メールアプリが開き、ご要望が入力された状態になっているはずです。開かない場合は {email} まで直接ご連絡ください。',
+    orMessage: 'または直接メッセージでどうぞ：',
   },
   courses: {
     title: 'PADI コース', subtitle: 'これから始める方も、ステップアップやプロを目指す方も——台湾の PADI レクリエーショナルコース全種類。',
@@ -334,7 +337,7 @@ const ja: Dict = {
   sites: {
     title: 'ダイブサイト', subtitle: '北部の手軽なビーチダイブから世界クラスの離島ダイビングまで——台湾の水中ハイライト。',
     none: 'まだダイブサイトが登録されていません。', loadError: 'ダイブサイトを読み込めませんでした',
-    areas: { North: '北部', South: '南部', 'Outlying Islands': '離島' },
+    areas: { Domestic: '国内' },
   },
   siteDetail: {
     back: '← すべてのダイブサイト', overview: 'サイト紹介', highlights: '見どころ', marineLife: '海の生き物',

@@ -6,6 +6,10 @@
   import { t } from '../lib/i18n'
   import PageHeader from '../components/PageHeader.svelte'
 
+  // Show only the six core courses on the catalog grid (the rest of COURSES
+  // stays available via direct /courses/<id> links, e.g. from the home page).
+  const featuredCourses = COURSES.slice(0, 6)
+
   let upcoming = $state<UpcomingEvent[]>([])
   let loading = $state(true)
 
@@ -21,7 +25,7 @@
 
 <section class="mx-auto max-w-[1600px] px-4 py-12 sm:px-6">
   <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-    {#each COURSES as c}
+    {#each featuredCourses as c}
       <a
         href={coursePath(c)}
         class="group relative flex aspect-square flex-col justify-end overflow-hidden rounded-3xl border border-white/15 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-reef-400/60 hover:shadow-[0_0_28px_-8px_rgba(44,208,197,0.6)]"

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { fetchDiveSites, diveSitePath, REGION_META, AREA_ORDER, type DiveSite, type Region } from '../lib/sites'
+  import { fetchDiveSites, diveSitePath, REGION_META, type DiveSite, type Region } from '../lib/sites'
   import { fetchDestinations, type Destination } from '../lib/destinations'
   import { t } from '../lib/i18n'
   import PageHeader from '../components/PageHeader.svelte'
@@ -37,16 +37,11 @@
     return destByName.get(s.name)?.image ?? destByName.get(REGION_DEST[s.region])?.image ?? null
   }
 
-  // Group sites by broad area (North / South / Outlying Islands).
-  let byArea = $derived.by(() => {
-    const groups = new Map<string, DiveSite[]>()
-    for (const area of AREA_ORDER) groups.set(area, [])
-    for (const s of sites) {
-      const area = REGION_META[s.region]?.area ?? 'Outlying Islands'
-      groups.get(area)!.push(s)
-    }
-    return AREA_ORDER.map((area) => ({ area, sites: groups.get(area)! })).filter((g) => g.sites.length)
-  })
+  // Every dive site is in Taiwan, so they all sit under a single "Domestic"
+  // heading — no North / South / Islands split.
+  let byArea = $derived.by(() =>
+    sites.length ? [{ area: 'Domestic' as const, sites }] : []
+  )
 
   function mapsUrl(s: DiveSite): string {
     return `https://www.google.com/maps/search/?api=1&query=${s.latitude},${s.longitude}`

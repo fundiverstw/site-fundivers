@@ -28,13 +28,13 @@ export const ADS: Array<{ text: string; href: string }> = [
 ]
 
 export const SOCIAL = {
-  // Official LINE account + WhatsApp + Instagram handle confirmed from app-fundivers.
+  // LINE + WhatsApp match app-fundivers' fundive.config.ts; Instagram + YouTube
+  // handles confirmed by the owner.
   line: 'https://line.me/R/ti/p/%40lga0216c',
   whatsapp: 'https://wa.me/886909083683',
-  instagram: 'https://www.instagram.com/fundiverstw/',
-  // TODO: confirm exact Facebook / YouTube URLs (best-guess handles for now).
-  facebook: 'https://www.facebook.com/fundiverstw/',
-  youtube: 'https://www.youtube.com/@fundiverstw',
+  instagram: 'https://www.instagram.com/fundiverstaiwan',
+  facebook: 'https://www.facebook.com/FunDiversTw/',
+  youtube: 'https://www.youtube.com/@fundiverstaiwan651',
 } as const
 
 // FunDivers Radio show (top-right icon) — same destination as the app's nav.
