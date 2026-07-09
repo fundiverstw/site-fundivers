@@ -1,23 +1,28 @@
 <script lang="ts">
   import { fetchDestinations, type Destination } from '../lib/destinations'
+  import { fetchUpcomingTripTitles } from '../lib/events'
   import { CONTACT } from '../lib/config'
   import { t } from '../lib/i18n'
   import PageHeader from '../components/PageHeader.svelte'
 
   let all = $state<Destination[]>([])
+  let tripTitles = $state<string[]>([])
   let loading = $state(true)
   let error = $state<string | null>(null)
 
   $effect(() => {
-    fetchDestinations()
-      .then((d) => (all = d))
+    Promise.all([fetchDestinations(), fetchUpcomingTripTitles().catch(() => [])])
+      .then(([d, tt]) => {
+        all = d
+        tripTitles = tt
+      })
       .catch((e) => (error = (e as Error)?.message ?? 'Failed to load'))
       .finally(() => (loading = false))
   })
 
   // Snap to the section named in the URL hash (e.g. /travel#international) once
-  // the destinations have loaded — the native browser jump fires before the
-  // async data renders the target section, so it never lands otherwise.
+  // the data has loaded — the native browser jump fires before the async data
+  // renders the target section, so it never lands otherwise.
   $effect(() => {
     if (loading) return
     const id = window.location.hash.slice(1)
@@ -27,36 +32,82 @@
     })
   })
 
-  // International tours vs. trips around Taiwan. (The old northeast_diving flag
-  // that split out the day-dive sites was dropped upstream, so domestic is now
-  // simply the non-international destinations.)
-  let international = $derived(all.filter((d) => d.international))
-  let domestic = $derived(all.filter((d) => !d.international))
+  // The five "trip" destinations around Taiwan: the travel_destinations title,
+  // the matching /sites/<id> page, and a matcher for the free-text trip event
+  // titles ("Seven Star in Kenting", "Lambai", …). A spot only appears when it
+  // has an upcoming trip on the books.
+  const TRIP_LOCATIONS = [
+    { title: 'Green Island', siteId: 'green-island', match: /green\s*island/i },
+    { title: 'Kenting', siteId: 'kenting', match: /kenting/i },
+    { title: 'Penghu', siteId: 'penghu', match: /penghu/i },
+    { title: 'Lambai Island', siteId: 'lambai-island', match: /lambai|xiao\s*liuqiu|liuqiu/i },
+    { title: 'Orchid Island', siteId: 'orchid-island', match: /orchid\s*island|lanyu/i },
+  ]
+
+  type Card = Destination & { href: string | null; internal: boolean }
+
+  // Around Taiwan: trip spots that have an upcoming trip on the books; if none
+  // are currently scheduled, fall back to all trip spots so the section is never
+  // empty. Each card links to its dive-site page.
+  let domestic = $derived.by<Card[]>(() => {
+    const scheduled = TRIP_LOCATIONS.filter((loc) => tripTitles.some((title) => loc.match.test(title)))
+    const chosen = scheduled.length ? scheduled : TRIP_LOCATIONS
+    return chosen.flatMap((loc) => {
+      const dest = all.find((d) => d.title === loc.title)
+      return dest ? [{ ...dest, href: `/sites/${loc.siteId}`, internal: true }] : []
+    })
+  })
+
+  // International tours keep their existing outbound links to fundiverstw.com.
+  let international = $derived<Card[]>(
+    all
+      .filter((d) => d.international)
+      .map((d) => ({ ...d, href: d.slug ? `https://www.fundiverstw.com${d.slug}` : null, internal: false })),
+  )
+
+  // Jump pills — only for sections that have cards.
+  let sections = $derived(
+    [
+      { id: 'around-taiwan', label: $t.travel.aroundTaiwan, show: domestic.length > 0 },
+      { id: 'international', label: $t.travel.international, show: international.length > 0 },
+    ].filter((s) => s.show),
+  )
 </script>
 
 <PageHeader title={$t.travel.title} subtitle={$t.travel.subtitle} />
 
-{#snippet grid(title: string, items: Destination[], id?: string)}
+{#snippet grid(title: string, items: Card[], id: string)}
   {#if items.length}
-    <div class="mb-12 scroll-mt-24" {id}>
+    <div {id} class="mb-12 scroll-mt-24">
       <h2 class="mb-5 text-2xl font-bold text-white">{title}</h2>
       <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {#each items as d (d.id)}
-          <div class="group relative flex aspect-square flex-col justify-end overflow-hidden rounded-3xl border border-white/15 shadow-sm">
+          <div class="group relative flex aspect-square flex-col justify-end overflow-hidden rounded-3xl border border-white/15 shadow-sm transition-colors hover:border-reef-400/50">
             {#if d.image}
               <img src={d.image} alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
             {:else}
               <div class="absolute inset-0 bg-gradient-to-br from-brand-700 to-reef-700"></div>
             {/if}
             <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
-            <div class="relative z-10 p-5">
+            <!-- Whole card is the link: in-Taiwan spots go to the dive-site page
+                 (internal), international tours open fundiverstw.com. -->
+            {#if d.href}
+              <a
+                href={d.href}
+                target={d.internal ? undefined : '_blank'}
+                rel={d.internal ? undefined : 'noopener'}
+                class="absolute inset-0 z-10"
+                aria-label={d.title}
+              ></a>
+            {/if}
+            <div class="pointer-events-none relative z-20 p-5">
               <h3 class="text-lg font-bold text-white">{d.title}</h3>
               {#if d.country}<p class="text-xs font-semibold uppercase tracking-wide text-sky-300">{d.country}</p>{/if}
               {#if d.tagline}<p class="mt-1 line-clamp-2 text-sm text-white/85">{d.tagline}</p>{/if}
-              {#if d.slug}
-                <a href={`https://www.fundiverstw.com${d.slug}`} target="_blank" rel="noopener" class="mt-3 inline-block rounded-full bg-reef-400 px-4 py-1.5 text-xs font-bold text-brand-950 transition-colors hover:bg-reef-300">
-                  {$t.common.readMore}
-                </a>
+              {#if d.href}
+                <span class="mt-3 inline-block rounded-full bg-reef-400 px-4 py-1.5 text-xs font-bold text-brand-950 transition-colors group-hover:bg-reef-300">
+                  {d.internal ? $t.common.details : $t.common.readMore}
+                </span>
               {/if}
             </div>
           </div>
@@ -74,7 +125,17 @@
   {:else if error}
     <p class="rounded-lg bg-red-500/15 p-4 text-sm text-red-200">{$t.travel.loadError}: {error}</p>
   {:else}
-    {@render grid($t.travel.aroundTaiwan, domestic)}
+    {#if sections.length}
+      <div class="mb-8 flex flex-wrap gap-3">
+        {#each sections as s (s.id)}
+          <a href={`#${s.id}`} class="waybar mono rounded-full px-5 py-2 text-sm font-semibold text-brand-50 transition-colors hover:text-reef-300">
+            {s.label}
+          </a>
+        {/each}
+      </div>
+    {/if}
+
+    {@render grid($t.travel.aroundTaiwan, domestic, 'around-taiwan')}
     {@render grid($t.travel.international, international, 'international')}
   {/if}
 

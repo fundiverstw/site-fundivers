@@ -156,6 +156,28 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
   return events.sort((a, b) => a.startDate.localeCompare(b.startDate)).slice(0, limit)
 }
 
+/**
+ * Titles of upcoming trip dives (is_trip = true, non-cancelled, non-private,
+ * today or later). Used by the Travel page to show only the "Around Taiwan"
+ * destinations that actually have a trip on the books. Titles are free text
+ * (e.g. "Seven Star in Kenting", "Lambai", "Penghu (2 spots open)"), so callers
+ * keyword-match them against known destinations.
+ */
+export async function fetchUpcomingTripTitles(): Promise<string[]> {
+  const today = todayKey()
+  const { data } = await supabase
+    .from('events')
+    .select('display_title, admin_title')
+    .eq('kind', 'dive')
+    .eq('is_trip', true)
+    .is('cancelled_at', null)
+    .eq('is_private', false)
+    .gte('start_date', today)
+  return (data ?? [])
+    .map((r: { display_title: string | null; admin_title: string | null }) => r.display_title || r.admin_title || '')
+    .filter((s) => s.length > 0)
+}
+
 // ── Full month-grid calendar (ported & trimmed from app-fundivers) ──────────
 // Richer event shape the MonthCalendar needs: ISO span, color classification,
 // calendar title, featured flag. No booking/auth — this is read-only.
