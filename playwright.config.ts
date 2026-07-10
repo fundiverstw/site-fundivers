@@ -19,9 +19,18 @@ export default defineConfig({
   use: {
     baseURL: 'http://localhost:4173',
     trace: 'on-first-retry',
-    // Note: `reducedMotion: 'reduce'` here resolves in testInfo but never reaches
-    // matchMedia in the page. The tests call page.emulateMedia() themselves —
-    // see calmMotion() in e2e/helpers.ts, and why it matters.
+
+    // Ask every page for less motion. Without it the octopus beside the logo
+    // stays hidden for 12 seconds, slides out, wiggles, and hides again for up
+    // to 90 — so a test that clicks it either waits 14 seconds or misses the
+    // window entirely. With reduced motion it simply sits there, and the
+    // background stops animating.
+    //
+    // It goes under `contextOptions`, not straight into `use`. `reducedMotion`
+    // is a browser-context option, not one of the test options, so a top-level
+    // `use: { reducedMotion: 'reduce' }` is a type error — and if the config
+    // file is not type-checked, it is silently ignored instead.
+    contextOptions: { reducedMotion: 'reduce' },
   },
 
   projects: [

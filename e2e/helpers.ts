@@ -37,26 +37,10 @@ export async function stubDatabase(page: Page): Promise<void> {
   )
 }
 
-/**
- * Ask the page for less motion, and wait for it to settle.
- *
- * Without this the octopus beside the logo stays hidden for 12 seconds, slides
- * out, wiggles for 2 seconds and hides again for up to 90 — so a test that
- * clicks it either waits 14 seconds or misses the window entirely. With reduced
- * motion the octopus simply sits out, and the background stops animating.
- *
- * This has to be called on the page rather than set in playwright.config.ts:
- * the config's `use: { reducedMotion: 'reduce' }` resolves correctly in
- * testInfo but never reaches matchMedia in this Playwright version.
- */
-export async function calmMotion(page: Page): Promise<void> {
-  await page.emulateMedia({ reducedMotion: 'reduce' })
-}
-
-/** stubDatabase + calmMotion + goto. What almost every test wants. */
+/** stubDatabase + goto. What almost every test wants.
+ *  Reduced motion is set for every page in playwright.config.ts. */
 export async function visit(page: Page, route: string): Promise<void> {
   await stubDatabase(page)
-  await calmMotion(page)
   await page.goto(route)
 }
 

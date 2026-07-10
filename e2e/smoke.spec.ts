@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { ROUTES, visit, stubDatabase, calmMotion, watchForProblems, brokenImages } from './helpers'
+import { ROUTES, visit, stubDatabase, watchForProblems, brokenImages } from './helpers'
 
 // The cheapest test that would have caught every serious bug this site has had:
 // open each page and check nothing threw, nothing 404'd, and something rendered.
@@ -9,7 +9,6 @@ test.describe('every page', () => {
     test(`${route} renders without errors`, async ({ page }) => {
       const problems = watchForProblems(page)
       await stubDatabase(page)
-      await calmMotion(page)
 
       await page.goto(route)
       await page.waitForLoadState('networkidle')

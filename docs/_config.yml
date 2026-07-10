@@ -2,3 +2,9 @@ title: FunDivers site — maintenance guide
 description: Plain-language instructions for changing the FunDivers TW website.
 theme: jekyll-theme-cayman
 show_downloads: false
+
+# The Cayman theme's footer links the owner's name at site.github.owner_url,
+# which defaults to the GitHub organisation. Point it at the shop instead.
+github:
+  owner_url: https://www.fundiverstw.com
+  owner_name: FunDivers TW
