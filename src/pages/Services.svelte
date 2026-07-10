@@ -1,6 +1,7 @@
 <script lang="ts">
   import { SERVICE_PRICING, FUNDIVE_REPO_URL } from '$content/services'
-  import { CONTACT } from '$content/settings'
+  import { CONTACT, SOCIAL } from '$content/settings'
+  import { LINE_PATH, WHATSAPP_PATH } from '$components/brand-icons'
   import { twd } from '$engine/format'
   import { t } from '$engine/i18n'
   import PageHeader from '$components/PageHeader.svelte'
@@ -236,15 +237,36 @@
         <div class="mt-4 flex flex-wrap gap-2">
           <a
             href={`mailto:${CONTACT.email}?subject=${encodeURIComponent('FunDive for our dive shop')}`}
-            class="rounded-full bg-reef-400 px-5 py-2 text-sm font-bold text-brand-950 transition-colors hover:bg-reef-300"
+            class="flex items-center gap-2 rounded-full bg-reef-400 px-5 py-2 text-sm font-bold text-brand-950 transition-colors hover:bg-reef-300"
           >
-            {$t.services.ctaButton}
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path
+                d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"
+              />
+            </svg>
+            {$t.services.emailUs}
           </a>
           <a
-            href="#contact"
-            class="rounded-full border border-white/40 px-5 py-2 text-sm font-bold text-white transition-colors hover:bg-white/15"
+            href={SOCIAL.line}
+            target="_blank"
+            rel="noopener"
+            class="flex items-center gap-2 rounded-full border border-white/40 px-5 py-2 text-sm font-bold text-white transition-colors hover:bg-white/15"
           >
-            {$t.common.contactUs}
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d={LINE_PATH} />
+            </svg>
+            LINE
+          </a>
+          <a
+            href={SOCIAL.whatsapp}
+            target="_blank"
+            rel="noopener"
+            class="flex items-center gap-2 rounded-full border border-white/40 px-5 py-2 text-sm font-bold text-white transition-colors hover:bg-white/15"
+          >
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d={WHATSAPP_PATH} />
+            </svg>
+            WhatsApp
           </a>
         </div>
       </div>

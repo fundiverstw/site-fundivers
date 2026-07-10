@@ -82,3 +82,21 @@ test.describe('the contact form', () => {
     expect(problems.pageErrors).toEqual([])
   })
 })
+
+// The three tiles were squares, which on a phone made each one 358px tall and
+// pushed the form off the screen.
+test('the contact tiles are wider than they are tall', async ({ page }) => {
+  await visit(page, '/')
+
+  const sizes = await page.evaluate(() =>
+    [...document.querySelectorAll('#get-in-touch .glass')].map((el) => {
+      const r = el.getBoundingClientRect()
+      return { w: Math.round(r.width), h: Math.round(r.height) }
+    }),
+  )
+
+  expect(sizes.length, 'expected three contact tiles').toBe(3)
+  for (const { w, h } of sizes) {
+    expect(h, `a tile is ${w}x${h}, taller than it is wide`).toBeLessThan(w)
+  }
+})

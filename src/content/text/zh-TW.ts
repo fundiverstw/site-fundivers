@@ -387,7 +387,7 @@ export const zhTW: Dict = {
     slogan: '我們負責建置，您擁有一切。',
     ctaTitle: '與我們聊聊',
     ctaBlurb: '告訴我們貴店的情況，我們一起釐清您真正需要什麼。',
-    ctaButton: '聯絡我們',
+    emailUs: '寄信給我們',
   },
   notFound: {
     code: '404',

@@ -415,7 +415,7 @@ export const ja: Dict = {
     slogan: '構築は私たちが。所有はあなたが。',
     ctaTitle: 'ご相談ください',
     ctaBlurb: 'ショップのことを聞かせてください。何が本当に必要か、一緒に考えます。',
-    ctaButton: 'お問い合わせ',
+    emailUs: 'メールで相談',
   },
   notFound: {
     code: '404',

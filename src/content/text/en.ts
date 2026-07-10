@@ -410,7 +410,7 @@ export const en = {
     slogan: 'We build it. You own it.',
     ctaTitle: 'Talk to us',
     ctaBlurb: 'Tell us about your shop, and we will work out together what you actually need.',
-    ctaButton: 'Get in touch',
+    emailUs: 'Email us',
   },
   notFound: {
     code: '404',

@@ -47,10 +47,31 @@ test.describe('the services page', () => {
     await expect(link).toHaveAttribute('rel', /noopener/)
   })
 
-  test('offers a way to get in touch', async ({ page }) => {
+  // Three channels, not two buttons that both mean "contact us".
+  // Scoped to <main>: the footer carries its own LINE and WhatsApp links.
+  test('offers email, LINE and WhatsApp', async ({ page }) => {
     await visit(page, '/services')
-    const mail = page.getByRole('link', { name: 'Get in touch' })
-    await expect(mail).toHaveAttribute('href', /^mailto:/)
+    const main = page.locator('main')
+
+    await expect(main.getByRole('link', { name: 'Email us' })).toHaveAttribute(
+      'href',
+      /^mailto:fundiverstw@gmail\.com/,
+    )
+
+    const line = main.getByRole('link', { name: 'LINE', exact: true })
+    await expect(line).toHaveAttribute('href', 'https://line.me/R/ti/p/%40lga0216c')
+    await expect(line).toHaveAttribute('rel', /noopener/)
+    await expect(line).toHaveAttribute('target', '_blank')
+
+    const whatsapp = main.getByRole('link', { name: 'WhatsApp', exact: true })
+    await expect(whatsapp).toHaveAttribute('href', 'https://wa.me/886909083683')
+    await expect(whatsapp).toHaveAttribute('rel', /noopener/)
+  })
+
+  test('does not offer two buttons that mean the same thing', async ({ page }) => {
+    await visit(page, '/services')
+    // 'Contact us' used to sit beside 'Get in touch'. Both went to the same place.
+    await expect(page.getByRole('link', { name: 'Contact us' })).toHaveCount(0)
   })
 
   test('is translated, like every other page', async ({ page }) => {
