@@ -1,0 +1,58 @@
+name: CI
+
+# Runs on every push and every pull request. Nothing here publishes the site —
+# that is still `npm run deploy`, run by a person. This only says yes or no.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    # The site reads a public, read-only catalog from Supabase. The end-to-end
+    # tests never call it — every request is intercepted (see e2e/helpers.ts) —
+    # but the client is still constructed at start-up and throws without these.
+    # Placeholders are therefore enough, and no secret is needed to run CI.
+    env:
+      VITE_SUPABASE_URL: https://placeholder.supabase.co
+      VITE_SUPABASE_ANON_KEY: placeholder-anon-key
+      VITE_APP_URL: https://app.fundiverstw.com
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Types
+        run: npm run check
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Formatting
+        run: npm run format:check
+
+      - name: Unit tests
+        run: npm run test:unit
+
+      - name: Install browser
+        run: npx playwright install --with-deps chromium
+
+      - name: End-to-end tests
+        run: npm run test:e2e
+
+      - name: Upload the report when the browser tests fail
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7

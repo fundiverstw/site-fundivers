@@ -6,3 +6,8 @@ dist
 .env.*.local
 .wrangler
 .svelte-kit
+
+# Playwright output
+playwright-report
+test-results
+blob-report

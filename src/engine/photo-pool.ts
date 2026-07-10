@@ -41,7 +41,10 @@ export function siteImage(siteId: string): string | null {
   return pool && pool.length ? pool[0] : null
 }
 
-function siteIdForTitle(title: string): string | null {
+/** The dive site a calendar-event title refers to, or null if none matches.
+ *  Exported so the tests can pin the ordering of EVENT_TITLE_MATCHERS: the
+ *  specific patterns must be tried before the general ones. */
+export function siteIdForTitle(title: string): string | null {
   for (const m of EVENT_TITLE_MATCHERS) if (m.re.test(title)) return m.id
   return null
 }
