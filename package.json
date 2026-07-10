@@ -4,6 +4,9 @@
   "version": "0.1.0",
   "type": "module",
   "description": "FunDivers TW public marketing site — fast static SPA on Cloudflare, reading the shared Supabase catalog.",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "vite",
     "build": "svelte-check --tsconfig ./tsconfig.json && vite build",
@@ -14,7 +17,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test:unit": "vitest run",
-    "test:e2e": "playwright test",
+    "test:e2e": "playwright install chromium && playwright test",
     "test": "npm run test:unit && npm run test:e2e",
     "verify": "npm run check && npm run lint && npm run format:check && npm run test",
     "deploy": "npm run verify && npm run build && dotenv -e .env -- wrangler deploy"

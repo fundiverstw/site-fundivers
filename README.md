@@ -17,8 +17,10 @@ Structured to mirror [fundiverstw.com](https://www.fundiverstw.com/): **Courses 
 **→ [fundiverstw.github.io/site-fundivers](https://fundiverstw.github.io/site-fundivers/)**
 
 Plain-language instructions for changing the site — the words, the colours, the dive
-sites, the photos — aimed at someone new to the codebase, including a from-zero
-explainer of what a server, Cloudflare and Svelte are. Source in [`docs/`](docs/).
+sites, the photos — aimed at someone new to the codebase. Includes a from-nothing
+[setup guide](docs/setting-up.md) (editor, Git, SSH, clone), an explainer of what a
+server, Cloudflare and Svelte are, and [commit and PR
+etiquette](docs/commits-and-pull-requests.md). Source in [`docs/`](docs/).
 
 ## Project layout
 

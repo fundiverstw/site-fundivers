@@ -7,12 +7,14 @@ payments; those live in a separate program called `app-fundivers`.
 You do not need to understand the whole thing to change it. Almost everything you'll
 want to edit is text sitting in one folder.
 
-> **New to this kind of work?** Read **[What is all this?](what-is-all-this.md)** first.
-> It explains what a server is, what Cloudflare is, what Svelte is, and every other word
-> used on these pages. It assumes you have never built a website before.
+> **Brand new to development work?** Start with **[Setting up your
+> computer](setting-up.md)**. It installs the editor, Git and Node, gets you access to
+> GitHub, and ends with the website running on your own machine. It assumes nothing.
 >
-> Then **[What every file is for](project-files.md)**, if the project folder looks like
-> a wall of files you were not expecting.
+> Then **[What is all this?](what-is-all-this.md)**, which explains what a server is, what
+> Cloudflare is, what Svelte is, and every other word used on these pages. And
+> **[What every file is for](project-files.md)**, if the project folder looks like a wall
+> of files you were not expecting.
 
 ---
 
@@ -81,7 +83,7 @@ Open a terminal in the project folder and type these.
 
 | Command | What it does | When |
 | --- | --- | --- |
-| `npm install` | Downloads the code this project borrows | Once, the first time |
+| `npm install` | Downloads the code this project borrows | Once, the first time — see [Setting up](setting-up.md) |
 | `npm run dev` | Starts the website on your own computer | Every time you sit down to work |
 | `npm run verify` | Checks everything: types, linter, tests | Before you publish |
 | `npm run deploy` | Puts your changes on the real website | When you're happy |
@@ -129,12 +131,14 @@ More detail in [How we check the site still works](testing.md) and
 
 ## Step-by-step guides
 
+- [Setting up your computer](setting-up.md) — from nothing installed to the site running locally
 - [What is all this?](what-is-all-this.md) — servers, Cloudflare, Svelte, git, explained from zero
-- [What every file is for](project-files.md) — the twenty-five things in the project folder
+- [What every file is for](project-files.md) — the things in the project folder
 - [Changing words](changing-words.md) — text on any page, in any language
 - [Changing how it looks](changing-look.md) — colours, fonts, spacing
 - [Adding a dive site](adding-a-dive-site.md) — the full four steps
 - [Adding photos](adding-photos.md) — gallery photos and card photos
 - [How we check the site still works](testing.md) — the linter and the tests
+- [Commits and pull requests](commits-and-pull-requests.md) — how to share your work with the others
 - [Publishing your changes](publishing.md) — getting it onto the real website
 - [How it works](how-it-works.md) — for when you're curious about the machinery

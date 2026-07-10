@@ -1,0 +1,6 @@
+{
+  // VSCodium offers to install these the first time you open the project.
+  // They come from Open VSX (open-vsx.org), which is where VSCodium looks —
+  // not Microsoft's marketplace.
+  "recommendations": ["svelte.svelte-vscode", "esbenp.prettier-vscode", "dbaeumer.vscode-eslint"]
+}

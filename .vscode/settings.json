@@ -1,0 +1,9 @@
+{
+  // Tidy the file's layout on save, with the same Prettier settings the
+  // `npm run format` command uses. Without this you will keep tripping the
+  // formatting check in `npm run verify`.
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[svelte]": { "editor.defaultFormatter": "svelte.svelte-vscode" },
+  "files.eol": "\n"
+}

@@ -58,6 +58,7 @@ See [How we check the site still works](testing.md) for what the last four are a
 | --- | --- |
 | **`e2e/`** | The browser tests. "e2e" is short for end-to-end: they use the finished site the way a visitor would. |
 | **`.github/`** | Contains one file, `workflows/ci.yml`, which tells GitHub to run all the checks every time somebody pushes. |
+| **`.vscode/`** | Two small files that set your editor up: which extensions to offer you, and "tidy my file when I save". |
 | **`reference/`** | Dead code. An old version of the map page, written in React, copied from the booking app when the map was moved here. It is **never** part of the site. It exists to be read, not run. Its two `.test.tsx` files are not real tests and cannot run. |
 
 ---
@@ -84,6 +85,7 @@ Files whose names start with a dot are hidden by default. In a file manager, pre
 | Name | What it is |
 | --- | --- |
 | **`.gitignore`** | The list of things git must not save: `.env`, `node_modules/`, `dist/`. This is what keeps the passwords out of GitHub. |
+| **`.env`** | Your copy of the secrets, from Bitwarden. See [Setting up](setting-up.md), step 9. |
 | **`README.md`** | The page GitHub shows when you open the project. A short summary for developers, and a link to these docs. |
 
 ---

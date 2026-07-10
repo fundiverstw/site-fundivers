@@ -5,8 +5,8 @@
 Several people now change this site. Nobody can hold all of it in their head, and
 nobody reads every page after every edit. So the computer does it instead.
 
-Four separate checks run, each catching a different kind of mistake. You can run all
-four with one command:
+Five separate checks run, each catching a different kind of mistake. You can run all
+five with one command:
 
 ```bash
 npm run verify
@@ -19,7 +19,7 @@ It takes about thirty seconds. If it prints nothing red, your change is safe to 
 
 ---
 
-## The four checks
+## The five checks
 
 | Command | What it looks at | How long |
 | --- | --- | --- |
@@ -69,7 +69,8 @@ npm run format        # rewrite my files properly
 npm run format:check  # just tell me if anything is wrong
 ```
 
-Set your editor to run Prettier when you save, and you will never think about this again.
+The project already tells VSCodium to run Prettier when you save (`.vscode/settings.json`),
+so if you accepted the recommended extensions you will never think about this again.
 Markdown is left alone, so these documentation pages keep their hand-aligned tables.
 
 ---
@@ -127,6 +128,9 @@ it. They take about twelve seconds and they test what a visitor would notice:
 - the octopus opens the Wreck Maze, the maze actually draws, and the arrow keys turn you
 
 They run twice: once at desktop size, once at phone size.
+
+The very first run downloads a small browser (about 100 MB) for Playwright to drive. That
+takes a couple of minutes, once. Every run after that is quick.
 
 ```bash
 npm run test:e2e                          # all of them
