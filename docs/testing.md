@@ -23,7 +23,7 @@ It takes about thirty seconds. If it prints nothing red, your change is safe to 
 
 | Command | What it looks at | How long |
 | --- | --- | --- |
-| `npm run check` | Do the types agree with each other? | ~5 s |
+| `npm run check` | Do the types agree, and is the markup accessible? | ~5 s |
 | `npm run lint` | Are there mistakes in the code the types cannot see? | ~10 s |
 | `npm run format:check` | Is everything laid out the same way? | ~2 s |
 | `npm run test:unit` | Do the small functions and the content still hold together? | ~1 s |
@@ -43,9 +43,10 @@ red. That file is `.github/workflows/ci.yml`.
 ## The linter — `npm run lint`
 
 The linter reads your code and complains about mistakes that are legal but wrong: a
-variable you declared and never used, a `console.log` left over from debugging, an
-accessibility problem in the markup.
+variable you declared and never used, a `console.log` left over from debugging, a `==`
+where you meant `===`.
 
+It does **not** check accessibility — `npm run check` does that (see below).
 If it complains about spacing or quote marks, that is a different tool — see below.
 
 ```bash
@@ -75,6 +76,19 @@ Markdown is left alone, so these documentation pages keep their hand-aligned tab
 
 ---
 
+## Accessibility — also `npm run check`
+
+The Svelte compiler notices markup a screen reader cannot use: an image with no `alt`, a
+`<div>` you can click but not tab to, a form field with no label. It reports these as
+*warnings*, and `npm run check` is run with `--fail-on-warnings`, so they stop the build
+exactly like a type error.
+
+If you are stuck, the message links to a page on svelte.dev explaining the rule. Almost
+always the fix is to use the element you actually meant — a `<button>` rather than a
+clickable `<div>`.
+
+---
+
 ## The unit tests — `npm run test:unit`
 
 These run in about a second and never open a browser. They test two things.
@@ -93,7 +107,12 @@ These run in about a second and never open a browser. They test two things.
   there means the page renders with none of the text you wrote, and no error
 - every photo folder is named after a real dive site
 - every photo listed in `photo-gallery.ts` exists on disk
+- every course guide is keyed to a course that exists, and every "next course" link resolves
+- no quiz question offers the same answer twice — which would mark a right answer wrong
 - the three language files hold **exactly** the same words, and none of them is blank
+
+They also cover the two piles of geometry nobody wants to debug by eye: the month grid's
+bar stacking (`calendar-layout.ts`) and the map's label placement (`map-layout.ts`).
 
 So if you add a dive site and misspell the id in one place out of three, you find out in
 one second, on your own computer.
@@ -145,13 +164,22 @@ npx playwright show-report                # look at the last failure in detail
 When one fails, Playwright saves a screenshot and a recording. `npx playwright show-report`
 opens them. This is much faster than guessing.
 
+### The fake database
+
+The browser tests never talk to the real database. Every request to it is intercepted and
+answered from a small table of rows held in memory (`e2e/helpers.ts`).
+
+By default that table is empty, which is what a visitor sees on a quiet week. The calendar
+tests pass it a handful of rows shaped like the real ones (`e2e/fixtures.ts`) — a fun dive,
+a fully booked three-day trip, a two-day course — so the code that fetches events, joins
+their prices from a second table, and lays them out as bars is actually run.
+
 ### What these tests do not do
 
-**They never talk to the real database.** Every request to the booking app's database is
-intercepted and answered with an empty list. That makes the tests fast, repeatable, and
-free of passwords — but it means **no test proves the site can still read the live
-database.** If somebody changes the database in the booking app, these tests stay green
-and the real calendar goes blank.
+**They never talk to the *real* database.** That makes them fast, repeatable, and free of
+passwords — but it means **no test proves the site can still read the live database.** If
+somebody changes the database in the booking app, these tests stay green and the real
+calendar goes blank.
 
 Nothing automatic protects you there. Open the site with `npm run dev` and look at the
 calendar. That is the only check that exists.

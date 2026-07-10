@@ -55,6 +55,9 @@
       onclick={onClose}
     ></button>
     <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="event-modal-title"
       class="relative z-10 w-full max-w-lg space-y-4 rounded-2xl border border-red-500 bg-white/90 p-6 backdrop-blur-md"
     >
       <div class="flex items-center justify-between">
@@ -67,7 +70,7 @@
           class="text-xl leading-none text-blue-900 hover:text-red-600">×</button
         >
       </div>
-      <h2 class="text-xl font-bold text-blue-900">{event.title}</h2>
+      <h2 id="event-modal-title" class="text-xl font-bold text-blue-900">{event.title}</h2>
       <div class="space-y-1 text-sm font-medium text-blue-900">
         <p>{event.spanLabel}</p>
         {#if event.price != null}

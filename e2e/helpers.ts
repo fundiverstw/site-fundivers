@@ -13,34 +13,88 @@ export const ROUTES = [
   '/team',
 ] as const
 
+/** The tables the site reads. Anything not listed answers with an empty list. */
+export type FakeDb = Record<string, Array<Record<string, unknown>>>
+
 /**
- * Answer every call to the booking app's database with an empty list.
+ * Apply the PostgREST filters supabase-js puts in the query string.
+ *
+ * Only the handful this site uses. Without them, a query for `kind=eq.dive`
+ * would get the courses back too and the test would be exercising a fantasy.
+ */
+function applyFilters(rows: Array<Record<string, unknown>>, params: URLSearchParams) {
+  const skip = new Set(['select', 'order', 'limit', 'offset'])
+  let out = rows
+  for (const [column, expr] of params) {
+    if (skip.has(column)) continue
+    const [op, ...rest] = expr.split('.')
+    const value = rest.join('.')
+    const get = (r: Record<string, unknown>) => r[column]
+
+    if (op === 'eq') out = out.filter((r) => String(get(r)) === value)
+    else if (op === 'neq') out = out.filter((r) => String(get(r)) !== value)
+    else if (op === 'is')
+      out = out.filter((r) => (value === 'null' ? get(r) == null : String(get(r)) === value))
+    else if (op === 'gte') out = out.filter((r) => String(get(r)) >= value)
+    else if (op === 'lte') out = out.filter((r) => String(get(r)) <= value)
+    else if (op === 'gt') out = out.filter((r) => String(get(r)) > value)
+    else if (op === 'lt') out = out.filter((r) => String(get(r)) < value)
+    else if (op === 'in') {
+      const list = value
+        .replace(/^\(|\)$/g, '')
+        .split(',')
+        .map((v) => v.replace(/^"|"$/g, ''))
+      out = out.filter((r) => list.includes(String(get(r))))
+    } else if (op === 'ov') {
+      // Array overlap, e.g. course_days=ov.{2026-07-20,2026-07-21}
+      const list = value.replace(/^\{|\}$/g, '').split(',')
+      out = out.filter((r) => ((get(r) as string[]) ?? []).some((d) => list.includes(d)))
+    }
+    // Anything else is ignored rather than silently dropping every row.
+  }
+  return out
+}
+
+/**
+ * Answer every call to the booking app's database from `db`, in memory.
  *
  * The calendar, the prices and the travel covers come from a Supabase database
  * this project does not own. Letting the tests talk to it would make them slow,
  * dependent on the network, and liable to fail because somebody added a trip.
- * So they never reach it. What is tested is that each page renders correctly
- * when the database has nothing to say — which is also what a visitor sees on a
- * quiet week, and is where the empty-state text lives.
+ * So they never reach it.
+ *
+ * Called with no `db`, every table answers with an empty list — which is what a
+ * visitor sees on a quiet week, and is where the empty-state text lives. Pass
+ * fixtures (see fixtures.ts) to exercise the calendar with rows in it.
  *
  * The trade-off is real and worth knowing: **no test here proves the site can
  * read the live database.** That is what `npm run dev` and your own eyes are for.
  */
-export async function stubDatabase(page: Page): Promise<void> {
-  await page.route('**/rest/v1/**', (route) =>
-    route.fulfill({
+export async function stubDatabase(page: Page, db: FakeDb = {}): Promise<void> {
+  await page.route('**/rest/v1/**', (route) => {
+    const request = route.request()
+    const url = new URL(request.url())
+    const table = url.pathname.split('/rest/v1/')[1]?.split('?')[0] ?? ''
+    const rows = applyFilters(db[table] ?? [], url.searchParams)
+
+    // .maybeSingle() / .single() ask for one object rather than an array.
+    const accept = request.headers()['accept'] ?? ''
+    const wantsOne = accept.includes('pgrst.object')
+    const body = wantsOne ? JSON.stringify(rows[0] ?? null) : JSON.stringify(rows)
+
+    return route.fulfill({
       status: 200,
       contentType: 'application/json',
-      headers: { 'content-range': '0-0/0' },
-      body: '[]',
-    }),
-  )
+      headers: { 'content-range': `0-${Math.max(rows.length - 1, 0)}/${rows.length}` },
+      body,
+    })
+  })
 }
 
 /** stubDatabase + goto. What almost every test wants.
  *  Reduced motion is set for every page in playwright.config.ts. */
-export async function visit(page: Page, route: string): Promise<void> {
-  await stubDatabase(page)
+export async function visit(page: Page, route: string, db: FakeDb = {}): Promise<void> {
+  await stubDatabase(page, db)
   await page.goto(route)
 }
 
