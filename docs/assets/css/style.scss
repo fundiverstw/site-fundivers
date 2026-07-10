@@ -1,0 +1,198 @@
+---
+# Front matter (these two lines) tells Jekyll to process this file.
+---
+
+@import "{{ site.theme }}";
+
+/* Dark theme for the documentation site.
+   The Cayman theme above is light, so everything below repaints it in the same
+   deep-sea colours the website itself uses (see src/styles/theme.css). */
+
+:root {
+  --doc-bg: #0d1c38;          /* page background          */
+  --doc-surface: #10243f;     /* code blocks, table heads */
+  --doc-border: #1e3557;
+  --doc-text: #c8d8ee;        /* body text                */
+  --doc-heading: #eff8ff;
+  --doc-muted: #8fa4c0;
+  --doc-link: #66e6da;        /* reef teal                */
+  --doc-link-hover: #a0f3e9;
+  --doc-accent: #cba6f7;      /* mauve                    */
+}
+
+/* Makes scrollbars, form controls and the browser's own UI go dark too. */
+html {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--doc-bg);
+  color: var(--doc-text);
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+
+.page-header {
+  background-color: #0a1f47;
+  background-image:
+    radial-gradient(120% 140% at 12% -20%, rgba(203, 166, 247, 0.32) 0%, transparent 60%),
+    radial-gradient(120% 140% at 92% 0%, rgba(44, 208, 197, 0.30) 0%, transparent 60%),
+    linear-gradient(120deg, #0c2f6b, #0a1f47 60%, #071731);
+  color: var(--doc-heading);
+}
+
+.project-name {
+  color: var(--doc-heading);
+}
+
+.project-tagline {
+  color: var(--doc-text);
+  opacity: 0.85;
+}
+
+.btn {
+  color: var(--doc-heading);
+  border-color: rgba(102, 230, 218, 0.4);
+  background-color: rgba(44, 208, 197, 0.08);
+
+  &:hover,
+  &:focus {
+    color: var(--doc-heading);
+    border-color: rgba(102, 230, 218, 0.85);
+    background-color: rgba(44, 208, 197, 0.18);
+  }
+}
+
+/* ── Body ───────────────────────────────────────────────────────────────── */
+
+.main-content {
+  color: var(--doc-text);
+
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--doc-heading);
+  }
+
+  /* Section headings pick up the teal, matching the site's own accent. */
+  h2, h3 {
+    color: var(--doc-link);
+  }
+
+  a {
+    color: var(--doc-link);
+
+    &:hover {
+      color: var(--doc-link-hover);
+    }
+  }
+
+  strong {
+    color: var(--doc-heading);
+  }
+
+  hr {
+    height: 1px;
+    background-color: var(--doc-border);
+  }
+
+  /* Inline code, e.g. `npm run dev` */
+  code {
+    background-color: var(--doc-surface);
+    color: var(--doc-accent);
+    border: 1px solid var(--doc-border);
+  }
+
+  /* Fenced code blocks */
+  pre {
+    background-color: var(--doc-surface);
+    color: var(--doc-text);
+    border: 1px solid var(--doc-border);
+
+    /* A code block already has the panel styling; the code inside must not
+       draw a second border and background on top of it. */
+    > code {
+      background-color: transparent;
+      border: 0;
+      color: inherit;
+    }
+  }
+
+  .highlight {
+    background-color: transparent;
+  }
+
+  blockquote {
+    color: var(--doc-text);
+    border-left: 0.3rem solid var(--doc-link);
+    background-color: rgba(44, 208, 197, 0.07);
+    padding: 0.6rem 1rem;
+    border-radius: 0 0.4rem 0.4rem 0;
+
+    > :first-child { margin-top: 0; }
+    > :last-child { margin-bottom: 0; }
+  }
+
+  table {
+    /* Long tables (the glossary, the lookup table) must scroll inside
+       themselves rather than pushing the page sideways on a phone. */
+    display: block;
+    overflow-x: auto;
+    border-collapse: collapse;
+  }
+
+  table th {
+    color: var(--doc-heading);
+    background-color: var(--doc-surface);
+    border: 1px solid var(--doc-border);
+  }
+
+  table td {
+    border: 1px solid var(--doc-border);
+  }
+
+  table tr {
+    background-color: transparent;
+    border-top: 1px solid var(--doc-border);
+  }
+
+  table tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.025);
+  }
+
+  dl dt {
+    color: var(--doc-heading);
+  }
+}
+
+/* ── Footer ─────────────────────────────────────────────────────────────── */
+
+.site-footer {
+  border-top: 1px solid var(--doc-border);
+}
+
+.site-footer-owner {
+  color: var(--doc-text);
+}
+
+.site-footer-credits {
+  color: var(--doc-muted);
+}
+
+/* ── Syntax highlighting ────────────────────────────────────────────────────
+   Rouge ships light-theme token colours with Cayman. Repaint the tokens that
+   actually occur in these docs: comments, strings, keywords, numbers, names. */
+
+.highlight {
+  .c, .c1, .cm, .cs { color: #7089a8; font-style: italic; }  /* comments   */
+  .k, .kd, .kn, .kr, .kc { color: #cba6f7; }                 /* keywords   */
+  .s, .s1, .s2, .sb, .sc, .sd, .se, .sx, .sr { color: #a6e3a1; } /* strings */
+  .mi, .mf, .mh, .mo, .m { color: #fab387; }                 /* numbers    */
+  .nb, .bp { color: #89dceb; }                               /* builtins   */
+  .nc, .nn, .nt { color: #66e6da; }                          /* classes, tags */
+  .na { color: #b4befe; }                                    /* attributes */
+  .nf, .fm { color: #93cefd; }                               /* functions  */
+  .nv, .vi, .vg { color: var(--doc-text); }                  /* variables  */
+  .o, .ow, .p { color: #8fa4c0; }                            /* operators  */
+  .err { color: #f5c2e7; background-color: transparent; }
+  .gd { color: #f5c2e7; }
+  .gi { color: #a6e3a1; }
+}

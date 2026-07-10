@@ -53,8 +53,8 @@ Four named looks. Put the name in a `class` and the element takes on that look:
 | --- | --- |
 | `glass` | Frosted, translucent panel. Every card uses it. |
 | `glow-teal` | A neon teal edge. `glow-mauve` is the purple one. |
-| `mono` | The typewriter font, for dates, prices and labels. |
-| `waybar` | The rounded pill bar the navigation sits in. |
+| `mono` | The monospace font, for dates, prices and labels. |
+| `waybar` | The rounded bar the navigation sits in. |
 
 ```svelte
 <div class="glass glow-teal">A frosted card with a teal glow</div>
@@ -83,9 +83,9 @@ That reads: *a grid, with a gap of 6 between items, and on medium-and-wider scre
 three columns.*
 
 To change how the Gear page is spaced, you edit that line, in that file. There is no
-Gear-page stylesheet somewhere else. This is called Tailwind, and once it clicks you'll
-find it faster than hunting through stylesheets — but it does mean **"the styling" is
-not in one place, because it is attached to the thing being styled.**
+Gear-page stylesheet somewhere else. This is called Tailwind. It means you never have to
+search for which stylesheet applies to an element — but it also means **"the styling" is
+not in one place, because it is written on the element it styles.**
 
 ### How to find the line you want
 
@@ -120,12 +120,12 @@ A prefix means "only on this size screen and wider":
 *One column on a phone, two on a tablet, four on a big monitor.* The prefixes are `sm:`
 (640px), `md:` (768px), `lg:` (1024px), `xl:` (1280px).
 
-> **A trap worth knowing.** The little octopus in the corner is `hidden xl:block` — it
+> **A limitation worth knowing.** The little octopus in the corner is `hidden xl:block` — it
 > only appears on screens 1280px and wider. Since the octopus is the only way into the
 > maze game, **the game cannot be reached on a phone.** If you want it everywhere, that
 > `hidden xl:block` in `src/components/NavMascot.svelte` is the line to change.
 
-### One rule that will save you an afternoon
+### One rule to remember
 
 Only class names **written out in full, in a file under `src`**, end up in the finished
 site. Building a class name out of pieces does not work:

@@ -58,14 +58,15 @@ Refresh the real website and your change is there.
 
 ---
 
-## Three things that surprise people
+## Three things worth knowing
 
 **Pushing to GitHub does not publish the website.** There is no automation. `git push`
 saves your work; `npm run deploy` publishes it. They are unrelated. You can do either
 without the other.
 
 **`npm run deploy` publishes what is on your computer right now** — including edits you
-haven't committed, and *not* including a teammate's work you haven't pulled. Best habit:
+haven't committed, and *not* including a colleague's work you haven't pulled. Run these
+three in order:
 
 ```bash
 git pull

@@ -51,8 +51,8 @@ one, add its name to the type, then add a label for it in `REGION_META`:
 ```
 
 If it's a **Taiwan** region, the map also needs to know where to draw it. `npm run check`
-will tell you so, by name, pointing at `src/pages/Map.svelte`. That's the one time this
-recipe sends you outside `content/`.
+will tell you so, by name, pointing at `src/pages/Map.svelte`. That is the only step on
+this page that sends you outside `content/`.
 
 ---
 

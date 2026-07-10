@@ -7,6 +7,10 @@ payments; those live in a separate program called `app-fundivers`.
 You do not need to understand the whole thing to change it. Almost everything you'll
 want to edit is text sitting in one folder.
 
+> **New to this kind of work?** Read **[What is all this?](what-is-all-this.md)** first.
+> It explains what a server is, what Cloudflare is, what Svelte is, and every other word
+> used on these pages. It assumes you have never built a website before.
+
 ---
 
 ## The five folders
@@ -108,8 +112,9 @@ More detail in [Publishing your changes](publishing.md).
 
 ---
 
-## The recipes
+## Step-by-step guides
 
+- [What is all this?](what-is-all-this.md) — servers, Cloudflare, Svelte, git, explained from zero
 - [Changing words](changing-words.md) — text on any page, in any language
 - [Changing how it looks](changing-look.md) — colours, fonts, spacing
 - [Adding a dive site](adding-a-dive-site.md) — the full four steps

@@ -43,13 +43,13 @@ text. Use the curly apostrophe `’` instead:
 tagline: 'It’s great',
 ```
 
-The rest of the site already uses `’`, so you'll be in good company.
+The rest of the site already uses `’`.
 
 ---
 
 ## Adding a brand-new piece of text
 
-This is the one place the site is strict with you, on purpose.
+This is the one place where `npm run check` will stop you, on purpose.
 
 **Step 1.** Add it to `en.ts`:
 

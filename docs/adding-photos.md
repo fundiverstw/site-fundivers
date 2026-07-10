@@ -54,8 +54,8 @@ Note the path starts at `/imgs/`, **not** at `public/`. That's not a typo — ev
 ## Getting the file right
 
 **Use `.webp` or `.avif`.** A photo straight off a camera can be 5 MB; the same photo as
-`.webp` is around 200 KB and looks the same on a screen. Visitors on phone data will
-thank you, and the whole project is only about 17 MB today.
+`.webp` is around 200 KB and looks the same on a screen. A visitor on a phone connection
+waits far less time for it, and the whole project is only about 17 MB today.
 
 To convert one, on most machines:
 
@@ -81,7 +81,7 @@ keeps the old copy even after you delete it.
 
 ## Course cover photos
 
-These are the odd ones out. They're the pictures from the shop's old website, stored in
+These work differently. They are the pictures from the shop's old website, stored in
 `public/imgs/media/` with long machine-generated names, and referenced in
 `src/content/courses.ts` like this:
 

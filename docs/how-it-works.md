@@ -3,7 +3,7 @@
 [← Back to start](index.md)
 
 You don't need this page to change the site. It's here for when you get curious, or when
-something breaks in a way the recipes don't cover.
+something breaks in a way the step-by-step guides do not cover.
 
 ---
 
@@ -19,7 +19,7 @@ the top for logic, HTML underneath for what you see.
 
 ---
 
-## The two databases that aren't yours
+## The database that does not belong to this site
 
 This is the single most important boundary in the project, and the source of most
 confusion.
@@ -37,7 +37,7 @@ database, with a read-only key, and shows them:
 Everything else — dive sites, course descriptions, photos, the words on every page — is
 **static content bundled into this project**, in `src/content/`.
 
-Two consequences worth internalising:
+Two consequences worth remembering:
 
 1. **You cannot fix a price by editing this repository.** Fix it in the booking app.
 2. **Don't move marketing content into the database to "share" it.** The database serves
@@ -49,9 +49,9 @@ row-level security in Supabase only exposes those public rows to it.
 
 ---
 
-## A tour of `src/engine/`
+## What each file in `src/engine/` does
 
-Roughly in order of how likely you are to ever care.
+Roughly in order of how likely you are to need it.
 
 | File | What it does |
 | --- | --- |
@@ -118,7 +118,7 @@ Maze**, a quiz game hidden in `src/components/game/WreckMaze.svelte`. Its 52 que
 are content, and live in `src/content/quiz-questions.ts` — you can add more without
 touching the game itself.
 
-Two known rough edges, if you feel like fixing them:
+Two known problems, if you want to fix them:
 
 - The octopus is `hidden xl:block`, so **on a phone or tablet there is no way to open the
   game at all.**
