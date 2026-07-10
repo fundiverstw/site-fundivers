@@ -30,9 +30,11 @@
     "src/**/*.ts",
     "src/**/*.svelte",
     "e2e/**/*.ts",
+    "contract/**/*.ts",
     "vite.alias.ts",
     "vite.config.ts",
     "vitest.config.ts",
+    "vitest.contract.config.ts",
     "playwright.config.ts",
     "svelte.config.js"
   ]

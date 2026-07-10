@@ -57,14 +57,18 @@ npm run dev            # http://localhost:5173
 | `npm run format`       | Prettier (`format:check` to verify only)                         |
 | `npm run test:unit`    | Vitest — pure functions + content integrity                      |
 | `npm run test:e2e`     | Playwright — the built site in a real browser                    |
+| `npm run test:contract`| Vitest — the site's real queries against the live Supabase        |
 | `npm run build`        | Type-check then build `dist/`                                    |
 | `npm run preview`      | Preview the production build locally                             |
 | `npm run deploy`       | `verify`, build, then `wrangler deploy` to Cloudflare            |
 
 CI (`.github/workflows/ci.yml`) runs `verify` on every push and pull request. It needs no
 secrets: the browser tests intercept every Supabase call, so placeholder env vars suffice.
-The flip side is that **nothing here proves the site can read the live database** — a
-breaking migration in `app-fundivers` will pass CI and blank the calendar.
+
+A migration in `app-fundivers` that renames a column would therefore pass CI and blank the
+calendar — so `.github/workflows/contract.yml` runs the site's real queries against the
+live database once a day (`npm run test:contract`). Every query's column list comes from
+`src/engine/db-columns.ts`, which is what that test asserts.
 
 ## Environment
 

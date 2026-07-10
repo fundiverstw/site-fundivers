@@ -46,6 +46,7 @@ You will open these roughly never. Each one is commented at the top.
 | **`.prettierrc`** | Prettier | Quote marks, line length, semicolons. |
 | **`.prettierignore`** | Prettier | Which files the formatter must not touch — these docs, and the big data files. |
 | **`vitest.config.ts`** | Vitest | Where the unit tests are. |
+| **`vitest.contract.config.ts`** | Vitest | Where the live-database test is, and how long it may take. |
 | **`playwright.config.ts`** | Playwright | Which browsers the end-to-end tests use, and how the site gets built and served for them. |
 
 See [How we check the site still works](testing.md) for what the last four are actually for.
@@ -57,6 +58,7 @@ See [How we check the site still works](testing.md) for what the last four are a
 | Name | What it is |
 | --- | --- |
 | **`e2e/`** | The browser tests. "e2e" is short for end-to-end: they use the finished site the way a visitor would. |
+| **`contract/`** | The one test that talks to the real database, to check the booking app has not renamed a column the site reads. |
 | **`.github/`** | Contains one file, `workflows/ci.yml`, which tells GitHub to run all the checks every time somebody pushes. |
 | **`.vscode/`** | Two small files that set your editor up: which extensions to offer you, and "tidy my file when I save". |
 | **`reference/`** | Dead code. An old version of the map page, written in React, copied from the booking app when the map was moved here. It is **never** part of the site. It exists to be read, not run. Its two `.test.tsx` files are not real tests and cannot run. |

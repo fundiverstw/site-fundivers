@@ -1,4 +1,14 @@
 import { supabase } from './supabase'
+import {
+  EVENT_DIVE_COLS,
+  EVENT_COURSE_COLS,
+  EVENT_UPCOMING_DIVE_COLS,
+  EVENT_UPCOMING_COURSE_COLS,
+  EVENT_DETAIL_COLS,
+  EVENT_TRIP_TITLE_COLS,
+  PRICE_COLS,
+  CERT_LEVEL_COLS,
+} from './db-columns'
 import { type DiveOuting } from './event-colors'
 import { eventImage } from './photo-pool'
 
@@ -68,7 +78,7 @@ function toHhmm(raw: string | null | undefined): string | null {
 async function fetchPrices(ids: Array<string | null>): Promise<Map<string, number | null>> {
   const priceIds = [...new Set(ids.filter((x): x is string => !!x))]
   if (!priceIds.length) return new Map()
-  const { data } = await supabase.from('prices').select('id, starting_at').in('id', priceIds)
+  const { data } = await supabase.from('prices').select(PRICE_COLS).in('id', priceIds)
   return new Map((data ?? []).map((p: PriceRow) => [p.id, p.starting_at]))
 }
 
@@ -83,9 +93,7 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
   const [divesResp, coursesResp] = await Promise.all([
     supabase
       .from('events')
-      .select(
-        'id, display_title, admin_title, start_date, end_date, start_time, price, fully_booked, featured, notes',
-      )
+      .select(EVENT_UPCOMING_DIVE_COLS)
       .eq('kind', 'dive')
       .is('cancelled_at', null)
       .eq('is_private', false)
@@ -93,9 +101,7 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
       .order('start_date'),
     supabase
       .from('events')
-      .select(
-        'id, display_title, admin_title, start_time, price, course_days, fully_booked, schedule',
-      )
+      .select(EVENT_UPCOMING_COURSE_COLS)
       .eq('kind', 'course')
       .is('cancelled_at', null),
   ])
@@ -167,7 +173,7 @@ export async function fetchUpcomingTripTitles(): Promise<string[]> {
   const today = todayKey()
   const { data } = await supabase
     .from('events')
-    .select('display_title, admin_title')
+    .select(EVENT_TRIP_TITLE_COLS)
     .eq('kind', 'dive')
     .eq('is_trip', true)
     .is('cancelled_at', null)
@@ -255,10 +261,6 @@ function datesInRange(fromDate: string, toDate: string): string[] {
 // NOT NULL) replace the old destination-join heuristic that read the now-dropped
 // travel_destinations.northeast_diving flag: a boat dive or an out-of-town trip
 // colors yellow; otherwise leave null so diveIsTripOrBoat() can title-sniff.
-const DIVE_COLS =
-  'id, admin_title, display_title, calendar_title, start_date, start_time, end_date, featured, fully_booked, capacity, price, is_trip, is_boat_dive'
-const COURSE_COLS =
-  'id, admin_title, display_title, calendar_title, start_time, price, course_days, fully_booked, capacity'
 
 type DiveRow2 = {
   id: string
@@ -344,7 +346,7 @@ export async function fetchEventsInRange(fromDate: string, toDate: string): Prom
   const [divesResp, coursesResp] = await Promise.all([
     supabase
       .from('events')
-      .select(DIVE_COLS)
+      .select(EVENT_DIVE_COLS)
       .eq('kind', 'dive')
       .is('cancelled_at', null)
       .eq('is_private', false)
@@ -353,7 +355,7 @@ export async function fetchEventsInRange(fromDate: string, toDate: string): Prom
       .order('start_date'),
     supabase
       .from('events')
-      .select(COURSE_COLS)
+      .select(EVENT_COURSE_COLS)
       .eq('kind', 'course')
       .is('cancelled_at', null)
       .overlaps('course_days', datesInRange(fromDate, toDate)),
@@ -418,7 +420,11 @@ function nonEmptyDetails(d: EventDetails): EventDetails | null {
 
 async function certName(id: string | null | undefined): Promise<string | null> {
   if (!id) return null
-  const { data } = await supabase.from('cert_levels').select('name').eq('id', id).maybeSingle()
+  const { data } = await supabase
+    .from('cert_levels')
+    .select(CERT_LEVEL_COLS)
+    .eq('id', id)
+    .maybeSingle()
   return data?.name ?? null
 }
 
@@ -428,7 +434,7 @@ export async function fetchEventDetails(
 ): Promise<EventDetails | null> {
   const { data } = await supabase
     .from('events')
-    .select('notes, included, schedule, prereqs, req_dives, prereq_cert_id')
+    .select(EVENT_DETAIL_COLS)
     .eq('id', ev.id)
     .maybeSingle()
   if (!data) return null

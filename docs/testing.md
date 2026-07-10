@@ -181,12 +181,50 @@ their prices from a second table, and lays them out as bars is actually run.
 ### What these tests do not do
 
 **They never talk to the *real* database.** That makes them fast, repeatable, and free of
-passwords — but it means **no test proves the site can still read the live database.** If
-somebody changes the database in the booking app, these tests stay green and the real
-calendar goes blank.
+passwords — but on their own they would not notice if somebody changed the database in the
+booking app. That is what the next check is for.
 
-Nothing automatic protects you there. Open the site with `npm run dev` and look at the
-calendar. That is the only check that exists.
+---
+
+## The contract test — `npm run test:contract`
+
+This is the only test that talks to the real database.
+
+The calendar and the prices live in a database owned by the **booking app**, not by this
+project. If somebody there renames a column — `start_date` becomes `starts_on`, say — every
+test above stays green, because they all answer from a fake database. The real calendar
+just quietly renders nothing.
+
+So this test runs the site's real queries against the real database and fails if a column
+has moved:
+
+```bash
+npm run test:contract
+```
+
+It takes about fifteen seconds and needs your `.env`. It only ever reads.
+
+**It is not part of `npm run verify`,** on purpose. It depends on a service nobody here
+controls, and a Supabase outage must not turn a pull request red over a typo. Instead
+**GitHub runs it once a day** (`.github/workflows/contract.yml`) and tells you if the
+schema has moved under the site.
+
+If it fails, the message names the column:
+
+```
+expected 'column events.starts_on does not exist' to be null
+```
+
+The fix is usually to update `src/engine/db-columns.ts`, which is the single place every
+database query in this project gets its column list from.
+
+### What even the contract test cannot tell you
+
+Whether the read-only key can *write*. When the database's security rules deny a delete,
+Postgres removes zero rows and reports no error — which looks exactly like a permitted
+delete that matched nothing. The only way to tell them apart is to aim a real delete at a
+real row, and a test suite must never do that to a live database. Those rules belong to the
+booking app, and that is where they should be tested.
 
 ---
 

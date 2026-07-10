@@ -1,0 +1,47 @@
+name: Live database contract
+
+# The calendar and the prices come from a Supabase database owned by
+# `app-fundivers`. Nothing in the normal test suite touches it — the browser
+# tests answer every query from a fake one — so a migration over there can
+# rename a column, leave CI green here, and blank the real calendar.
+#
+# This job runs the real queries against the real database once a day. It is
+# deliberately separate from CI: it depends on a service we do not control, and
+# a Supabase outage must not redden a pull request about a typo.
+on:
+  schedule:
+    - cron: '17 2 * * *' # 02:17 UTC daily, ~10:17 Taipei
+  workflow_dispatch: # and on demand, from the Actions tab
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    # The anon key is public by design: row-level security limits it to the
+    # read-only catalog, and it is already inlined into the JavaScript every
+    # visitor downloads. It lives in Actions secrets so it is not committed.
+    env:
+      VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+      VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Are the credentials configured?
+        run: |
+          if [ -z "$VITE_SUPABASE_URL" ] || [ -z "$VITE_SUPABASE_ANON_KEY" ]; then
+            echo "::error::VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY are not set."
+            echo "Without them the contract tests skip silently, which is worse than failing."
+            exit 1
+          fi
+
+      - name: Does the live database still have what the site reads?
+        run: npm run test:contract

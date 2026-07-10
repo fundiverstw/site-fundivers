@@ -1,4 +1,5 @@
 import { supabase } from './supabase'
+import { DESTINATION_COLS } from './db-columns'
 import { wixImageLocal } from './images'
 
 // travel_destinations holds the dive destinations + tour locations, each with a
@@ -22,9 +23,7 @@ export type Destination = {
 export async function fetchDestinations(): Promise<Destination[]> {
   const { data, error } = await supabase
     .from('travel_destinations')
-    .select(
-      'id, admin_title, slug, tagline, country, international, divetype, diver_requirements, location_picture, background_picture, sort_order',
-    )
+    .select(DESTINATION_COLS)
     .order('sort_order')
   if (error) throw error
   return (data ?? []).map((d) => ({
