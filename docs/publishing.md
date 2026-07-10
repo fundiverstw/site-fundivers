@@ -36,8 +36,9 @@ This runs five checks in about thirty seconds: the types, the linter, the format
 unit tests, and the browser tests. Wait for it to finish. If nothing is red, you're done.
 
 If something fails, read the last few lines — they name the file and usually say exactly
-what is wrong. **Do not publish with errors.** [How we check the site still
-works](testing.md) explains each check and what a failure usually means.
+what is wrong. **Do not publish with errors.**
+[How we check the site still works](testing.md) explains each check and what a failure
+usually means.
 
 ### 3. Publish it
 

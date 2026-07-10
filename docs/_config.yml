@@ -8,3 +8,10 @@ show_downloads: false
 github:
   owner_url: https://www.fundiverstw.com
   owner_name: FunDivers TW
+
+# These pages have no YAML front matter, so jekyll-optional-front-matter adds it
+# for us. By default it ALSO copies the raw .md files into the published site, so
+# /setting-up.md serves the markdown source next to /setting-up.html. Publish only
+# the rendered pages.
+optional_front_matter:
+  remove_originals: true

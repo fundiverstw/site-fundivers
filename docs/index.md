@@ -7,9 +7,10 @@ payments; those live in a separate program called `app-fundivers`.
 You do not need to understand the whole thing to change it. Almost everything you'll
 want to edit is text sitting in one folder.
 
-> **Brand new to development work?** Start with **[Setting up your
-> computer](setting-up.md)**. It installs the editor, Git and Node, gets you access to
-> GitHub, and ends with the website running on your own machine. It assumes nothing.
+> **Brand new to development work?** Start with
+> **[Setting up your computer](setting-up.md)**. It installs the editor, Git and Node,
+> gets you access to GitHub, and ends with the website running on your own machine.
+> It assumes nothing.
 >
 > Then **[What is all this?](what-is-all-this.md)**, which explains what a server is, what
 > Cloudflare is, what Svelte is, and every other word used on these pages. And
