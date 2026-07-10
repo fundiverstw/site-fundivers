@@ -26,8 +26,15 @@
         href={coursePath(c)}
         class="group relative flex aspect-square flex-col justify-end overflow-hidden rounded-3xl border border-white/15 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-reef-400/60 hover:shadow-[0_0_28px_-8px_rgba(44,208,197,0.6)]"
       >
-        <img src={c.image} alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent"></div>
+        <img
+          src={c.image}
+          alt=""
+          loading="lazy"
+          class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent"
+        ></div>
         <div class="relative z-10 p-5">
           <h3 class="text-lg font-bold text-white">{c.title}</h3>
           <p class="mt-1 line-clamp-3 text-sm text-white/85">{c.desc}</p>
@@ -50,7 +57,9 @@
     {:else if upcoming.length === 0}
       <p class="mt-4 text-brand-100">
         {$t.courses.noDates}
-        <a href={bookUrl} target="_blank" rel="noopener" class="font-semibold text-reef-300">{$t.courses.getInTouch}</a>.
+        <a href={bookUrl} target="_blank" rel="noopener" class="font-semibold text-reef-300"
+          >{$t.courses.getInTouch}</a
+        >.
       </p>
     {:else}
       <ul class="mt-6 grid gap-3">

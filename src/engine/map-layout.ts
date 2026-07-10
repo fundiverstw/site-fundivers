@@ -49,7 +49,11 @@ export const MARKER_OFFSET = 5 // line endpoint distance from marker center
  * sits MARKER_OFFSET units short of the marker center so the arrowhead
  * lands cleanly outside the marker circle.
  */
-export function leaderLineFor(rect: LabelRect, vx: number, vy: number): { start: Point; end: Point } {
+export function leaderLineFor(
+  rect: LabelRect,
+  vx: number,
+  vy: number,
+): { start: Point; end: Point } {
   const rcx = rect.x + rect.w / 2
   const rcy = rect.y + rect.h / 2
   const dx = vx - rcx
@@ -57,12 +61,12 @@ export function leaderLineFor(rect: LabelRect, vx: number, vy: number): { start:
   const dist = Math.max(Math.hypot(dx, dy), 0.001)
   const ux = dx / dist
   const uy = dy / dist
-  const tx = ux !== 0 ? (rect.w / 2) / Math.abs(ux) : Infinity
-  const ty = uy !== 0 ? (rect.h / 2) / Math.abs(uy) : Infinity
+  const tx = ux !== 0 ? rect.w / 2 / Math.abs(ux) : Infinity
+  const ty = uy !== 0 ? rect.h / 2 / Math.abs(uy) : Infinity
   const tEdge = Math.min(tx, ty) + 1
   return {
     start: [rcx + ux * tEdge, rcy + uy * tEdge],
-    end:   [vx - ux * MARKER_OFFSET, vy - uy * MARKER_OFFSET],
+    end: [vx - ux * MARKER_OFFSET, vy - uy * MARKER_OFFSET],
   }
 }
 
@@ -116,10 +120,10 @@ const CHAR_W = FONT_SIZE * 0.55
 // up-right/up-left, then up/down, etc.), then 12 in-between every 30°
 // offset by 15°. Tried in priority order — main angles first.
 const ANGLE_PRIORITY_DEG = [
-  0, -30, 30, -60, 60, -90, 90, -120, 120, -150, 150, 180,
-  -15, 15, -45, 45, -75, 75, -105, 105, -135, 135, -165, 165,
+  0, -30, 30, -60, 60, -90, 90, -120, 120, -150, 150, 180, -15, 15, -45, 45, -75, 75, -105, 105,
+  -135, 135, -165, 165,
 ]
-const ANGLES = ANGLE_PRIORITY_DEG.map(d => (d * Math.PI) / 180)
+const ANGLES = ANGLE_PRIORITY_DEG.map((d) => (d * Math.PI) / 180)
 
 // Increasing rings of distance from marker center to label center. Most
 // labels land at the closest ring; only dense clusters spill into the
@@ -127,12 +131,7 @@ const ANGLES = ANGLE_PRIORITY_DEG.map(d => (d * Math.PI) / 180)
 const RADII = [14, 22, 30, 40, 55]
 
 export function rectsOverlap(a: LabelRect, b: LabelRect): boolean {
-  return !(
-    a.x + a.w <= b.x ||
-    b.x + b.w <= a.x ||
-    a.y + a.h <= b.y ||
-    b.y + b.h <= a.y
-  )
+  return !(a.x + a.w <= b.x || b.x + b.w <= a.x || a.y + a.h <= b.y || b.y + b.h <= a.y)
 }
 
 function overlapArea(a: LabelRect, b: LabelRect): number {
@@ -148,7 +147,13 @@ interface Candidate {
   rect: LabelRect
 }
 
-function buildCandidate(vx: number, vy: number, name: string, dist: number, angle: number): Candidate {
+function buildCandidate(
+  vx: number,
+  vy: number,
+  name: string,
+  dist: number,
+  angle: number,
+): Candidate {
   const w = name.length * CHAR_W + PAD
   const h = FONT_SIZE + PAD
   const dx = Math.cos(angle)
@@ -189,12 +194,7 @@ export interface PlaceLabelsOptions {
 
 function inBounds(rect: LabelRect, b?: { width: number; height: number }): boolean {
   if (!b) return true
-  return (
-    rect.x >= 0 &&
-    rect.y >= 0 &&
-    rect.x + rect.w <= b.width &&
-    rect.y + rect.h <= b.height
-  )
+  return rect.x >= 0 && rect.y >= 0 && rect.x + rect.w <= b.width && rect.y + rect.h <= b.height
 }
 
 function outOfBoundsArea(rect: LabelRect, b?: { width: number; height: number }): number {
@@ -204,12 +204,15 @@ function outOfBoundsArea(rect: LabelRect, b?: { width: number; height: number })
   return overX * rect.h + overY * rect.w
 }
 
-export function placeLabels(inputs: MarkerInput[], options: PlaceLabelsOptions = {}): PlacedLabel[] {
+export function placeLabels(
+  inputs: MarkerInput[],
+  options: PlaceLabelsOptions = {},
+): PlacedLabel[] {
   // Sort north-to-south (smaller vy first) so the layout reads top-down,
   // but remember each input's original index so the caller can match.
   const indexed = inputs.map((s, index) => ({ ...s, index }))
   const sorted = [...indexed].sort((a, b) => a.vy - b.vy)
-  const markerRects = sorted.map(s => markerRectOf(s.vx, s.vy))
+  const markerRects = sorted.map((s) => markerRectOf(s.vx, s.vy))
 
   const placedLabels: LabelRect[] = []
   const placedLines: { start: Point; end: Point }[] = []
@@ -217,7 +220,11 @@ export function placeLabels(inputs: MarkerInput[], options: PlaceLabelsOptions =
   // Picks the lowest-penalty candidate when nothing fits cleanly. Leader-
   // line collisions are weighted heaviest because a line crossing a label
   // is the visual disaster we're trying to avoid.
-  function fallbackPenalty(cand: Candidate, line: { start: Point; end: Point }, ownIdx: number): number {
+  function fallbackPenalty(
+    cand: Candidate,
+    line: { start: Point; end: Point },
+    ownIdx: number,
+  ): number {
     let penalty = 0
     for (const p of placedLabels) penalty += overlapArea(cand.rect, p)
     for (let j = 0; j < markerRects.length; j++) {
@@ -246,22 +253,23 @@ export function placeLabels(inputs: MarkerInput[], options: PlaceLabelsOptions =
   const placements: PlacedLabel[] = sorted.map((s, i) => {
     let chosen: { cand: Candidate; line: { start: Point; end: Point } } | null = null
 
-    outer:
-    for (const dist of RADII) {
+    outer: for (const dist of RADII) {
       for (const angle of ANGLES) {
         const cand = buildCandidate(s.vx, s.vy, s.name, dist, angle)
         if (!inBounds(cand.rect, options.bounds)) continue
-        if (placedLabels.some(p => rectsOverlap(cand.rect, p))) continue
+        if (placedLabels.some((p) => rectsOverlap(cand.rect, p))) continue
         if (markerRects.some((m, j) => j !== i && rectsOverlap(cand.rect, m))) continue
 
         const line = leaderLineFor(cand.rect, s.vx, s.vy)
         // This label's own elements never collide with itself by construction
         // (line ends 5 units short of own marker, starts 1 unit outside own
         // rect). All "self" checks are skipped via index === i.
-        if (placedLabels.some(p => lineIntersectsRect(line.start, line.end, p))) continue
-        if (markerRects.some((m, j) => j !== i && lineIntersectsRect(line.start, line.end, m))) continue
-        if (placedLines.some(o => segmentsIntersect(line.start, line.end, o.start, o.end))) continue
-        if (placedLines.some(o => lineIntersectsRect(o.start, o.end, cand.rect))) continue
+        if (placedLabels.some((p) => lineIntersectsRect(line.start, line.end, p))) continue
+        if (markerRects.some((m, j) => j !== i && lineIntersectsRect(line.start, line.end, m)))
+          continue
+        if (placedLines.some((o) => segmentsIntersect(line.start, line.end, o.start, o.end)))
+          continue
+        if (placedLines.some((o) => lineIntersectsRect(o.start, o.end, cand.rect))) continue
 
         chosen = { cand, line }
         break outer

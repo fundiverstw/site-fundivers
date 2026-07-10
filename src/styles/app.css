@@ -14,9 +14,9 @@
    docs/*.md, where prose like "never grow wider" and "paste its contents" gets
    mistaken for the utility classes `grow` and `contents`, quietly padding the
    stylesheet with rules nothing uses. */
-@import "tailwindcss" source(none);
+@import 'tailwindcss' source(none);
 @source "../";
 
-@import "./theme.css";
-@import "./background.css";
-@import "./components.css";
+@import './theme.css';
+@import './background.css';
+@import './components.css';

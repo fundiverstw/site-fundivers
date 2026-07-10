@@ -46,7 +46,9 @@
   {#each GALLERY as sect (sect.key)}
     <div id={sect.key} class="mb-12 scroll-mt-24">
       <h2 class="mb-5 flex items-center gap-2 text-2xl font-bold text-white">
-        <span class="mono text-reef-400">▹</span>{$t.photos.sections[sect.key as keyof typeof $t.photos.sections]}
+        <span class="mono text-reef-400">▹</span>{$t.photos.sections[
+          sect.key as keyof typeof $t.photos.sections
+        ]}
       </h2>
       <!-- Masonry via CSS columns so each landscape shot keeps its aspect. -->
       <div class="[column-fill:_balance] gap-3 sm:columns-2 lg:columns-3">
@@ -57,7 +59,7 @@
             class="group mb-3 block w-full break-inside-avoid overflow-hidden rounded-2xl border border-white/10 shadow-sm transition-all duration-300 hover:border-reef-400/60 hover:shadow-[0_0_26px_-8px_rgba(44,208,197,0.6)]"
           >
             <img
-              src={src}
+              {src}
               alt=""
               loading="lazy"
               class="block w-full transition-transform duration-500 group-hover:scale-[1.04]"
@@ -72,10 +74,20 @@
     <h2 class="text-xl font-bold text-white">{$t.photos.seeMore}</h2>
     <p class="mt-2 text-brand-100">{$t.photos.follow}</p>
     <div class="mt-4 flex flex-wrap justify-center gap-3">
-      <a href={SOCIAL.instagram} target="_blank" rel="noopener" class="rounded-full bg-brand-600 px-5 py-2 text-sm font-semibold text-white hover:bg-brand-700">
+      <a
+        href={SOCIAL.instagram}
+        target="_blank"
+        rel="noopener"
+        class="rounded-full bg-brand-600 px-5 py-2 text-sm font-semibold text-white hover:bg-brand-700"
+      >
         Instagram
       </a>
-      <a href={SOCIAL.youtube} target="_blank" rel="noopener" class="rounded-full border border-white/30 px-5 py-2 text-sm font-semibold text-white hover:bg-white/10">
+      <a
+        href={SOCIAL.youtube}
+        target="_blank"
+        rel="noopener"
+        class="rounded-full border border-white/30 px-5 py-2 text-sm font-semibold text-white hover:bg-white/10"
+      >
         YouTube
       </a>
     </div>
@@ -86,7 +98,9 @@
   <!-- Lightbox overlay -->
   <div
     class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm sm:p-8"
-    onclick={(e) => { if (e.target === e.currentTarget) close() }}
+    onclick={(e) => {
+      if (e.target === e.currentTarget) close()
+    }}
     role="presentation"
   >
     <img
@@ -105,7 +119,10 @@
     </button>
     <button
       type="button"
-      onclick={(e) => { e.stopPropagation(); step(-1) }}
+      onclick={(e) => {
+        e.stopPropagation()
+        step(-1)
+      }}
       aria-label={$t.photos.prev}
       class="absolute left-3 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-2xl text-white transition-colors hover:bg-white/20 sm:left-6"
     >
@@ -113,13 +130,18 @@
     </button>
     <button
       type="button"
-      onclick={(e) => { e.stopPropagation(); step(1) }}
+      onclick={(e) => {
+        e.stopPropagation()
+        step(1)
+      }}
       aria-label={$t.photos.next}
       class="absolute right-3 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-2xl text-white transition-colors hover:bg-white/20 sm:right-6"
     >
       ›
     </button>
-    <span class="mono absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-black/50 px-3 py-1 text-xs text-white/80">
+    <span
+      class="mono absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-black/50 px-3 py-1 text-xs text-white/80"
+    >
       {lightbox + 1} / {ALL_PHOTOS.length}
     </span>
   </div>

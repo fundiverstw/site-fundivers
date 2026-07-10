@@ -40,10 +40,7 @@
     if (!active) return
     const subject = `${TITLES[active]} — ${name || 'Website request'}`
     const body =
-      `Request: ${TITLES[active]}\n` +
-      `Name: ${name}\n` +
-      `Email: ${email}\n\n` +
-      `${message}`
+      `Request: ${TITLES[active]}\n` + `Name: ${name}\n` + `Email: ${email}\n\n` + `${message}`
     window.location.href = `mailto:${CONTACT.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
     active = null
     sent = true
@@ -58,7 +55,16 @@
       href="/calendar"
       class="glass flex aspect-square flex-col items-center justify-center gap-3 rounded-2xl p-4 text-center transition-all hover:-translate-y-0.5 hover:shadow-md"
     >
-      <svg class="h-12 w-12 text-reef-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg
+        class="h-12 w-12 text-reef-300"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
         <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
         <line x1="16" y1="2" x2="16" y2="6" />
         <line x1="8" y1="2" x2="8" y2="6" />
@@ -72,7 +78,16 @@
       onclick={() => open('try-dive')}
       class={`glass flex aspect-square flex-col items-center justify-center gap-3 rounded-2xl p-4 text-center transition-all hover:-translate-y-0.5 hover:shadow-md ${active === 'try-dive' ? 'ring-2 ring-reef-300' : ''}`}
     >
-      <svg class="h-12 w-12 text-reef-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg
+        class="h-12 w-12 text-reef-300"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
         <circle cx="12" cy="9" r="5" />
         <path d="M9 13l-2 8M15 13l2 8" />
         <path d="M7 9h-3M20 9h-3" />
@@ -85,7 +100,16 @@
       onclick={() => open('course')}
       class={`glass flex aspect-square flex-col items-center justify-center gap-3 rounded-2xl p-4 text-center transition-all hover:-translate-y-0.5 hover:shadow-md ${active === 'course' ? 'ring-2 ring-reef-300' : ''}`}
     >
-      <svg class="h-12 w-12 text-reef-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg
+        class="h-12 w-12 text-reef-300"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
         <path d="M22 10L12 5 2 10l10 5 10-5z" />
         <path d="M6 12v5c3 3 9 3 12 0v-5" />
         <line x1="22" y1="10" x2="22" y2="16" />
@@ -104,7 +128,9 @@
         rel="noopener"
         class="flex items-center gap-2 rounded-full bg-[#06C755] px-5 py-2.5 text-sm font-bold text-white shadow-sm transition-transform hover:-translate-y-0.5"
       >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d={LINE_PATH} /></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
+          ><path d={LINE_PATH} /></svg
+        >
         LINE
       </a>
       <a
@@ -113,7 +139,9 @@
         rel="noopener"
         class="flex items-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 text-sm font-bold text-white shadow-sm transition-transform hover:-translate-y-0.5"
       >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d={WHATSAPP_PATH} /></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
+          ><path d={WHATSAPP_PATH} /></svg
+        >
         WhatsApp
       </a>
     </div>
@@ -124,7 +152,9 @@
       <h3 class="mb-4 text-center text-lg font-bold text-white">{TITLES[active]}</h3>
       <div class="grid gap-4">
         <label class="block">
-          <span class="text-[0.7rem] font-semibold uppercase tracking-widest text-brand-200">{$t.getInTouch.name}</span>
+          <span class="text-[0.7rem] font-semibold uppercase tracking-widest text-brand-200"
+            >{$t.getInTouch.name}</span
+          >
           <input
             bind:value={name}
             required
@@ -133,7 +163,9 @@
           />
         </label>
         <label class="block">
-          <span class="text-[0.7rem] font-semibold uppercase tracking-widest text-brand-200">{$t.getInTouch.email}</span>
+          <span class="text-[0.7rem] font-semibold uppercase tracking-widest text-brand-200"
+            >{$t.getInTouch.email}</span
+          >
           <input
             bind:value={email}
             type="email"
@@ -143,7 +175,9 @@
           />
         </label>
         <label class="block">
-          <span class="text-[0.7rem] font-semibold uppercase tracking-widest text-brand-200">{$t.getInTouch.request}</span>
+          <span class="text-[0.7rem] font-semibold uppercase tracking-widest text-brand-200"
+            >{$t.getInTouch.request}</span
+          >
           <textarea
             bind:value={message}
             required
@@ -154,10 +188,17 @@
         </label>
       </div>
       <div class="mt-5 flex flex-wrap justify-center gap-3">
-        <button type="button" onclick={cancel} class="rounded-full border border-white/30 px-6 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/10">
+        <button
+          type="button"
+          onclick={cancel}
+          class="rounded-full border border-white/30 px-6 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+        >
           {$t.getInTouch.cancel}
         </button>
-        <button type="submit" class="rounded-full bg-reef-400 px-6 py-2 text-sm font-semibold text-brand-950 transition-colors hover:bg-reef-300">
+        <button
+          type="submit"
+          class="rounded-full bg-reef-400 px-6 py-2 text-sm font-semibold text-brand-950 transition-colors hover:bg-reef-300"
+        >
           {$t.getInTouch.send}
         </button>
       </div>
@@ -167,7 +208,10 @@
   {#if sent}
     {@const parts = $t.getInTouch.sent.split('{email}')}
     <div class="glass mt-4 rounded-2xl p-6 text-center text-brand-100">
-      {parts[0]}<a class="font-semibold text-reef-300 hover:text-reef-200" href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>{parts[1] ?? ''}
+      {parts[0]}<a
+        class="font-semibold text-reef-300 hover:text-reef-200"
+        href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a
+      >{parts[1] ?? ''}
     </div>
   {/if}
 </section>

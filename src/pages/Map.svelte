@@ -1,6 +1,11 @@
 <script lang="ts">
   import taiwanGeo from '$engine/taiwan.geo.json'
-  import { fetchDiveSites, diveSitePath, type DiveSite, type TaiwanRegion } from '$content/dive-sites'
+  import {
+    fetchDiveSites,
+    diveSitePath,
+    type DiveSite,
+    type TaiwanRegion,
+  } from '$content/dive-sites'
   import { placeLabels } from '$engine/map-layout'
   import { t } from '$engine/i18n'
   import PageHeader from '$components/PageHeader.svelte'
@@ -20,48 +25,66 @@
 
   const REGIONS: Record<TaiwanRegion, RegionInfo> = {
     keelung: {
-      name: 'Keelung / Badouzi', center: [121.81, 25.15], bbox: [121.785, 25.122, 121.836, 25.195],
-      description: 'Northern port-area diving — Badouzi Bay reefs and shipwrecks, with Keelung Islet just offshore.',
+      name: 'Keelung / Badouzi',
+      center: [121.81, 25.15],
+      bbox: [121.785, 25.122, 121.836, 25.195],
+      description:
+        'Northern port-area diving — Badouzi Bay reefs and shipwrecks, with Keelung Islet just offshore.',
       maxZoom: 40,
     },
     longdong: {
-      name: 'Long Dong Bay', center: [121.91, 25.118], bbox: [121.895, 25.108, 121.927, 25.130],
-      description: 'The classic northeast wall and reef dives — sheer basalt cliffs, deep gullies, dramatic rock formations.',
+      name: 'Long Dong Bay',
+      center: [121.91, 25.118],
+      bbox: [121.895, 25.108, 121.927, 25.13],
+      description:
+        'The classic northeast wall and reef dives — sheer basalt cliffs, deep gullies, dramatic rock formations.',
       maxZoom: 40,
     },
     yilan: {
-      name: 'Yilan / Turtle Island', center: [121.95, 24.95], bbox: [121.810, 24.800, 121.990, 25.050],
+      name: 'Yilan / Turtle Island',
+      center: [121.95, 24.95],
+      bbox: [121.81, 24.8, 121.99, 25.05],
       description:
         "East-coast diving — Toucheng / Wai'ao reefs, the Cathedral and Cauliflower Garden walls, the Wan An Jian wreck, " +
         'and Turtle Island offshore (Guishan Dao).',
     },
     greenisland: {
-      name: 'Green Island (Lyudao)', center: [121.4901443, 22.6620886], bbox: [121.460, 22.625, 121.530, 22.700],
+      name: 'Green Island (Lyudao)',
+      center: [121.4901443, 22.6620886],
+      bbox: [121.46, 22.625, 121.53, 22.7],
       description:
         'Green Island is located off the coast of Taitung, on the southeast coast of Taiwan. It is a favorite dive ' +
         'destination for many locals. Renowned for its impressive visibility, which can reach up to 30–40 m, it is ideal ' +
         'for photography enthusiasts.',
     },
     lanyu: {
-      name: 'Lanyu (Orchid Island)', center: [121.548418, 22.0435616], bbox: [121.470, 21.985, 121.605, 22.115],
+      name: 'Lanyu (Orchid Island)',
+      center: [121.548418, 22.0435616],
+      bbox: [121.47, 21.985, 121.605, 22.115],
       description:
         'Orchid Island is best known for the Badai Wreck, a Korean lumber-carrying vessel that starts at 26 m and ' +
         'descends to 40 m deep.',
     },
     xiaoliuqiu: {
-      name: 'Xiao Liuqiu (Lambai Island)', center: [120.3715149, 22.3404158], bbox: [120.350, 22.315, 120.405, 22.365],
+      name: 'Xiao Liuqiu (Lambai Island)',
+      center: [120.3715149, 22.3404158],
+      bbox: [120.35, 22.315, 120.405, 22.365],
       description:
         'Xiao Liuqiu / Lambai is a large coral island. Due to its nesting beach, it is home to hundreds of green sea ' +
         'turtles that both snorkelers and divers can enjoy.',
     },
     kenting: {
-      name: 'Kenting', center: [120.7797516, 21.9483307], bbox: [120.685, 21.925, 120.845, 22.020],
+      name: 'Kenting',
+      center: [120.7797516, 21.9483307],
+      bbox: [120.685, 21.925, 120.845, 22.02],
       description:
         'Kenting has been a top dive destination in Taiwan for decades. It is best known for its myriad of corals that ' +
         'are plastered atop the reef.',
     },
     penghu: {
-      name: 'Penghu Islands', center: [119.5793157, 23.5711899], bbox: [119.290, 23.090, 119.760, 23.700],
+      name: 'Penghu Islands',
+      center: [119.5793157, 23.5711899],
+      bbox: [119.29, 23.09, 119.76, 23.7],
       description:
         'Of all the dive locations in Taiwan, Penghu has the most fish in numbers, size, and diversity! If you have the ' +
         "experience and time, it's a definite must-see!",
@@ -69,7 +92,14 @@
   }
 
   const REGION_ORDER: TaiwanRegion[] = [
-    'keelung', 'longdong', 'yilan', 'greenisland', 'lanyu', 'xiaoliuqiu', 'kenting', 'penghu',
+    'keelung',
+    'longdong',
+    'yilan',
+    'greenisland',
+    'lanyu',
+    'xiaoliuqiu',
+    'kenting',
+    'penghu',
   ]
 
   // --- Projection ----------------------------------------------------------
@@ -125,12 +155,17 @@
 
   // --- Path construction ---------------------------------------------------
   type Ring = number[][]
-  interface Feature { geometry: { type: string; coordinates: Ring[] | Ring[][] } }
+  interface Feature {
+    geometry: { type: string; coordinates: Ring[] | Ring[][] }
+  }
 
   function ringToPath(ring: Ring): string {
     return (
       ring
-        .map((c, i) => `${i === 0 ? 'M' : 'L'}${projectX(c[0]).toFixed(2)} ${projectY(c[1]).toFixed(2)}`)
+        .map(
+          (c, i) =>
+            `${i === 0 ? 'M' : 'L'}${projectX(c[0]).toFixed(2)} ${projectY(c[1]).toFixed(2)}`,
+        )
         .join(' ') + ' Z'
     )
   }
@@ -153,6 +188,9 @@
   })
 
   let sitesByRegion = $derived.by(() => {
+    // Rebuilt from scratch whenever `sites` changes and never mutated afterwards,
+    // so it needs no reactivity of its own.
+    // eslint-disable-next-line svelte/prefer-svelte-reactivity
     const m = new Map<TaiwanRegion, DiveSite[]>()
     REGION_ORDER.forEach((r) => m.set(r, []))
     // International sites carry a region this map doesn't draw, so they drop out.
@@ -163,7 +201,7 @@
     return m
   })
 
-  let visibleSites = $derived(selected ? sitesByRegion.get(selected) ?? [] : [])
+  let visibleSites = $derived(selected ? (sitesByRegion.get(selected) ?? []) : [])
   let stroke = $derived(strokeWidthForZoom(selected))
 
   let visibleSiteLayout = $derived.by(() => {
@@ -175,8 +213,13 @@
     })
     return placeLabels(projected, { bounds: { width: VIEW_W, height: VIEW_H } }).map((p) => ({
       site: visibleSites[p.index],
-      vx: p.vx, vy: p.vy, labelX: p.labelX, labelY: p.labelY,
-      anchor: p.anchor, leaderStart: p.leaderStart, leaderEnd: p.leaderEnd,
+      vx: p.vx,
+      vy: p.vy,
+      labelX: p.labelX,
+      labelY: p.labelY,
+      anchor: p.anchor,
+      leaderStart: p.leaderStart,
+      leaderEnd: p.leaderEnd,
     }))
   })
 
@@ -196,7 +239,11 @@
 <section class="mx-auto max-w-2xl space-y-4 px-4 py-8 sm:px-6">
   {#if selected}
     <div class="flex justify-end">
-      <button type="button" onclick={() => (selected = null)} class="mono text-xs font-semibold text-reef-300 hover:text-reef-200">
+      <button
+        type="button"
+        onclick={() => (selected = null)}
+        class="mono text-xs font-semibold text-reef-300 hover:text-reef-200"
+      >
         {$t.map.back}
       </button>
     </div>
@@ -204,17 +251,38 @@
 
   <!-- The map -->
   <div class="glass flex justify-center rounded-2xl p-4">
-    <svg viewBox={`0 0 ${VIEW_W} ${VIEW_H}`} class="w-full max-w-md" role="img" aria-label={$t.map.title}>
+    <svg
+      viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
+      class="w-full max-w-md"
+      role="img"
+      aria-label={$t.map.title}
+    >
       <defs>
-        <marker id="site-arrow" viewBox="0 0 12 4" refX="11" refY="2" markerWidth="3.5" markerHeight="2.5" orient="auto">
+        <marker
+          id="site-arrow"
+          viewBox="0 0 12 4"
+          refX="11"
+          refY="2"
+          markerWidth="3.5"
+          markerHeight="2.5"
+          orient="auto"
+        >
           <path d="M 0 0 L 12 2 L 0 4 Z" fill="#dc2626" />
         </marker>
       </defs>
 
       <!-- Zoomable coastline group; markers/labels live outside so they keep a fixed visual size. -->
-      <g style={`transform: ${transformForRegion(selected)}; transform-origin: 0 0; transition: transform 500ms cubic-bezier(0.4, 0, 0.2, 1);`}>
+      <g
+        style={`transform: ${transformForRegion(selected)}; transform-origin: 0 0; transition: transform 500ms cubic-bezier(0.4, 0, 0.2, 1);`}
+      >
         {#each allPaths as d, i (i)}
-          <path {d} fill="rgb(186 230 253)" stroke="#0284c7" stroke-width={stroke} stroke-linejoin="round" />
+          <path
+            {d}
+            fill="rgb(186 230 253)"
+            stroke="#0284c7"
+            stroke-width={stroke}
+            stroke-linejoin="round"
+          />
         {/each}
       </g>
 
@@ -242,13 +310,41 @@
         {#each visibleSiteLayout as item (item.site.id)}
           <g class="pointer-events-none">
             <line
-              x1={item.leaderStart[0]} y1={item.leaderStart[1]}
-              x2={item.leaderEnd[0]} y2={item.leaderEnd[1]}
-              stroke="#dc2626" stroke-width="1.4" stroke-opacity="0.8" marker-end="url(#site-arrow)"
+              x1={item.leaderStart[0]}
+              y1={item.leaderStart[1]}
+              x2={item.leaderEnd[0]}
+              y2={item.leaderEnd[1]}
+              stroke="#dc2626"
+              stroke-width="1.4"
+              stroke-opacity="0.8"
+              marker-end="url(#site-arrow)"
             />
-            <a href={diveSitePath(item.site)} aria-label={item.site.name} class="pointer-events-auto cursor-pointer">
-              <circle cx={item.vx} cy={item.vy} r="3" fill="#dc2626" stroke="white" stroke-width="1.2" />
-              <text x={item.labelX} y={item.labelY} text-anchor={item.anchor} font-size="10" font-weight="700" fill="#1e3a8a" stroke="white" stroke-width="3.2" paint-order="stroke fill" stroke-linejoin="round" style="text-decoration: underline">{item.site.name}</text>
+            <a
+              href={diveSitePath(item.site)}
+              aria-label={item.site.name}
+              class="pointer-events-auto cursor-pointer"
+            >
+              <circle
+                cx={item.vx}
+                cy={item.vy}
+                r="3"
+                fill="#dc2626"
+                stroke="white"
+                stroke-width="1.2"
+              />
+              <text
+                x={item.labelX}
+                y={item.labelY}
+                text-anchor={item.anchor}
+                font-size="10"
+                font-weight="700"
+                fill="#1e3a8a"
+                stroke="white"
+                stroke-width="3.2"
+                paint-order="stroke fill"
+                stroke-linejoin="round"
+                style="text-decoration: underline">{item.site.name}</text
+              >
             </a>
           </g>
         {/each}
@@ -275,15 +371,26 @@
     <div class="glass rounded-2xl p-5">
       <div class="mb-2 flex items-start justify-between gap-2">
         <h2 class="text-lg font-bold text-white">{REGIONS[selected].name}</h2>
-        <button type="button" onclick={() => (selected = null)} aria-label={$t.map.close} class="-mt-1 px-2 text-2xl leading-none text-white/60 hover:text-white">×</button>
+        <button
+          type="button"
+          onclick={() => (selected = null)}
+          aria-label={$t.map.close}
+          class="-mt-1 px-2 text-2xl leading-none text-white/60 hover:text-white">×</button
+        >
       </div>
       <p class="mb-3 text-sm text-brand-100">{REGIONS[selected].description}</p>
       {#if visibleSites.length > 0}
-        <h3 class="mono mb-2 text-xs font-semibold uppercase tracking-wider text-reef-300">{$t.map.diveSites}</h3>
+        <h3 class="mono mb-2 text-xs font-semibold uppercase tracking-wider text-reef-300">
+          {$t.map.diveSites}
+        </h3>
         <ul class="space-y-2 text-sm text-brand-50">
           {#each visibleSites as s (s.id)}
             <li>
-              <a href={diveSitePath(s)} class="font-semibold text-white underline decoration-reef-400/50 underline-offset-2 hover:decoration-reef-300">{s.name}</a>
+              <a
+                href={diveSitePath(s)}
+                class="font-semibold text-white underline decoration-reef-400/50 underline-offset-2 hover:decoration-reef-300"
+                >{s.name}</a
+              >
               {#if s.tagline}<p class="mt-0.5 text-xs text-brand-200">{s.tagline}</p>{/if}
             </li>
           {/each}

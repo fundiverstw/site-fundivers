@@ -52,9 +52,13 @@
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {#each group.sites as s (s.id)}
             {@const img = siteImage(s.id)}
-            <div class="group relative flex aspect-square flex-col justify-end overflow-hidden rounded-3xl border border-white/15 shadow-sm transition-colors hover:border-reef-400/50">
+            <div
+              class="group relative flex aspect-square flex-col justify-end overflow-hidden rounded-3xl border border-white/15 shadow-sm transition-colors hover:border-reef-400/50"
+            >
               <CoverPhoto src={img} alt={s.name} />
-              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"
+              ></div>
               <!-- Stretched link: the whole card opens the dive-site detail page. -->
               <a href={diveSitePath(s)} class="absolute inset-0 z-10" aria-label={s.name}></a>
               <!-- Content sits above the image but lets clicks fall through to the
@@ -63,20 +67,31 @@
                 <div class="flex items-center justify-between gap-2">
                   <h3 class="text-lg font-bold text-white">{s.name}</h3>
                   {#if s.dive_type}
-                    <span class="rounded bg-reef-400/25 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-reef-100">
+                    <span
+                      class="rounded bg-reef-400/25 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-reef-100"
+                    >
                       {s.dive_type}
                     </span>
                   {/if}
                 </div>
-                <p class="mt-1 text-xs font-medium text-sky-300">{REGION_META[s.region]?.label ?? s.region}</p>
+                <p class="mt-1 text-xs font-medium text-sky-300">
+                  {REGION_META[s.region]?.label ?? s.region}
+                </p>
                 {#if s.tagline}
                   <p class="mt-2 line-clamp-2 text-sm text-white/85">{s.tagline}</p>
                 {/if}
                 <div class="mt-3 flex flex-wrap gap-2">
-                  <span class="rounded-full bg-reef-400 px-4 py-1.5 text-xs font-bold text-brand-950 transition-colors group-hover:bg-reef-300">
+                  <span
+                    class="rounded-full bg-reef-400 px-4 py-1.5 text-xs font-bold text-brand-950 transition-colors group-hover:bg-reef-300"
+                  >
                     {$t.common.readMore}
                   </span>
-                  <a href={mapsUrl(s)} target="_blank" rel="noopener" class="pointer-events-auto rounded-full border border-white/40 px-4 py-1.5 text-xs font-bold text-white transition-colors hover:bg-white/15">
+                  <a
+                    href={mapsUrl(s)}
+                    target="_blank"
+                    rel="noopener"
+                    class="pointer-events-auto rounded-full border border-white/40 px-4 py-1.5 text-xs font-bold text-white transition-colors hover:bg-white/15"
+                  >
                     {$t.common.viewOnMap}
                   </a>
                 </div>

@@ -1,7 +1,15 @@
 <script lang="ts">
   import {
-    format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isSameMonth,
-    addMonths, subMonths, startOfWeek, endOfWeek,
+    format,
+    startOfMonth,
+    endOfMonth,
+    eachDayOfInterval,
+    isSameDay,
+    isSameMonth,
+    addMonths,
+    subMonths,
+    startOfWeek,
+    endOfWeek,
   } from 'date-fns'
   import { assignTracks, segmentsForDay, type CellSegment } from '$engine/calendar-layout'
   import { courseColor, diveIsTripOrBoat, type CourseColor } from '$engine/event-colors'
@@ -40,17 +48,27 @@
   const DIVE_TRIP_BAR_HOVER = 'bg-yellow-300 text-blue-950'
   const DIVE_TRIP_DOT = 'bg-yellow-400'
   const COURSE_BAR: Record<CourseColor, string> = {
-    ow: 'bg-blue-600 text-white', aow: 'bg-orange-500 text-white',
-    rescue: 'bg-red-600 text-white', specialty: 'bg-purple-600 text-white',
+    ow: 'bg-blue-600 text-white',
+    aow: 'bg-orange-500 text-white',
+    rescue: 'bg-red-600 text-white',
+    specialty: 'bg-purple-600 text-white',
   }
   const COURSE_BAR_HOVER: Record<CourseColor, string> = {
-    ow: 'bg-blue-500 text-white', aow: 'bg-orange-400 text-white',
-    rescue: 'bg-red-500 text-white', specialty: 'bg-purple-500 text-white',
+    ow: 'bg-blue-500 text-white',
+    aow: 'bg-orange-400 text-white',
+    rescue: 'bg-red-500 text-white',
+    specialty: 'bg-purple-500 text-white',
   }
   const COURSE_DOT: Record<CourseColor, string> = {
-    ow: 'bg-blue-600', aow: 'bg-orange-500', rescue: 'bg-red-600', specialty: 'bg-purple-600',
+    ow: 'bg-blue-600',
+    aow: 'bg-orange-500',
+    rescue: 'bg-red-600',
+    specialty: 'bg-purple-600',
   }
-  let TYPE_LABELS = $derived<Record<CalEvent['type'], string>>({ dive: $t.common.dive, course: $t.common.course })
+  let TYPE_LABELS = $derived<Record<CalEvent['type'], string>>({
+    dive: $t.common.dive,
+    course: $t.common.course,
+  })
 
   function eventBarClass(ev: CalEvent, hovered: boolean): string {
     if (ev.type === 'dive') {
@@ -67,19 +85,28 @@
   let legendOpen = $state(false)
   let legendEl = $state<HTMLDivElement | null>(null)
 
-  const todayStart = (() => { const d = new Date(); d.setHours(0, 0, 0, 0); return d })()
+  // Computed once at load and never changed. A reactive SvelteDate would buy nothing.
+  const todayStart = (() => {
+    // eslint-disable-next-line svelte/prefer-svelte-reactivity
+    const d = new Date()
+    d.setHours(0, 0, 0, 0)
+    return d
+  })()
 
   let days = $derived(eachDayOfInterval({ start: startOfMonth(month), end: endOfMonth(month) }))
 
   let courseCategories = $derived.by(() => {
+    // Rebuilt from scratch on every recompute, never mutated afterwards.
+    // eslint-disable-next-line svelte/prefer-svelte-reactivity
     const byCat = new Map<string, CourseColor>()
     for (const e of events) {
       if (e.type !== 'course') continue
       const cat = e.course_category ?? e.title
       if (!byCat.has(cat)) byCat.set(cat, courseColor(e.title))
     }
-    return Array.from(byCat, ([category, color]) => ({ category, color }))
-      .sort((a, b) => a.category.localeCompare(b.category))
+    return Array.from(byCat, ([category, color]) => ({ category, color })).sort((a, b) =>
+      a.category.localeCompare(b.category),
+    )
   })
 
   let filteredEvents = $derived(
@@ -117,6 +144,9 @@
   let allCoursesHidden = $derived(courseCategories.length > 0 && visibleCourses === 0)
 
   function toggleCourseCategory(cat: string) {
+    // `hiddenCourses` is $state, but it is *replaced* rather than mutated, which is
+    // what makes the template update. A SvelteSet is only needed to mutate in place.
+    // eslint-disable-next-line svelte/prefer-svelte-reactivity
     const next = new Set(hiddenCourses)
     if (next.has(cat)) next.delete(cat)
     else next.add(cat)
@@ -165,7 +195,9 @@
       aria-pressed={diveShown}
       aria-label="Toggle dives"
       class={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 transition-colors ${
-        diveShown ? 'border-white bg-white text-blue-900' : 'border-white/30 bg-white/10 font-medium text-white/70 line-through'
+        diveShown
+          ? 'border-white bg-white text-blue-900'
+          : 'border-white/30 bg-white/10 font-medium text-white/70 line-through'
       }`}
     >
       <span class="flex h-2 w-2 overflow-hidden rounded-full" aria-hidden="true">
@@ -183,7 +215,9 @@
         aria-haspopup="menu"
         aria-label="Filter courses"
         class={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 transition-colors ${
-          allCoursesHidden ? 'border-white/30 bg-white/10 font-medium text-white/70 line-through' : 'border-white bg-white text-blue-900'
+          allCoursesHidden
+            ? 'border-white/30 bg-white/10 font-medium text-white/70 line-through'
+            : 'border-white bg-white text-blue-900'
         }`}
       >
         <span class="flex h-2 w-2 overflow-hidden rounded-full" aria-hidden="true">
@@ -194,18 +228,25 @@
         </span>
         {$t.calendar.courses}
         {#if hiddenCourses.size > 0 && !allCoursesHidden}
-          <span class="ml-0.5 text-[10px] font-medium text-blue-900">({visibleCourses}/{courseCategories.length})</span>
+          <span class="ml-0.5 text-[10px] font-medium text-blue-900"
+            >({visibleCourses}/{courseCategories.length})</span
+          >
         {/if}
         <span aria-hidden="true">▾</span>
       </button>
 
       {#if legendOpen}
-        <div role="menu" class="absolute left-0 top-full z-20 mt-1 min-w-[180px] space-y-1 rounded-lg border border-red-500 bg-white p-2 shadow-lg">
+        <div
+          role="menu"
+          class="absolute left-0 top-full z-20 mt-1 min-w-[180px] space-y-1 rounded-lg border border-red-500 bg-white p-2 shadow-lg"
+        >
           {#if courseCategories.length === 0}
             <p class="px-2 py-1 text-xs font-medium text-blue-900">No courses in this range.</p>
           {/if}
           {#each courseCategories as { category, color } (category)}
-            <label class="flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 hover:bg-sky-50">
+            <label
+              class="flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 hover:bg-sky-50"
+            >
               <input
                 type="checkbox"
                 checked={!hiddenCourses.has(category)}
@@ -227,23 +268,34 @@
       onclick={() => onMonthChange(subMonths(month, 1))}
       aria-label="Previous month"
       class="flex flex-1 items-center justify-center rounded-xl border border-white/30 bg-white/10 px-4 py-2 text-2xl leading-none text-white transition-colors hover:bg-white/20"
-    >‹</button>
+      >‹</button
+    >
     <h2 class="shrink-0 text-lg font-bold text-white">{format(month, 'MMMM yyyy')}</h2>
     <button
       onclick={() => onMonthChange(addMonths(month, 1))}
       aria-label="Next month"
       class="flex flex-1 items-center justify-center rounded-xl border border-white/30 bg-white/10 px-4 py-2 text-2xl leading-none text-white transition-colors hover:bg-white/20"
-    >›</button>
+      >›</button
+    >
   </div>
 
   <!-- Grid -->
-  <div class="grid grid-cols-7 overflow-hidden rounded-xl border border-sky-200 bg-white/80 text-sm backdrop-blur-md">
+  <div
+    class="grid grid-cols-7 overflow-hidden rounded-xl border border-sky-200 bg-white/80 text-sm backdrop-blur-md"
+  >
     {#each ['S', 'M', 'T', 'W', 'T', 'F', 'S'] as d, i (i)}
-      <div class="border-b border-sky-200 bg-sky-100 py-1 text-center text-xs font-semibold text-blue-900">{d}</div>
+      <div
+        class="border-b border-sky-200 bg-sky-100 py-1 text-center text-xs font-semibold text-blue-900"
+      >
+        {d}
+      </div>
     {/each}
 
     {#each Array(leading) as _, i (i)}
-      <div class="border-b border-sky-200/60 bg-sky-50/50" style={`min-height:${cellMinHeight}px`}></div>
+      <div
+        class="border-b border-sky-200/60 bg-sky-50/50"
+        style={`min-height:${cellMinHeight}px`}
+      ></div>
     {/each}
 
     {#each days as day (day.toISOString())}
@@ -253,7 +305,9 @@
         class={`relative border-b border-sky-200/60 pt-1 ${isToday ? 'bg-red-50' : ''} ${inMonth ? '' : 'opacity-40'}`}
         style={`min-height:${cellMinHeight}px`}
       >
-        <span class={`mx-auto flex h-5 w-5 items-center justify-center text-center text-[10px] ${isToday ? 'font-bold text-red-700' : 'text-blue-900'}`}>
+        <span
+          class={`mx-auto flex h-5 w-5 items-center justify-center text-center text-[10px] ${isToday ? 'font-bold text-red-700' : 'text-blue-900'}`}
+        >
           {format(day, 'd')}
         </span>
         <div class="relative mt-1" style={`height:${eventStripHeight}px`}>
@@ -261,7 +315,10 @@
             {@const disabled = disablePastEvents && isPastEvent(seg.event)}
             <button
               type="button"
-              onclick={(e) => { e.stopPropagation(); pick(seg) }}
+              onclick={(e) => {
+                e.stopPropagation()
+                pick(seg)
+              }}
               onmouseenter={() => (hoveredEventId = seg.event.id)}
               onmouseleave={() => (hoveredEventId = null)}
               aria-disabled={disabled || undefined}
@@ -283,7 +340,9 @@
 
   <!-- This-month list -->
   <div class="space-y-2">
-    <h3 class="text-sm font-semibold uppercase tracking-wider text-white/70">{$t.calendar.thisMonth}</h3>
+    <h3 class="text-sm font-semibold uppercase tracking-wider text-white/70">
+      {$t.calendar.thisMonth}
+    </h3>
     {#if inMonthEvents.length === 0}
       <p class="text-sm font-medium text-white/80">{$t.calendar.noEvents}</p>
     {/if}
@@ -295,14 +354,18 @@
         <div class="flex items-start justify-between gap-2">
           <div>
             <div class="flex items-center gap-2">
-              <span class={`rounded-full px-1.5 py-0.5 text-xs ${eventBarClass(ev, false)}`}>{TYPE_LABELS[ev.type]}</span>
+              <span class={`rounded-full px-1.5 py-0.5 text-xs ${eventBarClass(ev, false)}`}
+                >{TYPE_LABELS[ev.type]}</span
+              >
               <span class="text-sm font-medium text-blue-900">{ev.title}</span>
               {#if ev.featured}<span class="text-xs text-red-600">★</span>{/if}
             </div>
             <p class="mt-1 text-xs font-medium text-blue-900">{formatEventSpan(ev)}</p>
           </div>
           {#if ev.price != null}
-            <span class="shrink-0 text-xs font-semibold text-blue-900">from NT${ev.price.toLocaleString('en-US')}</span>
+            <span class="shrink-0 text-xs font-semibold text-blue-900"
+              >from NT${ev.price.toLocaleString('en-US')}</span
+            >
           {/if}
         </div>
       </button>

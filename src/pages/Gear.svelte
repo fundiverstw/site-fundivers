@@ -7,9 +7,27 @@
   // ($t.gear.*) so it tracks the chosen locale; each block reads its title,
   // blurb and bullet list by key. `icon` and accent are structural only.
   let pillars = $derived([
-    { icon: '🛒', accent: 'reef', title: $t.gear.salesTitle, text: $t.gear.salesText, items: $t.gear.salesItems },
-    { icon: '🔧', accent: 'mauve', title: $t.gear.serviceTitle, text: $t.gear.serviceText, items: $t.gear.serviceItems },
-    { icon: '🤿', accent: 'sky', title: $t.gear.rentalTitle, text: $t.gear.rentalText, items: $t.gear.rentalItems },
+    {
+      icon: '🛒',
+      accent: 'reef',
+      title: $t.gear.salesTitle,
+      text: $t.gear.salesText,
+      items: $t.gear.salesItems,
+    },
+    {
+      icon: '🔧',
+      accent: 'mauve',
+      title: $t.gear.serviceTitle,
+      text: $t.gear.serviceText,
+      items: $t.gear.serviceItems,
+    },
+    {
+      icon: '🤿',
+      accent: 'sky',
+      title: $t.gear.rentalTitle,
+      text: $t.gear.rentalText,
+      items: $t.gear.rentalItems,
+    },
   ])
 
   const accentDot: Record<string, string> = {

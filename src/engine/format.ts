@@ -15,11 +15,10 @@ export function formatEventSpan(
   const start = parseISO(event.start_time)
   const end = event.end_time ? parseISO(event.end_time) : null
   const singleDay = !end || isSameDay(start, end)
-  const startFmt =
-    ({ long: 'EEEE, MMMM d', short: 'EEE, MMM d', compact: 'MMM d' }[style]) + year
+  const startFmt = { long: 'EEEE, MMMM d', short: 'EEE, MMM d', compact: 'MMM d' }[style] + year
   const timeSuffix = event.start_time_hhmm ? ` · ${event.start_time_hhmm}` : ''
   if (singleDay) return dfFormat(start, startFmt) + timeSuffix
-  const endFmt = ({ long: 'MMMM d', short: 'MMM d', compact: 'MMM d' }[style]) + year
+  const endFmt = { long: 'MMMM d', short: 'MMM d', compact: 'MMM d' }[style] + year
   return `${dfFormat(start, startFmt)}${timeSuffix} → ${dfFormat(end!, endFmt)}`
 }
 

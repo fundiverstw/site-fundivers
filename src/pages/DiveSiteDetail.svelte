@@ -12,7 +12,7 @@
   // /sites/<something> path, so we resolve the id from the current path.
   let id = $derived($path.replace(/^\/sites\//, '').replace(/\/+$/, ''))
   let site = $derived(diveSiteById(id))
-  let guide = $derived(site ? DIVE_SITE_GUIDES[site.id] ?? null : null)
+  let guide = $derived(site ? (DIVE_SITE_GUIDES[site.id] ?? null) : null)
 
   // The shop's own catalog copy for this site (tagline, requirements, photo)
   // lives in travel_destinations. Match by name; the three Badouzi sites carry a
@@ -36,9 +36,11 @@
 
   let heroImg = $derived(site ? siteImage(site.id) : null)
   let tagline = $derived(dest?.tagline ?? site?.tagline ?? null)
-  let regionLabel = $derived(site ? REGION_META[site.region]?.label ?? site.region : '')
+  let regionLabel = $derived(site ? (REGION_META[site.region]?.label ?? site.region) : '')
   let mapsUrl = $derived(
-    site ? `https://www.google.com/maps/search/?api=1&query=${site.latitude},${site.longitude}` : '#',
+    site
+      ? `https://www.google.com/maps/search/?api=1&query=${site.latitude},${site.longitude}`
+      : '#',
   )
   let morePage = $derived.by(() => {
     if (dest?.slug) return `https://www.fundiverstw.com${dest.slug}`
@@ -68,23 +70,40 @@
 {#if !site}
   <section class="mx-auto max-w-2xl px-4 py-24 text-center sm:px-6">
     <p class="glass rounded-2xl p-8 text-brand-100">{$t.siteDetail.notFound}</p>
-    <a href="/sites" class="mt-6 inline-block text-reef-300 hover:text-reef-200">{$t.siteDetail.back}</a>
+    <a href="/sites" class="mt-6 inline-block text-reef-300 hover:text-reef-200"
+      >{$t.siteDetail.back}</a
+    >
   </section>
 {:else}
   <article class="mx-auto max-w-[1100px] px-4 py-8 sm:px-6 sm:py-12">
-    <a href="/sites" class="text-sm font-medium text-reef-300 transition-colors hover:text-reef-200">
+    <a
+      href="/sites"
+      class="text-sm font-medium text-reef-300 transition-colors hover:text-reef-200"
+    >
       {$t.siteDetail.back}
     </a>
 
     <!-- Hero -->
-    <div class="relative mt-4 flex min-h-[16rem] flex-col justify-end overflow-hidden rounded-3xl border border-white/15 sm:min-h-[22rem]">
-      <CoverPhoto src={heroImg} alt={site.name} imgClass="absolute inset-0 h-full w-full object-cover" />
-      <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent"></div>
+    <div
+      class="relative mt-4 flex min-h-[16rem] flex-col justify-end overflow-hidden rounded-3xl border border-white/15 sm:min-h-[22rem]"
+    >
+      <CoverPhoto
+        src={heroImg}
+        alt={site.name}
+        imgClass="absolute inset-0 h-full w-full object-cover"
+      />
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent"
+      ></div>
       <div class="relative z-10 p-6 sm:p-8">
         <div class="flex flex-wrap items-center gap-2">
-          <span class="mono text-xs font-medium uppercase tracking-wide text-sky-300">{regionLabel}</span>
+          <span class="mono text-xs font-medium uppercase tracking-wide text-sky-300"
+            >{regionLabel}</span
+          >
           {#if site.dive_type}
-            <span class="rounded bg-reef-400/25 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-reef-100">
+            <span
+              class="rounded bg-reef-400/25 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-reef-100"
+            >
               {site.dive_type}
             </span>
           {/if}
@@ -136,7 +155,10 @@
           {#if guide?.marineLife?.length}
             <div class="mt-4 flex flex-wrap gap-2">
               {#each guide.marineLife as m}
-                <span class="rounded-full border border-reef-400/40 bg-reef-400/10 px-3 py-1 text-sm text-reef-100">{m}</span>
+                <span
+                  class="rounded-full border border-reef-400/40 bg-reef-400/10 px-3 py-1 text-sm text-reef-100"
+                  >{m}</span
+                >
               {/each}
             </div>
           {/if}
@@ -158,7 +180,12 @@
               <p class="leading-relaxed">{p}</p>
             {/each}
           </div>
-          <a href={mapsUrl} target="_blank" rel="noopener" class="mt-3 inline-block text-sm font-semibold text-reef-300 transition-colors hover:text-reef-200">
+          <a
+            href={mapsUrl}
+            target="_blank"
+            rel="noopener"
+            class="mt-3 inline-block text-sm font-semibold text-reef-300 transition-colors hover:text-reef-200"
+          >
             {$t.siteDetail.directions} →
           </a>
         {/if}
@@ -167,7 +194,9 @@
       <!-- Sidebar -->
       <aside class="lg:sticky lg:top-6 lg:self-start">
         <div class="glass rounded-2xl p-5">
-          <h2 class="text-sm font-semibold uppercase tracking-wide text-white">{$t.siteDetail.quickFacts}</h2>
+          <h2 class="text-sm font-semibold uppercase tracking-wide text-white">
+            {$t.siteDetail.quickFacts}
+          </h2>
           <dl class="mt-3 space-y-2.5 text-sm">
             {#each facts as f}
               <div class="flex items-start justify-between gap-3">
@@ -185,11 +214,21 @@
           {/if}
 
           <div class="mt-5 flex flex-col gap-2">
-            <a href={mapsUrl} target="_blank" rel="noopener" class="rounded-full border border-white/40 px-4 py-2 text-center text-sm font-bold text-white transition-colors hover:bg-white/15">
+            <a
+              href={mapsUrl}
+              target="_blank"
+              rel="noopener"
+              class="rounded-full border border-white/40 px-4 py-2 text-center text-sm font-bold text-white transition-colors hover:bg-white/15"
+            >
               {$t.siteDetail.directions}
             </a>
             {#if morePage}
-              <a href={morePage} target="_blank" rel="noopener" class="rounded-full border border-white/25 px-4 py-2 text-center text-sm font-medium text-brand-100 transition-colors hover:bg-white/10">
+              <a
+                href={morePage}
+                target="_blank"
+                rel="noopener"
+                class="rounded-full border border-white/25 px-4 py-2 text-center text-sm font-medium text-brand-100 transition-colors hover:bg-white/10"
+              >
                 {$t.siteDetail.morePage}
               </a>
             {/if}
@@ -199,16 +238,24 @@
     </div>
 
     <!-- CTA -->
-    <div class="glow-teal mt-10 flex flex-col items-start gap-4 rounded-3xl border border-reef-400/30 bg-reef-400/5 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+    <div
+      class="glow-teal mt-10 flex flex-col items-start gap-4 rounded-3xl border border-reef-400/30 bg-reef-400/5 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8"
+    >
       <div>
         <h2 class="text-xl font-bold text-white">{$t.siteDetail.cta}</h2>
         <p class="mt-1 text-sm text-brand-100">{$t.siteDetail.ctaText}</p>
       </div>
       <div class="flex flex-wrap gap-2">
-        <a href="/calendar" class="rounded-full bg-reef-400 px-5 py-2 text-sm font-bold text-brand-950 transition-colors hover:bg-reef-300">
+        <a
+          href="/calendar"
+          class="rounded-full bg-reef-400 px-5 py-2 text-sm font-bold text-brand-950 transition-colors hover:bg-reef-300"
+        >
           {$t.siteDetail.seeCalendar}
         </a>
-        <a href="#contact" class="rounded-full border border-white/40 px-5 py-2 text-sm font-bold text-white transition-colors hover:bg-white/15">
+        <a
+          href="#contact"
+          class="rounded-full border border-white/40 px-5 py-2 text-sm font-bold text-white transition-colors hover:bg-white/15"
+        >
           {$t.siteDetail.contact}
         </a>
       </div>

@@ -34,14 +34,18 @@
     const reduce =
       typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduce) {
-      tx = -14; ty = 0 // just sit out, no motion
-      return () => { if (adTimer) clearInterval(adTimer) }
+      tx = -14
+      ty = 0 // just sit out, no motion
+      return () => {
+        if (adTimer) clearInterval(adTimer)
+      }
     }
 
     let wigs = 0
     function retreat() {
       wiggle = ''
-      tx = HIDDEN_X; ty = HIDDEN_Y
+      tx = HIDDEN_X
+      ty = HIDDEN_Y
       after(45000 + Math.random() * 45000, peek) // next peek after 45–90s
     }
     function doWiggle() {
@@ -53,7 +57,8 @@
       after(360, doWiggle)
     }
     function peek() {
-      tx = -12; ty = 0
+      tx = -12
+      ty = 0
       wigs = 0
       after(550, doWiggle)
     }

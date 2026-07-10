@@ -14,7 +14,12 @@
   <path d="M63 86 C61 104 61 116 61 124" stroke="#ff8a5b" stroke-width="8" stroke-linecap="round" />
   <path d="M77 86 C79 104 79 116 79 124" stroke="#ff8a5b" stroke-width="8" stroke-linecap="round" />
   <path d="M88 84 C94 102 90 114 84 122" stroke="#ff8a5b" stroke-width="8" stroke-linecap="round" />
-  <path d="M98 78 C114 92 116 108 108 120" stroke="#ff8a5b" stroke-width="8" stroke-linecap="round" />
+  <path
+    d="M98 78 C114 92 116 108 108 120"
+    stroke="#ff8a5b"
+    stroke-width="8"
+    stroke-linecap="round"
+  />
   <!-- head / body -->
   <ellipse cx="70" cy="56" rx="40" ry="34" fill="#ff8a5b" />
   <ellipse cx="70" cy="64" rx="24" ry="17" fill="#ffb38f" opacity="0.55" />

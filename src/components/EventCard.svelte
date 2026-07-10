@@ -17,18 +17,29 @@
   )
 </script>
 
-<div class="group relative aspect-square overflow-hidden rounded-3xl border border-white/15 bg-brand-900 shadow-sm transition-transform hover:-translate-y-0.5">
+<div
+  class="group relative aspect-square overflow-hidden rounded-3xl border border-white/15 bg-brand-900 shadow-sm transition-transform hover:-translate-y-0.5"
+>
   <CoverPhoto src={ev.image} />
   <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
 
   <div class="absolute inset-x-0 bottom-0 z-10 flex flex-col gap-1 p-4">
     <div class="flex flex-wrap items-center gap-2">
-      <span class={`rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide ${pill}`}>{$t.common[ev.type]}</span>
-      {#if ev.featured}<span class="text-[11px] font-semibold text-reef-200">★ {$t.common.featured}</span>{/if}
-      {#if ev.fullyBooked}<span class="rounded bg-amber-400/25 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-200">{$t.common.waitlist}</span>{/if}
+      <span class={`rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide ${pill}`}
+        >{$t.common[ev.type]}</span
+      >
+      {#if ev.featured}<span class="text-[11px] font-semibold text-reef-200"
+          >★ {$t.common.featured}</span
+        >{/if}
+      {#if ev.fullyBooked}<span
+          class="rounded bg-amber-400/25 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-200"
+          >{$t.common.waitlist}</span
+        >{/if}
     </div>
     <h3 class="line-clamp-2 text-lg font-bold leading-tight text-white">{ev.title}</h3>
-    <p class="text-sm font-semibold text-sky-300">{formatSpan(ev.startDate, ev.endDate, ev.time)}</p>
+    <p class="text-sm font-semibold text-sky-300">
+      {formatSpan(ev.startDate, ev.endDate, ev.time)}
+    </p>
     {#if ev.description}
       <p class="line-clamp-2 text-xs text-white/80">{ev.description}</p>
     {/if}

@@ -10,7 +10,10 @@ function slug(seg: string): string {
 /** Media id segment from a `wix:image://v1/<seg>/<filename>#…` ref. */
 export function wixMediaId(ref: string | null | undefined): string | null {
   if (!ref || !ref.startsWith('wix:image://')) return null
-  const seg = ref.replace(/^wix:image:\/\/v1\//, '').split('#')[0].split('/')[0]
+  const seg = ref
+    .replace(/^wix:image:\/\/v1\//, '')
+    .split('#')[0]
+    .split('/')[0]
   return seg ? slug(seg) : null
 }
 

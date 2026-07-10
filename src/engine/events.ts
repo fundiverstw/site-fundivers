@@ -68,10 +68,7 @@ function toHhmm(raw: string | null | undefined): string | null {
 async function fetchPrices(ids: Array<string | null>): Promise<Map<string, number | null>> {
   const priceIds = [...new Set(ids.filter((x): x is string => !!x))]
   if (!priceIds.length) return new Map()
-  const { data } = await supabase
-    .from('prices')
-    .select('id, starting_at')
-    .in('id', priceIds)
+  const { data } = await supabase.from('prices').select('id, starting_at').in('id', priceIds)
   return new Map((data ?? []).map((p: PriceRow) => [p.id, p.starting_at]))
 }
 
@@ -86,7 +83,9 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
   const [divesResp, coursesResp] = await Promise.all([
     supabase
       .from('events')
-      .select('id, display_title, admin_title, start_date, end_date, start_time, price, fully_booked, featured, notes')
+      .select(
+        'id, display_title, admin_title, start_date, end_date, start_time, price, fully_booked, featured, notes',
+      )
       .eq('kind', 'dive')
       .is('cancelled_at', null)
       .eq('is_private', false)
@@ -94,7 +93,9 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
       .order('start_date'),
     supabase
       .from('events')
-      .select('id, display_title, admin_title, start_time, price, course_days, fully_booked, schedule')
+      .select(
+        'id, display_title, admin_title, start_time, price, course_days, fully_booked, schedule',
+      )
       .eq('kind', 'course')
       .is('cancelled_at', null),
   ])
@@ -102,10 +103,7 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
   const dives = (divesResp.data ?? []) as DiveRow[]
   const courses = (coursesResp.data ?? []) as CourseRow[]
 
-  const prices = await fetchPrices([
-    ...dives.map((d) => d.price),
-    ...courses.map((c) => c.price),
-  ])
+  const prices = await fetchPrices([...dives.map((d) => d.price), ...courses.map((c) => c.price)])
 
   const events: UpcomingEvent[] = []
 
@@ -119,7 +117,7 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
       startDate: d.start_date,
       endDate: d.end_date,
       time: toHhmm(d.start_time),
-      startingAt: d.price ? prices.get(d.price) ?? null : null,
+      startingAt: d.price ? (prices.get(d.price) ?? null) : null,
       fullyBooked: d.fully_booked ?? false,
       featured: d.featured ?? false,
       description: d.notes && d.notes.trim() ? d.notes.trim() : null,
@@ -143,11 +141,15 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
       startDate: future[0],
       endDate: future[future.length - 1] !== future[0] ? future[future.length - 1] : null,
       time: toHhmm(c.start_time),
-      startingAt: c.price ? prices.get(c.price) ?? null : null,
+      startingAt: c.price ? (prices.get(c.price) ?? null) : null,
       fullyBooked: c.fully_booked ?? false,
       featured: false,
       description: c.schedule && c.schedule.trim() ? c.schedule.trim() : null,
-      image: eventImage({ id: c.id, type: 'course', title: c.display_title || c.admin_title || '' }),
+      image: eventImage({
+        id: c.id,
+        type: 'course',
+        title: c.display_title || c.admin_title || '',
+      }),
     })
   }
 
@@ -172,7 +174,10 @@ export async function fetchUpcomingTripTitles(): Promise<string[]> {
     .eq('is_private', false)
     .gte('start_date', today)
   return (data ?? [])
-    .map((r: { display_title: string | null; admin_title: string | null }) => r.display_title || r.admin_title || '')
+    .map(
+      (r: { display_title: string | null; admin_title: string | null }) =>
+        r.display_title || r.admin_title || '',
+    )
     .filter((s) => s.length > 0)
 }
 
@@ -295,7 +300,7 @@ function diveToCalEvent(d: DiveRow2, prices: Map<string, number | null>): CalEve
     end_time: toIso(d.end_date, d.start_time),
     start_time_hhmm: toHhmm(d.start_time),
     featured: d.featured ?? false,
-    price: d.price ? prices.get(d.price) ?? null : null,
+    price: d.price ? (prices.get(d.price) ?? null) : null,
     currency: 'TWD',
     dive_outing: d.is_trip || d.is_boat_dive ? 'trip' : null,
     fully_booked: d.fully_booked ?? false,
@@ -314,7 +319,7 @@ function courseToCalEvents(c: CourseRow2, prices: Map<string, number | null>): C
     course_category: c.admin_title ?? null,
     start_time_hhmm: toHhmm(c.start_time),
     featured: false,
-    price: c.price ? prices.get(c.price) ?? null : null,
+    price: c.price ? (prices.get(c.price) ?? null) : null,
     currency: 'TWD' as const,
     dive_outing: null,
     fully_booked: c.fully_booked ?? false,
@@ -360,9 +365,7 @@ export async function fetchEventsInRange(fromDate: string, toDate: string): Prom
   const prices = await fetchPrices([...dives.map((d) => d.price), ...courses.map((c) => c.price)])
 
   return [
-    ...dives
-      .map((d) => diveToCalEvent(d, prices))
-      .filter((x): x is CalEvent => !!x),
+    ...dives.map((d) => diveToCalEvent(d, prices)).filter((x): x is CalEvent => !!x),
     ...courses.flatMap((c) => courseToCalEvents(c, prices)),
   ].sort((a, b) => a.start_time.localeCompare(b.start_time))
 }
@@ -402,8 +405,14 @@ function cleanText(s: string | null | undefined): string | null {
 
 function nonEmptyDetails(d: EventDetails): EventDetails | null {
   const has =
-    d.description || d.included || d.not_included || d.schedule ||
-    d.transportation || d.prerequisites || d.required_cert || d.required_dives != null
+    d.description ||
+    d.included ||
+    d.not_included ||
+    d.schedule ||
+    d.transportation ||
+    d.prerequisites ||
+    d.required_cert ||
+    d.required_dives != null
   return has ? d : null
 }
 
@@ -414,7 +423,9 @@ async function certName(id: string | null | undefined): Promise<string | null> {
 }
 
 /** Descriptive copy for a single event, or null when it has none. */
-export async function fetchEventDetails(ev: Pick<CalEvent, 'id' | 'type'>): Promise<EventDetails | null> {
+export async function fetchEventDetails(
+  ev: Pick<CalEvent, 'id' | 'type'>,
+): Promise<EventDetails | null> {
   const { data } = await supabase
     .from('events')
     .select('notes, included, schedule, prereqs, req_dives, prereq_cert_id')

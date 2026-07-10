@@ -15,7 +15,9 @@
   ])
 
   let hasPrereqs = $derived(
-    Boolean(details.required_cert) || details.required_dives != null || Boolean(details.prerequisites),
+    Boolean(details.required_cert) ||
+      details.required_dives != null ||
+      Boolean(details.prerequisites),
   )
 </script>
 
@@ -32,9 +34,17 @@
   {#if hasPrereqs}
     <section>
       <h3 class="font-semibold text-blue-950">{$t.calendar.details.prerequisites}</h3>
-      {#if details.required_cert}<p class="text-blue-900/90">{$t.calendar.details.minCert} {details.required_cert}</p>{/if}
-      {#if details.required_dives != null}<p class="text-blue-900/90">{$t.calendar.details.loggedDives} {details.required_dives}+</p>{/if}
-      {#if details.prerequisites}<p class="whitespace-pre-line text-blue-900/90">{details.prerequisites}</p>{/if}
+      {#if details.required_cert}<p class="text-blue-900/90">
+          {$t.calendar.details.minCert}
+          {details.required_cert}
+        </p>{/if}
+      {#if details.required_dives != null}<p class="text-blue-900/90">
+          {$t.calendar.details.loggedDives}
+          {details.required_dives}+
+        </p>{/if}
+      {#if details.prerequisites}<p class="whitespace-pre-line text-blue-900/90">
+          {details.prerequisites}
+        </p>{/if}
     </section>
   {/if}
 </div>

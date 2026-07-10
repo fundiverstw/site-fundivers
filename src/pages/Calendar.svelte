@@ -49,7 +49,9 @@
 
 <section class="mx-auto max-w-5xl px-4 py-12 sm:px-6">
   {#if error}
-    <p class="mb-4 rounded-lg bg-red-500/15 p-4 text-sm text-red-200">{$t.calendar.loadError}: {error}</p>
+    <p class="mb-4 rounded-lg bg-red-500/15 p-4 text-sm text-red-200">
+      {$t.calendar.loadError}: {error}
+    </p>
   {/if}
   {#if loading && events.length === 0}
     <div class="h-96 animate-pulse rounded-xl bg-white/10"></div>

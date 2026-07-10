@@ -12,7 +12,7 @@
   // Route param: /courses/<id>.
   let id = $derived($path.replace(/^\/courses\//, '').replace(/\/+$/, ''))
   let course = $derived(courseByRouteId(id))
-  let guide = $derived(course ? COURSE_GUIDES[courseId(course.slug)] ?? null : null)
+  let guide = $derived(course ? (COURSE_GUIDES[courseId(course.slug)] ?? null) : null)
 
   // Live upcoming sessions for THIS course, matched by category code.
   let sessions = $state<UpcomingEvent[]>([])
@@ -20,7 +20,12 @@
     const g = guide
     if (!g) return void (sessions = [])
     fetchUpcomingEvents()
-      .then((all) => (sessions = all.filter((e) => e.type === 'course' && sessionMatchesCourse(g, e.category))))
+      .then(
+        (all) =>
+          (sessions = all.filter(
+            (e) => e.type === 'course' && sessionMatchesCourse(g, e.category),
+          )),
+      )
       .catch(() => (sessions = []))
   })
 
@@ -30,7 +35,8 @@
 
   let facts = $derived.by(() => {
     const rows: Array<{ label: string; value: string }> = []
-    if (guide?.prerequisites) rows.push({ label: $t.courseDetail.prerequisites, value: guide.prerequisites })
+    if (guide?.prerequisites)
+      rows.push({ label: $t.courseDetail.prerequisites, value: guide.prerequisites })
     if (guide?.minAge) rows.push({ label: $t.courseDetail.minAge, value: guide.minAge })
     if (guide?.duration) rows.push({ label: $t.courseDetail.duration, value: guide.duration })
     if (guide?.depth) rows.push({ label: $t.courseDetail.depth, value: guide.depth })
@@ -50,18 +56,31 @@
 {#if !course}
   <section class="mx-auto max-w-2xl px-4 py-24 text-center sm:px-6">
     <p class="glass rounded-2xl p-8 text-brand-100">{$t.courseDetail.notFound}</p>
-    <a href="/courses" class="mt-6 inline-block text-reef-300 hover:text-reef-200">{$t.courseDetail.back}</a>
+    <a href="/courses" class="mt-6 inline-block text-reef-300 hover:text-reef-200"
+      >{$t.courseDetail.back}</a
+    >
   </section>
 {:else}
   <article class="mx-auto max-w-[1100px] px-4 py-8 sm:px-6 sm:py-12">
-    <a href="/courses" class="text-sm font-medium text-reef-300 transition-colors hover:text-reef-200">
+    <a
+      href="/courses"
+      class="text-sm font-medium text-reef-300 transition-colors hover:text-reef-200"
+    >
       {$t.courseDetail.back}
     </a>
 
     <!-- Hero -->
-    <div class="relative mt-4 flex min-h-[16rem] flex-col justify-end overflow-hidden rounded-3xl border border-white/15 sm:min-h-[22rem]">
-      <img src={course.image} alt={course.title} class="absolute inset-0 h-full w-full object-cover" />
-      <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent"></div>
+    <div
+      class="relative mt-4 flex min-h-[16rem] flex-col justify-end overflow-hidden rounded-3xl border border-white/15 sm:min-h-[22rem]"
+    >
+      <img
+        src={course.image}
+        alt={course.title}
+        class="absolute inset-0 h-full w-full object-cover"
+      />
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent"
+      ></div>
       <div class="relative z-10 p-6 sm:p-8">
         <h1 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">{course.title}</h1>
         <p class="mt-2 max-w-2xl text-sm text-white/90 sm:text-base">{course.desc}</p>
@@ -98,7 +117,9 @@
               {@const price = twd(ev.startingAt)}
               <li class="glass flex items-center justify-between gap-4 rounded-xl p-4">
                 <div class="min-w-0">
-                  <p class="text-sm font-medium text-brand-200">{formatSpan(ev.startDate, ev.endDate, ev.time)}</p>
+                  <p class="text-sm font-medium text-brand-200">
+                    {formatSpan(ev.startDate, ev.endDate, ev.time)}
+                  </p>
                 </div>
                 <div class="flex shrink-0 items-center gap-3">
                   {#if price}<span class="text-sm font-semibold text-white">from {price}</span>{/if}
@@ -120,7 +141,9 @@
       <!-- Sidebar -->
       <aside class="lg:sticky lg:top-6 lg:self-start">
         <div class="glass rounded-2xl p-5">
-          <h2 class="text-sm font-semibold uppercase tracking-wide text-white">{$t.courseDetail.quickFacts}</h2>
+          <h2 class="text-sm font-semibold uppercase tracking-wide text-white">
+            {$t.courseDetail.quickFacts}
+          </h2>
           <dl class="mt-3 space-y-2.5 text-sm">
             {#each facts as f}
               <div class="flex flex-col gap-0.5">
@@ -150,8 +173,15 @@
             href={coursePath(nc)}
             class="group relative flex min-h-[9rem] flex-col justify-end overflow-hidden rounded-2xl border border-white/15 transition-colors hover:border-reef-400/50"
           >
-            <img src={nc.image} alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+            <img
+              src={nc.image}
+              alt=""
+              loading="lazy"
+              class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"
+            ></div>
             <div class="relative z-10 p-4">
               <h3 class="font-bold text-white">{nc.title}</h3>
             </div>
@@ -161,16 +191,24 @@
     {/if}
 
     <!-- CTA -->
-    <div class="glow-teal mt-10 flex flex-col items-start gap-4 rounded-3xl border border-reef-400/30 bg-reef-400/5 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+    <div
+      class="glow-teal mt-10 flex flex-col items-start gap-4 rounded-3xl border border-reef-400/30 bg-reef-400/5 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8"
+    >
       <div>
         <h2 class="text-xl font-bold text-white">{$t.courseDetail.cta}</h2>
         <p class="mt-1 text-sm text-brand-100">{$t.courseDetail.ctaText}</p>
       </div>
       <div class="flex flex-wrap gap-2">
-        <a href="/calendar" class="rounded-full bg-reef-400 px-5 py-2 text-sm font-bold text-brand-950 transition-colors hover:bg-reef-300">
+        <a
+          href="/calendar"
+          class="rounded-full bg-reef-400 px-5 py-2 text-sm font-bold text-brand-950 transition-colors hover:bg-reef-300"
+        >
           {$t.siteDetail.seeCalendar}
         </a>
-        <a href="#contact" class="rounded-full border border-white/40 px-5 py-2 text-sm font-bold text-white transition-colors hover:bg-white/15">
+        <a
+          href="#contact"
+          class="rounded-full border border-white/40 px-5 py-2 text-sm font-bold text-white transition-colors hover:bg-white/15"
+        >
           {$t.courseDetail.contact}
         </a>
       </div>

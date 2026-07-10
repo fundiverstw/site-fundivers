@@ -46,16 +46,22 @@
           alt="FunDive — dive shop management software"
           class="h-20 w-auto max-w-full opacity-90 transition-opacity group-hover:opacity-100 sm:h-28"
         />
-        <span class="max-w-md text-xs leading-relaxed text-brand-300 transition-colors group-hover:text-brand-100 sm:text-sm">
+        <span
+          class="max-w-md text-xs leading-relaxed text-brand-300 transition-colors group-hover:text-brand-100 sm:text-sm"
+        >
           {$t.footer.openSourceBlurb}
-          <span class="whitespace-nowrap font-semibold text-reef-300 group-hover:text-reef-200">GitHub&nbsp;↗</span>
+          <span class="whitespace-nowrap font-semibold text-reef-300 group-hover:text-reef-200"
+            >GitHub&nbsp;↗</span
+          >
         </span>
       </a>
     </div>
   </div>
 
   <div class="border-t border-white/10">
-    <div class="mx-auto flex max-w-[1600px] flex-col gap-1 px-4 py-4 text-xs text-brand-300 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+    <div
+      class="mx-auto flex max-w-[1600px] flex-col gap-1 px-4 py-4 text-xs text-brand-300 sm:flex-row sm:items-center sm:justify-between sm:px-6"
+    >
       <span>© {year} {$t.footer.rights}</span>
       <span>{$t.footer.proudly}</span>
     </div>

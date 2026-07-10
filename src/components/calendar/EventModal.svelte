@@ -8,8 +8,14 @@
   // the event's descriptive text on open and links Register to the booking app.
   let { event, onClose }: { event: ModalEvent | null; onClose: () => void } = $props()
 
-  const TYPE_DOT: Record<ModalEvent['type'], string> = { dive: 'bg-emerald-600', course: 'bg-sky-500' }
-  let TYPE_LABELS = $derived<Record<ModalEvent['type'], string>>({ dive: $t.common.dive, course: $t.common.course })
+  const TYPE_DOT: Record<ModalEvent['type'], string> = {
+    dive: 'bg-emerald-600',
+    course: 'bg-sky-500',
+  }
+  let TYPE_LABELS = $derived<Record<ModalEvent['type'], string>>({
+    dive: $t.common.dive,
+    course: $t.common.course,
+  })
 
   let details = $state<EventDetails | null>(null)
   let detailsLoading = $state(false)
@@ -20,24 +26,46 @@
     detailsLoading = true
     let cancelled = false
     fetchEventDetails(ev)
-      .then((d) => { if (!cancelled) details = d })
-      .catch(() => { if (!cancelled) details = null })
-      .finally(() => { if (!cancelled) detailsLoading = false })
-    return () => { cancelled = true }
+      .then((d) => {
+        if (!cancelled) details = d
+      })
+      .catch(() => {
+        if (!cancelled) details = null
+      })
+      .finally(() => {
+        if (!cancelled) detailsLoading = false
+      })
+    return () => {
+      cancelled = true
+    }
   })
 </script>
 
-<svelte:window onkeydown={(e) => { if (e.key === 'Escape') onClose() }} />
+<svelte:window
+  onkeydown={(e) => {
+    if (e.key === 'Escape') onClose()
+  }}
+/>
 
 {#if event}
   <div class="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto px-4 pb-4 pt-8">
-    <button class="fixed inset-0 bg-blue-900/60 backdrop-blur-sm" aria-label="Close" onclick={onClose}></button>
-    <div class="relative z-10 w-full max-w-lg space-y-4 rounded-2xl border border-red-500 bg-white/90 p-6 backdrop-blur-md">
+    <button
+      class="fixed inset-0 bg-blue-900/60 backdrop-blur-sm"
+      aria-label="Close"
+      onclick={onClose}
+    ></button>
+    <div
+      class="relative z-10 w-full max-w-lg space-y-4 rounded-2xl border border-red-500 bg-white/90 p-6 backdrop-blur-md"
+    >
       <div class="flex items-center justify-between">
         <span class={`rounded-full px-2 py-1 text-xs text-white ${TYPE_DOT[event.type]}`}>
           {TYPE_LABELS[event.type]}
         </span>
-        <button onclick={onClose} aria-label="Close" class="text-xl leading-none text-blue-900 hover:text-red-600">×</button>
+        <button
+          onclick={onClose}
+          aria-label="Close"
+          class="text-xl leading-none text-blue-900 hover:text-red-600">×</button
+        >
       </div>
       <h2 class="text-xl font-bold text-blue-900">{event.title}</h2>
       <div class="space-y-1 text-sm font-medium text-blue-900">

@@ -32,9 +32,7 @@
 
   function linkClass(href: string): string {
     const base = 'module mono rounded-xl px-4 py-2 text-xl font-semibold lg:text-2xl'
-    return $path === href
-      ? `${base} module-active`
-      : `${base} text-brand-50`
+    return $path === href ? `${base} module-active` : `${base} text-brand-50`
   }
 </script>
 
@@ -51,11 +49,17 @@
       <GlobeIcon size={32} />
     </button>
     {#if langOpen}
-      <div class="glass absolute right-0 top-full z-50 mt-2 min-w-[8rem] rounded-xl p-1 shadow-lg" role="menu">
+      <div
+        class="glass absolute right-0 top-full z-50 mt-2 min-w-[8rem] rounded-xl p-1 shadow-lg"
+        role="menu"
+      >
         {#each LOCALES as l (l.code)}
           <button
             type="button"
-            onclick={() => { setLocale(l.code); langOpen = false }}
+            onclick={() => {
+              setLocale(l.code)
+              langOpen = false
+            }}
             class={`mono block w-full rounded-lg px-3 py-2 text-left text-base font-semibold transition-colors ${$locale === l.code ? 'module-active' : 'text-brand-100 hover:bg-white/10'}`}
           >
             {l.label}
@@ -75,7 +79,11 @@
       <div class="relative shrink-0">
         <NavMascot />
         <a href="/" aria-label="FunDivers TW home" class="group relative z-20 block">
-          <img src="/imgs/fd_logo.png" alt="FunDivers TW" class="h-28 w-auto transition-all duration-300 group-hover:scale-105 group-hover:brightness-110 group-hover:drop-shadow-[0_0_18px_rgba(44,208,197,0.55)] lg:h-36" />
+          <img
+            src="/imgs/fd_logo.png"
+            alt="FunDivers TW"
+            class="h-28 w-auto transition-all duration-300 group-hover:scale-105 group-hover:brightness-110 group-hover:drop-shadow-[0_0_18px_rgba(44,208,197,0.55)] lg:h-36"
+          />
         </a>
       </div>
       <nav class="waybar flex items-center gap-1.5 rounded-2xl px-2 py-1.5 shadow-lg">
@@ -90,7 +98,11 @@
     <!-- Mobile: logo left · globe + menu toggle right -->
     <div class="flex items-center justify-between py-3 md:hidden">
       <a href="/" aria-label="FunDivers TW home" class="group block">
-        <img src="/imgs/fd_logo.png" alt="FunDivers TW" class="h-16 w-auto transition-all duration-300 group-hover:scale-105 group-hover:brightness-110 group-hover:drop-shadow-[0_0_18px_rgba(44,208,197,0.55)]" />
+        <img
+          src="/imgs/fd_logo.png"
+          alt="FunDivers TW"
+          class="h-16 w-auto transition-all duration-300 group-hover:scale-105 group-hover:brightness-110 group-hover:drop-shadow-[0_0_18px_rgba(44,208,197,0.55)]"
+        />
       </a>
       <div class="flex items-center gap-3">
         {@render langSwitch()}

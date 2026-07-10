@@ -22,7 +22,9 @@ export type Destination = {
 export async function fetchDestinations(): Promise<Destination[]> {
   const { data, error } = await supabase
     .from('travel_destinations')
-    .select('id, admin_title, slug, tagline, country, international, divetype, diver_requirements, location_picture, background_picture, sort_order')
+    .select(
+      'id, admin_title, slug, tagline, country, international, divetype, diver_requirements, location_picture, background_picture, sort_order',
+    )
     .order('sort_order')
   if (error) throw error
   return (data ?? []).map((d) => ({

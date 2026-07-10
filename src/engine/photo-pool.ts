@@ -67,7 +67,11 @@ function pick(pool: string[]): string | null {
  * soon" placeholder). Dives resolve to their dive site's photos (else general);
  * courses draw from the course folder.
  */
-export function eventImage(ev: { id: string; type: 'dive' | 'course'; title: string }): string | null {
+export function eventImage(ev: {
+  id: string
+  type: 'dive' | 'course'
+  title: string
+}): string | null {
   const cached = assigned.get(ev.id)
   if (cached) return cached
 

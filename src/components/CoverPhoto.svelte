@@ -23,8 +23,20 @@
 {#if src && !failed}
   <img {src} {alt} loading="lazy" onerror={() => (failed = true)} class={imgClass} />
 {:else}
-  <div class="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-gradient-to-br from-brand-800 via-brand-900 to-brand-950 text-brand-400/80">
-    <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <div
+    class="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-gradient-to-br from-brand-800 via-brand-900 to-brand-950 text-brand-400/80"
+  >
+    <svg
+      width="38"
+      height="38"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
       <rect x="3" y="3" width="18" height="18" rx="2" />
       <circle cx="8.5" cy="8.5" r="1.6" />
       <path d="M21 15l-5-5L5 21" />

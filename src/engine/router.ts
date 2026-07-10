@@ -30,7 +30,14 @@ export function handleLinkClick(event: MouseEvent): void {
   if (!anchor) return
   const href = anchor.getAttribute('href')
   const target = anchor.getAttribute('target')
-  if (!href || href.startsWith('http') || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return
+  if (
+    !href ||
+    href.startsWith('http') ||
+    href.startsWith('#') ||
+    href.startsWith('mailto:') ||
+    href.startsWith('tel:')
+  )
+    return
   if (target === '_blank') return
   event.preventDefault()
   navigate(href)

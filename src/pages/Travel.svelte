@@ -53,11 +53,15 @@
   // are currently scheduled, fall back to all trip spots so the section is never
   // empty. Each card links to its dive-site page.
   let domestic = $derived.by<Card[]>(() => {
-    const scheduled = TRIP_LOCATIONS.filter((loc) => tripTitles.some((title) => loc.match.test(title)))
+    const scheduled = TRIP_LOCATIONS.filter((loc) =>
+      tripTitles.some((title) => loc.match.test(title)),
+    )
     const chosen = scheduled.length ? scheduled : TRIP_LOCATIONS
     return chosen.flatMap((loc) => {
       const dest = all.find((d) => d.title === loc.title)
-      return dest ? [{ ...dest, image: siteImage(loc.siteId), href: `/sites/${loc.siteId}`, internal: true }] : []
+      return dest
+        ? [{ ...dest, image: siteImage(loc.siteId), href: `/sites/${loc.siteId}`, internal: true }]
+        : []
     })
   })
 
@@ -70,7 +74,8 @@
       .filter((d) => d.international)
       .map((d) => {
         const site = siteByName.get(d.title.toLowerCase())
-        if (site) return { ...d, image: siteImage(site.id), href: `/sites/${site.id}`, internal: true }
+        if (site)
+          return { ...d, image: siteImage(site.id), href: `/sites/${site.id}`, internal: true }
         return {
           ...d,
           image: d.image ?? fallbackImage(d.id),
@@ -97,9 +102,13 @@
       <h2 class="mb-5 text-2xl font-bold text-white">{title}</h2>
       <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {#each items as d (d.id)}
-          <div class="group relative flex aspect-square flex-col justify-end overflow-hidden rounded-3xl border border-white/15 shadow-sm transition-colors hover:border-reef-400/50">
+          <div
+            class="group relative flex aspect-square flex-col justify-end overflow-hidden rounded-3xl border border-white/15 shadow-sm transition-colors hover:border-reef-400/50"
+          >
             <CoverPhoto src={d.image} alt={d.title} />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"
+            ></div>
             <!-- Whole card is the link: in-Taiwan spots go to the dive-site page
                  (internal), international tours open fundiverstw.com. -->
             {#if d.href}
@@ -113,10 +122,14 @@
             {/if}
             <div class="pointer-events-none relative z-20 p-5">
               <h3 class="text-lg font-bold text-white">{d.title}</h3>
-              {#if d.country}<p class="text-xs font-semibold uppercase tracking-wide text-sky-300">{d.country}</p>{/if}
+              {#if d.country}<p class="text-xs font-semibold uppercase tracking-wide text-sky-300">
+                  {d.country}
+                </p>{/if}
               {#if d.tagline}<p class="mt-1 line-clamp-2 text-sm text-white/85">{d.tagline}</p>{/if}
               {#if d.href}
-                <span class="mt-3 inline-block rounded-full bg-reef-400 px-4 py-1.5 text-xs font-bold text-brand-950 transition-colors group-hover:bg-reef-300">
+                <span
+                  class="mt-3 inline-block rounded-full bg-reef-400 px-4 py-1.5 text-xs font-bold text-brand-950 transition-colors group-hover:bg-reef-300"
+                >
                   {d.internal ? $t.common.details : $t.common.readMore}
                 </span>
               {/if}
@@ -131,7 +144,9 @@
 <section class="mx-auto max-w-[1600px] px-4 py-12 sm:px-6 sm:py-16">
   {#if loading}
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {#each Array(6) as _, i (i)}<div class="aspect-square animate-pulse rounded-3xl bg-white/10"></div>{/each}
+      {#each Array(6) as _, i (i)}<div
+          class="aspect-square animate-pulse rounded-3xl bg-white/10"
+        ></div>{/each}
     </div>
   {:else if error}
     <p class="rounded-lg bg-red-500/15 p-4 text-sm text-red-200">{$t.travel.loadError}: {error}</p>
@@ -139,7 +154,10 @@
     {#if sections.length}
       <div class="mb-8 flex flex-wrap gap-3">
         {#each sections as s (s.id)}
-          <a href={`#${s.id}`} class="waybar mono rounded-full px-5 py-2 text-sm font-semibold text-brand-50 transition-colors hover:text-reef-300">
+          <a
+            href={`#${s.id}`}
+            class="waybar mono rounded-full px-5 py-2 text-sm font-semibold text-brand-50 transition-colors hover:text-reef-300"
+          >
             {s.label}
           </a>
         {/each}
@@ -154,10 +172,16 @@
     <h2 class="text-xl font-bold text-white">{$t.travel.ctaTitle}</h2>
     <p class="mt-2 text-brand-100">{$t.travel.ctaText}</p>
     <div class="mt-4 flex flex-wrap justify-center gap-3">
-      <a href="/calendar" class="rounded-full bg-reef-400 px-6 py-3 font-semibold text-brand-950 transition-colors hover:bg-reef-300">
+      <a
+        href="/calendar"
+        class="rounded-full bg-reef-400 px-6 py-3 font-semibold text-brand-950 transition-colors hover:bg-reef-300"
+      >
         {$t.travel.seeCalendar}
       </a>
-      <a href={`mailto:${CONTACT.email}`} class="rounded-full border border-white/30 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/10">
+      <a
+        href={`mailto:${CONTACT.email}`}
+        class="rounded-full border border-white/30 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/10"
+      >
         {$t.travel.planCustom}
       </a>
     </div>

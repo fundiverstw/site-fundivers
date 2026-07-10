@@ -7,7 +7,14 @@
   // `image` is a self-hosted headshot; `monkey` swaps in a placeholder avatar
   // when there's no photo yet (Eric). `role` is an i18n key; bios stay English
   // (first-pass — long personal copy, refine later).
-  type Member = { name: string; role: 'idc' | 'instructor' | 'divemaster'; bio: string; image?: string; monkey?: boolean; link?: string }
+  type Member = {
+    name: string
+    role: 'idc' | 'instructor' | 'divemaster'
+    bio: string
+    image?: string
+    monkey?: boolean
+    link?: string
+  }
 
   const team: Member[] = [
     {
@@ -56,20 +63,32 @@ Whether underwater or building something on the run.`,
       >
         <div class="flex items-center gap-4">
           {#if m.image}
-            <img src={m.image} alt={m.name} loading="lazy" class="h-16 w-16 shrink-0 rounded-full object-cover ring-2 ring-white/20" />
+            <img
+              src={m.image}
+              alt={m.name}
+              loading="lazy"
+              class="h-16 w-16 shrink-0 rounded-full object-cover ring-2 ring-white/20"
+            />
           {:else if m.monkey}
-            <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-500 to-amber-700 text-3xl ring-2 ring-white/20" title="Placeholder">
+            <div
+              class="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-500 to-amber-700 text-3xl ring-2 ring-white/20"
+              title="Placeholder"
+            >
               🐵
             </div>
           {/if}
           <div>
-            <span class="text-xs font-semibold uppercase tracking-wide text-reef-300">{$t.team.roles[m.role]}</span>
+            <span class="text-xs font-semibold uppercase tracking-wide text-reef-300"
+              >{$t.team.roles[m.role]}</span
+            >
             <h3 class="text-lg font-bold text-white">{m.name}</h3>
           </div>
         </div>
         <p class="mt-4 whitespace-pre-line text-sm leading-relaxed text-brand-100">{m.bio}</p>
         {#if m.link}
-          <span class="mt-3 inline-block text-xs font-semibold text-reef-300 group-hover:text-reef-200">
+          <span
+            class="mt-3 inline-block text-xs font-semibold text-reef-300 group-hover:text-reef-200"
+          >
             {$t.team.visitWebsite}
           </span>
         {/if}
@@ -81,8 +100,12 @@ Whether underwater or building something on the run.`,
     <h2 class="text-xl font-bold text-white">{$t.team.diveWithUs}</h2>
     <p class="mt-2 text-brand-100">{$t.team.diveWithUsText}</p>
     <div class="mt-4 flex flex-wrap justify-center gap-4 text-sm">
-      <a class="font-semibold text-reef-300 hover:text-reef-200" href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
-      <a class="font-semibold text-reef-300 hover:text-reef-200" href={CONTACT.phoneHref}>{CONTACT.phone}</a>
+      <a class="font-semibold text-reef-300 hover:text-reef-200" href={`mailto:${CONTACT.email}`}
+        >{CONTACT.email}</a
+      >
+      <a class="font-semibold text-reef-300 hover:text-reef-200" href={CONTACT.phoneHref}
+        >{CONTACT.phone}</a
+      >
     </div>
   </div>
 </section>

@@ -39,8 +39,12 @@
     return [...feat, ...upcoming.filter((e) => !ids.has(e.id)).slice(0, 3 - feat.length)]
   })
   let featuredIds = $derived(new Set(featured.map((e) => e.id)))
-  let dives = $derived(upcoming.filter((e) => e.type === 'dive' && !featuredIds.has(e.id)).slice(0, 3))
-  let courses = $derived(upcoming.filter((e) => e.type === 'course' && !featuredIds.has(e.id)).slice(0, 3))
+  let dives = $derived(
+    upcoming.filter((e) => e.type === 'dive' && !featuredIds.has(e.id)).slice(0, 3),
+  )
+  let courses = $derived(
+    upcoming.filter((e) => e.type === 'course' && !featuredIds.has(e.id)).slice(0, 3),
+  )
 
   // Structural data only (links + images); titles/descriptions come from i18n
   // ($t.home.services), aligned by index.
@@ -48,9 +52,15 @@
     { href: '/courses', image: mediaIdLocal('b37fef_2ea720f3f0c94fb8bc703856514b0a6c~mv2.jpg') },
     { href: '/sites', image: mediaIdLocal('b37fef_7621a533ac1946a8b342bc5085cb1d28~mv2.jpg') },
     { href: '/gear', image: mediaIdLocal('b37fef_58237e6a633f472b8d419bd830abb854~mv2.jpg') },
-    { href: 'https://site-fundiverstw.fundiverstw.workers.dev/travel#international', image: mediaIdLocal('b37fef_80f90894e75f47f8809d14663dd8e8bd~mv2.jpg') },
+    {
+      href: 'https://site-fundiverstw.fundiverstw.workers.dev/travel#international',
+      image: mediaIdLocal('b37fef_80f90894e75f47f8809d14663dd8e8bd~mv2.jpg'),
+    },
     { href: '/travel', image: siteImage('penghu') ?? '' },
-    { href: 'https://site-fundiverstw.fundiverstw.workers.dev/courses/padi-efr-course', image: mediaIdLocal('b37fef_49df7d482eb44585a605a489e2b1d653~mv2.jpg') },
+    {
+      href: 'https://site-fundiverstw.fundiverstw.workers.dev/courses/padi-efr-course',
+      image: mediaIdLocal('b37fef_49df7d482eb44585a605a489e2b1d653~mv2.jpg'),
+    },
   ]
 
   // Decorative photography for the "Diving in Taiwan" section. These are dive
@@ -84,10 +94,19 @@
     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
     <div class={`absolute inset-x-0 bottom-0 ${big ? 'px-6 pb-6 pt-5' : 'px-5 pb-5 pt-4'}`}>
       {#if ev.fullyBooked}
-        <span class="rounded bg-amber-400/25 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-amber-200">{$t.common.waitlist}</span>
+        <span
+          class="rounded bg-amber-400/25 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-amber-200"
+          >{$t.common.waitlist}</span
+        >
       {/if}
-      <h3 class={`line-clamp-2 font-bold leading-tight text-white ${big ? 'text-base lg:text-lg' : 'text-xs lg:text-sm'}`}>{ev.title}</h3>
-      <p class="mono truncate text-[11px] text-sky-300">{formatSpan(ev.startDate, ev.endDate, ev.time)}</p>
+      <h3
+        class={`line-clamp-2 font-bold leading-tight text-white ${big ? 'text-base lg:text-lg' : 'text-xs lg:text-sm'}`}
+      >
+        {ev.title}
+      </h3>
+      <p class="mono truncate text-[11px] text-sky-300">
+        {formatSpan(ev.startDate, ev.endDate, ev.time)}
+      </p>
       {#if price}<p class="mono text-xs font-bold text-peach">{$t.common.from} {price}</p>{/if}
     </div>
   </button>
@@ -99,11 +118,15 @@
       <h2 class="flex items-center gap-2 text-xl font-bold text-white">
         <span class="mono text-reef-400">▹</span>{title}
       </h2>
-      <a href={moreHref} class="mono text-sm font-semibold text-reef-300 hover:text-reef-200">{$t.common.viewAll} →</a>
+      <a href={moreHref} class="mono text-sm font-semibold text-reef-300 hover:text-reef-200"
+        >{$t.common.viewAll} →</a
+      >
     </div>
     <div class="grid min-h-0 flex-1 grid-cols-1 gap-3 sm:grid-cols-3">
       {#if loading}
-        {#each Array(3) as _, i (i)}<div class="aspect-[16/10] animate-pulse rounded-3xl bg-white/10 lg:aspect-auto"></div>{/each}
+        {#each Array(3) as _, i (i)}<div
+            class="aspect-[16/10] animate-pulse rounded-3xl bg-white/10 lg:aspect-auto"
+          ></div>{/each}
       {:else if items.length === 0}
         <p class="text-sm text-brand-200 sm:col-span-3">{$t.common.nothingScheduled}</p>
       {:else}
@@ -123,7 +146,9 @@
       </h2>
       <div class="grid min-h-0 flex-1 grid-cols-1 gap-3 lg:grid-rows-3">
         {#if loading}
-          {#each Array(3) as _, i (i)}<div class="aspect-[16/10] animate-pulse rounded-3xl bg-white/10 lg:aspect-auto"></div>{/each}
+          {#each Array(3) as _, i (i)}<div
+              class="aspect-[16/10] animate-pulse rounded-3xl bg-white/10 lg:aspect-auto"
+            ></div>{/each}
         {:else}
           {#each featured as ev (ev.id)}{@render heroCard(ev, true)}{/each}
         {/if}
@@ -150,8 +175,15 @@
         href={s.href}
         class="group relative flex aspect-square flex-col justify-end overflow-hidden rounded-3xl border border-white/15 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-reef-400/60 hover:shadow-[0_0_30px_-8px_rgba(44,208,197,0.6)]"
       >
-        <img src={s.image} alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+        <img
+          src={s.image}
+          alt=""
+          loading="lazy"
+          class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"
+        ></div>
         <div class="relative z-10 p-6 sm:p-7">
           <h3 class="text-lg font-bold text-white">{$t.home.services[i].title}</h3>
           <p class="mt-1 line-clamp-3 text-sm text-white/85">{$t.home.services[i].desc}</p>
@@ -161,7 +193,10 @@
   </div>
 
   <div class="mt-10 text-center">
-    <a href="#get-in-touch" class="mono rounded-full bg-reef-400 px-6 py-3 font-semibold text-brand-950 shadow-[0_0_24px_-6px_rgba(44,208,197,0.8)] transition-colors hover:bg-reef-300">
+    <a
+      href="#get-in-touch"
+      class="mono rounded-full bg-reef-400 px-6 py-3 font-semibold text-brand-950 shadow-[0_0_24px_-6px_rgba(44,208,197,0.8)] transition-colors hover:bg-reef-300"
+    >
       {$t.common.contactUs}
     </a>
   </div>
@@ -182,12 +217,26 @@
     <!-- Divers-in-the-blue mosaic, sticks alongside the copy on desktop -->
     <div class="lg:col-span-5 lg:sticky lg:top-24">
       <div class="grid grid-cols-2 gap-3">
-        <figure class="group col-span-2 aspect-[16/10] overflow-hidden rounded-3xl border border-white/10 shadow-sm">
-          <img src={diveScenes[0]} alt="" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+        <figure
+          class="group col-span-2 aspect-[16/10] overflow-hidden rounded-3xl border border-white/10 shadow-sm"
+        >
+          <img
+            src={diveScenes[0]}
+            alt=""
+            loading="lazy"
+            class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
         </figure>
         {#each diveScenes.slice(1) as src}
-          <figure class="group aspect-square overflow-hidden rounded-2xl border border-white/10 shadow-sm">
-            <img src={src} alt="" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <figure
+            class="group aspect-square overflow-hidden rounded-2xl border border-white/10 shadow-sm"
+          >
+            <img
+              {src}
+              alt=""
+              loading="lazy"
+              class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
           </figure>
         {/each}
       </div>
@@ -197,8 +246,15 @@
   <!-- A glimpse of the reef life beneath the waves -->
   <div class="mt-8 grid grid-cols-3 gap-3 sm:mt-10 sm:grid-cols-6">
     {#each marineLife as src}
-      <figure class="group aspect-square overflow-hidden rounded-2xl border border-white/10 shadow-sm">
-        <img src={src} alt="" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 group-hover:brightness-105" />
+      <figure
+        class="group aspect-square overflow-hidden rounded-2xl border border-white/10 shadow-sm"
+      >
+        <img
+          {src}
+          alt=""
+          loading="lazy"
+          class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 group-hover:brightness-105"
+        />
       </figure>
     {/each}
   </div>
@@ -209,7 +265,9 @@
 
 <!-- Brand taglines -->
 <section>
-  <div class="mx-auto flex max-w-[1600px] flex-col items-center gap-1 px-4 py-12 text-center sm:px-6 sm:py-14">
+  <div
+    class="mx-auto flex max-w-[1600px] flex-col items-center gap-1 px-4 py-12 text-center sm:px-6 sm:py-14"
+  >
     <p class="text-2xl font-bold text-white sm:text-3xl">{$t.home.taglineMain}</p>
     <p class="text-lg font-light text-reef-100">{$t.home.taglineSub}</p>
   </div>
