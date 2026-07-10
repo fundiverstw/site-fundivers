@@ -41,12 +41,6 @@ export function formatSpan(startKey: string, endKey: string | null, time: string
   return `${head}${timeSuffix} → ${MONTHS[end.getMonth()]} ${end.getDate()}`
 }
 
-/** Short month-day badge parts for a date key. */
-export function badge(key: string): { month: string; day: number } {
-  const d = fromKey(key)
-  return { month: MONTHS[d.getMonth()].toUpperCase(), day: d.getDate() }
-}
-
 /** TWD price, e.g. 15400 → 'NT$15,400'. */
 export function twd(amount: number | null): string | null {
   if (amount == null) return null

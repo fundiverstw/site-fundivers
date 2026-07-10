@@ -45,6 +45,63 @@
     document.documentElement.lang = $locale
   })
 
+  // The two caustics layers. Same filter, different numbers: a teal layer of
+  // fast fine ribbons, and a slower, broader mauve one rolling the other way.
+  type CausticLayer = {
+    id: string
+    cls: string
+    waveFreq: string
+    waveSeed: string
+    dur: string
+    waveValues: string
+    keyTimes: string
+    veinAmplitude: string
+    veinExponent: string
+    envFreq: string
+    envSeed: string
+    maskAmplitude: string
+    maskExponent: string
+    maskOffset: string
+    tint: string
+  }
+
+  const CAUSTIC_LAYERS: CausticLayer[] = [
+    {
+      id: 'caustic-a',
+      cls: 'cl-a',
+      waveFreq: '0.0038 0.013',
+      waveSeed: '4',
+      dur: '19s',
+      waveValues: '0.0038 0.013;0.0050 0.011;0.0034 0.015;0.0038 0.013',
+      keyTimes: '0;0.35;0.7;1',
+      veinAmplitude: '2.6',
+      veinExponent: '4',
+      envFreq: '0.0016 0.0016',
+      envSeed: '11',
+      maskAmplitude: '1.6',
+      maskExponent: '2.4',
+      maskOffset: '0.1',
+      tint: '#a5f3ea',
+    },
+    {
+      id: 'caustic-b',
+      cls: 'cl-b',
+      waveFreq: '0.0052 0.017',
+      waveSeed: '23',
+      dur: '26s',
+      waveValues: '0.0052 0.017;0.0042 0.014;0.0060 0.020;0.0052 0.017',
+      keyTimes: '0;0.4;0.72;1',
+      veinAmplitude: '2.3',
+      veinExponent: '5',
+      envFreq: '0.0013 0.0013',
+      envSeed: '5',
+      maskAmplitude: '1.7',
+      maskExponent: '2.6',
+      maskOffset: '0.08',
+      tint: '#cba6f7',
+    },
+  ]
+
   // The animated caustics recompute fractal noise every frame — fine on
   // desktop, far too heavy for phone GPUs. Only morph the noise on non-touch,
   // wide screens that haven't asked for reduced motion. (On mobile the caustics
@@ -66,126 +123,87 @@
      round particles) that slowly warp in place (baseFrequency morph = shimmer)
      and drift via CSS. A second, very-low-frequency "envelope" turbulence is
      multiplied over the ribbons so brightness varies across the screen — dense
-     bright patches next to calm dark water — killing the uniform disco look. -->
+     bright patches next to calm dark water — killing the uniform disco look.
+
+     Both layers are the same filter; only the numbers in CAUSTIC_LAYERS differ.
+     They roll in opposite directions at different speeds (see .cl-a / .cl-b in
+     styles/background.css) so the ribbons interfere and shimmer. -->
+{#snippet causticLayer(c: CausticLayer)}
+  <svg class="caustics-layer {c.cls}" xmlns="http://www.w3.org/2000/svg">
+    <filter id={c.id} x="-30%" y="-30%" width="160%" height="160%">
+      <feTurbulence
+        type="fractalNoise"
+        baseFrequency={c.waveFreq}
+        numOctaves="3"
+        seed={c.waveSeed}
+        result="wave"
+      >
+        {#if animate}
+          <animate
+            attributeName="baseFrequency"
+            dur={c.dur}
+            repeatCount="indefinite"
+            values={c.waveValues}
+            keyTimes={c.keyTimes}
+          />
+        {/if}
+      </feTurbulence>
+      <feColorMatrix
+        in="wave"
+        type="matrix"
+        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.34 0.34 0.34 0 0"
+        result="wa"
+      />
+      <feComponentTransfer in="wa" result="veins"
+        ><feFuncA
+          type="gamma"
+          amplitude={c.veinAmplitude}
+          exponent={c.veinExponent}
+          offset="0"
+        /></feComponentTransfer
+      >
+      <feTurbulence
+        type="fractalNoise"
+        baseFrequency={c.envFreq}
+        numOctaves="2"
+        seed={c.envSeed}
+        result="env"
+      />
+      <feColorMatrix
+        in="env"
+        type="matrix"
+        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0.5 0.5 0 0"
+        result="ea"
+      />
+      <feComponentTransfer in="ea" result="mask"
+        ><feFuncA
+          type="gamma"
+          amplitude={c.maskAmplitude}
+          exponent={c.maskExponent}
+          offset={c.maskOffset}
+        /></feComponentTransfer
+      >
+      <feComposite
+        in="veins"
+        in2="mask"
+        operator="arithmetic"
+        k1="1"
+        k2="0"
+        k3="0"
+        k4="0"
+        result="mod"
+      />
+      <feFlood flood-color={c.tint} result="tint" />
+      <feComposite in="tint" in2="mod" operator="in" />
+    </filter>
+    <rect width="100%" height="100%" filter={`url(#${c.id})`} />
+  </svg>
+{/snippet}
+
 <div class="caustics" aria-hidden="true">
-  <svg class="caustics-layer cl-a" xmlns="http://www.w3.org/2000/svg">
-    <filter id="caustic-a" x="-30%" y="-30%" width="160%" height="160%">
-      <feTurbulence
-        type="fractalNoise"
-        baseFrequency="0.0038 0.013"
-        numOctaves="3"
-        seed="4"
-        result="wave"
-      >
-        {#if animate}
-          <animate
-            attributeName="baseFrequency"
-            dur="19s"
-            repeatCount="indefinite"
-            values="0.0038 0.013;0.0050 0.011;0.0034 0.015;0.0038 0.013"
-            keyTimes="0;0.35;0.7;1"
-          />
-        {/if}
-      </feTurbulence>
-      <feColorMatrix
-        in="wave"
-        type="matrix"
-        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.34 0.34 0.34 0 0"
-        result="wa"
-      />
-      <feComponentTransfer in="wa" result="veins"
-        ><feFuncA type="gamma" amplitude="2.6" exponent="4" offset="0" /></feComponentTransfer
-      >
-      <feTurbulence
-        type="fractalNoise"
-        baseFrequency="0.0016 0.0016"
-        numOctaves="2"
-        seed="11"
-        result="env"
-      />
-      <feColorMatrix
-        in="env"
-        type="matrix"
-        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0.5 0.5 0 0"
-        result="ea"
-      />
-      <feComponentTransfer in="ea" result="mask"
-        ><feFuncA type="gamma" amplitude="1.6" exponent="2.4" offset="0.1" /></feComponentTransfer
-      >
-      <feComposite
-        in="veins"
-        in2="mask"
-        operator="arithmetic"
-        k1="1"
-        k2="0"
-        k3="0"
-        k4="0"
-        result="mod"
-      />
-      <feFlood flood-color="#a5f3ea" result="tint" />
-      <feComposite in="tint" in2="mod" operator="in" />
-    </filter>
-    <rect width="100%" height="100%" filter="url(#caustic-a)" />
-  </svg>
-  <svg class="caustics-layer cl-b" xmlns="http://www.w3.org/2000/svg">
-    <filter id="caustic-b" x="-30%" y="-30%" width="160%" height="160%">
-      <feTurbulence
-        type="fractalNoise"
-        baseFrequency="0.0052 0.017"
-        numOctaves="3"
-        seed="23"
-        result="wave"
-      >
-        {#if animate}
-          <animate
-            attributeName="baseFrequency"
-            dur="26s"
-            repeatCount="indefinite"
-            values="0.0052 0.017;0.0042 0.014;0.0060 0.020;0.0052 0.017"
-            keyTimes="0;0.4;0.72;1"
-          />
-        {/if}
-      </feTurbulence>
-      <feColorMatrix
-        in="wave"
-        type="matrix"
-        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.34 0.34 0.34 0 0"
-        result="wa"
-      />
-      <feComponentTransfer in="wa" result="veins"
-        ><feFuncA type="gamma" amplitude="2.3" exponent="5" offset="0" /></feComponentTransfer
-      >
-      <feTurbulence
-        type="fractalNoise"
-        baseFrequency="0.0013 0.0013"
-        numOctaves="2"
-        seed="5"
-        result="env"
-      />
-      <feColorMatrix
-        in="env"
-        type="matrix"
-        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0.5 0.5 0 0"
-        result="ea"
-      />
-      <feComponentTransfer in="ea" result="mask"
-        ><feFuncA type="gamma" amplitude="1.7" exponent="2.6" offset="0.08" /></feComponentTransfer
-      >
-      <feComposite
-        in="veins"
-        in2="mask"
-        operator="arithmetic"
-        k1="1"
-        k2="0"
-        k3="0"
-        k4="0"
-        result="mod"
-      />
-      <feFlood flood-color="#cba6f7" result="tint" />
-      <feComposite in="tint" in2="mod" operator="in" />
-    </filter>
-    <rect width="100%" height="100%" filter="url(#caustic-b)" />
-  </svg>
+  {#each CAUSTIC_LAYERS as layer (layer.id)}
+    {@render causticLayer(layer)}
+  {/each}
 </div>
 
 <div class="relative z-10 flex min-h-screen flex-col">

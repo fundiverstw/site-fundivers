@@ -31,27 +31,24 @@ export type DiveSite = {
   international?: boolean // outside Taiwan (trip destination), grouped separately
 }
 
-export type Area = 'North' | 'South' | 'Outlying Islands' | 'International'
-
-// Display metadata for each region: a human label and a broad area grouping
-// mirroring how fundiverstw.com frames Taiwan diving (North / South / Islands).
-export const REGION_META: Record<Region, { label: string; area: Area }> = {
-  keelung: { label: 'Keelung', area: 'North' },
-  longdong: { label: 'Long Dong (Dragon Cave)', area: 'North' },
-  yilan: { label: 'Yilan', area: 'North' },
-  kenting: { label: 'Kenting', area: 'South' },
-  greenisland: { label: 'Green Island', area: 'Outlying Islands' },
-  lanyu: { label: 'Orchid Island (Lanyu)', area: 'Outlying Islands' },
-  xiaoliuqiu: { label: 'Xiaoliuqiu', area: 'Outlying Islands' },
-  penghu: { label: 'Penghu', area: 'Outlying Islands' },
-  malapascua: { label: 'Malapascua, Philippines', area: 'International' },
-  'puerto-galera': { label: 'Puerto Galera, Philippines', area: 'International' },
-  'panglao-bohol': { label: 'Panglao, Bohol, Philippines', area: 'International' },
-  anilao: { label: 'Anilao, Philippines', area: 'International' },
-  palau: { label: 'Palau', area: 'International' },
+// The human-readable name for each region. Nothing else about a region is
+// stored: the Sites page groups by the `international` flag on the site itself,
+// not by geography.
+export const REGION_META: Record<Region, { label: string }> = {
+  keelung: { label: 'Keelung' },
+  longdong: { label: 'Long Dong (Dragon Cave)' },
+  yilan: { label: 'Yilan' },
+  kenting: { label: 'Kenting' },
+  greenisland: { label: 'Green Island' },
+  lanyu: { label: 'Orchid Island (Lanyu)' },
+  xiaoliuqiu: { label: 'Xiaoliuqiu' },
+  penghu: { label: 'Penghu' },
+  malapascua: { label: 'Malapascua, Philippines' },
+  'puerto-galera': { label: 'Puerto Galera, Philippines' },
+  'panglao-bohol': { label: 'Panglao, Bohol, Philippines' },
+  anilao: { label: 'Anilao, Philippines' },
+  palau: { label: 'Palau' },
 }
-
-export const AREA_ORDER: Area[] = ['North', 'South', 'Outlying Islands', 'International']
 
 export const DIVE_SITES: DiveSite[] = [
   {

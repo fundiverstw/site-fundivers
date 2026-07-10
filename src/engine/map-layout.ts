@@ -41,7 +41,7 @@ export interface PlacedLabel {
   index: number
 }
 
-export const MARKER_OFFSET = 5 // line endpoint distance from marker center
+const MARKER_OFFSET = 5 // line endpoint distance from marker center
 
 /**
  * Compute the leader line connecting a label rect to its marker. Start sits
@@ -49,11 +49,7 @@ export const MARKER_OFFSET = 5 // line endpoint distance from marker center
  * sits MARKER_OFFSET units short of the marker center so the arrowhead
  * lands cleanly outside the marker circle.
  */
-export function leaderLineFor(
-  rect: LabelRect,
-  vx: number,
-  vy: number,
-): { start: Point; end: Point } {
+function leaderLineFor(rect: LabelRect, vx: number, vy: number): { start: Point; end: Point } {
   const rcx = rect.x + rect.w / 2
   const rcy = rect.y + rect.h / 2
   const dx = vx - rcx
@@ -86,7 +82,7 @@ function ccw(p: Point, q: Point, r: Point): number {
  * three same-coord markers whose three leader lines converge to the same
  * point near the marker; they touch but don't truly cross.
  */
-export function segmentsIntersect(a1: Point, a2: Point, b1: Point, b2: Point): boolean {
+function segmentsIntersect(a1: Point, a2: Point, b1: Point, b2: Point): boolean {
   const o1 = ccw(a1, a2, b1)
   const o2 = ccw(a1, a2, b2)
   const o3 = ccw(b1, b2, a1)
@@ -96,7 +92,7 @@ export function segmentsIntersect(a1: Point, a2: Point, b1: Point, b2: Point): b
 
 /** A line segment intersects a rect iff either endpoint is inside, or the
  *  segment crosses any of the rect's four edges. */
-export function lineIntersectsRect(p1: Point, p2: Point, r: LabelRect): boolean {
+function lineIntersectsRect(p1: Point, p2: Point, r: LabelRect): boolean {
   if (pointInRect(p1, r) || pointInRect(p2, r)) return true
   const tl: Point = [r.x, r.y]
   const tr: Point = [r.x + r.w, r.y]
@@ -110,8 +106,8 @@ export function lineIntersectsRect(p1: Point, p2: Point, r: LabelRect): boolean 
   )
 }
 
-export const FONT_SIZE = 10
-export const MARKER_R = 3
+const FONT_SIZE = 10
+const MARKER_R = 3
 const PAD = 4
 const MARKER_BUFFER = 1.5 // gap kept around each foreign marker rect
 const CHAR_W = FONT_SIZE * 0.55
@@ -130,7 +126,7 @@ const ANGLES = ANGLE_PRIORITY_DEG.map((d) => (d * Math.PI) / 180)
 // outer rings.
 const RADII = [14, 22, 30, 40, 55]
 
-export function rectsOverlap(a: LabelRect, b: LabelRect): boolean {
+function rectsOverlap(a: LabelRect, b: LabelRect): boolean {
   return !(a.x + a.w <= b.x || b.x + b.w <= a.x || a.y + a.h <= b.y || b.y + b.h <= a.y)
 }
 

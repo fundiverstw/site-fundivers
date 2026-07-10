@@ -14,8 +14,9 @@ export const path = readable(window.location.pathname, (set) => {
   }
 })
 
-/** Programmatic navigation. Pushes history and notifies the `path` store. */
-export function navigate(to: string): void {
+/** Programmatic navigation. Pushes history and notifies the `path` store.
+ *  Not exported: nothing outside this file needs it yet. */
+function navigate(to: string): void {
   if (to === window.location.pathname) return
   window.history.pushState({}, '', to)
   window.dispatchEvent(new Event('app:navigate'))

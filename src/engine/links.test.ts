@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { wixSiteUrl } from './links'
+import { wixSiteUrl, mapsUrl } from './links'
 
 describe('wixSiteUrl', () => {
   it('builds the marketing-site link from a slug', () => {
@@ -17,5 +17,19 @@ describe('wixSiteUrl', () => {
 
   it('trims stray whitespace around a slug', () => {
     expect(wixSiteUrl(' bat-cave ')).toBe('https://www.fundiverstw.com/traveldestinations/bat-cave')
+  })
+})
+
+describe('mapsUrl', () => {
+  it('points Google Maps at the coordinates', () => {
+    expect(mapsUrl({ latitude: 25.1429625, longitude: 121.8129844 })).toBe(
+      'https://www.google.com/maps/search/?api=1&query=25.1429625,121.8129844',
+    )
+  })
+
+  // Latitude first. Swapped, the pin lands in the Indian Ocean and nobody
+  // notices until a diver drives there.
+  it('puts latitude before longitude', () => {
+    expect(mapsUrl({ latitude: 1, longitude: 2 })).toContain('query=1,2')
   })
 })

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { Snippet } from 'svelte'
   import { CONTACT, SOCIAL } from '$content/settings'
   import { t } from '$engine/i18n'
 
@@ -13,6 +14,11 @@
   // postMessages to a backend webMethod that emails via nodemailer; this
   // static site has no backend, so submissions open a pre-filled mailto to
   // fundiverstw@gmail.com instead (captcha dropped — there's no endpoint to spam).
+
+  // The three square tiles below share one look and one icon frame; only the
+  // shape inside, the label, and what a click does are different.
+  const TILE =
+    'glass flex aspect-square flex-col items-center justify-center gap-3 rounded-2xl p-4 text-center transition-all hover:-translate-y-0.5 hover:shadow-md'
 
   type RequestType = 'try-dive' | 'course'
 
@@ -47,73 +53,64 @@
   }
 </script>
 
+{#snippet icon(shape: Snippet)}
+  <svg
+    class="h-12 w-12 text-reef-300"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    {@render shape()}
+  </svg>
+{/snippet}
+
+{#snippet calendarShape()}
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+  <line x1="16" y1="2" x2="16" y2="6" />
+  <line x1="8" y1="2" x2="8" y2="6" />
+  <line x1="3" y1="10" x2="21" y2="10" />
+{/snippet}
+
+{#snippet diverShape()}
+  <circle cx="12" cy="9" r="5" />
+  <path d="M9 13l-2 8M15 13l2 8" />
+  <path d="M7 9h-3M20 9h-3" />
+{/snippet}
+
+{#snippet mortarboardShape()}
+  <path d="M22 10L12 5 2 10l10 5 10-5z" />
+  <path d="M6 12v5c3 3 9 3 12 0v-5" />
+  <line x1="22" y1="10" x2="22" y2="16" />
+{/snippet}
+
 <section id="get-in-touch" class="mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16">
   <h2 class="text-center text-3xl font-bold tracking-tight text-white">{$t.getInTouch.title}</h2>
 
   <div class="mt-8 grid gap-4 sm:grid-cols-3">
-    <a
-      href="/calendar"
-      class="glass flex aspect-square flex-col items-center justify-center gap-3 rounded-2xl p-4 text-center transition-all hover:-translate-y-0.5 hover:shadow-md"
-    >
-      <svg
-        class="h-12 w-12 text-reef-300"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
-      >
-        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-        <line x1="16" y1="2" x2="16" y2="6" />
-        <line x1="8" y1="2" x2="8" y2="6" />
-        <line x1="3" y1="10" x2="21" y2="10" />
-      </svg>
+    <a href="/calendar" class={TILE}>
+      {@render icon(calendarShape)}
       <span class="text-base font-bold text-white">{$t.getInTouch.seeCalendar}</span>
     </a>
 
     <button
       type="button"
       onclick={() => open('try-dive')}
-      class={`glass flex aspect-square flex-col items-center justify-center gap-3 rounded-2xl p-4 text-center transition-all hover:-translate-y-0.5 hover:shadow-md ${active === 'try-dive' ? 'ring-2 ring-reef-300' : ''}`}
+      class={`${TILE} ${active === 'try-dive' ? 'ring-2 ring-reef-300' : ''}`}
     >
-      <svg
-        class="h-12 w-12 text-reef-300"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
-      >
-        <circle cx="12" cy="9" r="5" />
-        <path d="M9 13l-2 8M15 13l2 8" />
-        <path d="M7 9h-3M20 9h-3" />
-      </svg>
+      {@render icon(diverShape)}
       <span class="text-base font-bold text-white">{$t.getInTouch.tryDive}</span>
     </button>
 
     <button
       type="button"
       onclick={() => open('course')}
-      class={`glass flex aspect-square flex-col items-center justify-center gap-3 rounded-2xl p-4 text-center transition-all hover:-translate-y-0.5 hover:shadow-md ${active === 'course' ? 'ring-2 ring-reef-300' : ''}`}
+      class={`${TILE} ${active === 'course' ? 'ring-2 ring-reef-300' : ''}`}
     >
-      <svg
-        class="h-12 w-12 text-reef-300"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
-      >
-        <path d="M22 10L12 5 2 10l10 5 10-5z" />
-        <path d="M6 12v5c3 3 9 3 12 0v-5" />
-        <line x1="22" y1="10" x2="22" y2="16" />
-      </svg>
+      {@render icon(mortarboardShape)}
       <span class="text-base font-bold text-white">{$t.getInTouch.requestCourse}</span>
     </button>
   </div>

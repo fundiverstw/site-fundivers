@@ -75,24 +75,30 @@ the booking app. See [How it works](how-it-works.md) for why.
 
 ---
 
-## The only three commands you need
+## The commands
 
 Open a terminal in the project folder and type these.
 
-```bash
-npm install       # once, the first time, to download the pieces
-npm run dev       # start the website on your own computer
-```
+| Command | What it does | When |
+| --- | --- | --- |
+| `npm install` | Downloads the code this project borrows | Once, the first time |
+| `npm run dev` | Starts the website on your own computer | Every time you sit down to work |
+| `npm run verify` | Checks everything: types, linter, tests | Before you publish |
+| `npm run deploy` | Puts your changes on the real website | When you're happy |
 
-Then open **http://localhost:5173** in a browser. Change a file, save it, and the page
-updates by itself. Nothing you do here affects the real website.
+Those four cover almost everything. The rest, if you ever need them:
 
-When you're happy:
+| Command | What it does |
+| --- | --- |
+| `npm run format` | Tidies the layout of your code |
+| `npm run lint` | Just the linter |
+| `npm run test:unit` | Just the fast tests |
+| `npm run test:e2e` | Just the browser tests |
+| `npm run build` | Makes the finished site in `dist/`, without publishing it |
+| `npm run preview` | Shows you that finished site, on your own computer |
 
-```bash
-npm run verify    # asks the computer to check everything
-npm run deploy    # puts your changes on the real website
-```
+After `npm run dev`, open **http://localhost:5173** in a browser. Change a file, save it,
+and the page updates by itself. Nothing you do there affects the real website.
 
 > **`npm run verify` checks your work in about thirty seconds.** It reads the types,
 > runs the linter, and opens the real site in a real browser to make sure every page

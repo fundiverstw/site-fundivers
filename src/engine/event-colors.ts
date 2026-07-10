@@ -5,7 +5,8 @@
 export type CourseColor = 'ow' | 'aow' | 'rescue' | 'specialty'
 export type DiveOuting = 'local' | 'trip'
 
-/** Strip a trailing capacity hint, e.g. "Open Water Course (2 spots open)". */
+/** Strip a trailing capacity hint, e.g. "Open Water Course (2 spots open)".
+ *  Only courseColor() calls this; it is exported so the tests can pin it. */
 export function stripTitleSuffix(title: string): string {
   return title.replace(/\s*\([^)]*\)\s*$/, '').trim()
 }

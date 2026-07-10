@@ -52,7 +52,7 @@ Four named looks. Put the name in a `class` and the element takes on that look:
 | Class | What it does |
 | --- | --- |
 | `glass` | Frosted, translucent panel. Every card uses it. |
-| `glow-teal` | A neon teal edge. `glow-mauve` is the purple one. |
+| `glow-teal` | A neon teal edge. |
 | `mono` | The monospace font, for dates, prices and labels. |
 | `waybar` | The rounded bar the navigation sits in. |
 

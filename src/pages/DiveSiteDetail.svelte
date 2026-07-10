@@ -4,8 +4,9 @@
   import { fetchDestinations, type Destination } from '$engine/destinations'
   import { siteImage } from '$engine/photo-pool'
   import { DIVE_SITE_GUIDES } from '$content/dive-site-guides'
-  import { wixSiteUrl } from '$engine/links'
+  import { wixSiteUrl, mapsUrl } from '$engine/links'
   import { t } from '$engine/i18n'
+  import CallToAction from '$components/CallToAction.svelte'
   import CoverPhoto from '$components/CoverPhoto.svelte'
 
   // The route param: /sites/<id>. The router serves this component for any
@@ -37,11 +38,7 @@
   let heroImg = $derived(site ? siteImage(site.id) : null)
   let tagline = $derived(dest?.tagline ?? site?.tagline ?? null)
   let regionLabel = $derived(site ? (REGION_META[site.region]?.label ?? site.region) : '')
-  let mapsUrl = $derived(
-    site
-      ? `https://www.google.com/maps/search/?api=1&query=${site.latitude},${site.longitude}`
-      : '#',
-  )
+  let mapsHref = $derived(site ? mapsUrl(site) : '#')
   let morePage = $derived.by(() => {
     if (dest?.slug) return `https://www.fundiverstw.com${dest.slug}`
     return site ? wixSiteUrl(site.wix_slug) : null
@@ -181,7 +178,7 @@
             {/each}
           </div>
           <a
-            href={mapsUrl}
+            href={mapsHref}
             target="_blank"
             rel="noopener"
             class="mt-3 inline-block text-sm font-semibold text-reef-300 transition-colors hover:text-reef-200"
@@ -215,7 +212,7 @@
 
           <div class="mt-5 flex flex-col gap-2">
             <a
-              href={mapsUrl}
+              href={mapsHref}
               target="_blank"
               rel="noopener"
               class="rounded-full border border-white/40 px-4 py-2 text-center text-sm font-bold text-white transition-colors hover:bg-white/15"
@@ -238,27 +235,11 @@
     </div>
 
     <!-- CTA -->
-    <div
-      class="glow-teal mt-10 flex flex-col items-start gap-4 rounded-3xl border border-reef-400/30 bg-reef-400/5 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8"
-    >
-      <div>
-        <h2 class="text-xl font-bold text-white">{$t.siteDetail.cta}</h2>
-        <p class="mt-1 text-sm text-brand-100">{$t.siteDetail.ctaText}</p>
-      </div>
-      <div class="flex flex-wrap gap-2">
-        <a
-          href="/calendar"
-          class="rounded-full bg-reef-400 px-5 py-2 text-sm font-bold text-brand-950 transition-colors hover:bg-reef-300"
-        >
-          {$t.siteDetail.seeCalendar}
-        </a>
-        <a
-          href="#contact"
-          class="rounded-full border border-white/40 px-5 py-2 text-sm font-bold text-white transition-colors hover:bg-white/15"
-        >
-          {$t.siteDetail.contact}
-        </a>
-      </div>
-    </div>
+    <CallToAction
+      title={$t.siteDetail.cta}
+      text={$t.siteDetail.ctaText}
+      calendarLabel={$t.siteDetail.seeCalendar}
+      contactLabel={$t.siteDetail.contact}
+    />
   </article>
 {/if}

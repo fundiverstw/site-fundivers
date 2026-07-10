@@ -1,6 +1,7 @@
 <script lang="ts">
   import { fetchDiveSites, diveSitePath, REGION_META, type DiveSite } from '$content/dive-sites'
   import { siteImage } from '$engine/photo-pool'
+  import { mapsUrl } from '$engine/links'
   import { t } from '$engine/i18n'
   import PageHeader from '$components/PageHeader.svelte'
   import CoverPhoto from '$components/CoverPhoto.svelte'
@@ -26,10 +27,6 @@
     if (international.length) groups.push({ area: 'International', sites: international })
     return groups
   })
-
-  function mapsUrl(s: DiveSite): string {
-    return `https://www.google.com/maps/search/?api=1&query=${s.latitude},${s.longitude}`
-  }
 </script>
 
 <PageHeader title={$t.sites.title} subtitle={$t.sites.subtitle} />

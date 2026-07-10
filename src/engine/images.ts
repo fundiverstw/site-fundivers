@@ -8,7 +8,7 @@ function slug(seg: string): string {
 }
 
 /** Media id segment from a `wix:image://v1/<seg>/<filename>#…` ref. */
-export function wixMediaId(ref: string | null | undefined): string | null {
+function wixMediaId(ref: string | null | undefined): string | null {
   if (!ref || !ref.startsWith('wix:image://')) return null
   const seg = ref
     .replace(/^wix:image:\/\/v1\//, '')

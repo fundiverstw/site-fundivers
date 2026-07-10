@@ -4,7 +4,6 @@ import { resolve } from 'node:path'
 import {
   DIVE_SITES,
   REGION_META,
-  AREA_ORDER,
   EVENT_TITLE_MATCHERS,
   fetchDiveSites,
   diveSiteById,
@@ -40,13 +39,18 @@ describe('the catalog', () => {
     for (const s of DIVE_SITES) expect(REGION_META).toHaveProperty(s.region)
   })
 
-  it('puts every region in an area the pages know how to group', () => {
-    for (const meta of Object.values(REGION_META)) expect(AREA_ORDER).toContain(meta.area)
+  it('gives every region a label to show', () => {
+    for (const [region, meta] of Object.entries(REGION_META)) {
+      expect(meta.label.trim(), `region '${region}' has no label`).not.toBe('')
+    }
   })
 
-  it('groups every overseas site under the International area', () => {
-    for (const s of DIVE_SITES.filter((s) => s.international)) {
-      expect(REGION_META[s.region].area).toBe('International')
+  // Sites.svelte splits the list on this flag alone. A trip destination without
+  // it silently appears under "Domestic", next to Bat Cave.
+  it('flags every site outside Taiwan as international', () => {
+    const overseas = ['malapascua', 'puerto-galera', 'panglao-bohol', 'anilao', 'palau']
+    for (const s of DIVE_SITES) {
+      expect(!!s.international, `${s.id}`).toBe(overseas.includes(s.region))
     }
   })
 

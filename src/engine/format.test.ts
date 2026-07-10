@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { formatEventSpan, formatSpan, badge, twd } from './format'
+import { formatEventSpan, formatSpan, twd } from './format'
 
 // These functions decide what a visitor reads on a calendar card, so the tests
 // assert the exact string. Dates are given without a timezone so they are read
@@ -71,16 +71,6 @@ describe('formatSpan', () => {
   it('reads a date key as local time, not UTC', () => {
     // parsing '2026-01-01' as UTC would print Dec 31 anywhere west of Greenwich
     expect(formatSpan('2026-01-01', null, null)).toBe('Thu, Jan 1')
-  })
-})
-
-describe('badge', () => {
-  it('gives an upper-case month and a numeric day', () => {
-    expect(badge('2026-07-14')).toEqual({ month: 'JUL', day: 14 })
-  })
-
-  it('does not drift on the first of the month', () => {
-    expect(badge('2026-03-01')).toEqual({ month: 'MAR', day: 1 })
   })
 })
 
