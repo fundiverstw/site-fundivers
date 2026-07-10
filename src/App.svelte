@@ -15,6 +15,7 @@
   import Photos from '$pages/Photos.svelte'
   import Travel from '$pages/Travel.svelte'
   import Gear from '$pages/Gear.svelte'
+  import Services from '$pages/Services.svelte'
   import Calendar from '$pages/Calendar.svelte'
   import Team from '$pages/Team.svelte'
   import NotFound from '$pages/NotFound.svelte'
@@ -27,6 +28,7 @@
     '/photos': Photos,
     '/travel': Travel,
     '/gear': Gear,
+    '/services': Services,
     '/calendar': Calendar,
     '/team': Team,
   }

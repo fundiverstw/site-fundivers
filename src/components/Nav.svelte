@@ -15,6 +15,7 @@
   let rightLinks = $derived([
     { href: '/travel', label: $t.nav.travel },
     { href: '/gear', label: $t.nav.gear },
+    { href: '/services', label: $t.nav.services },
     { href: '/team', label: $t.nav.team },
   ])
   let allLinks = $derived([...leftLinks, ...rightLinks])
@@ -31,7 +32,11 @@
   }
 
   function linkClass(href: string): string {
-    const base = 'module mono rounded-xl px-4 py-2 text-xl font-semibold lg:text-2xl'
+    // Nine links have to fit beside the logo. They grow with the window rather
+    // than overflowing it: at 1280 the whole bar, globe included, must be on
+    // screen. See the 'the whole navigation fits' test in e2e/navigation.spec.ts.
+    const base =
+      'module mono rounded-xl px-2.5 py-1.5 text-base font-semibold lg:text-lg xl:px-3 2xl:px-4 2xl:py-2 2xl:text-xl'
     return $path === href ? `${base} module-active` : `${base} text-brand-50`
   }
 </script>
@@ -74,8 +79,13 @@
 
 <header class="bg-transparent">
   <div class="mx-auto max-w-[1600px] px-4 sm:px-6">
-    <!-- Desktop: logo at the far left, links + globe to its right -->
-    <div class="hidden items-center justify-between gap-6 py-3 md:flex">
+    <!-- Desktop: logo at the far left, links + globe to its right.
+         Shown from xl (1280px), not md. Nine links plus the logo simply do not
+         fit below that: the bar used to run off the side of the page and give
+         every tablet a horizontal scrollbar. Narrower screens get the menu
+         button below, which is built to fit. This is also exactly where the nav
+         mascot appears (hidden xl:block), so the two now agree. -->
+    <div class="hidden items-center justify-between gap-6 py-3 xl:flex">
       <div class="relative shrink-0">
         <NavMascot />
         <a href="/" aria-label="FunDivers TW home" class="group relative z-20 block">
@@ -86,7 +96,10 @@
           />
         </a>
       </div>
-      <nav class="waybar flex items-center gap-1.5 rounded-2xl px-2 py-1.5 shadow-lg">
+      <!-- z-20: the nav mascot beside the logo is absolutely positioned and reaches
+           right, into this bar. Its promo banner was covering the first link and
+           swallowing the click. Navigation wins over decoration. -->
+      <nav class="waybar relative z-20 flex items-center gap-1.5 rounded-2xl px-2 py-1.5 shadow-lg">
         {#each allLinks as link}
           <a href={link.href} class={linkClass(link.href)}>{link.label}</a>
         {/each}
@@ -96,7 +109,7 @@
     </div>
 
     <!-- Mobile: logo left · globe + menu toggle right -->
-    <div class="flex items-center justify-between py-3 md:hidden">
+    <div class="flex items-center justify-between py-3 xl:hidden">
       <a href="/" aria-label="FunDivers TW home" class="group block">
         <img
           src="/imgs/fd_logo.png"
@@ -115,7 +128,7 @@
 
   <!-- Mobile menu -->
   {#if open}
-    <div class="glass border-t border-white/10 md:hidden">
+    <div class="glass border-t border-white/10 xl:hidden">
       <div class="mx-auto flex max-w-[1600px] flex-col gap-1 px-4 py-3 sm:px-6">
         {#each allLinks as link}
           <a

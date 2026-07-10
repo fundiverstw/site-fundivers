@@ -9,6 +9,7 @@ export const ROUTES = [
   '/photos',
   '/travel',
   '/gear',
+  '/services',
   '/calendar',
   '/team',
 ] as const

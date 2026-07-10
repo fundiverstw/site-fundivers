@@ -17,6 +17,7 @@ export const en = {
     calendar: 'Calendar',
     team: 'Team',
     gear: 'Gear',
+    services: 'Services',
   },
   gear: {
     title: 'Gear Sales, Service & Rental',
@@ -264,6 +265,152 @@ export const en = {
     proudly: 'Proudly created with 🤿 ❤️ in Taipei',
     openSource: 'Open source',
     openSourceBlurb: 'We proudly develop FunDive, our open-source dive-shop management software.',
+  },
+  services: {
+    title: 'Managed FunDive for dive shops',
+    subtitle: 'We build it. You own it.',
+    intro: [
+      'FunDive is a free and open-source dive shop management platform, built by divers, for divers.',
+      'Unlike traditional software platforms, FunDive does not lock your business into a proprietary system. The software is open source, so you have complete transparency and freedom.',
+      'If your shop has the technical skills, you can download FunDive, set it up yourself, and manage it independently.',
+      'If you would rather focus on running your dive business than on managing cloud infrastructure, we run it for you.',
+    ],
+    readTheCode: 'FunDive is open source. Read the code.',
+
+    pricingTitle: 'Simple, transparent pricing',
+    setupTitle: 'One-time setup',
+    setupBlurb: 'We build and configure your complete FunDive environment.',
+    monthlyTitle: 'Managed service',
+    monthlyBlurb: 'A flat monthly fee for ongoing maintenance, updates and technical support.',
+    perMonth: '/month',
+    fromLabel: 'From',
+    plainPricing: ['No complicated pricing.', 'No hidden fees.', 'No long-term commitment.'],
+    guarantees: ['Cancel anytime', 'Restart anytime', 'No cancellation fees', 'No obligation'],
+    guaranteeNote:
+      'You keep using the service because it is worth it — not because you are locked in.',
+
+    setupIncludesTitle: 'What we set up for you',
+    setupIncludesBlurb:
+      'For the one-time setup fee we configure your complete production environment:',
+    setupIncludes: [
+      'GitHub repository',
+      'Supabase project and database',
+      'Cloudflare account and DNS',
+      'Bitwarden password vault',
+      'FunDive deployment',
+      'Domain and SSL certificate',
+      'Environment settings',
+      'Initial system configuration',
+    ],
+    setupIncludesNote:
+      'We take care of the technical details, so your shop starts with a properly configured and secure installation.',
+
+    domainTitle: 'Domain setup',
+    domain: [
+      'A custom domain gives your FunDive installation a professional web address.',
+      'If your shop already owns a domain, we will configure it for FunDive.',
+      'If you do not own one yet, we are happy to help you buy and set one up. Registration fees are separate, and depend on the name and the registrar.',
+      'Your domain stays owned and controlled by your dive shop.',
+    ],
+
+    ongoingTitle: 'Ongoing managed service',
+    ongoingBlurb: 'For a flat monthly fee we keep your FunDive installation running smoothly.',
+    updatesTitle: 'Updates and maintenance',
+    updates: [
+      'Installing new FunDive releases',
+      'Applying security updates',
+      'Updating software dependencies',
+      'Keeping the services compatible with each other',
+      'Helping with configuration changes',
+    ],
+    supportTitle: 'Technical support',
+    supportBlurb: 'When you need help, you talk directly to the team behind FunDive.',
+    support: [
+      'Technical troubleshooting',
+      'Infrastructure questions',
+      'Configuration changes',
+      'Deployment problems',
+      'General FunDive support',
+    ],
+
+    ownershipTitle: 'Your infrastructure. Your data. Your control.',
+    ownership: [
+      'We believe open-source software should give a business freedom, not a new kind of lock-in.',
+      'We build your environment for you, but you own it.',
+    ],
+    ownsTitle: 'Your dive shop keeps control of',
+    owns: [
+      'Your FunDive application',
+      'Your customer and business data',
+      'Your GitHub repository',
+      'Your Supabase database',
+      'Your Cloudflare account',
+      'Your Bitwarden vault and secrets',
+      'Your domain and SSL certificate',
+    ],
+    accessNote:
+      'During setup we configure everything for you. Afterwards your shop owns and controls these accounts, and simply grants us the access we need to keep them updated.',
+    leavingTitle: 'If you ever stop using our managed service',
+    leaving: [
+      'Your data remains yours',
+      'Your infrastructure remains yours',
+      'Your accounts remain yours',
+      'You can keep running FunDive yourself',
+      'You can hand it to another technical provider',
+    ],
+    leavingSlogans: ['No proprietary platform.', 'No forced migration.', 'No vendor lock-in.'],
+
+    websitesTitle: 'Full-service dive shop websites',
+    websites: [
+      'Already have a website that needs improving? We also build and maintain websites for dive shops that want a better presence online.',
+      'A dive shop website is often the first impression a customer has, before they book a course, a trip, or a set of gear. We build fast, modern, search-engine-friendly sites designed to bring you more divers.',
+    ],
+    websiteServiceTitle: 'Website development',
+    websiteService: [
+      'Design built around search engines',
+      'Working with your team on structure, content and branding',
+      'Modern layouts that work on any screen',
+      'Cloudflare hosting',
+      'Fast, secure, low-maintenance deployments',
+      'Ongoing improvements and updates',
+    ],
+    websiteServiceNote:
+      'We build them on the same principles as FunDive: reliable infrastructure, modern technology, and full ownership for you.',
+
+    websitePricingTitle: 'Website pricing',
+    websiteSetupTitle: 'Website setup',
+    websiteSetupIncludes: [
+      'Planning and design, together with you',
+      'Development and deployment',
+      'Cloud infrastructure setup',
+      'Domain and SSL certificate',
+      'A structure search engines understand',
+    ],
+    websiteMaintenanceTitle: 'Website maintenance',
+    websiteMaintenanceIncludes: [
+      'Content updates',
+      'Technical maintenance',
+      'Security updates',
+      'Infrastructure management',
+      'Ongoing improvements',
+      'Support requests',
+    ],
+    websitePricingNote:
+      'A website needs more back-and-forth and more work specific to your shop, so website projects are priced separately from running FunDive.',
+
+    closingTitle: 'One technology partner for your dive shop',
+    closingBlurb:
+      'Whether you need a dive shop management system, a website that brings in divers, or someone to keep the lights on, we help you build digital infrastructure you actually own.',
+    closing: [
+      'Open-source software',
+      'Infrastructure owned by you',
+      'Set up properly, by people who dive',
+      'Support for the long run',
+    ],
+    slogan: 'We build it. You own it.',
+    ctaTitle: 'Talk to us',
+    ctaBlurb: 'Tell us about your shop, and we will work out together what you actually need.',
+    ctaButton: 'Get in touch',
   },
   notFound: {
     code: '404',
