@@ -118,6 +118,10 @@ Maze**, a quiz game hidden in `src/components/game/WreckMaze.svelte`. Its 52 que
 are content, and live in `src/content/quiz-questions.ts` — you can add more without
 touching the game itself.
 
+The game is not part of the file every visitor downloads. `App.svelte` fetches it only
+when somebody first clicks the octopus, so the 15 kB it weighs is paid by the few people
+who play it. A browser test in `e2e/game.spec.ts` checks this is still true.
+
 Two known problems, if you want to fix them:
 
 - The octopus is `hidden xl:block`, so **on a phone or tablet there is no way to open the

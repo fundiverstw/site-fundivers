@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Component } from 'svelte'
+  import { untrack, type Component } from 'svelte'
   import { path, handleLinkClick } from '$engine/router'
   import { locale } from '$engine/i18n'
   // Easter-egg game state — opened by clicking the nav mascot (NavMascot.svelte).
@@ -18,7 +18,6 @@
   import Calendar from '$pages/Calendar.svelte'
   import Team from '$pages/Team.svelte'
   import NotFound from '$pages/NotFound.svelte'
-  import WreckMaze from '$components/game/WreckMaze.svelte'
 
   const routes: Record<string, Component> = {
     '/': Home,
@@ -43,6 +42,21 @@
   // Keep <html lang> in sync with the chosen locale.
   $effect(() => {
     document.documentElement.lang = $locale
+  })
+
+  // The Wreck Maze is an easter egg almost nobody opens, and it costs 15 kB
+  // gzipped. Fetch it the first time somebody clicks the octopus, then keep it
+  // mounted — it renders nothing at all while `open` is false, and staying
+  // mounted means a second visit does not re-download it.
+  let Game = $state<Component<{ open?: boolean; onClose: () => void }> | null>(null)
+  $effect(() => {
+    if (!$gameOpen) return
+    // Reading `Game` untracked: this effect writes it, and depending on what it
+    // writes is how you get effect_update_depth_exceeded.
+    untrack(() => {
+      if (Game) return
+      import('$components/game/WreckMaze.svelte').then((m) => (Game = m.default))
+    })
   })
 
   // The two caustics layers. Same filter, different numbers: a teal layer of
@@ -214,4 +228,6 @@
   <Footer />
 </div>
 
-<WreckMaze open={$gameOpen} onClose={() => gameOpen.set(false)} />
+{#if Game}
+  <Game open={$gameOpen} onClose={() => gameOpen.set(false)} />
+{/if}

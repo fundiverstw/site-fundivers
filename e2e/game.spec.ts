@@ -12,6 +12,25 @@ const title = (page: import('@playwright/test').Page) =>
 // Tagged, not skipped: playwright.config.ts stops the mobile project from
 // collecting these at all, so they never show up as "5 skipped" in the report.
 test.describe('desktop', { tag: '@desktop-only' }, () => {
+  // The game is a separate chunk, fetched on demand. If somebody turns the
+  // dynamic import in App.svelte back into a static one, every visitor pays
+  // 15 kB gzipped for an easter egg they will never open, and nothing else
+  // would notice.
+  test('is not downloaded until you open it', async ({ page }) => {
+    const chunks: string[] = []
+    page.on('request', (r) => {
+      if (/WreckMaze.*\.js$/.test(r.url())) chunks.push(r.url())
+    })
+
+    await visit(page, '/')
+    await page.waitForLoadState('networkidle')
+    expect(chunks, 'the game was downloaded before anyone asked for it').toEqual([])
+
+    await page.getByRole('button', { name: 'Play Wreck Maze' }).click()
+    await expect(title(page)).toBeVisible()
+    expect(chunks.length, 'the game chunk was never fetched').toBeGreaterThan(0)
+  })
+
   test('the octopus opens the Wreck Maze', async ({ page }) => {
     const problems = watchForProblems(page)
     await visit(page, '/')
