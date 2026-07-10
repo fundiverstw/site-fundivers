@@ -11,7 +11,7 @@ command. Until then you can experiment freely.
 
 ```bash
 npm run dev       # 1. look at it on your own computer
-npm run check     # 2. ask the computer to find your mistakes
+npm run verify    # 2. ask the computer to find your mistakes
 npm run deploy    # 3. put it on the real website
 ```
 
@@ -29,17 +29,15 @@ This is a private copy running on your machine. Nobody else can see it.
 ### 2. Check it
 
 ```bash
-npm run check
+npm run verify
 ```
 
-Wait for the last line. You want:
+This runs five checks in about thirty seconds: the types, the linter, the formatter, the
+unit tests, and the browser tests. Wait for it to finish. If nothing is red, you're done.
 
-```
-COMPLETED 596 FILES 0 ERRORS 0 WARNINGS
-```
-
-If it says `1 ERROR`, read the line above it. It names the file and the line number, and
-usually says exactly what's wrong. **Do not publish with errors.**
+If something fails, read the last few lines — they name the file and usually say exactly
+what is wrong. **Do not publish with errors.** [How we check the site still
+works](testing.md) explains each check and what a failure usually means.
 
 ### 3. Publish it
 
@@ -70,7 +68,7 @@ three in order:
 
 ```bash
 git pull
-npm run check
+npm run verify
 npm run deploy
 ```
 
@@ -105,7 +103,7 @@ git restore .                            # everything
 | --- | --- |
 | `Missing VITE_SUPABASE_URL…` | You have no `.env` file. Copy `.env.example` to `.env` and fill it in. Ask whoever set the project up for the values. |
 | `Authentication error` / `10000` | The Cloudflare token in `.env` is missing, wrong, or expired. |
-| Type errors, then it stops | `npm run deploy` runs `npm run check` first, on purpose. Fix the errors and try again. |
+| Errors, then it stops before uploading | `npm run deploy` runs `npm run verify` first, on purpose. Fix what it names and try again. |
 | It worked, but the site looks unchanged | Hard-refresh the browser: `Ctrl+Shift+R`. |
 
 The `.env` file holds passwords. It is deliberately excluded from git — never commit it,

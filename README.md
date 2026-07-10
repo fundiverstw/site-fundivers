@@ -16,8 +16,9 @@ Structured to mirror [fundiverstw.com](https://www.fundiverstw.com/): **Courses 
 
 **→ [fundiverstw.github.io/site-fundivers](https://fundiverstw.github.io/site-fundivers/)**
 
-Plain-language recipes for changing the site — the words, the colours, the dive sites, the
-photos — aimed at someone new to the codebase. Source in [`docs/`](docs/).
+Plain-language instructions for changing the site — the words, the colours, the dive
+sites, the photos — aimed at someone new to the codebase, including a from-zero
+explainer of what a server, Cloudflare and Svelte are. Source in [`docs/`](docs/).
 
 ## Project layout
 
@@ -45,13 +46,23 @@ npm run dev            # http://localhost:5173
 
 ### Scripts
 
-| Command           | What it does                                  |
-| ----------------- | --------------------------------------------- |
-| `npm run dev`     | Start the Vite dev server                     |
-| `npm run build`   | Type-check (`svelte-check`) then build `dist/`|
-| `npm run preview` | Preview the production build locally          |
-| `npm run check`   | Type-check only                               |
-| `npm run deploy`  | Build and `wrangler deploy` to Cloudflare     |
+| Command                | What it does                                                     |
+| ---------------------- | ---------------------------------------------------------------- |
+| `npm run dev`          | Start the Vite dev server                                        |
+| `npm run verify`       | **The gate.** Types, lint, formatting, unit tests, browser tests |
+| `npm run check`        | Type-check only (`svelte-check`)                                 |
+| `npm run lint`         | ESLint (`lint:fix` to autofix)                                   |
+| `npm run format`       | Prettier (`format:check` to verify only)                         |
+| `npm run test:unit`    | Vitest — pure functions + content integrity                      |
+| `npm run test:e2e`     | Playwright — the built site in a real browser                    |
+| `npm run build`        | Type-check then build `dist/`                                    |
+| `npm run preview`      | Preview the production build locally                             |
+| `npm run deploy`       | `verify`, build, then `wrangler deploy` to Cloudflare            |
+
+CI (`.github/workflows/ci.yml`) runs `verify` on every push and pull request. It needs no
+secrets: the browser tests intercept every Supabase call, so placeholder env vars suffice.
+The flip side is that **nothing here proves the site can read the live database** — a
+breaking migration in `app-fundivers` will pass CI and blank the calendar.
 
 ## Environment
 

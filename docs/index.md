@@ -10,6 +10,9 @@ want to edit is text sitting in one folder.
 > **New to this kind of work?** Read **[What is all this?](what-is-all-this.md)** first.
 > It explains what a server is, what Cloudflare is, what Svelte is, and every other word
 > used on these pages. It assumes you have never built a website before.
+>
+> Then **[What every file is for](project-files.md)**, if the project folder looks like
+> a wall of files you were not expecting.
 
 ---
 
@@ -87,16 +90,21 @@ updates by itself. Nothing you do here affects the real website.
 When you're happy:
 
 ```bash
-npm run check     # asks the computer to look for mistakes
+npm run verify    # asks the computer to check everything
 npm run deploy    # puts your changes on the real website
 ```
 
-> **Always run `npm run check` before `npm run deploy`.**
-> It takes about five seconds and it catches the kind of mistake — a missing comma, a
-> word translated into English but not Japanese — that would otherwise break the live
-> site. If it prints `0 errors`, you're safe.
+> **`npm run verify` checks your work in about thirty seconds.** It reads the types,
+> runs the linter, and opens the real site in a real browser to make sure every page
+> still loads. It catches the kind of mistake — a missing comma, a word translated into
+> English but not Japanese, a photo that isn't there — that would otherwise reach a
+> visitor. If nothing is red, you're safe.
+>
+> You do not have to remember: `npm run deploy` runs it for you and refuses to publish
+> if anything fails. The same checks also run on GitHub every time you push.
 
-More detail in [Publishing your changes](publishing.md).
+More detail in [How we check the site still works](testing.md) and
+[Publishing your changes](publishing.md).
 
 ---
 
@@ -106,18 +114,21 @@ More detail in [Publishing your changes](publishing.md).
    time. Your changes there will vanish.
 2. **Never edit `src/engine/`** unless you know exactly why. Nothing in there is
    something a normal edit needs.
-3. **Run `npm run check` before you publish.** Every time.
-4. **If it breaks, you can always undo.** Nothing is permanent until you publish. In the
+3. **If it breaks, you can always undo.** Nothing is permanent until you publish. In the
    terminal, `git restore <the-file>` puts a file back the way it was.
+4. **Never make a red test go green by deleting the test.** It is telling you something.
+   If you are certain the test is wrong, say why in the commit message.
 
 ---
 
 ## Step-by-step guides
 
 - [What is all this?](what-is-all-this.md) — servers, Cloudflare, Svelte, git, explained from zero
+- [What every file is for](project-files.md) — the twenty-five things in the project folder
 - [Changing words](changing-words.md) — text on any page, in any language
 - [Changing how it looks](changing-look.md) — colours, fonts, spacing
 - [Adding a dive site](adding-a-dive-site.md) — the full four steps
 - [Adding photos](adding-photos.md) — gallery photos and card photos
+- [How we check the site still works](testing.md) — the linter and the tests
 - [Publishing your changes](publishing.md) — getting it onto the real website
 - [How it works](how-it-works.md) — for when you're curious about the machinery
