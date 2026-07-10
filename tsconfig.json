@@ -15,7 +15,16 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": true,
+
+    /* Folder shortcuts — must match the "alias" block in vite.config.ts. */
+    "paths": {
+      "$content/*": ["./src/content/*"],
+      "$styles/*": ["./src/styles/*"],
+      "$engine/*": ["./src/engine/*"],
+      "$components/*": ["./src/components/*"],
+      "$pages/*": ["./src/pages/*"]
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.svelte", "vite.config.ts", "svelte.config.js"]
 }

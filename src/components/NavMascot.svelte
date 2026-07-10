@@ -1,7 +1,7 @@
 <script lang="ts">
   import { fade } from 'svelte/transition'
-  import { ADS } from '../lib/config'
-  import { openGame } from '../lib/game'
+  import { ADS } from '$content/settings'
+  import { openGame } from '$engine/game'
   import MascotChar from './MascotChar.svelte'
 
   // The character lives hidden behind the logo. Every so often he slides out

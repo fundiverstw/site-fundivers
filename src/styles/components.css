@@ -1,0 +1,69 @@
+/* ── THE REUSABLE LOOKS ────────────────────────────────────────────────────
+   Named looks you can drop onto any element by writing the name as a class,
+   e.g. `<div class="glass">`. Four of them:
+
+     .glass       a frosted, translucent panel  (used by every card)
+     .glow-teal   a neon teal edge              (.glow-mauve is the purple one)
+     .mono        the terminal-style typeface   (dates, prices, labels)
+     .waybar      the rounded pill bar used by the nav
+
+   Spacing and layout are NOT here — those are written directly on each element
+   in the markup, as Tailwind classes like `flex gap-4 p-6`. See the docs:
+   "Changing how it looks".
+   ───────────────────────────────────────────────────────────────────────── */
+
+@layer components {
+  /* Frosted "window" surface — the riced glassmorphism: blurred translucent
+     fill + hairline top highlight, like a Hyprland floating window. */
+  .glass {
+    background: color-mix(in oklab, #0d1a2e 62%, transparent);
+    border: 1px solid color-mix(in oklab, #ffffff 12%, transparent);
+    backdrop-filter: blur(12px) saturate(1.2);
+    -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  }
+  .glass:hover {
+    background: color-mix(in oklab, #0d1a2e 72%, transparent);
+    border-color: color-mix(in oklab, var(--color-reef-400) 55%, transparent);
+  }
+
+  /* Neon-glow accent border — the "active window" look. Pair with a card. */
+  .glow-teal {
+    box-shadow: 0 0 0 1px rgba(44, 208, 197, 0.35),
+      0 0 22px -4px rgba(44, 208, 197, 0.5);
+  }
+  .glow-mauve {
+    box-shadow: 0 0 0 1px rgba(203, 166, 247, 0.35),
+      0 0 22px -4px rgba(203, 166, 247, 0.5);
+  }
+
+  /* Terminal-style metadata: monospace + faint tracking. */
+  .mono {
+    font-family: var(--font-mono);
+    font-feature-settings: "ss01", "cv01";
+    letter-spacing: -0.01em;
+  }
+
+  /* Waybar module — a rounded pill nav item with a subtle inset fill; the
+     active module lights up with an accent underglow. */
+  .waybar {
+    background: color-mix(in oklab, #0d1a2e 55%, transparent);
+    border: 1px solid color-mix(in oklab, #ffffff 10%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .module {
+    border: 1px solid transparent;
+    transition: color 0.15s, background-color 0.15s, border-color 0.15s,
+      box-shadow 0.15s;
+  }
+  .module:hover {
+    background: color-mix(in oklab, #ffffff 8%, transparent);
+    border-color: color-mix(in oklab, #ffffff 12%, transparent);
+  }
+  .module-active {
+    color: var(--color-reef-300);
+    background: color-mix(in oklab, var(--color-reef-400) 14%, transparent);
+    border-color: color-mix(in oklab, var(--color-reef-400) 45%, transparent);
+    box-shadow: 0 0 18px -6px rgba(44, 208, 197, 0.7);
+  }
+}

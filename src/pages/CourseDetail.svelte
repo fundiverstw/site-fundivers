@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { path } from '../lib/router'
-  import { courseByRouteId, courseId, coursePath, COURSES, type CourseCard } from '../lib/courses'
-  import { COURSE_GUIDES, sessionMatchesCourse } from '../lib/course-guides'
-  import { fetchUpcomingEvents, type UpcomingEvent } from '../lib/events'
-  import { formatSpan, twd } from '../lib/format'
-  import { registerUrl } from '../lib/config'
-  import { t } from '../lib/i18n'
+  import { path } from '$engine/router'
+  import { courseByRouteId, courseId, coursePath, COURSES, type CourseCard } from '$content/courses'
+  import { COURSE_GUIDES, sessionMatchesCourse } from '$content/course-guides'
+  import { fetchUpcomingEvents, type UpcomingEvent } from '$engine/events'
+  import { formatSpan, twd } from '$engine/format'
+  import { registerUrl } from '$content/settings'
+  import { t } from '$engine/i18n'
 
   const COURSE_BASE = 'https://www.fundiverstw.com/courses-1/'
 

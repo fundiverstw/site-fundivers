@@ -16,7 +16,7 @@
   // for the whole run, so you learn the wreck by landmark, not just by minimap.
 
   import { untrack } from 'svelte'
-  import { QUESTIONS, type Question } from './questions'
+  import { QUESTIONS, type Question } from '$content/quiz-questions'
 
   let { open = false, onClose }: { open?: boolean; onClose: () => void } = $props()
 

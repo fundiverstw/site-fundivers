@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { CONTACT } from '../lib/config'
-  import { mediaIdLocal } from '../lib/images'
-  import { t } from '../lib/i18n'
-  import PageHeader from '../components/PageHeader.svelte'
+  import { CONTACT } from '$content/settings'
+  import { mediaIdLocal } from '$engine/images'
+  import { t } from '$engine/i18n'
+  import PageHeader from '$components/PageHeader.svelte'
 
   // `image` is a self-hosted headshot; `monkey` swaps in a placeholder avatar
   // when there's no photo yet (Eric). `role` is an i18n key; bios stay English

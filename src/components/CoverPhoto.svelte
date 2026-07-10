@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { t } from '../lib/i18n'
+  import { t } from '$engine/i18n'
 
   // A fill-the-parent cover image with a graceful "pending image" placeholder.
   // Drop into any `relative` box (cards, heroes). The site serves only its own

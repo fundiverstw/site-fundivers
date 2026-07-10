@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { t } from '../lib/i18n'
+  import { t } from '$engine/i18n'
 </script>
 
 <section class="mx-auto flex max-w-[1600px] flex-col items-center gap-4 px-4 py-32 text-center sm:px-6">

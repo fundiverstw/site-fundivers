@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { path } from '../lib/router'
-  import { diveSiteById, REGION_META } from '../lib/sites'
-  import { fetchDestinations, type Destination } from '../lib/destinations'
-  import { siteImage } from '../lib/event-pool'
-  import { DIVE_SITE_GUIDES } from '../lib/dive-site-guides'
-  import { wixSiteUrl } from '../lib/dive-site-links'
-  import { t } from '../lib/i18n'
-  import CoverPhoto from '../components/CoverPhoto.svelte'
+  import { path } from '$engine/router'
+  import { diveSiteById, REGION_META } from '$content/dive-sites'
+  import { fetchDestinations, type Destination } from '$engine/destinations'
+  import { siteImage } from '$engine/photo-pool'
+  import { DIVE_SITE_GUIDES } from '$content/dive-site-guides'
+  import { wixSiteUrl } from '$engine/links'
+  import { t } from '$engine/i18n'
+  import CoverPhoto from '$components/CoverPhoto.svelte'
 
   // The route param: /sites/<id>. The router serves this component for any
   // /sites/<something> path, so we resolve the id from the current path.

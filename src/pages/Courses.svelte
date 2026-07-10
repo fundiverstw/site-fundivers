@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { fetchUpcomingEvents, type UpcomingEvent } from '../lib/events'
-  import { formatSpan, twd } from '../lib/format'
-  import { bookUrl, registerUrl } from '../lib/config'
-  import { COURSES, coursePath } from '../lib/courses'
-  import { t } from '../lib/i18n'
-  import PageHeader from '../components/PageHeader.svelte'
+  import { fetchUpcomingEvents, type UpcomingEvent } from '$engine/events'
+  import { formatSpan, twd } from '$engine/format'
+  import { bookUrl, registerUrl } from '$content/settings'
+  import { COURSES, coursePath } from '$content/courses'
+  import { t } from '$engine/i18n'
+  import PageHeader from '$components/PageHeader.svelte'
 
   let upcoming = $state<UpcomingEvent[]>([])
   let loading = $state(true)

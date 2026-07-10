@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { CONTACT } from '../lib/config'
-  import { t } from '../lib/i18n'
+  import { CONTACT } from '$content/settings'
+  import { t } from '$engine/i18n'
   import SocialIcons from './SocialIcons.svelte'
 
   const year = new Date().getFullYear()

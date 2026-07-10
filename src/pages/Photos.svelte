@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { SOCIAL } from '../lib/config'
-  import { t } from '../lib/i18n'
-  import { GALLERY, ALL_PHOTOS } from '../lib/gallery'
-  import PageHeader from '../components/PageHeader.svelte'
+  import { SOCIAL } from '$content/settings'
+  import { t } from '$engine/i18n'
+  import { GALLERY, ALL_PHOTOS } from '$content/photo-gallery'
+  import PageHeader from '$components/PageHeader.svelte'
 
   // Lightbox: index into ALL_PHOTOS, or null when closed.
   let lightbox = $state<number | null>(null)

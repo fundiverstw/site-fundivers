@@ -1,9 +1,9 @@
 <script lang="ts">
-  import taiwanGeo from '../lib/taiwan.geo.json'
-  import { fetchDiveSites, diveSitePath, type DiveSite, type TaiwanRegion } from '../lib/sites'
-  import { placeLabels } from '../lib/map-layout'
-  import { t } from '../lib/i18n'
-  import PageHeader from '../components/PageHeader.svelte'
+  import taiwanGeo from '$engine/taiwan.geo.json'
+  import { fetchDiveSites, diveSitePath, type DiveSite, type TaiwanRegion } from '$content/dive-sites'
+  import { placeLabels } from '$engine/map-layout'
+  import { t } from '$engine/i18n'
+  import PageHeader from '$components/PageHeader.svelte'
 
   // Ported from app-fundivers MapPage.tsx (see reference/dive-map). Inline SVG
   // map of Taiwan with clickable regions, a per-region site list, and links out

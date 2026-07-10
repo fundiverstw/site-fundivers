@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { fetchUpcomingEvents, type UpcomingEvent, type ModalEvent } from '../lib/events'
-  import { formatSpan, twd } from '../lib/format'
-  import GetInTouch from '../components/GetInTouch.svelte'
-  import EventModal from '../components/calendar/EventModal.svelte'
-  import { mediaIdLocal } from '../lib/images'
-  import { siteImage } from '../lib/event-pool'
-  import { t } from '../lib/i18n'
-  import CoverPhoto from '../components/CoverPhoto.svelte'
+  import { fetchUpcomingEvents, type UpcomingEvent, type ModalEvent } from '$engine/events'
+  import { formatSpan, twd } from '$engine/format'
+  import GetInTouch from '$components/GetInTouch.svelte'
+  import EventModal from '$components/calendar/EventModal.svelte'
+  import { mediaIdLocal } from '$engine/images'
+  import { siteImage } from '$engine/photo-pool'
+  import { t } from '$engine/i18n'
+  import CoverPhoto from '$components/CoverPhoto.svelte'
 
   let upcoming = $state<UpcomingEvent[]>([])
   let loading = $state(true)

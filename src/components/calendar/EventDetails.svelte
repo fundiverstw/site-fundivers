@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { EventDetails } from '../../lib/events'
-  import { t } from '../../lib/i18n'
+  import type { EventDetails } from '$engine/events'
+  import { t } from '$engine/i18n'
 
   // Ported from app-fundivers EventDetails.tsx — renders an event's
   // descriptive text inside the (light) calendar modal.

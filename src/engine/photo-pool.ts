@@ -1,9 +1,9 @@
-// Local photo pool for the whole site's dive imagery. The app is phasing out
-// per-event images, so photos live here, bundled, organised into subdirectories:
+// Picks which photo each card on the site shows. The photos themselves live in
+// src/content/photos/, in three folders:
 //
-//   src/lib/event-pool/sites/<dive-site-id>/   one or more photos per dive site
-//   src/lib/event-pool/_general/               fallback dive shots (unmatched / trips)
-//   src/lib/event-pool/courses/                course-class photos
+//   photos/dive-sites/<dive-site-id>/   one or more photos of that dive site
+//   photos/general/                     fallback dive shots (unmatched / trips)
+//   photos/courses/                     course-class photos
 //
 // Drop more photos into any folder and they're picked up automatically (the
 // glob runs at build time — no manifest to edit, no duplicated files). Used two
@@ -12,7 +12,7 @@
 // by title keyword and gets a random photo (repeats minimised on screen);
 // courses draw from the course folder.
 
-const files = import.meta.glob('./event-pool/**/*.{webp,avif,jpg,jpeg,png}', {
+const files = import.meta.glob('../content/photos/**/*.{webp,avif,jpg,jpeg,png}', {
   eager: true,
   query: '?url',
   import: 'default',
@@ -23,10 +23,10 @@ const generalPool: string[] = []
 const coursePool: string[] = []
 
 for (const [path, url] of Object.entries(files)) {
-  if (path.includes('/_general/')) generalPool.push(url)
+  if (path.includes('/general/')) generalPool.push(url)
   else if (path.includes('/courses/')) coursePool.push(url)
   else {
-    const m = path.match(/\/sites\/([^/]+)\//)
+    const m = path.match(/\/dive-sites\/([^/]+)\//)
     if (m) (sitePools[m[1]] ??= []).push(url)
   }
 }

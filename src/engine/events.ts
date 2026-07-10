@@ -1,6 +1,6 @@
 import { supabase } from './supabase'
 import { type DiveOuting } from './event-colors'
-import { eventImage } from './event-pool'
+import { eventImage } from './photo-pool'
 
 // Public, read-only view of the shared event catalog. The app consolidated the
 // old EO_dives + EO_courses Wix-sync tables into a single `events` table keyed

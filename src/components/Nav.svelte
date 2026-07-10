@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { path } from '../lib/router'
-  import { t, locale, setLocale, LOCALES } from '../lib/i18n'
+  import { path } from '$engine/router'
+  import { t, locale, setLocale, LOCALES } from '$engine/i18n'
   import MenuIcon from './MenuIcon.svelte'
   import GlobeIcon from './GlobeIcon.svelte'
   import NavMascot from './NavMascot.svelte'

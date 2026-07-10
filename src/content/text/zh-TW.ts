@@ -1,0 +1,121 @@
+import type { Dict } from './en'
+
+// 繁體中文. Machine-translated first pass — refine freely.
+// The `: Dict` annotation makes TypeScript flag any key you miss.
+
+export const zhTW: Dict = {
+  nav: { courses: '課程', sites: '潛點', map: '地圖', photos: '相片', travel: '旅遊', calendar: '行事曆', team: '團隊', gear: '裝備' },
+  gear: {
+    title: '裝備銷售、維修與租借',
+    subtitle: '潛水所需的一切——優質的水肺與自由潛水裝備，可購買或租借，並提供專業維修保養，讓你的裝備隨時安全、隨時可下水。',
+    salesTitle: '銷售',
+    salesText: '從你的第一副面鏡與蛙鞋，到完整的技術潛水配置，我們協助你挑選最適合自己與潛水方式的裝備。可在店內試用，並由現役教練提供誠實建議，而非制式推銷。',
+    salesItems: ['面鏡、呼吸管、蛙鞋與潛水靴', '防寒衣、頭套、手套與防磨衣', 'BCD、調節器與潛水電腦錶', '自由潛水裝備與配件', '氣瓶、配重與備用小物'],
+    serviceTitle: '維修',
+    serviceText: '讓你的生命支持裝備維持在最佳狀態。我們的技師維修調節器與 BCD，更換電池與 O 環，並檢測氣瓶壓力，讓小問題不會在水下變成大麻煩。',
+    serviceItems: ['調節器年度保養與翻修', 'BCD 檢查與維修', '潛水電腦錶更換電池', '氣瓶目視檢查與充氣', '防寒衣與乾衣小修'],
+    rentalTitle: '租借',
+    rentalText: '輕裝旅行，或想在購買前先試用？可依天數或行程租借保養良好的裝備——整套或單件，出店前皆已調整尺寸並檢查完畢。',
+    rentalItems: ['整套水肺裝備與單件租借', '各種尺寸的防寒衣', '潛水電腦錶與手電筒', '單日、週末與行程費率', '多數課程與帶領潛水已含裝備'],
+    ctaTitle: '不確定需要什麼？',
+    ctaText: '歡迎到店或傳訊給我們——我們會協助你找到、試穿或維修合適的裝備。',
+  },
+  map: {
+    title: '台灣潛點地圖', hint: '點選標記或下方地區以放大。',
+    back: '← 返回總覽', shore: '岸潛', boat: '船潛', diveSites: '潛點', close: '關閉',
+  },
+  common: {
+    readMore: '了解更多', viewOnMap: '查看地圖', details: '詳情', book: '預約', bookNow: '立即預約',
+    register: '報名', joinWaitlist: '加入候補', waitlist: '候補', viewAll: '查看全部',
+    contactUs: '聯絡我們', from: '起', nothingScheduled: '目前尚未安排。', featured: '精選',
+    dive: '潛水', course: '課程', loadingDetails: '載入詳情中…', pendingImage: '照片即將上架',
+  },
+  home: {
+    featured: '精選', upcomingDives: '近期潛水', upcomingCourses: '近期課程',
+    exploreServices: '探索我們的服務',
+    exploreServicesIntro:
+      '了解讓 Fun Divers TW 成為潛水愛好者首選的獨特之處。憑藉豐富的經驗與對顧客滿意度的堅持，我們提供出色的導潛行程、便捷的預約服務，以及全系列 PADI 休閒潛水課程。',
+    services: [
+      { title: 'PADI 課程', desc: 'Fun Divers TW 提供全系列 PADI 認證課程，從初學者到專業等級！在此查看可報名的課程！' },
+      { title: '潛點', desc: 'Fun Divers TW 提供在地的岸潛與船潛行程。台灣東北角有許多美麗的潛點等你來探索。' },
+      { title: '裝備銷售、保養與租借', desc: 'Fun Divers TW 提供各式水肺與自由潛水裝備銷售或租借，也可保養調節器與 BCD！歡迎洽詢了解更多！' },
+      { title: '國際潛旅', desc: 'Fun Divers TW 規劃前往各個精彩目的地的團體行程！參加我們安排好的潛旅，或讓我們協助你規劃客製化行程！' },
+      { title: '國內潛旅', desc: '與 Fun Divers TW 一起探索台灣周邊絕美的潛水勝地！參加既定行程，或讓我們協助你規劃客製化行程。' },
+      { title: 'EFR 急救課程', desc: 'Fun Divers TW 提供全系列 EFR 課程，學習在緊急時刻幫助自己與他人。' },
+    ],
+    divingTitle: '在台灣潛水：探索波濤之下的世界',
+    divingParas: [
+      '台灣擁有豐富的文化底蘊與自然之美，為潛水愛好者提供深入碧藍海域的絕佳機會。台灣全年皆可潛水，各地區的潛水季節各有不同。一般將台灣分為三大潛水區域：北部（含台北、基隆、宜蘭）、南部（小琉球與墾丁），以及離島（澎湖、綠島與蘭嶼）。',
+      '北部的潛水季從四月延續到十月初，最溫暖的月份為七月與八月。冬季雖仍可潛水，但水溫會降至 16–18°C，且海況難以預測，較難提前安排。',
+      '南部則全年皆為潛水季，因為墾丁與小琉球都能避開大部分冬季強風與風浪。水溫也比北部溫暖，僅在一月至三月之間降至 22°C 以下。',
+      '離島方面，澎湖位於西岸，綠島與蘭嶼則坐落於東南外海，各有專屬的潛水季節。旺季為四月至十一月，淡季則為十二月至三月。旺季水溫較暖（25–30°C）、海況更為平穩；淡季水溫較涼（18–24°C），海況也較難預測。',
+      '在台灣之外，鄰近的菲律賓與印尼等潛水天堂擁有互補的潛水季節，讓水下探索的魅力永無止境。',
+      '踏上一段穿越台灣潛水季節與更遠方的旅程，每一次下潛都是窺見波濤之下奇妙世界的機會。',
+    ],
+    taglineMain: '盡情探險', taglineSub: '安心潛水',
+  },
+  getInTouch: {
+    title: '聯絡我們', seeCalendar: '查看完整行事曆', tryDive: '預約體驗潛水', requestCourse: '報名課程諮詢',
+    name: '姓名', email: '電子郵件', request: '您的需求',
+    requestPlaceholder: '您感興趣的日期、潛水經驗，或其他想讓我們知道的事…',
+    cancel: '取消', send: '送出需求',
+    sent: '您的郵件程式應已開啟並填好需求內容，等待寄出。若未開啟，請直接寄信至 {email}。',
+    orMessage: '或直接傳訊給我們：',
+  },
+  courses: {
+    title: 'PADI 課程', subtitle: '學習潛水、提升等級或邁向專業——台灣全系列 PADI 休閒潛水課程。',
+    upcomingDates: '近期課程日期',
+    noDates: '目前沒有排定的課程日期——課程亦可依需求安排。', getInTouch: '與我們聯絡', enroll: '報名',
+  },
+  courseDetail: {
+    back: '← 所有課程', overview: '課程介紹', youWillLearn: '你將學到', quickFacts: '課程資訊',
+    prerequisites: '先修資格', minAge: '最低年齡', duration: '時長', depth: '最大深度', certifies: '取得資格',
+    upcoming: '近期日期', noDates: '目前沒有排定的日期——本課程亦可依需求安排。',
+    next: '接下來', fullPage: '完整課程頁面', cta: '準備好開始了嗎？',
+    ctaText: '預約日期，或詢問我們關於這門課程的任何問題。', contact: '與我們聯絡', notFound: '找不到這門課程。',
+  },
+  sites: {
+    title: '潛點', subtitle: '從北部便利的岸潛到世界級的離島潛水——台灣水下的精華亮點。',
+    none: '尚未列出任何潛點。', loadError: '無法載入潛點',
+    areas: { Domestic: '國內', International: '國際' },
+  },
+  siteDetail: {
+    back: '← 所有潛點', overview: '潛點介紹', highlights: '亮點', marineLife: '海洋生物',
+    belowSurface: '水面下', aboveSurface: '水面上', gettingThere: '如何前往',
+    quickFacts: '重點資訊', depth: '深度', difficulty: '等級', season: '最佳季節', waterTemp: '水溫',
+    visibility: '能見度', requirements: '潛水員資格', diveType: '潛水類型', region: '區域',
+    directions: '在 Google 地圖開啟', morePage: '完整潛點頁面', cta: '來潛這個點',
+    ctaText: '在行事曆上查看，或詢問我們的行程。', seeCalendar: '查看行事曆', contact: '聯絡我們',
+    notFound: '找不到這個潛點。',
+  },
+  travel: {
+    title: '潛旅', subtitle: '既定團體行程與完全客製化的旅程——台灣與更遠的地方。',
+    aroundTaiwan: '台灣周邊', international: '國際潛旅', loadError: '無法載入目的地',
+    ctaTitle: '準備好規劃下一趟旅程了嗎？',
+    ctaText: '在行事曆查看近期出團，或與我們聯絡，協助你安排客製化行程。',
+    seeCalendar: '查看行事曆', planCustom: '規劃客製化行程',
+  },
+  calendar: {
+    title: '行事曆', subtitle: '潛水與課程行程一覽。點選任一活動查看詳情並預約名額。',
+    all: '全部', dives: '潛水', courses: '課程', thisMonth: '本月', noEvents: '尚無排定的活動。',
+    loadError: '無法載入行事曆', full: '此活動已額滿——請加入候補名單。',
+    details: { about: '活動介紹', included: '費用包含', notIncluded: '費用不含', schedule: '行程／時程', transportation: '交通', prerequisites: '報名條件', minCert: '最低證照等級：', loggedDives: '潛水紀錄支數：' },
+  },
+  photos: {
+    title: '相片', subtitle: '與 FunDivers TW 一起一窺波濤之下的精彩。',
+    seeMore: '在社群看更多', follow: '追蹤我們，看行程回顧、海洋生物與幕後花絮。',
+    sections: { nudibranchs: '海蛞蝓', reef: '珊瑚礁生態' },
+    close: '關閉', prev: '上一張', next: '下一張',
+  },
+  team: {
+    title: 'Fun Divers 團隊', subtitle: '專注。專業。熱情。', visitWebsite: '造訪網站 →',
+    diveWithUs: '與我們一起潛水', diveWithUsText: '對課程或行程有任何疑問？我們很樂意協助。',
+    roles: { idc: 'IDC 資深教練', instructor: '教練', divemaster: '潛水長' },
+  },
+  footer: {
+    blurb: '導潛行程、PADI 課程，以及台灣與更遠方最棒的潛點。',
+    contact: '聯絡', follow: '追蹤', rights: 'Fun Divers Taiwan 版權所有。', proudly: '在台北以 🤿 ❤️ 用心打造', openSource: '開源專案',
+    openSourceBlurb: '我們自豪地開發 FunDive——我們的開源潛水店管理軟體。',
+  },
+  notFound: { code: '404', title: '找不到頁面', text: '這個頁面隨著洋流漂走了。', back: '回到首頁' },
+}

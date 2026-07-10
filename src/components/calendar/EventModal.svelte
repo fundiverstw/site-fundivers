@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { fetchEventDetails, type EventDetails, type ModalEvent } from '../../lib/events'
-  import { registerUrl } from '../../lib/config'
-  import { t } from '../../lib/i18n'
+  import { fetchEventDetails, type EventDetails, type ModalEvent } from '$engine/events'
+  import { registerUrl } from '$content/settings'
+  import { t } from '$engine/i18n'
   import EventDetailsView from './EventDetails.svelte'
 
   // Shared event detail modal used by the calendar and the homepage. Fetches

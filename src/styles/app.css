@@ -1,0 +1,17 @@
+/* The one stylesheet the app loads (from src/main.ts). It pulls in Tailwind and
+   then the three files below. You probably want one of those, not this one:
+
+     theme.css        colours, fonts, corner rounding
+     background.css   the underwater backdrop and site-wide basics
+     components.css   the reusable looks: .glass, .waybar, .mono, .glow-*
+*/
+@import "tailwindcss";
+
+/* Tell Tailwind where to look for class names. Without this it guesses from
+   this file's folder, which would be just src/styles/ — and every class used in
+   a component would be dropped from the build. */
+@source "../";
+
+@import "./theme.css";
+@import "./background.css";
+@import "./components.css";

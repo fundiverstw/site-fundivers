@@ -1,56 +1,11 @@
-@import "tailwindcss";
+/* ── THE BACKDROP ──────────────────────────────────────────────────────────
+   The deep-sea background behind every page, plus a few site-wide basics
+   (scrollbar, text selection, no margin on the body).
 
-/* Ocean brand palette — deep sea blues and reef teal. Tailwind v4 @theme
-   exposes these as utilities (bg-brand-600, text-reef-400, etc.). */
-@theme {
-  --color-brand-50: #eff8ff;
-  --color-brand-100: #dbeefe;
-  --color-brand-200: #bfe1fe;
-  --color-brand-300: #93cefd;
-  --color-brand-400: #60b0fa;
-  --color-brand-500: #3b91f6;
-  --color-brand-600: #2474eb;
-  --color-brand-700: #1d5dd8;
-  --color-brand-800: #1e4daf;
-  --color-brand-900: #0c2f6b;
-  --color-brand-950: #0a1f47;
-
-  --color-reef-50: #ecfdfb;
-  --color-reef-100: #cffaf3;
-  --color-reef-200: #a0f3e9;
-  --color-reef-300: #66e6da;
-  --color-reef-400: #2cd0c5;
-  --color-reef-500: #14b3aa;
-  --color-reef-600: #0d908b;
-  --color-reef-700: #107370;
-  --color-reef-800: #135b59;
-  --color-reef-900: #144b4a;
-
-  /* Catppuccin-flavoured neon accents for the "riced" look — used for glows,
-     borders, terminal-style metadata and active states. */
-  --color-mauve: #cba6f7;
-  --color-lav: #b4befe;
-  --color-pink: #f5c2e7;
-  --color-sky: #89dceb;
-  --color-peach: #fab387;
-  --color-green: #a6e3a1;
-
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif;
-  /* Monospace for the terminal/waybar flavour — dates, prices, labels. */
-  --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, "SF Mono",
-    "Cascadia Code", Menlo, Consolas, monospace;
-
-  /* Aggressive, squircle-style rounding site-wide — every rounded-* utility
-     gets larger so cards/panels read as soft squares, not rectangles.
-     (rounded-full pills are unaffected.) */
-  --radius-sm: 0.5rem;
-  --radius-md: 0.7rem;
-  --radius-lg: 1.1rem;
-  --radius-xl: 1.6rem;
-  --radius-2xl: 2.2rem;
-  --radius-3xl: 3rem;
-}
+   The "caustics" are the two drifting light-ribbon layers that make the page
+   look like it's underwater. They are expensive to draw, so they are switched
+   off on phones and for anyone who has asked their computer for less motion.
+   ───────────────────────────────────────────────────────────────────────── */
 
 *,
 *::before,
@@ -168,63 +123,7 @@ body {
   50%  { transform: translate3d(-9%, -2%, 0) scale(1.05); opacity: 0.72; }
 }
 
-/* Easter-egg trigger bubble — bobs gently in the corner. */
+/* Honour "reduce motion": hold the light ribbons still. */
 @media (prefers-reduced-motion: reduce) {
   .caustics-layer { animation: none; }
-}
-
-@layer components {
-  /* Frosted "window" surface — the riced glassmorphism: blurred translucent
-     fill + hairline top highlight, like a Hyprland floating window. */
-  .glass {
-    background: color-mix(in oklab, #0d1a2e 62%, transparent);
-    border: 1px solid color-mix(in oklab, #ffffff 12%, transparent);
-    backdrop-filter: blur(12px) saturate(1.2);
-    -webkit-backdrop-filter: blur(12px) saturate(1.2);
-  }
-  .glass:hover {
-    background: color-mix(in oklab, #0d1a2e 72%, transparent);
-    border-color: color-mix(in oklab, var(--color-reef-400) 55%, transparent);
-  }
-
-  /* Neon-glow accent border — the "active window" look. Pair with a card. */
-  .glow-teal {
-    box-shadow: 0 0 0 1px rgba(44, 208, 197, 0.35),
-      0 0 22px -4px rgba(44, 208, 197, 0.5);
-  }
-  .glow-mauve {
-    box-shadow: 0 0 0 1px rgba(203, 166, 247, 0.35),
-      0 0 22px -4px rgba(203, 166, 247, 0.5);
-  }
-
-  /* Terminal-style metadata: monospace + faint tracking. */
-  .mono {
-    font-family: var(--font-mono);
-    font-feature-settings: "ss01", "cv01";
-    letter-spacing: -0.01em;
-  }
-
-  /* Waybar module — a rounded pill nav item with a subtle inset fill; the
-     active module lights up with an accent underglow. */
-  .waybar {
-    background: color-mix(in oklab, #0d1a2e 55%, transparent);
-    border: 1px solid color-mix(in oklab, #ffffff 10%, transparent);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-  }
-  .module {
-    border: 1px solid transparent;
-    transition: color 0.15s, background-color 0.15s, border-color 0.15s,
-      box-shadow 0.15s;
-  }
-  .module:hover {
-    background: color-mix(in oklab, #ffffff 8%, transparent);
-    border-color: color-mix(in oklab, #ffffff 12%, transparent);
-  }
-  .module-active {
-    color: var(--color-reef-300);
-    background: color-mix(in oklab, var(--color-reef-400) 14%, transparent);
-    border-color: color-mix(in oklab, var(--color-reef-400) 45%, transparent);
-    box-shadow: 0 0 18px -6px rgba(44, 208, 197, 0.7);
-  }
 }

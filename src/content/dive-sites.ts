@@ -1,12 +1,69 @@
-import type { DiveSite } from './sites'
-
-// Static dive-site catalog for the /map and /sites pages.
+// The dive-site catalog — the list behind the /sites and /map pages.
 //
-// This data used to live in the shared Supabase `dive_sites` table, but the app
-// team dropped that table (it had no reader in the app itself). Since the set of
-// Taiwan dive sites is essentially static, it's bundled here instead — recovered
-// verbatim from app-fundivers' pre-drop migrations (the seed plus the name,
-// coordinate, dive_type and wix_slug follow-ups). Edit here + redeploy to change.
+// This is plain data: to add, rename or move a dive site, edit it here and
+// redeploy. Nothing else needs to change. The long write-up for each site (the
+// "Below the Surface" prose and so on) lives next door in dive-site-guides.ts,
+// keyed by the same `id`.
+//
+// It used to come from the shared Supabase `dive_sites` table, but the app team
+// dropped that table, so the rows were recovered verbatim from app-fundivers'
+// pre-drop migrations and bundled here.
+
+// Regions that sit on the Taiwan map (Map.svelte draws exactly these)…
+export type TaiwanRegion =
+  | 'keelung'
+  | 'longdong'
+  | 'yilan'
+  | 'greenisland'
+  | 'lanyu'
+  | 'xiaoliuqiu'
+  | 'kenting'
+  | 'penghu'
+
+// …and the overseas trip destinations, which never appear on it.
+export type InternationalRegion =
+  | 'malapascua'
+  | 'puerto-galera'
+  | 'panglao-bohol'
+  | 'anilao'
+  | 'palau'
+
+export type Region = TaiwanRegion | InternationalRegion
+
+export type DiveSite = {
+  id: string
+  name: string
+  tagline: string | null
+  latitude: number
+  longitude: number
+  region: Region
+  dive_type: 'shore' | 'boat' | null
+  wix_slug: string | null
+  international?: boolean // outside Taiwan (trip destination), grouped separately
+}
+
+export type Area = 'North' | 'South' | 'Outlying Islands' | 'International'
+
+// Display metadata for each region: a human label and a broad area grouping
+// mirroring how fundiverstw.com frames Taiwan diving (North / South / Islands).
+export const REGION_META: Record<Region, { label: string; area: Area }> = {
+  keelung: { label: 'Keelung', area: 'North' },
+  longdong: { label: 'Long Dong (Dragon Cave)', area: 'North' },
+  yilan: { label: 'Yilan', area: 'North' },
+  kenting: { label: 'Kenting', area: 'South' },
+  greenisland: { label: 'Green Island', area: 'Outlying Islands' },
+  lanyu: { label: 'Orchid Island (Lanyu)', area: 'Outlying Islands' },
+  xiaoliuqiu: { label: 'Xiaoliuqiu', area: 'Outlying Islands' },
+  penghu: { label: 'Penghu', area: 'Outlying Islands' },
+  malapascua: { label: 'Malapascua, Philippines', area: 'International' },
+  'puerto-galera': { label: 'Puerto Galera, Philippines', area: 'International' },
+  'panglao-bohol': { label: 'Panglao, Bohol, Philippines', area: 'International' },
+  anilao: { label: 'Anilao, Philippines', area: 'International' },
+  palau: { label: 'Palau', area: 'International' },
+}
+
+export const AREA_ORDER: Area[] = ['North', 'South', 'Outlying Islands', 'International']
+
 export const DIVE_SITES: DiveSite[] = [
   {
     "id": "cauliflower-garden",
@@ -254,3 +311,19 @@ export const DIVE_SITES: DiveSite[] = [
     "international": true
   }
 ]
+
+// Async to preserve the call sites (Map/Sites await it) even though the data is
+// now local and needs no round-trip.
+export async function fetchDiveSites(): Promise<DiveSite[]> {
+  return [...DIVE_SITES].sort((a, b) => a.name.localeCompare(b.name))
+}
+
+/** A single dive site by its id (the /sites/<id> route param), or null. */
+export function diveSiteById(id: string): DiveSite | null {
+  return DIVE_SITES.find((s) => s.id === id) ?? null
+}
+
+/** Path to a dive site's dedicated detail page. */
+export function diveSitePath(site: Pick<DiveSite, 'id'>): string {
+  return `/sites/${site.id}`
+}

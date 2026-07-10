@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { fetchDiveSites, diveSitePath, REGION_META, type DiveSite } from '../lib/sites'
-  import { siteImage } from '../lib/event-pool'
-  import { t } from '../lib/i18n'
-  import PageHeader from '../components/PageHeader.svelte'
-  import CoverPhoto from '../components/CoverPhoto.svelte'
+  import { fetchDiveSites, diveSitePath, REGION_META, type DiveSite } from '$content/dive-sites'
+  import { siteImage } from '$engine/photo-pool'
+  import { t } from '$engine/i18n'
+  import PageHeader from '$components/PageHeader.svelte'
+  import CoverPhoto from '$components/CoverPhoto.svelte'
 
   let sites = $state<DiveSite[]>([])
   let loading = $state(true)

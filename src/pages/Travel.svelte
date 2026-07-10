@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { fetchDestinations, type Destination } from '../lib/destinations'
-  import { fetchUpcomingTripTitles } from '../lib/events'
-  import { siteImage, fallbackImage } from '../lib/event-pool'
-  import { DIVE_SITES } from '../lib/dive-sites.data'
-  import { CONTACT } from '../lib/config'
-  import { t } from '../lib/i18n'
-  import PageHeader from '../components/PageHeader.svelte'
-  import CoverPhoto from '../components/CoverPhoto.svelte'
+  import { fetchDestinations, type Destination } from '$engine/destinations'
+  import { fetchUpcomingTripTitles } from '$engine/events'
+  import { siteImage, fallbackImage } from '$engine/photo-pool'
+  import { DIVE_SITES } from '$content/dive-sites'
+  import { CONTACT } from '$content/settings'
+  import { t } from '$engine/i18n'
+  import PageHeader from '$components/PageHeader.svelte'
+  import CoverPhoto from '$components/CoverPhoto.svelte'
 
   let all = $state<Destination[]>([])
   let tripTitles = $state<string[]>([])

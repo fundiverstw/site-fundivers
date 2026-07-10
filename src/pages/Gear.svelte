@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { CONTACT, SOCIAL } from '../lib/config'
-  import { t } from '../lib/i18n'
-  import PageHeader from '../components/PageHeader.svelte'
+  import { CONTACT, SOCIAL } from '$content/settings'
+  import { t } from '$engine/i18n'
+  import PageHeader from '$components/PageHeader.svelte'
 
   // Three service pillars — Sales / Service / Rental. Copy comes from i18n
   // ($t.gear.*) so it tracks the chosen locale; each block reads its title,

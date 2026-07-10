@@ -1,4 +1,4 @@
-import { mediaIdLocal } from './images'
+import { mediaIdLocal } from '$engine/images'
 
 // PADI course catalog, mirroring the live fundiverstw.com/courses cards.
 // Titles + photos were harvested from the live page (in order); the cover

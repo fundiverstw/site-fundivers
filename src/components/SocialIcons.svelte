@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { SOCIAL } from '../lib/config'
+  import { SOCIAL } from '$content/settings'
 
   let { size = 20, class: klass = '' }: { size?: number; class?: string } = $props()
 

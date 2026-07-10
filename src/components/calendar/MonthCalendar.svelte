@@ -3,11 +3,11 @@
     format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isSameMonth,
     addMonths, subMonths, startOfWeek, endOfWeek,
   } from 'date-fns'
-  import { assignTracks, segmentsForDay, type CellSegment } from '../../lib/calendar-layout'
-  import { courseColor, diveIsTripOrBoat, type CourseColor } from '../../lib/event-colors'
-  import { formatEventSpan } from '../../lib/format'
-  import { isPastEvent, type CalEvent } from '../../lib/events'
-  import { t } from '../../lib/i18n'
+  import { assignTracks, segmentsForDay, type CellSegment } from '$engine/calendar-layout'
+  import { courseColor, diveIsTripOrBoat, type CourseColor } from '$engine/event-colors'
+  import { formatEventSpan } from '$engine/format'
+  import { isPastEvent, type CalEvent } from '$engine/events'
+  import { t } from '$engine/i18n'
 
   // Ported from app-fundivers MonthCalendar.tsx, trimmed to the public,
   // read-only feature set (no staff-busy overlay, drag-reschedule, or private

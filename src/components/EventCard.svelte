@@ -1,9 +1,9 @@
 <script lang="ts">
-  import type { UpcomingEvent } from '../lib/events'
-  import { formatSpan } from '../lib/format'
-  import { twd } from '../lib/format'
-  import { registerUrl } from '../lib/config'
-  import { t } from '../lib/i18n'
+  import type { UpcomingEvent } from '$engine/events'
+  import { formatSpan } from '$engine/format'
+  import { twd } from '$engine/format'
+  import { registerUrl } from '$content/settings'
+  import { t } from '$engine/i18n'
   import CoverPhoto from './CoverPhoto.svelte'
 
   // Image-backed event card (modeled on app-fundivers/wix/home/upcoming_courses.html):

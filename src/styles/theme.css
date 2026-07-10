@@ -1,0 +1,61 @@
+/* ── THE PALETTE ───────────────────────────────────────────────────────────
+   Change a colour here and it changes everywhere on the site at once.
+
+   Tailwind turns each `--color-x-500` line below into a class you can use in
+   the markup: `--color-reef-400` becomes `bg-reef-400`, `text-reef-400`,
+   `border-reef-400`, and so on. Same for the fonts and the corner rounding.
+
+   This is the one file where a colour is defined. Everywhere else just uses it.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Ocean brand palette — deep sea blues and reef teal. Tailwind v4 @theme
+   exposes these as utilities (bg-brand-600, text-reef-400, etc.). */
+@theme {
+  --color-brand-50: #eff8ff;
+  --color-brand-100: #dbeefe;
+  --color-brand-200: #bfe1fe;
+  --color-brand-300: #93cefd;
+  --color-brand-400: #60b0fa;
+  --color-brand-500: #3b91f6;
+  --color-brand-600: #2474eb;
+  --color-brand-700: #1d5dd8;
+  --color-brand-800: #1e4daf;
+  --color-brand-900: #0c2f6b;
+  --color-brand-950: #0a1f47;
+
+  --color-reef-50: #ecfdfb;
+  --color-reef-100: #cffaf3;
+  --color-reef-200: #a0f3e9;
+  --color-reef-300: #66e6da;
+  --color-reef-400: #2cd0c5;
+  --color-reef-500: #14b3aa;
+  --color-reef-600: #0d908b;
+  --color-reef-700: #107370;
+  --color-reef-800: #135b59;
+  --color-reef-900: #144b4a;
+
+  /* Catppuccin-flavoured neon accents for the "riced" look — used for glows,
+     borders, terminal-style metadata and active states. */
+  --color-mauve: #cba6f7;
+  --color-lav: #b4befe;
+  --color-pink: #f5c2e7;
+  --color-sky: #89dceb;
+  --color-peach: #fab387;
+  --color-green: #a6e3a1;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* Monospace for the terminal/waybar flavour — dates, prices, labels. */
+  --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, "SF Mono",
+    "Cascadia Code", Menlo, Consolas, monospace;
+
+  /* Aggressive, squircle-style rounding site-wide — every rounded-* utility
+     gets larger so cards/panels read as soft squares, not rectangles.
+     (rounded-full pills are unaffected.) */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.7rem;
+  --radius-lg: 1.1rem;
+  --radius-xl: 1.6rem;
+  --radius-2xl: 2.2rem;
+  --radius-3xl: 3rem;
+}

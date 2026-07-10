@@ -1,11 +1,11 @@
 <script lang="ts">
   import { startOfMonth, endOfMonth } from 'date-fns'
-  import { fetchEventsInRange, type CalEvent, type ModalEvent } from '../lib/events'
-  import { formatEventSpan } from '../lib/format'
-  import { t } from '../lib/i18n'
-  import PageHeader from '../components/PageHeader.svelte'
-  import MonthCalendar from '../components/calendar/MonthCalendar.svelte'
-  import EventModal from '../components/calendar/EventModal.svelte'
+  import { fetchEventsInRange, type CalEvent, type ModalEvent } from '$engine/events'
+  import { formatEventSpan } from '$engine/format'
+  import { t } from '$engine/i18n'
+  import PageHeader from '$components/PageHeader.svelte'
+  import MonthCalendar from '$components/calendar/MonthCalendar.svelte'
+  import EventModal from '$components/calendar/EventModal.svelte'
 
   let month = $state(new Date())
   let events = $state<CalEvent[]>([])
