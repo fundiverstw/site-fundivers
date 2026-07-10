@@ -327,3 +327,39 @@ export function diveSiteById(id: string): DiveSite | null {
 export function diveSitePath(site: Pick<DiveSite, 'id'>): string {
   return `/sites/${site.id}`
 }
+
+// Which dive site is a calendar event about?
+//
+// A trip on the calendar is just a title like "Fun Dive — Bat Cave". To give its
+// card the right photo we match that title against the patterns below and use the
+// matching site's photos. Ordered most-specific first, so "Iron House 2" wins over
+// the general "Iron House / Iron Reef". A title that matches nothing (Yehliu,
+// Milky Sea…) just gets a general dive photo, which is fine.
+//
+// `/bat\s*cave/i` means "bat, then any spaces, then cave; upper or lower case".
+export const EVENT_TITLE_MATCHERS: Array<{ id: string; re: RegExp }> = [
+  { id: 'malapascua', re: /malapascua/i },
+  { id: 'puerto-galera', re: /puerto\s*galera/i },
+  { id: 'panglao-bohol', re: /panglao|bohol/i },
+  { id: 'anilao', re: /anilao/i },
+  { id: 'palau', re: /palau/i },
+  { id: 'iron-house-2', re: /iron\s*(house|reef)\s*2/i },
+  { id: 'rainbow-reef', re: /rainbow\s*reef/i },
+  { id: 'crystal-temple-wall', re: /crystal\s*(temple|palace|wall)/i },
+  { id: 'bat-cave', re: /bat\s*cave/i },
+  { id: 'cauliflower-garden', re: /cauliflower/i },
+  { id: 'secret-garden', re: /secret\s*garden/i },
+  { id: 'turtle-island', re: /turtle\s*island/i },
+  { id: 'cathedral', re: /cathedral/i },
+  { id: 'canyons', re: /canyon/i },
+  { id: 'long-dong-bay', re: /long\s*dong/i },
+  { id: 'wan-an-jian-navy-wreck', re: /wan\s*an\s*jian|navy\s*wreck/i },
+  { id: 'shipwrecks', re: /shipwreck|\bwrecks?\b/i },
+  { id: 'iron-house-iron-reef', re: /iron\s*house|iron\s*reef/i },
+  { id: '82-5', re: /\b82\.?5\b/i },
+  { id: 'green-island', re: /green\s*island/i },
+  { id: 'kenting', re: /kenting|seven\s*star/i },
+  { id: 'penghu', re: /penghu/i },
+  { id: 'lambai-island', re: /lambai|xiao\s*liuqiu|liuqiu/i },
+  { id: 'orchid-island', re: /orchid\s*island|lanyu/i },
+]

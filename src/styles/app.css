@@ -5,11 +5,16 @@
      background.css   the underwater backdrop and site-wide basics
      components.css   the reusable looks: .glass, .waybar, .mono, .glow-*
 */
-@import "tailwindcss";
+/* `source(none)` switches off Tailwind's automatic file-hunting, and @source then
+   points it at exactly one place: src/.
 
-/* Tell Tailwind where to look for class names. Without this it guesses from
-   this file's folder, which would be just src/styles/ — and every class used in
-   a component would be dropped from the build. */
+   Both halves matter. Without the @source, Tailwind would search only this file's
+   own folder (src/styles/), find no class names, and ship a site with no styling.
+   Without `source(none)`, it also reads everything else in the repo — including
+   docs/*.md, where prose like "never grow wider" and "paste its contents" gets
+   mistaken for the utility classes `grow` and `contents`, quietly padding the
+   stylesheet with rules nothing uses. */
+@import "tailwindcss" source(none);
 @source "../";
 
 @import "./theme.css";

@@ -12,6 +12,8 @@
 // by title keyword and gets a random photo (repeats minimised on screen);
 // courses draw from the course folder.
 
+import { EVENT_TITLE_MATCHERS } from '$content/dive-sites'
+
 const files = import.meta.glob('../content/photos/**/*.{webp,avif,jpg,jpeg,png}', {
   eager: true,
   query: '?url',
@@ -39,39 +41,8 @@ export function siteImage(siteId: string): string | null {
   return pool && pool.length ? pool[0] : null
 }
 
-// Map an event title to a dive-site id. Ordered most-specific first so, e.g.,
-// "Iron House 2" wins over the generic "Iron House / Iron Reef". Titles name
-// spots that aren't all catalog sites (Yehliu, Milky Sea, Flower Wall…); those
-// fall through to the general pool.
-const SITE_MATCHERS: Array<{ id: string; re: RegExp }> = [
-  { id: 'malapascua', re: /malapascua/i },
-  { id: 'puerto-galera', re: /puerto\s*galera/i },
-  { id: 'panglao-bohol', re: /panglao|bohol/i },
-  { id: 'anilao', re: /anilao/i },
-  { id: 'palau', re: /palau/i },
-  { id: 'iron-house-2', re: /iron\s*(house|reef)\s*2/i },
-  { id: 'rainbow-reef', re: /rainbow\s*reef/i },
-  { id: 'crystal-temple-wall', re: /crystal\s*(temple|palace|wall)/i },
-  { id: 'bat-cave', re: /bat\s*cave/i },
-  { id: 'cauliflower-garden', re: /cauliflower/i },
-  { id: 'secret-garden', re: /secret\s*garden/i },
-  { id: 'turtle-island', re: /turtle\s*island/i },
-  { id: 'cathedral', re: /cathedral/i },
-  { id: 'canyons', re: /canyon/i },
-  { id: 'long-dong-bay', re: /long\s*dong/i },
-  { id: 'wan-an-jian-navy-wreck', re: /wan\s*an\s*jian|navy\s*wreck/i },
-  { id: 'shipwrecks', re: /shipwreck|\bwrecks?\b/i },
-  { id: 'iron-house-iron-reef', re: /iron\s*house|iron\s*reef/i },
-  { id: '82-5', re: /\b82\.?5\b/i },
-  { id: 'green-island', re: /green\s*island/i },
-  { id: 'kenting', re: /kenting|seven\s*star/i },
-  { id: 'penghu', re: /penghu/i },
-  { id: 'lambai-island', re: /lambai|xiao\s*liuqiu|liuqiu/i },
-  { id: 'orchid-island', re: /orchid\s*island|lanyu/i },
-]
-
 function siteIdForTitle(title: string): string | null {
-  for (const m of SITE_MATCHERS) if (m.re.test(title)) return m.id
+  for (const m of EVENT_TITLE_MATCHERS) if (m.re.test(title)) return m.id
   return null
 }
 

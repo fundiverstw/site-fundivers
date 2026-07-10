@@ -5,7 +5,7 @@
 // fundiverstw.com/traveldestinations/<slug> pages and frozen here. The
 // reference data (marine life, depth, season, water temperature, visibility)
 // is researched from public diving sources. Keyed by dive-site id (see
-// dive-sites.data.ts). Static so the detail pages render instantly with no
+// dive-sites.ts). Static so the detail pages render instantly with no
 // extra round-trip; edit + redeploy to revise. Not every site is guaranteed to
 // have an entry — the detail page degrades gracefully when one is missing.
 export type DiveSiteGuide = {

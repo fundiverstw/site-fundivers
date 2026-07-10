@@ -10,7 +10,30 @@ Structured to mirror [fundiverstw.com](https://www.fundiverstw.com/): **Courses 
 - **Tailwind CSS 4** (via `@tailwindcss/vite`, no config file)
 - **@supabase/supabase-js** — read-only anon client, no auth
 - **Wrangler** — Cloudflare deploy with SPA fallback
-- Tiny dependency-free history router (`src/lib/router.ts`)
+- Tiny dependency-free history router (`src/engine/router.ts`)
+
+## Maintainer's guide
+
+**→ [fundiverstw.github.io/site-fundivers](https://fundiverstw.github.io/site-fundivers/)**
+
+Plain-language recipes for changing the site — the words, the colours, the dive sites, the
+photos — aimed at someone new to the codebase. Source in [`docs/`](docs/).
+
+## Project layout
+
+`src/` is split so that each folder answers one question. Imports name the folder they
+come from (`$content/dive-sites`, `$engine/router`), so you never count `../../`.
+
+| Folder | Holds | Edited |
+| ------ | ----- | ------ |
+| `src/content/` | The words, facts, links and photos. Text is per-language in `content/text/`. | Constantly |
+| `src/styles/`  | `theme.css` (colours, fonts), `components.css` (`.glass`, `.waybar`), `background.css` | Sometimes |
+| `src/pages/`   | One component per route | Sometimes |
+| `src/components/` | Shared UI, plus `game/` (the Wreck Maze easter egg) | Sometimes |
+| `src/engine/`  | Router, Supabase client, layout maths, photo pool | Rarely |
+
+Marketing content is deliberately **not** in the shared database: that database is
+app-first, and a schema change in `app-fundivers` must not be able to blank a page here.
 
 ## Getting started
 
@@ -47,12 +70,13 @@ This site never authenticates anyone — all booking/login happens in `app-fundi
 | Page     | Source                                                    |
 | -------- | --------------------------------------------------------- |
 | Calendar | Month grid (ported from app-fundivers) — `EO_dives` + `EO_courses`, priced via `EO_prices`, dive trip/local color from `eo_dive_destinations`/`TravelDestinations` |
-| Sites    | `dive_sites`, grouped North / South / Outlying Islands    |
+| Sites    | Static catalog in `src/content/dive-sites.ts`, grouped North / South / Outlying Islands / International (the shared `dive_sites` table was dropped upstream) |
 | Courses  | Static PADI catalog + live upcoming course sessions       |
-| Photos   | Placeholder gallery (wire to storage/Instagram later)     |
+| Photos   | Self-hosted gallery under `public/imgs/gallery/`, listed in `src/content/photo-gallery.ts` |
 | Team     | Placeholder roster (swap in real names/photos)            |
 
-Data access lives in `src/lib/events.ts` and `src/lib/sites.ts`.
+Live data access lives in `src/engine/events.ts`; the static dive-site catalog is
+`src/content/dive-sites.ts`.
 
 ## Deploy (Cloudflare)
 
