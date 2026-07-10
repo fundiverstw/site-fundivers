@@ -144,6 +144,10 @@ it. They take about twelve seconds and they test what a visitor would notice:
 - clicking a link changes the page **without reloading the browser**
 - pasting `fundiverstw.com/calendar` into a fresh tab works
 - switching to 中文 changes the menu, and is still 中文 after a refresh
+- the calendar draws its dives, trips and courses, with the right prices
+- the contact form refuses an incomplete enquiry and confirms a complete one
+- the photo viewer opens, steps with the arrow keys, wraps around, and closes
+- the map zooms into a region — by mouse and by keyboard — and back out again
 - the octopus opens the Wreck Maze, the maze actually draws, and the arrow keys turn you
 
 They run twice: once at desktop size, once at phone size. A few only make sense at one
