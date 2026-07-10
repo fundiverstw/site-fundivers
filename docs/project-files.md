@@ -13,7 +13,7 @@ Here is every one, sorted by how much you should care.
 
 | Name | What it is |
 | --- | --- |
-| **`src/`** | The website. Everything you edit lives in here. It has its own five folders — see [Start here](index.md). |
+| **`src/`** | The website. Everything you edit lives in here. It has its own five folders — see [the front page](index.md). |
 | **`public/`** | Files served exactly as they are: the logo, the favicon, the photo-gallery images. A file at `public/imgs/x.png` is reachable at `fundiverstw.com/imgs/x.png`. |
 | **`docs/`** | These pages. Markdown, published to the web by GitHub. |
 

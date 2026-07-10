@@ -385,4 +385,4 @@ src/content/…      ───────►      dist/            ────
 
 ---
 
-Next, read [Start here](index.md).
+Next, read [How to maintain this site](index.md).

@@ -1,4 +1,4 @@
-# Start here
+# How to maintain a self-hosted static site
 
 This is the FunDivers TW website — the one at **fundiverstw.com**. It shows courses,
 dive sites, photos, a calendar, and the team. It does **not** take bookings or
