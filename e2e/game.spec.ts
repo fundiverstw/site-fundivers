@@ -9,9 +9,9 @@ import { visit, watchForProblems } from './helpers'
 const title = (page: import('@playwright/test').Page) =>
   page.getByText('WRECK MAZE', { exact: true })
 
-test.describe('desktop', () => {
-  test.skip(({ isMobile }) => !!isMobile, 'the octopus is hidden below 1280px')
-
+// Tagged, not skipped: playwright.config.ts stops the mobile project from
+// collecting these at all, so they never show up as "5 skipped" in the report.
+test.describe('desktop', { tag: '@desktop-only' }, () => {
   test('the octopus opens the Wreck Maze', async ({ page }) => {
     const problems = watchForProblems(page)
     await visit(page, '/')
@@ -84,9 +84,7 @@ test.describe('desktop', () => {
 // Not an aspiration — a statement of what the site does today. The octopus is
 // `hidden xl:block`, and it is the only way in, so the game is unreachable on a
 // phone. If you make it reachable, this test will fail and should be rewritten.
-test.describe('mobile', () => {
-  test.skip(({ isMobile }) => !isMobile, 'desktop shows the octopus')
-
+test.describe('mobile', { tag: '@mobile-only' }, () => {
   test('has no way to open the game', async ({ page }) => {
     await visit(page, '/')
     await expect(page.getByRole('button', { name: 'Play Wreck Maze' })).toBeHidden()

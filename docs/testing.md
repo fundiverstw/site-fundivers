@@ -127,7 +127,10 @@ it. They take about twelve seconds and they test what a visitor would notice:
 - switching to 中文 changes the menu, and is still 中文 after a refresh
 - the octopus opens the Wreck Maze, the maze actually draws, and the arrow keys turn you
 
-They run twice: once at desktop size, once at phone size.
+They run twice: once at desktop size, once at phone size. A few only make sense at one
+size — the Wreck Maze needs the octopus, which is hidden on a phone — so those are tagged
+`@desktop-only` or `@mobile-only` and are simply not collected for the other size. Nothing
+is skipped: every test either runs or does not exist for that project.
 
 The very first run downloads a small browser (about 100 MB) for Playwright to drive. That
 takes a couple of minutes, once. Every run after that is quick.

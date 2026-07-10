@@ -34,14 +34,20 @@ export default defineConfig({
   },
 
   projects: [
+    // Every spec runs in both projects, except the handful that only make sense
+    // in one — the Wreck Maze tests need the octopus, which only exists at
+    // 1280px and wider. Excluding them by tag means they never appear as
+    // "skipped": each test either runs or is not collected.
     {
       name: 'desktop',
       // Wide enough for the nav mascot, which is hidden below 1280px.
       use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } },
+      grepInvert: /@mobile-only/,
     },
     {
       name: 'mobile',
       use: { ...devices['Pixel 7'] },
+      grepInvert: /@desktop-only/,
     },
   ],
 
