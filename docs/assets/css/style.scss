@@ -116,7 +116,10 @@ body {
     }
   }
 
-  .highlight {
+  /* Rouge wraps a code block as div.highlight > pre.highlight > code. Only the
+     outer div should be transparent — `.highlight` alone would also match the
+     <pre> and, being the more specific selector, would strip the panel off it. */
+  div.highlight {
     background-color: transparent;
   }
 
