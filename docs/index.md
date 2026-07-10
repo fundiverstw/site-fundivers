@@ -92,7 +92,7 @@ npm run deploy    # puts your changes on the real website
 ```
 
 > **Always run `npm run check` before `npm run deploy`.**
-> It takes about twenty seconds and it catches the kind of mistake — a missing comma, a
+> It takes about five seconds and it catches the kind of mistake — a missing comma, a
 > word translated into English but not Japanese — that would otherwise break the live
 > site. If it prints `0 errors`, you're safe.
 
