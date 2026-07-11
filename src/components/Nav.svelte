@@ -3,6 +3,7 @@
   import { t, locale, setLocale, LOCALES } from '$engine/i18n'
   import MenuIcon from './MenuIcon.svelte'
   import GlobeIcon from './GlobeIcon.svelte'
+  import RadioPlayer from './RadioPlayer.svelte'
   import NavMascot from './NavMascot.svelte'
 
   let leftLinks = $derived([
@@ -49,9 +50,9 @@
       aria-label="Language"
       aria-haspopup="menu"
       aria-expanded={langOpen}
-      class="module flex items-center gap-1 rounded-xl px-3 py-2 text-brand-50"
+      class="module flex items-center gap-1 rounded-xl px-2 py-2 text-brand-50"
     >
-      <GlobeIcon size={32} />
+      <GlobeIcon size={28} />
     </button>
     {#if langOpen}
       <div
@@ -99,12 +100,13 @@
       <!-- z-20: the nav mascot beside the logo is absolutely positioned and reaches
            right, into this bar. Its promo banner was covering the first link and
            swallowing the click. Navigation wins over decoration. -->
-      <nav class="waybar relative z-20 flex items-center gap-1.5 rounded-2xl px-2 py-1.5 shadow-lg">
+      <nav class="waybar relative z-20 flex items-center gap-1 rounded-2xl px-2 py-1.5 shadow-lg">
         {#each allLinks as link}
           <a href={link.href} class={linkClass(link.href)}>{link.label}</a>
         {/each}
         <span class="mx-1 h-6 w-px bg-white/15"></span>
         {@render langSwitch()}
+        <RadioPlayer />
       </nav>
     </div>
 
@@ -119,6 +121,7 @@
       </a>
       <div class="flex items-center gap-3">
         {@render langSwitch()}
+        <RadioPlayer />
         <button class="text-brand-50" aria-label="Toggle menu" onclick={() => (open = !open)}>
           <MenuIcon {open} />
         </button>

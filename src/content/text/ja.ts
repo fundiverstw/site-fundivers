@@ -14,6 +14,8 @@ export const ja: Dict = {
     team: 'チーム',
     gear: 'ギア',
     services: 'サービス',
+    radio: 'ラジオ番組',
+    radioSite: 'ラジオサイトを開く',
   },
   gear: {
     title: 'ギアの販売・メンテナンス・レンタル',

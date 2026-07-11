@@ -18,6 +18,8 @@ export const en = {
     team: 'Team',
     gear: 'Gear',
     services: 'Services',
+    radio: 'Radio show',
+    radioSite: 'Open radio site',
   },
   gear: {
     title: 'Gear Sales, Service & Rental',
