@@ -18,7 +18,20 @@ import {
 //
 // These tests feed it rows shaped like the real ones.
 
-const db = () => ({ events: eventsFixture(), prices: pricesFixture })
+// The fixtures place events on fixed days of the current month (the 10th, the
+// 14th–16th, the 20th–21st). Left to the real clock, those days slide into the
+// past as the month wears on — a past event is disabled and drops off the
+// homepage's "upcoming" list, so the click and homepage tests would start
+// failing partway through every month. Pin the clock to one instant early in a
+// month and build the fixtures for that same instant, and the tests are
+// deterministic whatever day they actually run.
+const NOW = new Date('2026-08-05T09:00:00+08:00')
+
+test.beforeEach(async ({ page }) => {
+  await page.clock.setFixedTime(NOW)
+})
+
+const db = () => ({ events: eventsFixture(NOW), prices: pricesFixture })
 
 test.describe('the calendar, with events in it', () => {
   test('draws a bar for each dive and course', async ({ page }) => {
