@@ -34,10 +34,9 @@ export const SOCIAL = {
   instagram: 'https://www.instagram.com/fundiverstaiwan',
   facebook: 'https://www.facebook.com/FunDiversTw/',
   youtube: 'https://www.youtube.com/@fundiverstaiwan651',
-  radio: 'https://radio.fundiverstw.com',
   // The Icecast mount the nav player streams — a separate subdomain from the
-  // site (see radio-fundivers/RADIO_SETUP.md). The show only broadcasts live
-  // during a session; the rest of the time this 404s and the player shows
+  // radio site (see radio-fundivers/RADIO_SETUP.md). The show only broadcasts
+  // live during a session; the rest of the time this 404s and the player shows
   // "off air".
   radioStream: 'https://stream.fundiverstw.com/stream',
 } as const

@@ -15,7 +15,6 @@ export const zhTW: Dict = {
     gear: '裝備',
     services: '技術服務',
     radio: '廣播節目',
-    radioSite: '開啟廣播網站',
   },
   gear: {
     title: '裝備銷售、維修與租借',
