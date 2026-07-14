@@ -13,6 +13,7 @@ export type BlockKey =
   | 'reasons' // the numbered `reasons` list
   | 'prerequisites'
   | 'timeFrame' // the time-frame prose plus its `phases`
+  | 'covers' // a "the course will cover" block: lead line, named cards, note
   | 'materials'
   | 'equipment'
   | 'notes'
@@ -43,6 +44,11 @@ export type CourseGuide = {
   certifies: string
   timeFrame?: string
   phases?: CoursePhase[]
+  // A "the course will cover" block: an optional lead line, named cards (like
+  // phases), and an optional closing note. Rendered as its own subsection.
+  coversLead?: string
+  covers?: CoursePhase[]
+  coversNote?: string
   materials?: string[]
   // Optional "Recommended" extras shown under the materials list.
   materialsRecommended?: string[]
@@ -408,8 +414,23 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
     next: ['padi-advanced-course', 'padi-enriched-air-specialty-course'],
   },
   'padi-efr-course': {
+    intro:
+      "Discover simple to follow steps for emergency care. This course focuses on building confidence in lay rescuers and increasing their willingness to respond when faced with a medical emergency in a non-stressful learning environment. You don't have to be a diver to take this course.",
     overview:
-      "Emergency First Response teaches the same CPR and first-aid skills the professionals use, in an approachable way for anyone. It's the prerequisite for Rescue Diver, and valuable far beyond diving.",
+      'The EFR course is based on internationally recognized medical guidelines for emergency care. EFR courses meet the CPR and first aid training requirements for the PADI Rescue Diver course and all professional-level ratings. It is equivalent to the American Red Cross course.',
+    coversLead: 'The EFR course will cover:',
+    covers: [
+      {
+        name: 'Primary Care',
+        text: "This part of the course teaches you the steps and techniques for handling life-threatening emergency situations. You'll practice 8 skills for aiding patients who aren't breathing, have no heartbeat, may have a spinal injury, may be in shock or who may have serious bleeding. You'll learn how to perform CPR, so that you provide every possible chance of survival while waiting for emergency medical services to arrive.",
+      },
+      {
+        name: 'Secondary Care',
+        text: "Because many medical conditions are not life-threatening and emergency medical services are sometimes delayed or unavailable, this part of the course teaches you how to provide first aid that eases pain and reduces the risk of further harm. You'll learn to assess a variety of injuries and illnesses and practice bandaging and splinting. Some other skills you may learn are how to care for children and how to use an automated external defibrillator (AED).",
+      },
+    ],
+    coversNote:
+      "It's a good idea to refresh your CPR and first aid skills every 24 months so that you are ready to lend aid whenever needed.",
     youWillLearn: [
       'Primary care (CPR)',
       'Secondary care (first aid)',
@@ -418,10 +439,30 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
       'AED awareness',
     ],
     prerequisites: 'None, open to everyone',
+    prereqList: [
+      'No minimum age, but recommended for students 12 years old or older.',
+      'This course is NOT a scuba diving course.',
+    ],
     minAge: 'No minimum',
     duration: '1 day',
     depth: null,
     certifies: 'EFR Primary & Secondary Care (valid 24 months)',
+    timeFrame:
+      'The Emergency First Response (EFR) Course is a performance-based course, so classroom session length varies, but the average course is 4-5 hours. The course is taught at Fun Divers Dive Center.',
+    materials: [
+      'Emergency First Response Manual / E-learning',
+      'Emergency First Response Video',
+    ],
+    equipment: ['All equipment is provided.'],
+    notes: [
+      'All PADI Instructors are also EFR Instructors and are qualified to teach this course.',
+    ],
+    subsections: [
+      [],
+      ['overview'],
+      ['covers'],
+      ['prerequisites', 'timeFrame', 'materials', 'equipment', 'notes'],
+    ],
     matchCodes: ['efr'],
     next: ['padi-rescue-diver-course', 'padi-o2-provider-course'],
   },

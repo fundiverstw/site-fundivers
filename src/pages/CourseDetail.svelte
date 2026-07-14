@@ -48,6 +48,8 @@
         return hasPrereq
       case 'timeFrame':
         return hasTimeframe
+      case 'covers':
+        return !!(guide?.covers?.length || guide?.coversLead)
       case 'materials':
         return !!guide?.materials?.length
       case 'equipment':
@@ -233,6 +235,29 @@
             </li>
           {/each}
         </ol>
+      {/if}
+    </div>
+  {:else if key === 'covers'}
+    <div>
+      {#if guide?.coversLead}
+        <div class="glass rounded-2xl p-5">
+          <p class="leading-relaxed text-brand-100">{guide.coversLead}</p>
+        </div>
+      {/if}
+      {#if guide?.covers?.length}
+        <ol class="space-y-3 {guide?.coversLead ? 'mt-4' : ''}">
+          {#each guide.covers as ph}
+            <li class="glass rounded-xl p-4">
+              <p class="font-semibold text-white">{ph.name}</p>
+              <p class="mt-1 text-sm leading-relaxed text-brand-100">{ph.text}</p>
+            </li>
+          {/each}
+        </ol>
+      {/if}
+      {#if guide?.coversNote}
+        <div class="glass mt-4 rounded-2xl p-5">
+          <p class="leading-relaxed text-brand-100">{guide.coversNote}</p>
+        </div>
       {/if}
     </div>
   {:else if key === 'materials'}
