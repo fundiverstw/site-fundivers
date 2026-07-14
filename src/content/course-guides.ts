@@ -4,35 +4,48 @@
 // upcoming sessions. Keyed by the course route id (courses.ts courseId()).
 export type CoursePhase = { name: string; text: string }
 
+// The content blocks the detail page can lay out. The intro always leads
+// (beside the first image); everything else is grouped into staggered
+// subsections via `CourseGuide.subsections` (or a sensible default).
+export type BlockKey =
+  | 'overview'
+  | 'topics' // the `youWillLearn` bullet list
+  | 'reasons' // the numbered `reasons` list
+  | 'prerequisites'
+  | 'timeFrame' // the time-frame prose plus its `phases`
+  | 'materials'
+  | 'equipment'
+  | 'notes'
+
 export type CourseGuide = {
   // Short lead-in shown beside the first staggered image (falls back to the
   // course card's `desc` when absent).
   intro?: string
   overview: string
-  // Optional "why take this" list shown under the overview (subsection 2), with
-  // its own heading and rendered as a numbered list.
+  // Optional "why take this" list shown as a numbered list, with its own title.
   reasonsTitle?: string
   reasons?: string[]
+  // The "topics"/"what you'll learn" bullet list. `topicsTitle` overrides its
+  // heading (some courses call it "Topics include" rather than the default).
+  topicsTitle?: string
   youWillLearn: string[]
   prerequisites: string
   // Richer, itemised prerequisites for the staggered layout. When present these
   // replace the single-line `prerequisites` string in the page body.
   prereqList?: string[]
-  // By default prerequisites sit in subsection 2 (beside overview). Set this to
-  // move them into subsection 3, alongside the time frame.
-  prereqInTimeframe?: boolean
   minAge: string
   duration: string
   depth: string | null
   certifies: string
-  // Optional deep-content for the third staggered subsection. Any that are
-  // present render; the materials/equipment/notes lists collapse behind a
-  // "Read more" disclosure. Courses without these fall back to `youWillLearn`.
   timeFrame?: string
   phases?: CoursePhase[]
   materials?: string[]
   equipment?: string[]
   notes?: string[]
+  // How to group the blocks above into staggered subsections (each inner array
+  // is one subsection, rendered against its own image). Omit to use the default
+  // grouping (see CourseDetail). Blocks with no data are dropped automatically.
+  subsections?: BlockKey[][]
   matchCodes: string[] // event admin_title codes (lowercased) for upcoming sessions
   next: string[] // suggested next-course route ids
 }
@@ -94,6 +107,11 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
       'Return transport is included.',
       'For private 1-on-1 service, a surcharge may apply.',
     ],
+    subsections: [
+      ['overview', 'prerequisites'],
+      ['timeFrame'],
+      ['materials', 'equipment', 'notes'],
+    ],
     matchCodes: ['ow'],
     next: ['padi-advanced-course', 'padi-enriched-air-specialty-course'],
   },
@@ -126,7 +144,6 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
       '12 years old (12–14 year old students can earn Junior Advanced Open Water).',
       'Certified as a PADI (Junior) Open Water Diver.',
     ],
-    prereqInTimeframe: true,
     minAge: '12+',
     duration: '2–3 days',
     depth: '30 m',
@@ -149,25 +166,64 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
       'Return transport is included.',
       'For private 1-on-1 service, a surcharge may apply.',
     ],
+    subsections: [
+      ['overview', 'reasons'],
+      ['prerequisites', 'timeFrame'],
+      ['materials', 'equipment', 'notes'],
+    ],
     matchCodes: ['aow'],
     next: ['padi-rescue-diver-course', 'padi-deep-diver-specialty'],
   },
   'padi-rescue-diver-course': {
+    intro:
+      'Learn to manage or prevent problems in or out of the water. Be the dive buddy others can rely on! The PADI Rescue Diver course is a challenging, yet rewarding course that will make you a better diver who is more confident in their abilities!',
     overview:
-      "Often called the most challenging — and most rewarding — PADI course, Rescue Diver teaches you to prevent and manage dive emergencies for yourself and others. You'll finish a far more confident, aware and capable diver.",
+      'The PADI Rescue Diver course prepares you to deal with dive emergencies, minor and major, using a variety of techniques. Through knowledge development and rescue exercises, you learn what to look for and how to respond. During rescue scenarios, you put into practice your knowledge and skills.',
+    topicsTitle: 'Topics include',
     youWillLearn: [
-      'Self-rescue and spotting diver stress',
-      'Managing tired, panicked and unresponsive divers',
-      'In-water rescues, tows and exits',
+      'Self-rescue',
+      'Recognizing and managing stress in yourself and other divers',
       'Emergency management and equipment use',
-      'Putting it together in realistic scenarios',
+      'Rescuing panicked divers on the surface and underwater',
+      'Rescuing unresponsive divers on the surface and underwater',
+      'Missing diver procedures',
     ],
     prerequisites:
       'PADI Adventure Diver (with Navigation) or higher, plus EFR training within 24 months',
+    prereqList: [
+      '12 years old (12–14 year old divers earn the Junior Rescue Diver Certification).',
+      'Certified as a PADI (Junior) Adventure Diver.',
+      'Must have completed the Underwater Navigation Adventure Dive.',
+      'EFR Primary & Secondary Care training within 24 months (can be done during the rescue course).',
+    ],
     minAge: '12+',
     duration: '3–4 days',
     depth: null,
     certifies: 'PADI Rescue Diver',
+    timeFrame: 'The PADI Rescue Diver Course consists of 3 sections and takes 2 days.',
+    phases: [
+      { name: 'Section 1', text: 'At-home E-learning & classroom review.' },
+      { name: 'Section 2', text: 'Pool session to practice skills.' },
+      { name: 'Section 3', text: '2 ocean dives to put skills into practice.' },
+    ],
+    materials: [
+      'PADI Rescue Course E-learning',
+      'Continuing Education Administrative Document',
+      'Fun Divers Sticker',
+      'Fun Divers Pen',
+    ],
+    equipment: ['Equipment rental is NOT included.'],
+    notes: [
+      'EFR Certification can be done during the Rescue course.',
+      'Dates are subject to change due to weather or wave conditions.',
+      'Return transport is included.',
+      'For private 1-on-1 service, a surcharge may apply.',
+    ],
+    subsections: [
+      ['overview', 'topics', 'prerequisites'],
+      ['timeFrame', 'materials'],
+      ['equipment', 'notes'],
+    ],
     matchCodes: ['resc', 'rescue ready'],
     next: ['padi-divemaster-course', 'padi-master-scuba-diver'],
   },

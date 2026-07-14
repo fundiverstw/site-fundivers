@@ -1,7 +1,12 @@
 <script lang="ts">
   import { path } from '$engine/router'
   import { courseByRouteId, courseId, coursePath, COURSES, type CourseCard } from '$content/courses'
-  import { COURSE_GUIDES, sessionMatchesCourse } from '$content/course-guides'
+  import {
+    COURSE_GUIDES,
+    sessionMatchesCourse,
+    type BlockKey,
+    type CourseGuide,
+  } from '$content/course-guides'
   import { coursePoolImage } from '$engine/photo-pool'
   import { fetchUpcomingEvents, type UpcomingEvent } from '$engine/events'
   import { formatSpan, twd } from '$engine/format'
@@ -27,18 +32,49 @@
     ]
   })
 
-  // Row 3 carries the time frame / phases when a course has them, else it falls
-  // back to "what you'll learn". Row 4 carries the materials/equipment/notes.
   let hasTimeframe = $derived(!!(guide?.timeFrame || guide?.phases?.length))
-  let hasResources = $derived(
-    !!(guide?.materials?.length || guide?.equipment?.length || guide?.notes?.length),
-  )
-
-  // Prerequisites live in subsection 2 by default, or subsection 3 when the
-  // guide opts in (prereqInTimeframe) — some courses read better that way.
   let hasPrereq = $derived(!!(guide?.prereqList?.length || guide?.prerequisites))
-  let prereqInOverview = $derived(hasPrereq && !guide?.prereqInTimeframe)
-  let prereqInTimeframe = $derived(hasPrereq && !!guide?.prereqInTimeframe)
+
+  // Does a content block have anything to show for this course?
+  function blockHasData(k: BlockKey): boolean {
+    switch (k) {
+      case 'overview':
+        return !!guide?.overview
+      case 'topics':
+        return !!guide?.youWillLearn?.length
+      case 'reasons':
+        return !!guide?.reasons?.length
+      case 'prerequisites':
+        return hasPrereq
+      case 'timeFrame':
+        return hasTimeframe
+      case 'materials':
+        return !!guide?.materials?.length
+      case 'equipment':
+        return !!guide?.equipment?.length
+      case 'notes':
+        return !!guide?.notes?.length
+    }
+  }
+
+  // Default grouping for guides that don't lay their blocks out explicitly:
+  // overview + prerequisites, then the time frame (or "what you'll learn" if the
+  // course has none), then the materials/equipment/notes.
+  function defaultLayout(g: CourseGuide): BlockKey[][] {
+    return [
+      ['overview', 'prerequisites'],
+      g.timeFrame || g.phases?.length ? ['timeFrame'] : ['topics'],
+      ['materials', 'equipment', 'notes'],
+    ]
+  }
+
+  // The staggered subsections after the intro, each rendered against one image.
+  // Blocks with no data are dropped, and empty subsections disappear entirely.
+  let subsections = $derived.by((): BlockKey[][] => {
+    if (!guide) return []
+    const groups = guide.subsections ?? defaultLayout(guide)
+    return groups.map((keys) => keys.filter(blockHasData)).filter((g) => g.length > 0)
+  })
 
   // Live upcoming sessions for THIS course, matched by category code.
   let sessions = $state<UpcomingEvent[]>([])
@@ -122,6 +158,74 @@
   </ul>
 {/snippet}
 
+<!-- One content block: heading + card(s). Each is wrapped so a subsection can
+     space its blocks evenly. Only blocks with data are ever asked to render. -->
+{#snippet block(key: BlockKey)}
+  {#if key === 'overview'}
+    <div>
+      <h2 class="text-xl font-bold text-white sm:text-2xl">{$t.courseDetail.overview}</h2>
+      <div class="glass mt-3 rounded-2xl p-5">
+        <p class="leading-relaxed text-brand-100">{guide?.overview}</p>
+      </div>
+    </div>
+  {:else if key === 'topics'}
+    <div>
+      <h2 class="text-xl font-bold text-white sm:text-2xl">
+        {guide?.topicsTitle ?? $t.courseDetail.youWillLearn}
+      </h2>
+      <ul class="glass mt-3 space-y-2 rounded-2xl p-5">
+        {#each guide?.youWillLearn ?? [] as item}
+          <li class="flex gap-2 text-brand-100">
+            <span class="mt-0.5 text-reef-300" aria-hidden="true">✓</span>
+            <span>{item}</span>
+          </li>
+        {/each}
+      </ul>
+    </div>
+  {:else if key === 'reasons'}
+    <div>
+      {#if guide?.reasonsTitle}
+        <h2 class="text-xl font-bold text-white sm:text-2xl">{guide.reasonsTitle}</h2>
+      {/if}
+      <ol class="glass mt-3 space-y-2 rounded-2xl p-5">
+        {#each guide?.reasons ?? [] as reason, i}
+          <li class="flex gap-2 text-brand-100">
+            <span class="mt-0.5 font-semibold tabular-nums text-reef-300">{i + 1}.</span>
+            <span>{reason}</span>
+          </li>
+        {/each}
+      </ol>
+    </div>
+  {:else if key === 'prerequisites'}
+    <div>{@render prereqBlock()}</div>
+  {:else if key === 'timeFrame'}
+    <div>
+      {#if guide?.timeFrame}
+        <h2 class="text-xl font-bold text-white sm:text-2xl">{$t.courseDetail.timeFrame}</h2>
+        <div class="glass mt-3 rounded-2xl p-5">
+          <p class="leading-relaxed text-brand-100">{guide.timeFrame}</p>
+        </div>
+      {/if}
+      {#if guide?.phases?.length}
+        <ol class="space-y-3 {guide?.timeFrame ? 'mt-4' : ''}">
+          {#each guide.phases as ph}
+            <li class="glass rounded-xl p-4">
+              <p class="font-semibold text-white">{ph.name}</p>
+              <p class="mt-1 text-sm leading-relaxed text-brand-100">{ph.text}</p>
+            </li>
+          {/each}
+        </ol>
+      {/if}
+    </div>
+  {:else if key === 'materials'}
+    <div>{@render bulletList($t.courseDetail.materials, guide?.materials ?? [])}</div>
+  {:else if key === 'equipment'}
+    <div>{@render bulletList($t.courseDetail.equipment, guide?.equipment ?? [])}</div>
+  {:else if key === 'notes'}
+    <div>{@render bulletList($t.courseDetail.notes, guide?.notes ?? [])}</div>
+  {/if}
+{/snippet}
+
 {#if !course}
   <section class="mx-auto max-w-2xl px-4 py-24 text-center sm:px-6">
     <p class="glass rounded-2xl p-8 text-brand-100">{$t.courseDetail.notFound}</p>
@@ -151,99 +255,17 @@
       {/snippet}
       {@render row(images[0], course.title, false, intro)}
 
-      <!-- 2 · overview (+ reasons, + prerequisites when here) left, img2 right -->
-      {#if guide?.overview || guide?.reasons?.length || prereqInOverview}
-        {#snippet overview()}
-          {#if guide?.overview}
-            <h2 class="text-xl font-bold text-white sm:text-2xl">{$t.courseDetail.overview}</h2>
-            <div class="glass mt-3 rounded-2xl p-5">
-              <p class="leading-relaxed text-brand-100">{guide.overview}</p>
-            </div>
-          {/if}
-          {#if guide?.reasons?.length}
-            {#if guide?.reasonsTitle}
-              <h3 class="mt-6 text-lg font-bold text-white">{guide.reasonsTitle}</h3>
-            {/if}
-            <ol class="glass mt-3 space-y-2 rounded-2xl p-5">
-              {#each guide.reasons as reason, i}
-                <li class="flex gap-2 text-brand-100">
-                  <span class="mt-0.5 font-semibold tabular-nums text-reef-300">{i + 1}.</span>
-                  <span>{reason}</span>
-                </li>
-              {/each}
-            </ol>
-          {/if}
-          {#if prereqInOverview}
-            <div class:mt-6={!!(guide?.overview || guide?.reasons?.length)}>
-              {@render prereqBlock()}
-            </div>
-          {/if}
+      <!-- 2… · staggered subsections, grouped per the guide's block layout -->
+      {#each subsections as keys, i}
+        {#snippet body()}
+          <div class="space-y-8">
+            {#each keys as k}
+              {@render block(k)}
+            {/each}
+          </div>
         {/snippet}
-        {@render row(images[1], course.title, true, overview)}
-      {/if}
-
-      <!-- 3 · img3 left, prerequisites (when here) + time frame + phases right -->
-      {#if prereqInTimeframe || hasTimeframe || guide?.youWillLearn?.length}
-        {#snippet details()}
-          {#if prereqInTimeframe}
-            {@render prereqBlock()}
-          {/if}
-          {#if hasTimeframe}
-            {#if guide?.timeFrame}
-              <h2
-                class="text-xl font-bold text-white sm:text-2xl"
-                class:mt-8={prereqInTimeframe}
-              >
-                {$t.courseDetail.timeFrame}
-              </h2>
-              <div class="glass mt-3 rounded-2xl p-5">
-                <p class="leading-relaxed text-brand-100">{guide.timeFrame}</p>
-              </div>
-            {/if}
-            {#if guide?.phases?.length}
-              <ol class="mt-4 space-y-3">
-                {#each guide.phases as ph}
-                  <li class="glass rounded-xl p-4">
-                    <p class="font-semibold text-white">{ph.name}</p>
-                    <p class="mt-1 text-sm leading-relaxed text-brand-100">{ph.text}</p>
-                  </li>
-                {/each}
-              </ol>
-            {/if}
-          {:else if guide?.youWillLearn?.length}
-            <h2 class="text-xl font-bold text-white sm:text-2xl">{$t.courseDetail.youWillLearn}</h2>
-            <ul class="glass mt-3 space-y-2 rounded-2xl p-5">
-              {#each guide.youWillLearn as item}
-                <li class="flex gap-2 text-brand-100">
-                  <span class="mt-0.5 text-reef-300" aria-hidden="true">✓</span>
-                  <span>{item}</span>
-                </li>
-              {/each}
-            </ul>
-          {/if}
-        {/snippet}
-        {@render row(images[2], course.title, false, details)}
-      {/if}
-
-      <!-- 4 · materials / equipment / notes left, img4 right -->
-      {#if hasResources}
-        {#snippet resources()}
-          {#if guide?.materials?.length}
-            {@render bulletList($t.courseDetail.materials, guide.materials)}
-          {/if}
-          {#if guide?.equipment?.length}
-            <div class:mt-8={!!guide?.materials?.length}>
-              {@render bulletList($t.courseDetail.equipment, guide.equipment)}
-            </div>
-          {/if}
-          {#if guide?.notes?.length}
-            <div class:mt-8={!!(guide?.materials?.length || guide?.equipment?.length)}>
-              {@render bulletList($t.courseDetail.notes, guide.notes)}
-            </div>
-          {/if}
-        {/snippet}
-        {@render row(images[3], course.title, true, resources)}
-      {/if}
+        {@render row(images[(i + 1) % images.length], course.title, (i + 1) % 2 === 1, body)}
+      {/each}
     </div>
 
     <!-- Upcoming sessions -->
