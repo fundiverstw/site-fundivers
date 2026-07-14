@@ -363,8 +363,8 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
     subsections: [
       [],
       ['overview', 'topics'],
-      ['prerequisites'],
-      ['timeFrame', 'materials', 'equipment'],
+      ['prerequisites', 'timeFrame'],
+      ['materials', 'equipment'],
     ],
     matchCodes: ['dsd', 'discover'],
     next: ['padi-open-water-course', 'padi-advanced-course'],
