@@ -331,16 +331,16 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
   },
   'padi-discover-scuba-diving-program': {
     intro:
-      "Not sure if scuba diving is for you? Want to try it out before committing to the course? The PADI Discover Scuba Diving program with Fun Divers TW is a quick and easy introduction into what it takes to explore the underwater world. Although this is not a scuba certification course, you'll learn a few basic skills towards becoming a PADI certified diver.",
+      "Curious about scuba diving but not ready to commit to a full course? Discover Scuba Diving with Fun Divers TW is the perfect first breath underwater — a relaxed, guided introduction to the world beneath the waves. There's no certification and no pressure: just you, a PADI Instructor by your side, and the unforgettable moment you first breathe underwater. Along the way you'll even pick up a few of the basic skills that lead toward becoming a certified diver.",
     overview:
-      "During the PADI Discover Scuba Diving (DSD) program you will get to go on a dive with one of Fun Divers TW's PADI Instructors. You learn the basic safety guidelines and skills needed to dive under the direct supervision of a PADI Professional. During the open water dive, you'll practice a few basic skills in shallow water to prepare for your adventure.",
+      "During the PADI Discover Scuba Diving (DSD) program, you'll head into the water on a real dive alongside one of Fun Divers TW's experienced PADI Instructors — never more than an arm's reach away. First you'll learn a handful of simple safety guidelines and skills in shallow water, then glide out over the reef and see what has hooked divers the world over. It's the easiest, safest way to find out just how magical the underwater world can be.",
     topicsTitle: 'Get ready to',
     youWillLearn: [
-      'Learn about the scuba equipment you will use to dive and how easy it is to move around underwater with your gear.',
-      'Breathe underwater for the first time.',
-      "Learn key skills that you'll use during every scuba dive.",
-      'Have fun watching fish swimming around you.',
-      'Learn more about becoming a certified diver through the PADI Open Water Diver course.',
+      "Discover the scuba gear you'll wear, and how weightless and easy it feels to move around underwater.",
+      'Take your very first breath beneath the surface — the moment every diver remembers.',
+      "Pick up a few simple skills you'll use on every dive to come.",
+      'Hover among the fish and soak up the quiet of the reef.',
+      'See where it leads — a taste of the PADI Open Water Diver course that turns first-timers into certified divers.',
     ],
     prerequisites: 'None — 10+ and in good health',
     prereqList: [
@@ -353,9 +353,13 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
     depth: '12 m',
     certifies: 'Experience program (not a certification)',
     timeFrame:
-      'The PADI Discover Scuba Diving program is a single open water dive (with an optional 2nd dive) at Bat Cave.',
-    materials: ['This is NOT a certification course — no materials provided.'],
-    equipment: ['Basic equipment rental is included in the course price.'],
+      "Discover Scuba Diving is a single open-water dive at Bat Cave — one of our favourite spots to fall in love with diving — with the option to add a second dive and make the most of your day. It's a half-day adventure with nothing to study beforehand; just show up ready to get wet.",
+    materials: [
+      "No coursework and no materials — this is a try-dive, not a certification course, so there's nothing to buy or study.",
+    ],
+    equipment: [
+      'All the basic scuba gear you need is included in the price — just bring your swimsuit and a sense of adventure.',
+    ],
     notes: [
       'Dates are subject to change due to weather or wave conditions.',
       'Return transport is included.',
