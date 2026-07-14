@@ -286,12 +286,11 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
     ],
     equipmentText:
       "As a dive professional, you need to have all your basic scuba equipment, including a dive computer, a dive knife, and at least two surface signalling devices. During practical skills exercises, like underwater mapping and search and recovery, you'll use a compass, floats, marker buoys, lift bags and slates. Contact Fun Divers TW for all your equipment needs!",
-    notes: ['Tanks are provided during the course.'],
     subsections: [
       [],
       ['overview'],
       ['prerequisites', 'timeFrame'],
-      ['materials', 'equipment', 'notes'],
+      ['materials', 'equipment'],
     ],
     matchCodes: ['dm', 'divemaster'],
     next: [],
