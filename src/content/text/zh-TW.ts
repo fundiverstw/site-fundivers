@@ -1,6 +1,6 @@
 import type { Dict } from './en'
 
-// 繁體中文. Machine-translated first pass — refine freely.
+// 繁體中文. Machine-translated first pass, refine freely.
 // The `: Dict` annotation makes TypeScript flag any key you miss.
 
 export const zhTW: Dict = {
@@ -19,7 +19,7 @@ export const zhTW: Dict = {
   gear: {
     title: '裝備銷售、維修與租借',
     subtitle:
-      '潛水所需的一切——優質的水肺與自由潛水裝備，可購買或租借，並提供專業維修保養，讓你的裝備隨時安全、隨時可下水。',
+      '潛水所需的一切，優質的水肺與自由潛水裝備，可購買或租借，並提供專業維修保養，讓你的裝備隨時安全、隨時可下水。',
     salesTitle: '銷售',
     salesText:
       '從你的第一副面鏡與蛙鞋，到完整的技術潛水配置，我們協助你挑選最適合自己與潛水方式的裝備。可在店內試用，並由現役教練提供誠實建議，而非制式推銷。',
@@ -42,7 +42,7 @@ export const zhTW: Dict = {
     ],
     rentalTitle: '租借',
     rentalText:
-      '輕裝旅行，或想在購買前先試用？可依天數或行程租借保養良好的裝備——整套或單件，出店前皆已調整尺寸並檢查完畢。',
+      '輕裝旅行，或想在購買前先試用？可依天數或行程租借保養良好的裝備，整套或單件，出店前皆已調整尺寸並檢查完畢。',
     rentalItems: [
       '整套水肺裝備與單件租借',
       '各種尺寸的防寒衣',
@@ -51,7 +51,7 @@ export const zhTW: Dict = {
       '多數課程與帶領潛水已含裝備',
     ],
     ctaTitle: '不確定需要什麼？',
-    ctaText: '歡迎到店或傳訊給我們——我們會協助你找到、試穿或維修合適的裝備。',
+    ctaText: '歡迎到店或傳訊給我們，我們會協助你找到、試穿或維修合適的裝備。',
   },
   map: {
     title: '台灣潛點地圖',
@@ -142,9 +142,9 @@ export const zhTW: Dict = {
   },
   courses: {
     title: 'PADI 課程',
-    subtitle: '學習潛水、提升等級或邁向專業——台灣全系列 PADI 休閒潛水課程。',
+    subtitle: '學習潛水、提升等級或邁向專業，台灣全系列 PADI 休閒潛水課程。',
     upcomingDates: '近期課程日期',
-    noDates: '目前沒有排定的課程日期——課程亦可依需求安排。',
+    noDates: '目前沒有排定的課程日期，課程亦可依需求安排。',
     getInTouch: '與我們聯絡',
     enroll: '報名',
   },
@@ -164,7 +164,7 @@ export const zhTW: Dict = {
     equipment: '裝備',
     notes: '注意事項',
     upcoming: '近期日期',
-    noDates: '目前沒有排定的日期——本課程亦可依需求安排。',
+    noDates: '目前沒有排定的日期，本課程亦可依需求安排。',
     next: '接下來',
     fullPage: '完整課程頁面',
     cta: '準備好開始了嗎？',
@@ -174,7 +174,7 @@ export const zhTW: Dict = {
   },
   sites: {
     title: '潛點',
-    subtitle: '從北部便利的岸潛到世界級的離島潛水——台灣水下的精華亮點。',
+    subtitle: '從北部便利的岸潛到世界級的離島潛水，台灣水下的精華亮點。',
     none: '尚未列出任何潛點。',
     loadError: '無法載入潛點',
     areas: { Domestic: '國內', International: '國際' },
@@ -206,7 +206,7 @@ export const zhTW: Dict = {
   },
   travel: {
     title: '潛旅',
-    subtitle: '既定團體行程與完全客製化的旅程——台灣與更遠的地方。',
+    subtitle: '既定團體行程與完全客製化的旅程，台灣與更遠的地方。',
     aroundTaiwan: '台灣周邊',
     international: '國際潛旅',
     loadError: '無法載入目的地',
@@ -224,7 +224,7 @@ export const zhTW: Dict = {
     thisMonth: '本月',
     noEvents: '尚無排定的活動。',
     loadError: '無法載入行事曆',
-    full: '此活動已額滿——請加入候補名單。',
+    full: '此活動已額滿，請加入候補名單。',
     details: {
       about: '活動介紹',
       included: '費用包含',
@@ -261,7 +261,7 @@ export const zhTW: Dict = {
     rights: 'Fun Divers Taiwan 版權所有。',
     proudly: '在台北以 🤿 ❤️ 用心打造',
     openSource: '開源專案',
-    openSourceBlurb: '我們自豪地開發 FunDive——我們的開源潛水店管理軟體。',
+    openSourceBlurb: '我們自豪地開發 FunDive，我們的開源潛水店管理軟體。',
   },
   services: {
     title: '為潛水店打造的 FunDive 託管服務',
@@ -283,7 +283,7 @@ export const zhTW: Dict = {
     fromLabel: '起',
     plainPricing: ['沒有複雜的計價。', '沒有隱藏費用。', '沒有長期綁約。'],
     guarantees: ['隨時取消', '隨時重啟', '無取消費用', '無任何義務'],
-    guaranteeNote: '您繼續使用這項服務，是因為它值得——而不是因為被綁住。',
+    guaranteeNote: '您繼續使用這項服務，是因為它值得，而不是因為被綁住。',
 
     setupIncludesTitle: '我們為您建置的內容',
     setupIncludesBlurb: '一次性建置費用包含完整的正式環境設定：',

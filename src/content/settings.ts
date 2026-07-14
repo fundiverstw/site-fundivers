@@ -22,7 +22,7 @@ export const CONTACT = {
 // Rotating promo messages shown on the nav mascot's banner. Edit freely.
 export const ADS: Array<{ text: string; href: string }> = [
   { text: '🤿 20% off wetsuits!', href: '#get-in-touch' },
-  { text: '🐢 Green Island — spots open!', href: '/calendar' },
+  { text: '🐢 Green Island: spots open!', href: '/calendar' },
   { text: '🎓 Try Discover Scuba', href: '/courses' },
 ]
 

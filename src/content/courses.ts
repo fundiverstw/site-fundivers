@@ -4,7 +4,7 @@ import { mediaIdLocal } from '$engine/images'
 // Titles + photos were harvested from the live page (in order); the cover
 // photos are self-hosted under /imgs/media/. Short
 // descriptions are authored here. `slug` is the course's page slug on the
-// marketing site — each card links to fundiverstw.com/courses-1/<slug>
+// marketing site, each card links to fundiverstw.com/courses-1/<slug>
 // (slugs scraped from the live page; note they don't always match the title,
 // e.g. Discover Scuba → padi-discover-scuba-diving-program).
 
@@ -52,7 +52,7 @@ export const COURSES: CourseCard[] = [
       img('b37fef_37847cf1b32a413990cb7b558835954f~mv2.jpg'),
       img('b37fef_594f84e342954c95b442c5b67f5fb454~mv2.jpg'),
     ],
-    desc: 'Your scuba adventure starts here — your first full certification, diving to 18m anywhere in the world.',
+    desc: 'Your scuba adventure starts here, your first full certification, diving to 18m anywhere in the world.',
   },
   {
     title: 'PADI Advanced Open Water',
@@ -70,13 +70,13 @@ export const COURSES: CourseCard[] = [
     title: 'PADI Divemaster',
     slug: 'padi-divemaster-course',
     image: img('b37fef_be75746689c74bf28fdd76aeed8451f6~mv2.jpg'),
-    desc: 'Your first professional rating — lead certified divers and assist on courses.',
+    desc: 'Your first professional rating, lead certified divers and assist on courses.',
   },
   {
     title: 'PADI Master Scuba Diver',
     slug: 'padi-master-scuba-diver',
     image: img('b37fef_3fe5fa0d4b464f5c89a9300f2e818dc5~mv2.jpg'),
-    desc: 'The highest recreational rating — your place among the most experienced divers.',
+    desc: 'The highest recreational rating, your place among the most experienced divers.',
   },
   {
     title: 'PADI Discover Scuba Diving',
@@ -94,7 +94,7 @@ export const COURSES: CourseCard[] = [
     title: 'PADI EFR Course',
     slug: 'padi-efr-course',
     image: img('b37fef_aa0190ec4359404db3362a851c7663bd~mv2.jpg'),
-    desc: 'Emergency First Response — CPR and primary/secondary care for divers and non-divers alike.',
+    desc: 'Emergency First Response, CPR and primary/secondary care for divers and non-divers alike.',
   },
   {
     title: 'PADI O2 Provider',
@@ -106,7 +106,7 @@ export const COURSES: CourseCard[] = [
     title: 'PADI Enriched Air (Nitrox)',
     slug: 'padi-enriched-air-specialty-course',
     image: img('b37fef_6bb10d67326442318a8a597b14c807c5~mv2.jpg'),
-    desc: 'Dive longer with Nitrox — safely use enriched air and extend your no-stop times.',
+    desc: 'Dive longer with Nitrox, safely use enriched air and extend your no-stop times.',
   },
   {
     title: 'PADI Deep Diver Specialty',
@@ -118,19 +118,19 @@ export const COURSES: CourseCard[] = [
     title: 'PADI Night Diver Specialty',
     slug: 'padi-night-diver-specialty',
     image: img('b37fef_c011dec9802b4c93a9f9310fff82388d~mv2.jpg'),
-    desc: 'Discover a whole new world after dark — lights, navigation, and nocturnal marine life.',
+    desc: 'Discover a whole new world after dark, lights, navigation, and nocturnal marine life.',
   },
   {
     title: 'PADI Wreck & Search Specialty',
     slug: 'padi-search-%26-recovery-specialty',
     image: img('b37fef_55d806ff58324fb9a99b60c738618e2c~mv2.jpg'),
-    desc: 'Search-and-recovery skills — patterns and lift techniques to find and recover lost objects.',
+    desc: 'Search-and-recovery skills, patterns and lift techniques to find and recover lost objects.',
   },
   {
     title: 'PADI Drift Diver Specialty',
     slug: 'padi-drift-diver-specialty',
     image: img('b37fef_24b9e725e16b437e901ad76152f12c2c~mv2.jpg'),
-    desc: 'Go with the flow — effortless diving in currents with the right technique and awareness.',
+    desc: 'Go with the flow, effortless diving in currents with the right technique and awareness.',
   },
   {
     title: 'PADI Peak Performance Buoyancy',
@@ -142,7 +142,7 @@ export const COURSES: CourseCard[] = [
     title: 'PADI Underwater Navigator',
     slug: 'padi-underwater-navigator-specialty',
     image: img('b37fef_489bc4720a724dbb9d596ee856249869~mv2.jpg'),
-    desc: 'Find your way with compass and natural navigation — never lose the boat again.',
+    desc: 'Find your way with compass and natural navigation, never lose the boat again.',
   },
   {
     title: 'PADI Boat Diver Specialty',
@@ -160,7 +160,7 @@ export const COURSES: CourseCard[] = [
     title: 'PADI Digital UW Imaging',
     slug: 'padi-digital-underwater-photographer-specialty',
     image: img('b37fef_10c43bcdd7344ea197cb5431bc9bd71f~mv2.jpg'),
-    desc: 'Capture the underwater world — shoot great photos and video on your dives.',
+    desc: 'Capture the underwater world, shoot great photos and video on your dives.',
   },
   {
     title: 'PADI Fish Identification',

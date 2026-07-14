@@ -322,7 +322,7 @@
               onmouseenter={() => (hoveredEventId = seg.event.id)}
               onmouseleave={() => (hoveredEventId = null)}
               aria-disabled={disabled || undefined}
-              title={disabled ? `${seg.event.title} — already happened` : seg.event.title}
+              title={disabled ? `${seg.event.title} (already happened)` : seg.event.title}
               class={`absolute truncate px-1 text-left text-[10px] font-semibold transition-all ${eventBarClass(seg.event, hoveredEventId === seg.event.id)} ${seg.isStart ? 'rounded-l-sm' : ''} ${seg.isEnd ? 'rounded-r-sm' : ''} ${disabled ? 'cursor-default opacity-40 saturate-50' : ''}`}
               style={barStyle(seg, track)}
             >

@@ -95,7 +95,7 @@
   })
 
   $effect(() => {
-    if (course) document.title = `${course.title} — FunDivers TW`
+    if (course) document.title = `${course.title} · FunDivers TW`
   })
 
   // "Where to next" — the guide's picks first, then filled to two with other
@@ -140,7 +140,7 @@
 <!-- Prerequisites — an optional lead-in, the itemised list (or a single line),
      and an optional trailing note, all in one card. -->
 {#snippet prereqBlock()}
-  <h3 class="text-lg font-bold text-white">{$t.courseDetail.prerequisites}</h3>
+  <h3 class="text-xl font-bold text-white">{$t.courseDetail.prerequisites}</h3>
   <div class="glass mt-3 rounded-2xl p-5">
     {#if guide?.prereqLead}
       <p class="leading-relaxed text-brand-100">{guide.prereqLead}</p>
@@ -165,7 +165,7 @@
 
 <!-- A labelled, always-expanded list (Materials / Equipment / Notes), in a card. -->
 {#snippet bulletList(label: string, items: string[])}
-  <h3 class="text-lg font-bold text-white">{label}</h3>
+  <h3 class="text-xl font-bold text-white">{label}</h3>
   <ul class="glass mt-3 space-y-2 rounded-2xl p-5">
     {#each items as it}
       <li class="flex gap-2 text-brand-100">
@@ -181,14 +181,14 @@
 {#snippet block(key: BlockKey)}
   {#if key === 'overview'}
     <div>
-      <h2 class="text-xl font-bold text-white sm:text-2xl">{$t.courseDetail.overview}</h2>
+      <h2 class="text-xl font-bold text-white">{$t.courseDetail.overview}</h2>
       <div class="glass mt-3 rounded-2xl p-5">
         <p class="leading-relaxed text-brand-100">{guide?.overview}</p>
       </div>
     </div>
   {:else if key === 'topics'}
     <div>
-      <h2 class="text-xl font-bold text-white sm:text-2xl">
+      <h2 class="text-xl font-bold text-white">
         {guide?.topicsTitle ?? $t.courseDetail.youWillLearn}
       </h2>
       <ul class="glass mt-3 space-y-2 rounded-2xl p-5">
@@ -203,7 +203,7 @@
   {:else if key === 'reasons'}
     <div>
       {#if guide?.reasonsTitle}
-        <h2 class="text-xl font-bold text-white sm:text-2xl">{guide.reasonsTitle}</h2>
+        <h2 class="text-xl font-bold text-white">{guide.reasonsTitle}</h2>
       {/if}
       <ol class="glass mt-3 space-y-2 rounded-2xl p-5">
         {#each guide?.reasons ?? [] as reason, i}
@@ -219,7 +219,7 @@
   {:else if key === 'timeFrame'}
     <div>
       {#if guide?.timeFrame}
-        <h2 class="text-xl font-bold text-white sm:text-2xl">{$t.courseDetail.timeFrame}</h2>
+        <h2 class="text-xl font-bold text-white">{$t.courseDetail.timeFrame}</h2>
         <div class="glass mt-3 rounded-2xl p-5">
           <p class="leading-relaxed text-brand-100">{guide.timeFrame}</p>
         </div>
@@ -238,7 +238,7 @@
   {:else if key === 'materials'}
     {#if guide?.materialsRecommended?.length}
       <div>
-        <h3 class="text-lg font-bold text-white">{$t.courseDetail.materials}</h3>
+        <h3 class="text-xl font-bold text-white">{$t.courseDetail.materials}</h3>
         <div class="glass mt-3 rounded-2xl p-5">
           <ul class="space-y-2">
             {#each guide?.materials ?? [] as it}
@@ -267,7 +267,7 @@
   {:else if key === 'equipment'}
     {#if guide?.equipmentText}
       <div>
-        <h3 class="text-lg font-bold text-white">{$t.courseDetail.equipment}</h3>
+        <h3 class="text-xl font-bold text-white">{$t.courseDetail.equipment}</h3>
         <div class="glass mt-3 rounded-2xl p-5">
           <p class="leading-relaxed text-brand-100">{guide.equipmentText}</p>
         </div>

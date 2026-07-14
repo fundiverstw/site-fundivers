@@ -257,7 +257,7 @@
       treasures[idx(nx, ny)] = false
       score += 50
       found += 1
-      toast = '✦ Artifact recovered — +50'
+      toast = '✦ Artifact recovered: +50'
       toastT = performance.now()
     }
     if (nx === ex && ny === ey) return finish('won')

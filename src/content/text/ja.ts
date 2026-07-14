@@ -1,6 +1,6 @@
 import type { Dict } from './en'
 
-// 日本語. Machine-translated first pass — refine freely.
+// 日本語. Machine-translated first pass, refine freely.
 // The `: Dict` annotation makes TypeScript flag any key you miss.
 
 export const ja: Dict = {
@@ -19,7 +19,7 @@ export const ja: Dict = {
   gear: {
     title: 'ギアの販売・メンテナンス・レンタル',
     subtitle:
-      'ダイビングに必要なものすべて——高品質なスキューバ＆フリーダイビング用品の販売とレンタル、そして装備を安全でいつでも潜れる状態に保つ専門メンテナンス。',
+      'ダイビングに必要なものすべて、高品質なスキューバ＆フリーダイビング用品の販売とレンタル、そして装備を安全でいつでも潜れる状態に保つ専門メンテナンス。',
     salesTitle: '販売',
     salesText:
       '最初のマスクとフィンから本格的なテクニカル構成まで、あなたとダイビングスタイルに合ったギア選びをお手伝いします。店内で試してから購入でき、現役インストラクターが台本ではなく本音でアドバイスします。',
@@ -52,7 +52,7 @@ export const ja: Dict = {
     ],
     ctaTitle: '何が必要かお悩みですか？',
     ctaText:
-      'お店にお立ち寄りいただくか、メッセージをどうぞ——最適なギア選び・フィッティング・修理をお手伝いします。',
+      'お店にお立ち寄りいただくか、メッセージをどうぞ、最適なギア選び・フィッティング・修理をお手伝いします。',
   },
   map: {
     title: '台湾のダイブサイト',
@@ -144,9 +144,9 @@ export const ja: Dict = {
   courses: {
     title: 'PADI コース',
     subtitle:
-      'これから始める方も、ステップアップやプロを目指す方も——台湾の PADI レクリエーショナルコース全種類。',
+      'これから始める方も、ステップアップやプロを目指す方も、台湾の PADI レクリエーショナルコース全種類。',
     upcomingDates: '今後のコース日程',
-    noDates: '現在予定されているコース日程はありません——コースはリクエストでも開催します。',
+    noDates: '現在予定されているコース日程はありません、コースはリクエストでも開催します。',
     getInTouch: 'お問い合わせ',
     enroll: '申し込む',
   },
@@ -166,7 +166,7 @@ export const ja: Dict = {
     equipment: '器材',
     notes: 'ご注意',
     upcoming: '開催予定',
-    noDates: '現在予定されている日程はありません——このコースはリクエストでも開催します。',
+    noDates: '現在予定されている日程はありません、このコースはリクエストでも開催します。',
     next: '次のステップ',
     fullPage: 'コース詳細ページ',
     cta: '始めませんか？',
@@ -176,7 +176,7 @@ export const ja: Dict = {
   },
   sites: {
     title: 'ダイブサイト',
-    subtitle: '北部の手軽なビーチダイブから世界クラスの離島ダイビングまで——台湾の水中ハイライト。',
+    subtitle: '北部の手軽なビーチダイブから世界クラスの離島ダイビングまで、台湾の水中ハイライト。',
     none: 'まだダイブサイトが登録されていません。',
     loadError: 'ダイブサイトを読み込めませんでした',
     areas: { Domestic: '国内', International: '海外' },
@@ -208,7 +208,7 @@ export const ja: Dict = {
   },
   travel: {
     title: 'ダイブツアー',
-    subtitle: '企画グループツアーから完全オーダーメイドの旅まで——台湾、そしてその先へ。',
+    subtitle: '企画グループツアーから完全オーダーメイドの旅まで、台湾、そしてその先へ。',
     aroundTaiwan: '台湾周辺',
     international: '海外ダイブツアー',
     loadError: '目的地を読み込めませんでした',
@@ -227,7 +227,7 @@ export const ja: Dict = {
     thisMonth: '今月',
     noEvents: '予定されているイベントはありません。',
     loadError: 'カレンダーを読み込めませんでした',
-    full: 'このイベントは満席です——キャンセル待ちにご登録ください。',
+    full: 'このイベントは満席です、キャンセル待ちにご登録ください。',
     details: {
       about: 'イベントについて',
       included: '料金に含まれるもの',

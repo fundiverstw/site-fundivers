@@ -32,7 +32,7 @@
 
   // Keep the browser tab title in sync with the current site.
   $effect(() => {
-    if (site) document.title = `${site.name} — FunDivers TW`
+    if (site) document.title = `${site.name} · FunDivers TW`
   })
 
   let heroImg = $derived(site ? siteImage(site.id) : null)

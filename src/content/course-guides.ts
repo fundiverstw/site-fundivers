@@ -33,7 +33,7 @@ export type CourseGuide = {
   // Richer, itemised prerequisites for the staggered layout. When present these
   // replace the single-line `prerequisites` string in the page body.
   prereqList?: string[]
-  // Optional prose that brackets the prerequisites list — a lead-in before it
+  // Optional prose that brackets the prerequisites list, a lead-in before it
   // and/or a note after it (e.g. "qualifying certifications may apply").
   prereqLead?: string
   prereqNote?: string
@@ -52,7 +52,7 @@ export type CourseGuide = {
   notes?: string[]
   // How to group the blocks above into staggered subsections (each inner array
   // is one subsection, rendered against its own image). The FIRST subsection
-  // shares its row with the course title + intro — give it [] for just the
+  // shares its row with the course title + intro, give it [] for just the
   // title/intro, or blocks to sit alongside them. Omit the whole field to use
   // the default grouping (see CourseDetail). Later empty subsections are
   // dropped, and blocks with no data are removed automatically.
@@ -74,7 +74,7 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
       'Planning dives with tables and a dive computer',
       'Four training dives in open water',
     ],
-    prerequisites: 'None — able to swim and in good health',
+    prerequisites: 'None, able to swim and in good health',
     prereqList: [
       'No prior Scuba Diving Experience Required! If you have never dived before, this is the Certification Course for you!',
       '12 years old (12–14 year old students can earn Junior Open Water).',
@@ -172,7 +172,9 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
       'Fun Divers Sticker',
       'Fun Divers Pen',
     ],
-    equipment: ['Equipment rental is NOT included.'],
+    equipment: [
+      "Equipment isn't included in the course price, but we can provide rental gear as needed.",
+    ],
     notes: [
       'Dates and schedule may vary depending on conditions and chosen specialties.',
       'Return transport is included.',
@@ -225,7 +227,9 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
       'Fun Divers Sticker',
       'Fun Divers Pen',
     ],
-    equipment: ['Equipment rental is NOT included.'],
+    equipment: [
+      "Equipment isn't included in the course price, but we can provide rental gear as needed.",
+    ],
     notes: [
       'EFR Certification can be done during the Rescue course.',
       'Dates are subject to change due to weather or wave conditions.',
@@ -262,11 +266,11 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
       'At least 40 logged dives to begin the course and 60 dives to earn certification.',
     ],
     prereqNote:
-      'Note that qualifying certifications from other diver training organizations may apply — ask your PADI Instructor.',
+      'Note that qualifying certifications from other diver training organizations may apply, ask your PADI Instructor.',
     minAge: '18+',
     duration: 'Several weeks (flexible)',
     depth: null,
-    certifies: 'PADI Divemaster — a professional rating',
+    certifies: 'PADI Divemaster, a professional rating',
     timeFrame:
       'The PADI Divemaster Course is both a knowledge- and performance-based course, so course duration will vary for each student. Contact Fun Divers TW to discuss a schedule that works for you!',
     materials: [
@@ -297,9 +301,9 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
   },
   'padi-master-scuba-diver': {
     intro:
-      "Reach the summit of recreational diving. PADI Master Scuba Diver is the highest rating a recreational diver can earn — held by fewer than two percent of divers worldwide — and it marks you as someone who has truly mastered the underwater world.",
+      "Reach the summit of recreational diving. PADI Master Scuba Diver is the highest rating a recreational diver can earn, held by fewer than two percent of divers worldwide, and it marks you as someone who has truly mastered the underwater world.",
     overview:
-      "Wearing the PADI Master Scuba Diver rating tells the world you've done it all: a broad range of dive experiences, real hours logged beneath the surface, and the versatility to feel at home almost anywhere you dive. You earn it not from a single weekend course but over a diving journey — completing the core certifications, adding at least five specialty ratings in the diving you love most, and logging 50 dives or more along the way. Every specialty sharpens a new skill and opens up a new kind of diving, from deep and wreck to photography and drift. Arrive at the rating and you join an elite circle of divers others look up to — the ones who've seen the most, done the most, and keep coming back for more.",
+      "Wearing the PADI Master Scuba Diver rating tells the world you've done it all: a broad range of dive experiences, real hours logged beneath the surface, and the versatility to feel at home almost anywhere you dive. You earn it not from a single weekend course but over a diving journey, completing the core certifications, adding at least five specialty ratings in the diving you love most, and logging 50 dives or more along the way. Every specialty sharpens a new skill and opens up a new kind of diving, from deep and wreck to photography and drift. Arrive at the rating and you join an elite circle of divers others look up to, the ones who've seen the most, done the most, and keep coming back for more.",
     youWillLearn: [
       'A well-rounded range of specialty skills',
       'Confidence across many diving environments',
@@ -317,9 +321,9 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
     depth: null,
     certifies: 'PADI Master Scuba Diver rating',
     timeFrame:
-      "Because Master Scuba Diver is a rating you build rather than a single course, the timeline is entirely your own — set by the specialties you choose and the pace you dive. Once you've completed the prerequisite courses and logged your 50 dives, we'll submit your application and welcome you to the club. Talk to Fun Divers TW and we'll help you map out the specialties and dives that get you there.",
-    materials: ['Nothing extra to buy — you already have everything from your previous courses.'],
-    equipment: ['No new equipment needed — your own dive gear is all it takes.'],
+      "Because Master Scuba Diver is a rating you build rather than a single course, the timeline is entirely your own, set by the specialties you choose and the pace you dive. Once you've completed the prerequisite courses and logged your 50 dives, we'll submit your application and welcome you to the club. Talk to Fun Divers TW and we'll help you map out the specialties and dives that get you there.",
+    materials: ['Nothing extra to buy, you already have everything from your previous courses.'],
+    equipment: ['No new equipment needed, your own dive gear is all it takes.'],
     subsections: [
       [],
       ['overview'],
@@ -331,34 +335,34 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
   },
   'padi-discover-scuba-diving-program': {
     intro:
-      "Curious about scuba diving but not ready to commit to a full course? Discover Scuba Diving with Fun Divers TW is the perfect first breath underwater — a relaxed, guided introduction to the world beneath the waves. There's no certification and no pressure: just you, a PADI Instructor by your side, and the unforgettable moment you first breathe underwater. Along the way you'll even pick up a few of the basic skills that lead toward becoming a certified diver.",
+      "Curious about scuba diving but not ready to commit to a full course? Discover Scuba Diving with Fun Divers TW is the perfect first breath underwater, a relaxed, guided introduction to the world beneath the waves. There's no certification and no pressure: just you, a PADI Instructor by your side, and the unforgettable moment you first breathe underwater. Along the way you'll even pick up a few of the basic skills that lead toward becoming a certified diver.",
     overview:
-      "During the PADI Discover Scuba Diving (DSD) program, you'll head into the water on a real dive alongside one of Fun Divers TW's experienced PADI Instructors — never more than an arm's reach away. First you'll learn a handful of simple safety guidelines and skills in shallow water, then glide out over the reef and see what has hooked divers the world over. It's the easiest, safest way to find out just how magical the underwater world can be.",
+      "During the PADI Discover Scuba Diving (DSD) program, you'll head into the water on a real dive alongside one of Fun Divers TW's experienced PADI Instructors, never more than an arm's reach away. First you'll learn a handful of simple safety guidelines and skills in shallow water, then glide out over the reef and see what has hooked divers the world over. It's the easiest, safest way to find out just how magical the underwater world can be.",
     topicsTitle: 'Get ready to',
     youWillLearn: [
       "Discover the scuba gear you'll wear, and how weightless and easy it feels to move around underwater.",
-      'Take your very first breath beneath the surface — the moment every diver remembers.',
+      'Take your very first breath beneath the surface, the moment every diver remembers.',
       "Pick up a few simple skills you'll use on every dive to come.",
       'Hover among the fish and soak up the quiet of the reef.',
-      'See where it leads — a taste of the PADI Open Water Diver course that turns first-timers into certified divers.',
+      'See where it leads, a taste of the PADI Open Water Diver course that turns first-timers into certified divers.',
     ],
-    prerequisites: 'None — 10+ and in good health',
+    prerequisites: 'None, 10+ and in good health',
     prereqList: [
       '12 years old.',
       'No prior experience with scuba diving is necessary, but you need to be in reasonable physical health.',
-      'This is NOT a certification course — it is a chance to try scuba diving before committing to a certification course.',
+      'This is NOT a certification course. It is a chance to try scuba diving before committing to a certification course.',
     ],
     minAge: '10+',
     duration: 'Half a day',
     depth: '12 m',
     certifies: 'Experience program (not a certification)',
     timeFrame:
-      "Discover Scuba Diving is a single open-water dive at Bat Cave — one of our favourite spots to fall in love with diving — with the option to add a second dive and make the most of your day. It's a half-day adventure with nothing to study beforehand; just show up ready to get wet.",
+      "Discover Scuba Diving is a single open-water dive at Bat Cave, one of our favourite spots to fall in love with diving, with the option to add a second dive and make the most of your day. It's a half-day adventure with nothing to study beforehand; just show up ready to get wet.",
     materials: [
-      "No coursework and no materials — this is a try-dive, not a certification course, so there's nothing to buy or study.",
+      "No coursework and no materials, this is a try-dive, not a certification course, so there's nothing to buy or study.",
     ],
     equipment: [
-      'All the basic scuba gear you need is included in the price — just bring your swimsuit and a sense of adventure.',
+      'All the basic scuba gear you need is included in the price, just bring your swimsuit and a sense of adventure.',
     ],
     subsections: [
       [],
@@ -370,8 +374,10 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
     next: ['padi-open-water-course', 'padi-advanced-course'],
   },
   'padi-refresher-course': {
+    intro:
+      "Been a while since your last dive? Shake off the rust and rebuild your confidence. In a relaxed refresher with a PADI Instructor at your side, you'll revisit the key knowledge and practise the skills that matter, so you can get back beneath the surface feeling sharp, safe, and ready to explore again.",
     overview:
-      "Been out of the water for a while? A refresher rebuilds your skills and confidence so you can get back to diving safely — ideal if it's been a year or more since your last dive.",
+      "If you haven't dived in a while, the Refresher Course is exactly what you need. Together with a PADI Instructor you'll review the important knowledge points and run through the essential skills, mask clearing, regulator recovery, buoyancy and more, until they feel second nature again. It's the easiest way to trade any nerves for confidence and make sure your return to diving is a safe and enjoyable one.",
     youWillLearn: [
       'Refreshing core safety skills',
       'Reviewing dive planning and equipment',
@@ -379,16 +385,31 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
       'Updating on current best practice',
     ],
     prerequisites: 'Certified diver returning after a break',
+    prereqList: [
+      "Recommended for any certified diver who hasn't dived in more than 6 months.",
+    ],
     minAge: '10+',
     duration: 'Half a day',
     depth: null,
     certifies: 'Skills refresh (PADI ReActivate)',
+    timeFrame:
+      "The Refresher Course starts with a brief knowledge review, then heads out for 2 dives where you'll put the skills back into practice. Your PADI Instructor watches over each dive and gives you personal feedback and tips to sharpen your diving, so you finish more capable and comfortable than when you arrived.",
+    materials: ["No materials needed, we've got you covered."],
+    equipment: [
+      "Equipment isn't included in the course price, but we can provide rental gear as needed.",
+    ],
+    subsections: [
+      [],
+      ['overview'],
+      ['prerequisites', 'timeFrame'],
+      ['materials', 'equipment'],
+    ],
     matchCodes: ['refresher'],
-    next: ['padi-advanced-course'],
+    next: ['padi-advanced-course', 'padi-enriched-air-specialty-course'],
   },
   'padi-efr-course': {
     overview:
-      "Emergency First Response teaches the same CPR and first-aid skills the professionals use, in an approachable way for anyone. It's the prerequisite for Rescue Diver — and valuable far beyond diving.",
+      "Emergency First Response teaches the same CPR and first-aid skills the professionals use, in an approachable way for anyone. It's the prerequisite for Rescue Diver, and valuable far beyond diving.",
     youWillLearn: [
       'Primary care (CPR)',
       'Secondary care (first aid)',
@@ -396,7 +417,7 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
       'Managing serious bleeding and shock',
       'AED awareness',
     ],
-    prerequisites: 'None — open to everyone',
+    prerequisites: 'None, open to everyone',
     minAge: 'No minimum',
     duration: '1 day',
     depth: null,
@@ -423,7 +444,7 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
   },
   'padi-enriched-air-specialty-course': {
     overview:
-      'Enriched Air (Nitrox) is the most popular PADI specialty. Breathing more oxygen and less nitrogen lets you extend your no-stop bottom times — more time exploring, and shorter surface intervals between dives.',
+      'Enriched Air (Nitrox) is the most popular PADI specialty. Breathing more oxygen and less nitrogen lets you extend your no-stop bottom times, more time exploring, and shorter surface intervals between dives.',
     youWillLearn: [
       'How enriched air extends no-stop limits',
       "Analysing your cylinder's oxygen content",
@@ -440,7 +461,7 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
   },
   'padi-deep-diver-specialty': {
     overview:
-      'Some of the most exciting dives — wrecks, walls and big animals — lie beyond 18 metres. The Deep Diver specialty teaches you to plan and safely enjoy dives down to 40 metres, the recreational limit.',
+      'Some of the most exciting dives, wrecks, walls and big animals, lie beyond 18 metres. The Deep Diver specialty teaches you to plan and safely enjoy dives down to 40 metres, the recreational limit.',
     youWillLearn: [
       'Planning and executing deep dives',
       'Managing gas, time and no-stop limits',
@@ -493,7 +514,7 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
   },
   'padi-drift-diver-specialty': {
     overview:
-      'Drift diving feels like flying — letting the current carry you effortlessly over reefs and walls. This specialty teaches the technique and awareness to make current your friend.',
+      'Drift diving feels like flying, letting the current carry you effortlessly over reefs and walls. This specialty teaches the technique and awareness to make current your friend.',
     youWillLearn: [
       'Drift-diving technique and body position',
       'Buoyancy control in current',
@@ -511,7 +532,7 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
   },
   'padi-peak-performance-buoyancy-specialty': {
     overview:
-      'Great divers make it look effortless — hovering motionless, gliding past delicate corals, using less air. Peak Performance Buoyancy fine-tunes your weighting and control so you dive like a pro.',
+      'Great divers make it look effortless, hovering motionless, gliding past delicate corals, using less air. Peak Performance Buoyancy fine-tunes your weighting and control so you dive like a pro.',
     youWillLearn: [
       'Perfecting your weighting and trim',
       'Streamlining to save energy and air',
@@ -529,7 +550,7 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
   },
   'padi-underwater-navigator-specialty': {
     overview:
-      'Never lose your way — or the boat — again. The Underwater Navigator specialty sharpens your natural and compass navigation so you can explore with confidence and always find your way back.',
+      'Never lose your way, or the boat, again. The Underwater Navigator specialty sharpens your natural and compass navigation so you can explore with confidence and always find your way back.',
     youWillLearn: [
       'Natural navigation using the environment',
       'Compass navigation and patterns',
@@ -565,7 +586,7 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
   },
   'padi-equipment-specialist': {
     overview:
-      'Understand the gear that keeps you alive underwater. The Equipment Specialist course — no dives required — teaches routine care, maintenance and simple field adjustments so a minor problem never ends your dive day.',
+      'Understand the gear that keeps you alive underwater. The Equipment Specialist course, no dives required, teaches routine care, maintenance and simple field adjustments so a minor problem never ends your dive day.',
     youWillLearn: [
       'How your dive gear works',
       'Routine maintenance and storage',

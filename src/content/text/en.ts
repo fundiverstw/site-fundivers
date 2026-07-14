@@ -1,4 +1,4 @@
-// English — the master copy.
+// English, the master copy.
 //
 // Every other language file mirrors this shape exactly. Add a key here first,
 // then add the same key to zh-TW.ts and ja.ts; TypeScript will refuse to build
@@ -23,10 +23,10 @@ export const en = {
   gear: {
     title: 'Gear Sales, Service & Rental',
     subtitle:
-      'Everything you need to dive — quality scuba and freediving equipment for sale or rent, plus expert servicing to keep your kit safe and dive-ready.',
+      'Everything you need to dive, quality scuba and freediving equipment for sale or rent, plus expert servicing to keep your kit safe and dive-ready.',
     salesTitle: 'Sales',
     salesText:
-      'From your first mask and fins to a full technical setup, we help you choose gear that fits you and the way you dive. Try before you buy in-store and get honest advice from working instructors — not a sales script.',
+      'From your first mask and fins to a full technical setup, we help you choose gear that fits you and the way you dive. Try before you buy in-store and get honest advice from working instructors, not a sales script.',
     salesItems: [
       'Masks, snorkels, fins & booties',
       'Wetsuits, hoods, gloves & rash guards',
@@ -46,7 +46,7 @@ export const en = {
     ],
     rentalTitle: 'Rental',
     rentalText:
-      'Travelling light or trying something before you buy? Rent well-maintained gear by the day or the trip — full sets or single pieces, sized and checked before you leave the shop.',
+      'Travelling light or trying something before you buy? Rent well-maintained gear by the day or the trip, full sets or single pieces, sized and checked before you leave the shop.',
     rentalItems: [
       'Full scuba sets & individual pieces',
       'Wetsuits in a full range of sizes',
@@ -55,7 +55,7 @@ export const en = {
       'Included with many courses & guided dives',
     ],
     ctaTitle: 'Not sure what you need?',
-    ctaText: 'Drop by the shop or message us — we’ll help you find, fit, or fix the right gear.',
+    ctaText: 'Drop by the shop or message us, we’ll help you find, fit, or fix the right gear.',
   },
   map: {
     title: 'Dive Sites of Taiwan',
@@ -148,9 +148,9 @@ export const en = {
   courses: {
     title: 'PADI Courses',
     subtitle:
-      'Learn to dive, level up, or go pro — the full range of PADI recreational courses in Taiwan.',
+      'Learn to dive, level up, or go pro, the full range of PADI recreational courses in Taiwan.',
     upcomingDates: 'Upcoming course dates',
-    noDates: 'No scheduled course dates right now — courses also run on request.',
+    noDates: 'No scheduled course dates right now, courses also run on request.',
     getInTouch: 'Get in touch',
     enroll: 'Enroll',
   },
@@ -165,12 +165,12 @@ export const en = {
     depth: 'Max depth',
     certifies: 'You earn',
     timeFrame: 'Time frame',
-    materials: 'Materials',
+    materials: 'Learning materials',
     recommended: 'Recommended',
     equipment: 'Equipment',
     notes: 'Notes',
     upcoming: 'Upcoming dates',
-    noDates: 'No scheduled dates right now — this course also runs on request.',
+    noDates: 'No scheduled dates right now, this course also runs on request.',
     next: 'Where to next',
     fullPage: 'Full course page',
     cta: 'Ready to start?',
@@ -181,7 +181,7 @@ export const en = {
   sites: {
     title: 'Dive Sites',
     subtitle:
-      'From convenient shore dives in the north to world-class island diving — Taiwan’s underwater highlights.',
+      'From convenient shore dives in the north to world-class island diving, Taiwan’s underwater highlights.',
     none: 'No dive sites listed yet.',
     loadError: 'Couldn’t load dive sites',
     areas: { Domestic: 'Domestic', International: 'International' },
@@ -213,7 +213,7 @@ export const en = {
   },
   travel: {
     title: 'Dive Travel',
-    subtitle: 'Planned group tours and fully customized trips — around Taiwan and beyond.',
+    subtitle: 'Planned group tours and fully customized trips, around Taiwan and beyond.',
     aroundTaiwan: 'Around Taiwan',
     international: 'International Dive Tours',
     loadError: 'Couldn’t load destinations',
@@ -233,7 +233,7 @@ export const en = {
     thisMonth: 'This month',
     noEvents: 'No events scheduled.',
     loadError: 'Couldn’t load the calendar',
-    full: 'This event is full — join the waitlist.',
+    full: 'This event is full, join the waitlist.',
     details: {
       about: 'About this event',
       included: "What's included",
@@ -293,7 +293,7 @@ export const en = {
     plainPricing: ['No complicated pricing.', 'No hidden fees.', 'No long-term commitment.'],
     guarantees: ['Cancel anytime', 'Restart anytime', 'No cancellation fees', 'No obligation'],
     guaranteeNote:
-      'You keep using the service because it is worth it — not because you are locked in.',
+      'You keep using the service because it is worth it, not because you are locked in.',
 
     setupIncludesTitle: 'What we set up for you',
     setupIncludesBlurb:

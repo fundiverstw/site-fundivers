@@ -1,10 +1,10 @@
-// Question bank for Wreck Maze — the dive-trivia dungeon crawler.
+// Question bank for Wreck Maze, the dive-trivia dungeon crawler.
 //
 // In the spirit of Encarta's MindMaze: every question teaches something, so
 // each carries a short explanation shown after you answer, right or wrong.
 //
 // `answers[0]` is always the correct one; the game shuffles them when asking.
-// Keep the answer set plausible — a giveaway wrong option is a wasted question.
+// Keep the answer set plausible, a giveaway wrong option is a wasted question.
 
 export type Category = 'Physics' | 'Physiology' | 'Equipment' | 'Safety' | 'Marine Life' | 'Taiwan'
 
@@ -22,12 +22,12 @@ export const QUESTIONS: Question[] = [
     q: 'At what depth in seawater is the ambient pressure twice what it is at the surface?',
     answers: ['10 metres', '5 metres', '20 metres', '33 metres'],
     explain:
-      'Every 10 m of seawater adds 1 bar. At 10 m you are at 2 bar absolute — double the surface pressure.',
+      'Every 10 m of seawater adds 1 bar. At 10 m you are at 2 bar absolute, double the surface pressure.',
   },
   {
     category: 'Physics',
     q: 'A flexible 4-litre bag of air is taken from the surface down to 30 m. What is its volume?',
-    answers: ['1 litre', '2 litres', '3 litres', '4 litres — it does not change'],
+    answers: ['1 litre', '2 litres', '3 litres', '4 litres, it does not change'],
     explain:
       '30 m is 4 bar absolute. Boyle’s law: volume is inversely proportional to pressure, so 4 L ÷ 4 = 1 L.',
   },
@@ -90,7 +90,7 @@ export const QUESTIONS: Question[] = [
       'Cold water shrinks the tank',
     ],
     explain:
-      'At 20 m each lungful holds three times as many molecules as at the surface — so your cylinder drains about three times as fast.',
+      'At 20 m each lungful holds three times as many molecules as at the surface, so your cylinder drains about three times as fast.',
   },
 
   // ── Physiology ────────────────────────────────────────────────────────────
@@ -135,7 +135,7 @@ export const QUESTIONS: Question[] = [
       'On the bottom, at the start of the dive',
     ],
     explain:
-      'The proportional pressure change is greatest near the surface — air doubles in volume between 10 m and 0 m.',
+      'The proportional pressure change is greatest near the surface, air doubles in volume between 10 m and 0 m.',
   },
   {
     category: 'Physiology',
@@ -209,7 +209,7 @@ export const QUESTIONS: Question[] = [
       'Makes you neutrally buoyant automatically',
     ],
     explain:
-      'More oxygen means less nitrogen — but oxygen becomes toxic under pressure, so nitrox has a maximum operating depth.',
+      'More oxygen means less nitrogen, but oxygen becomes toxic under pressure, so nitrox has a maximum operating depth.',
   },
 
   // ── Equipment ─────────────────────────────────────────────────────────────
@@ -235,7 +235,7 @@ export const QUESTIONS: Question[] = [
       'Prevents water entering the tank',
     ],
     explain:
-      'The second stage — the bit in your mouth — then drops that intermediate pressure to ambient, on demand.',
+      'The second stage, the bit in your mouth, then drops that intermediate pressure to ambient, on demand.',
   },
   {
     category: 'Equipment',
@@ -315,7 +315,7 @@ export const QUESTIONS: Question[] = [
       'Breathe, Wait, Relax, Ascend, Float',
     ],
     explain:
-      'Begin With Review And Friend, Burger With Relish And Fries — whatever you need to remember it.',
+      'Begin With Review And Friend, Burger With Relish And Fries, whatever you need to remember it.',
   },
   {
     category: 'Safety',
@@ -339,7 +339,7 @@ export const QUESTIONS: Question[] = [
       'A flat hand rocked side to side',
     ],
     explain:
-      'A fist to the chest means low on air. A hand across the throat means it is already gone — the difference matters.',
+      'A fist to the chest means low on air. A hand across the throat means it is already gone, the difference matters.',
   },
   {
     category: 'Safety',
@@ -399,7 +399,7 @@ export const QUESTIONS: Question[] = [
       'A kind of soft coral',
       'A shrimp that lives in anemones',
     ],
-    explain: 'The name means "naked gills" — the frilly plume on its back is exactly that.',
+    explain: 'The name means "naked gills", the frilly plume on its back is exactly that.',
   },
   {
     category: 'Marine Life',
@@ -417,9 +417,9 @@ export const QUESTIONS: Question[] = [
     category: 'Marine Life',
     q: 'A titan triggerfish defends a territory shaped like…',
     answers: [
-      'A cone widening upward — so swim away horizontally',
-      'A sphere — so swim straight up',
-      'A flat disc — so swim straight down',
+      'A cone widening upward, so swim away horizontally',
+      'A sphere, so swim straight up',
+      'A flat disc, so swim straight down',
       'It has no territory at all',
     ],
     explain:
@@ -461,7 +461,7 @@ export const QUESTIONS: Question[] = [
     q: 'An adult green sea turtle eats mainly…',
     answers: ['Seagrass and algae', 'Jellyfish', 'Small fish', 'Coral polyps'],
     explain:
-      'They are the only largely herbivorous sea turtle as adults — and the green refers to their body fat, not their shell.',
+      'They are the only largely herbivorous sea turtle as adults, and the green refers to their body fat, not their shell.',
   },
   {
     category: 'Marine Life',
@@ -485,7 +485,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     category: 'Taiwan',
-    q: 'Xiaoliuqiu — Lambai Island — is famous for near-guaranteed encounters with…',
+    q: 'Xiaoliuqiu, Lambai Island, is famous for near-guaranteed encounters with…',
     answers: ['Green sea turtles', 'Hammerhead sharks', 'Manta rays', 'Whale sharks'],
     explain: 'Close to a thousand green turtles live around Taiwan’s only inhabited coral island.',
   },
@@ -547,7 +547,7 @@ export const QUESTIONS: Question[] = [
     category: 'Taiwan',
     q: 'At Bat Cave, where do the bats actually live?',
     answers: [
-      'In the mountains above the site — they emerge at dusk',
+      'In the mountains above the site, they emerge at dusk',
       'In an air pocket inside the underwater cave',
       'Under the boat dock',
       'There are no bats; it is named for its shape',
@@ -560,7 +560,7 @@ export const QUESTIONS: Question[] = [
     q: 'Divers travel to Malapascua in the Philippines above all to see…',
     answers: ['Thresher sharks at dawn', 'Manta rays', 'Whale sharks', 'Hammerhead schools'],
     explain:
-      'They rise to Monad Shoal at first light to be cleaned by wrasse — nearly every morning of the year.',
+      'They rise to Monad Shoal at first light to be cleaned by wrasse, nearly every morning of the year.',
   },
   {
     category: 'Taiwan',

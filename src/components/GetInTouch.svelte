@@ -38,7 +38,7 @@
   function submit(e: Event) {
     e.preventDefault()
     if (!active) return
-    const subject = `${TITLES[active]} — ${name || 'Website request'}`
+    const subject = `${TITLES[active]}: ${name || 'Website request'}`
     const body =
       `Request: ${TITLES[active]}\n` + `Name: ${name}\n` + `Email: ${email}\n\n` + `${message}`
     window.location.href = `mailto:${CONTACT.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`

@@ -7,7 +7,7 @@
 // is researched from public diving sources. Keyed by dive-site id (see
 // dive-sites.ts). Static so the detail pages render instantly with no
 // extra round-trip; edit + redeploy to revise. Not every site is guaranteed to
-// have an entry — the detail page degrades gracefully when one is missing.
+// have an entry, the detail page degrades gracefully when one is missing.
 export type DiveSiteGuide = {
   overview: string
   highlights: string[]
@@ -21,7 +21,7 @@ export type DiveSiteGuide = {
   // them falls back to the overview + marine-life chips alone.
   /** What you'll see underwater, in prose. Rendered above the marine-life chips. */
   belowSurface?: string
-  /** The site's setting on land — scenery, wildlife, what makes the trip worth it. */
+  /** The site's setting on land, scenery, wildlife, what makes the trip worth it. */
   aboveSurface?: string
   /** Getting to the entry point: driving, bus, train. */
   gettingThere?: string
@@ -721,7 +721,7 @@ export const DIVE_SITE_GUIDES: Record<string, DiveSiteGuide> = {
     requirements:
       'Advanced Open Water Certification is recommended and Deep Specialty is required to reach some of the deeper sites.',
     highlights: [
-      'Grand Canyon — the area’s signature drift',
+      'Grand Canyon, the area’s signature drift',
       'Wrecks, walls and drift dives',
       'Day trips to Verde Island',
       'Lively nightlife in Sabang',
@@ -823,7 +823,7 @@ export const DIVE_SITE_GUIDES: Record<string, DiveSiteGuide> = {
     requirements:
       'Open water diver (Advanced certification and SMB are recommended for all boat diving).',
     highlights: [
-      'Blue Corner — a top-ten dive site worldwide',
+      'Blue Corner, a top-ten dive site worldwide',
       'UNESCO Rock Islands',
       '1,300 fish and 700 coral species',
       'Palau National Marine Sanctuary',

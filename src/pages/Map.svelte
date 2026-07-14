@@ -29,7 +29,7 @@
       center: [121.81, 25.15],
       bbox: [121.785, 25.122, 121.836, 25.195],
       description:
-        'Northern port-area diving — Badouzi Bay reefs and shipwrecks, with Keelung Islet just offshore.',
+        'Northern port-area diving, Badouzi Bay reefs and shipwrecks, with Keelung Islet just offshore.',
       maxZoom: 40,
     },
     longdong: {
@@ -37,7 +37,7 @@
       center: [121.91, 25.118],
       bbox: [121.895, 25.108, 121.927, 25.13],
       description:
-        'The classic northeast wall and reef dives — sheer basalt cliffs, deep gullies, dramatic rock formations.',
+        'The classic northeast wall and reef dives, sheer basalt cliffs, deep gullies, dramatic rock formations.',
       maxZoom: 40,
     },
     yilan: {
@@ -45,7 +45,7 @@
       center: [121.95, 24.95],
       bbox: [121.81, 24.8, 121.99, 25.05],
       description:
-        "East-coast diving — Toucheng / Wai'ao reefs, the Cathedral and Cauliflower Garden walls, the Wan An Jian wreck, " +
+        "East-coast diving, Toucheng / Wai'ao reefs, the Cathedral and Cauliflower Garden walls, the Wan An Jian wreck, " +
         'and Turtle Island offshore (Guishan Dao).',
     },
     greenisland: {
