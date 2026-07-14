@@ -330,19 +330,42 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
     next: ['padi-divemaster-course'],
   },
   'padi-discover-scuba-diving-program': {
+    intro:
+      "Not sure if scuba diving is for you? Want to try it out before committing to the course? The PADI Discover Scuba Diving program with Fun Divers TW is a quick and easy introduction into what it takes to explore the underwater world. Although this is not a scuba certification course, you'll learn a few basic skills towards becoming a PADI certified diver.",
     overview:
-      "Never dived before? Discover Scuba Diving lets you try scuba under the direct supervision of a PADI Professional — no certification required. It's the perfect first taste, and your dives can later count toward your Open Water certification.",
+      "During the PADI Discover Scuba Diving (DSD) program you will get to go on a dive with one of Fun Divers TW's PADI Instructors. You learn the basic safety guidelines and skills needed to dive under the direct supervision of a PADI Professional. During the open water dive, you'll practice a few basic skills in shallow water to prepare for your adventure.",
+    topicsTitle: 'Get ready to',
     youWillLearn: [
-      'Basic scuba equipment and how it works',
-      'A few essential underwater skills',
-      'Breathing underwater for the very first time',
-      'A guided dive in confined or shallow water',
+      'Learn about the scuba equipment you will use to dive and how easy it is to move around underwater with your gear.',
+      'Breathe underwater for the first time.',
+      "Learn key skills that you'll use during every scuba dive.",
+      'Have fun watching fish swimming around you.',
+      'Learn more about becoming a certified diver through the PADI Open Water Diver course.',
     ],
     prerequisites: 'None — 10+ and in good health',
+    prereqList: [
+      '12 years old.',
+      'No prior experience with scuba diving is necessary, but you need to be in reasonable physical health.',
+      'This is NOT a certification course — it is a chance to try scuba diving before committing to a certification course.',
+    ],
     minAge: '10+',
     duration: 'Half a day',
     depth: '12 m',
     certifies: 'Experience program (not a certification)',
+    timeFrame:
+      'The PADI Discover Scuba Diving program is a single open water dive (with an optional 2nd dive) at Bat Cave.',
+    materials: ['This is NOT a certification course — no materials provided.'],
+    equipment: ['Basic equipment rental is included in the course price.'],
+    notes: [
+      'Dates are subject to change due to weather or wave conditions.',
+      'Return transport is included.',
+    ],
+    subsections: [
+      [],
+      ['overview', 'topics'],
+      ['prerequisites'],
+      ['timeFrame', 'materials', 'equipment', 'notes'],
+    ],
     matchCodes: ['dsd', 'discover'],
     next: ['padi-open-water-course'],
   },
