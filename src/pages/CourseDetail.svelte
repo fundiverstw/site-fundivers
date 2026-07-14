@@ -98,12 +98,20 @@
     if (course) document.title = `${course.title} — FunDivers TW`
   })
 
-  // "Where to next" — resolve the guide's next ids to course cards.
+  // "Where to next" — the guide's picks first, then filled to two with other
+  // courses so every page always suggests two places to go next.
   let nextCourses = $derived.by((): CourseCard[] => {
-    if (!guide?.next?.length) return []
-    return guide.next
-      .map((nid) => COURSES.find((c) => courseId(c.slug) === nid))
-      .filter((c): c is CourseCard => !!c)
+    if (!course) return []
+    const chosen: CourseCard[] = []
+    const add = (c: CourseCard | undefined) => {
+      if (c && c !== course && !chosen.includes(c)) chosen.push(c)
+    }
+    for (const nid of guide?.next ?? []) add(COURSES.find((c) => courseId(c.slug) === nid))
+    for (const c of COURSES) {
+      if (chosen.length >= 2) break
+      add(c)
+    }
+    return chosen.slice(0, 2)
   })
 </script>
 

@@ -293,7 +293,7 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
       ['materials', 'equipment'],
     ],
     matchCodes: ['dm', 'divemaster'],
-    next: [],
+    next: ['padi-enriched-air-specialty-course', 'padi-deep-diver-specialty'],
   },
   'padi-master-scuba-diver': {
     intro:
@@ -327,7 +327,7 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
       ['timeFrame', 'materials', 'equipment'],
     ],
     matchCodes: ['msd'],
-    next: ['padi-divemaster-course'],
+    next: ['padi-divemaster-course', 'padi-deep-diver-specialty'],
   },
   'padi-discover-scuba-diving-program': {
     intro:
@@ -360,18 +360,14 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
     equipment: [
       'All the basic scuba gear you need is included in the price — just bring your swimsuit and a sense of adventure.',
     ],
-    notes: [
-      'Dates are subject to change due to weather or wave conditions.',
-      'Return transport is included.',
-    ],
     subsections: [
       [],
       ['overview', 'topics'],
       ['prerequisites'],
-      ['timeFrame', 'materials', 'equipment', 'notes'],
+      ['timeFrame', 'materials', 'equipment'],
     ],
     matchCodes: ['dsd', 'discover'],
-    next: ['padi-open-water-course'],
+    next: ['padi-open-water-course', 'padi-advanced-course'],
   },
   'padi-refresher-course': {
     overview:
