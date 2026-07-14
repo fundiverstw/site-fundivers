@@ -296,18 +296,35 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
     next: [],
   },
   'padi-master-scuba-diver': {
+    intro: 'Become one of the elite divers as a PADI Master Scuba Diver.',
     overview:
-      'PADI Master Scuba Diver is the highest non-professional rating — a mark of experience and versatility that fewer than two percent of divers reach. It recognises those who have earned a breadth of certifications and logged real experience.',
+      'Having the PADI Master Scuba Diver rating shows others that you have a variety of dive experiences as well as a lot of time underwater. You can earn the rating by completing all of the prerequisite courses, having 5 specialty certifications and having at least 50 dives under your belt.',
     youWillLearn: [
       'A well-rounded range of specialty skills',
       'Confidence across many diving environments',
       'Recognition as an elite recreational diver',
     ],
     prerequisites: 'Advanced Open Water, Rescue Diver, five PADI Specialties and 50 logged dives',
+    prereqList: [
+      '12 years old',
+      'Be certified as a PADI Rescue Diver (or equivalent)',
+      'Have at least 5 PADI Specialty Certifications (or equivalent)',
+      'Have at least 50 logged dives',
+    ],
     minAge: '12+',
     duration: 'Earned over time',
     depth: null,
     certifies: 'PADI Master Scuba Diver rating',
+    timeFrame:
+      'The PADI Master Scuba Diver Certification is achieved after completing all the prerequisite courses and logging at least 50 dives. Once those have been achieved, we can apply for the certification!',
+    materials: ['No additional materials needed'],
+    equipment: ['No equipment needed'],
+    subsections: [
+      [],
+      ['overview'],
+      ['prerequisites'],
+      ['timeFrame', 'materials', 'equipment'],
+    ],
     matchCodes: ['msd'],
     next: ['padi-divemaster-course'],
   },
