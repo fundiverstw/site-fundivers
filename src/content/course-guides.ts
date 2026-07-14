@@ -43,8 +43,11 @@ export type CourseGuide = {
   equipment?: string[]
   notes?: string[]
   // How to group the blocks above into staggered subsections (each inner array
-  // is one subsection, rendered against its own image). Omit to use the default
-  // grouping (see CourseDetail). Blocks with no data are dropped automatically.
+  // is one subsection, rendered against its own image). The FIRST subsection
+  // shares its row with the course title + intro — give it [] for just the
+  // title/intro, or blocks to sit alongside them. Omit the whole field to use
+  // the default grouping (see CourseDetail). Later empty subsections are
+  // dropped, and blocks with no data are removed automatically.
   subsections?: BlockKey[][]
   matchCodes: string[] // event admin_title codes (lowercased) for upcoming sessions
   next: string[] // suggested next-course route ids
@@ -108,6 +111,7 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
       'For private 1-on-1 service, a surcharge may apply.',
     ],
     subsections: [
+      [],
       ['overview', 'prerequisites'],
       ['timeFrame'],
       ['materials', 'equipment', 'notes'],
@@ -167,6 +171,7 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
       'For private 1-on-1 service, a surcharge may apply.',
     ],
     subsections: [
+      [],
       ['overview', 'reasons'],
       ['prerequisites', 'timeFrame'],
       ['materials', 'equipment', 'notes'],
@@ -220,9 +225,10 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
       'For private 1-on-1 service, a surcharge may apply.',
     ],
     subsections: [
-      ['overview', 'topics', 'prerequisites'],
-      ['timeFrame', 'materials'],
-      ['equipment', 'notes'],
+      ['overview'],
+      ['topics', 'prerequisites'],
+      ['timeFrame'],
+      ['materials', 'equipment', 'notes'],
     ],
     matchCodes: ['resc', 'rescue ready'],
     next: ['padi-divemaster-course', 'padi-master-scuba-diver'],

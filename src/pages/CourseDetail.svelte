@@ -57,23 +57,26 @@
     }
   }
 
-  // Default grouping for guides that don't lay their blocks out explicitly:
-  // overview + prerequisites, then the time frame (or "what you'll learn" if the
-  // course has none), then the materials/equipment/notes.
+  // Default grouping for guides that don't lay their blocks out explicitly: the
+  // title/intro alone, then overview + prerequisites, then the time frame (or
+  // "what you'll learn" if the course has none), then materials/equipment/notes.
   function defaultLayout(g: CourseGuide): BlockKey[][] {
     return [
+      [],
       ['overview', 'prerequisites'],
       g.timeFrame || g.phases?.length ? ['timeFrame'] : ['topics'],
       ['materials', 'equipment', 'notes'],
     ]
   }
 
-  // The staggered subsections after the intro, each rendered against one image.
-  // Blocks with no data are dropped, and empty subsections disappear entirely.
+  // The staggered subsections. The first shares its row with the title/intro and
+  // always renders (even when empty); later empty subsections are dropped, and
+  // blocks with no data are removed throughout.
   let subsections = $derived.by((): BlockKey[][] => {
-    if (!guide) return []
+    if (!guide) return [[]]
     const groups = guide.subsections ?? defaultLayout(guide)
-    return groups.map((keys) => keys.filter(blockHasData)).filter((g) => g.length > 0)
+    const filtered = groups.map((keys) => keys.filter(blockHasData))
+    return [filtered[0] ?? [], ...filtered.slice(1).filter((g) => g.length > 0)]
   })
 
   // Live upcoming sessions for THIS course, matched by category code.
@@ -242,29 +245,28 @@
       {$t.courseDetail.back}
     </a>
 
-    <!-- Staggered main content: image ⟷ text, alternating down the page. -->
+    <!-- Staggered main content: image ⟷ text, alternating down the page. The
+         first row carries the title + intro; the rest follow the block layout. -->
     <div class="mt-6 space-y-14 sm:mt-8 lg:space-y-20">
-      <!-- 1 · img1 left, title + intro right -->
-      {#snippet intro()}
-        <h1 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">{course.title}</h1>
-        <div class="glass mt-4 rounded-2xl p-5">
-          <p class="text-base leading-relaxed text-brand-100 sm:text-lg">
-            {guide?.intro ?? course.desc}
-          </p>
-        </div>
-      {/snippet}
-      {@render row(images[0], course.title, false, intro)}
-
-      <!-- 2… · staggered subsections, grouped per the guide's block layout -->
       {#each subsections as keys, i}
         {#snippet body()}
-          <div class="space-y-8">
-            {#each keys as k}
-              {@render block(k)}
-            {/each}
-          </div>
+          {#if i === 0}
+            <h1 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">{course.title}</h1>
+            <div class="glass mt-4 rounded-2xl p-5">
+              <p class="text-base leading-relaxed text-brand-100 sm:text-lg">
+                {guide?.intro ?? course.desc}
+              </p>
+            </div>
+          {/if}
+          {#if keys.length}
+            <div class="space-y-8 {i === 0 ? 'mt-8' : ''}">
+              {#each keys as k}
+                {@render block(k)}
+              {/each}
+            </div>
+          {/if}
         {/snippet}
-        {@render row(images[(i + 1) % images.length], course.title, (i + 1) % 2 === 1, body)}
+        {@render row(images[i % images.length], course.title, i % 2 === 1, body)}
       {/each}
     </div>
 
