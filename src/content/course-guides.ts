@@ -296,9 +296,10 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
     next: [],
   },
   'padi-master-scuba-diver': {
-    intro: 'Become one of the elite divers as a PADI Master Scuba Diver.',
+    intro:
+      "Reach the summit of recreational diving. PADI Master Scuba Diver is the highest rating a recreational diver can earn — held by fewer than two percent of divers worldwide — and it marks you as someone who has truly mastered the underwater world.",
     overview:
-      'Having the PADI Master Scuba Diver rating shows others that you have a variety of dive experiences as well as a lot of time underwater. You can earn the rating by completing all of the prerequisite courses, having 5 specialty certifications and having at least 50 dives under your belt.',
+      "Wearing the PADI Master Scuba Diver rating tells the world you've done it all: a broad range of dive experiences, real hours logged beneath the surface, and the versatility to feel at home almost anywhere you dive. You earn it not from a single weekend course but over a diving journey — completing the core certifications, adding at least five specialty ratings in the diving you love most, and logging 50 dives or more along the way. Every specialty sharpens a new skill and opens up a new kind of diving, from deep and wreck to photography and drift. Arrive at the rating and you join an elite circle of divers others look up to — the ones who've seen the most, done the most, and keep coming back for more.",
     youWillLearn: [
       'A well-rounded range of specialty skills',
       'Confidence across many diving environments',
@@ -316,9 +317,9 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
     depth: null,
     certifies: 'PADI Master Scuba Diver rating',
     timeFrame:
-      'The PADI Master Scuba Diver Certification is achieved after completing all the prerequisite courses and logging at least 50 dives. Once those have been achieved, we can apply for the certification!',
-    materials: ['No additional materials needed'],
-    equipment: ['No equipment needed'],
+      "Because Master Scuba Diver is a rating you build rather than a single course, the timeline is entirely your own — set by the specialties you choose and the pace you dive. Once you've completed the prerequisite courses and logged your 50 dives, we'll submit your application and welcome you to the club. Talk to Fun Divers TW and we'll help you map out the specialties and dives that get you there.",
+    materials: ['Nothing extra to buy — you already have everything from your previous courses.'],
+    equipment: ['No new equipment needed — your own dive gear is all it takes.'],
     subsections: [
       [],
       ['overview'],
