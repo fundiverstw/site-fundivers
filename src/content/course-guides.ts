@@ -296,18 +296,13 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
     ],
     equipmentText:
       "As a dive professional, you need to have all your basic scuba equipment, including a dive computer, a dive knife, and at least two surface signalling devices. During practical skills exercises, like underwater mapping and search and recovery, you'll use a compass, floats, marker buoys, lift bags and slates. Contact Fun Divers TW for all your equipment needs!",
-    subsections: [
-      [],
-      ['overview'],
-      ['prerequisites', 'timeFrame'],
-      ['materials', 'equipment'],
-    ],
+    subsections: [[], ['overview'], ['prerequisites', 'timeFrame'], ['materials', 'equipment']],
     matchCodes: ['dm', 'divemaster'],
     next: ['padi-enriched-air-specialty-course', 'padi-deep-diver-specialty'],
   },
   'padi-master-scuba-diver': {
     intro:
-      "Reach the summit of recreational diving. PADI Master Scuba Diver is the highest rating a recreational diver can earn, held by fewer than two percent of divers worldwide, and it marks you as someone who has truly mastered the underwater world.",
+      'Reach the summit of recreational diving. PADI Master Scuba Diver is the highest rating a recreational diver can earn, held by fewer than two percent of divers worldwide, and it marks you as someone who has truly mastered the underwater world.',
     overview:
       "Wearing the PADI Master Scuba Diver rating tells the world you've done it all: a broad range of dive experiences, real hours logged beneath the surface, and the versatility to feel at home almost anywhere you dive. You earn it not from a single weekend course but over a diving journey, completing the core certifications, adding at least five specialty ratings in the diving you love most, and logging 50 dives or more along the way. Every specialty sharpens a new skill and opens up a new kind of diving, from deep and wreck to photography and drift. Arrive at the rating and you join an elite circle of divers others look up to, the ones who've seen the most, done the most, and keep coming back for more.",
     youWillLearn: [
@@ -330,12 +325,7 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
       "Because Master Scuba Diver is a rating you build rather than a single course, the timeline is entirely your own, set by the specialties you choose and the pace you dive. Once you've completed the prerequisite courses and logged your 50 dives, we'll submit your application and welcome you to the club. Talk to Fun Divers TW and we'll help you map out the specialties and dives that get you there.",
     materials: ['Nothing extra to buy, you already have everything from your previous courses.'],
     equipment: ['No new equipment needed, your own dive gear is all it takes.'],
-    subsections: [
-      [],
-      ['overview'],
-      ['prerequisites'],
-      ['timeFrame', 'materials', 'equipment'],
-    ],
+    subsections: [[], ['overview'], ['prerequisites'], ['timeFrame', 'materials', 'equipment']],
     matchCodes: ['msd'],
     next: ['padi-divemaster-course', 'padi-deep-diver-specialty'],
   },
@@ -391,9 +381,7 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
       'Updating on current best practice',
     ],
     prerequisites: 'Certified diver returning after a break',
-    prereqList: [
-      "Recommended for any certified diver who hasn't dived in more than 6 months.",
-    ],
+    prereqList: ["Recommended for any certified diver who hasn't dived in more than 6 months."],
     minAge: '10+',
     duration: 'Half a day',
     depth: null,
@@ -404,12 +392,7 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
     equipment: [
       "Equipment isn't included in the course price, but we can provide rental gear as needed.",
     ],
-    subsections: [
-      [],
-      ['overview'],
-      ['prerequisites', 'timeFrame'],
-      ['materials', 'equipment'],
-    ],
+    subsections: [[], ['overview'], ['prerequisites', 'timeFrame'], ['materials', 'equipment']],
     matchCodes: ['refresher'],
     next: ['padi-advanced-course', 'padi-enriched-air-specialty-course'],
   },
@@ -449,10 +432,7 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
     certifies: 'EFR Primary & Secondary Care (valid 24 months)',
     timeFrame:
       'The Emergency First Response (EFR) Course is a performance-based course, so classroom session length varies, but the average course is 4-5 hours. The course is taught at Fun Divers Dive Center.',
-    materials: [
-      'Emergency First Response Manual / E-learning',
-      'Emergency First Response Video',
-    ],
+    materials: ['Emergency First Response Manual / E-learning', 'Emergency First Response Video'],
     equipment: ['All equipment is provided.'],
     notes: [
       'All PADI Instructors are also EFR Instructors and are qualified to teach this course.',
