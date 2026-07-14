@@ -33,6 +33,10 @@ export type CourseGuide = {
   // Richer, itemised prerequisites for the staggered layout. When present these
   // replace the single-line `prerequisites` string in the page body.
   prereqList?: string[]
+  // Optional prose that brackets the prerequisites list — a lead-in before it
+  // and/or a note after it (e.g. "qualifying certifications may apply").
+  prereqLead?: string
+  prereqNote?: string
   minAge: string
   duration: string
   depth: string | null
@@ -40,7 +44,11 @@ export type CourseGuide = {
   timeFrame?: string
   phases?: CoursePhase[]
   materials?: string[]
+  // Optional "Recommended" extras shown under the materials list.
+  materialsRecommended?: string[]
   equipment?: string[]
+  // Prose equipment, used instead of the `equipment` list when present.
+  equipmentText?: string
   notes?: string[]
   // How to group the blocks above into staggered subsections (each inner array
   // is one subsection, rendered against its own image). The FIRST subsection
@@ -234,8 +242,10 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
     next: ['padi-divemaster-course', 'padi-master-scuba-diver'],
   },
   'padi-divemaster-course': {
+    intro:
+      'Learn how to be a leader who mentors and motivates others. You will gain the knowledge and supervision abilities necessary to be a dive professional and become a role model to divers around the world.',
     overview:
-      'The Divemaster course is your first step into professional diving. Working closely with our instructors you develop dive-leadership skills, supervise activities and assist with student divers — the start of a career in the water.',
+      "Love scuba diving? Want to share it with others on a whole new level? Take the PADI Divemaster course and do what you love as a career. Scuba divers always look up to divemasters because they are leaders who mentor and motivate others. As a divemaster, you not only get to dive a lot, but also experience the joy of seeing others having fun diving, too. The PADI Divemaster course is your first level of professional training. You'll work closely with your instructor and fine tune your dive skills. You'll gain knowledge, management and supervision abilities so you become a role model. You'll lead divers as you supervise activities and assist with diver training courses. Whether you want to work close to home or at a faraway dive destination, the adventure of a lifetime awaits you!",
     youWillLearn: [
       'Dive leadership and supervision',
       'Guiding certified divers safely',
@@ -244,10 +254,45 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
       'Refining demonstration-quality skills',
     ],
     prerequisites: 'PADI Rescue Diver, EFR within 24 months, and 40 logged dives (60 to certify)',
+    prereqLead:
+      'PADI Rescue Divers who are at least 18 years old may enroll in the PADI Divemaster course. You also need to have:',
+    prereqList: [
+      'Emergency First Response Primary and Secondary Care (CPR and First Aid) training within the past 24 months.',
+      'A medical statement signed by a physician within the last 12 months.',
+      'At least 40 logged dives to begin the course and 60 dives to earn certification.',
+    ],
+    prereqNote:
+      'Note that qualifying certifications from other diver training organizations may apply — ask your PADI Instructor.',
     minAge: '18+',
     duration: 'Several weeks (flexible)',
     depth: null,
     certifies: 'PADI Divemaster — a professional rating',
+    timeFrame:
+      'The PADI Divemaster Course is both a knowledge- and performance-based course, so course duration will vary for each student. Contact Fun Divers TW to discuss a schedule that works for you!',
+    materials: [
+      'PADI Divemaster Course E-learning',
+      'PADI Instructor Manual',
+      'The Encyclopedia of Recreational Diving',
+      'eRDPML with instructional booklet',
+      'PADI Divemaster slates',
+      'Fun Divers Log Book',
+      'Fun Divers Sticker',
+      'Fun Divers Pen',
+    ],
+    materialsRecommended: [
+      'PADI Guide to Teaching',
+      'Diving Knowledge Workbook',
+      'PADI Skill Practice and Dive Planning slate',
+    ],
+    equipmentText:
+      "As a dive professional, you need to have all your basic scuba equipment, including a dive computer, a dive knife, and at least two surface signalling devices. During practical skills exercises, like underwater mapping and search and recovery, you'll use a compass, floats, marker buoys, lift bags and slates. Contact Fun Divers TW for all your equipment needs!",
+    notes: ['Tanks are provided during the course.'],
+    subsections: [
+      [],
+      ['overview'],
+      ['prerequisites', 'timeFrame'],
+      ['materials', 'equipment', 'notes'],
+    ],
     matchCodes: ['dm', 'divemaster'],
     next: [],
   },

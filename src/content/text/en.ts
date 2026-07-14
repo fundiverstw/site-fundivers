@@ -166,6 +166,7 @@ export const en = {
     certifies: 'You earn',
     timeFrame: 'Time frame',
     materials: 'Materials',
+    recommended: 'Recommended',
     equipment: 'Equipment',
     notes: 'Notes',
     upcoming: 'Upcoming dates',

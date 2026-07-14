@@ -162,6 +162,7 @@ export const ja: Dict = {
     certifies: '取得資格',
     timeFrame: 'スケジュール',
     materials: '教材',
+    recommended: '推奨',
     equipment: '器材',
     notes: 'ご注意',
     upcoming: '開催予定',

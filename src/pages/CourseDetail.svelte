@@ -51,7 +51,7 @@
       case 'materials':
         return !!guide?.materials?.length
       case 'equipment':
-        return !!guide?.equipment?.length
+        return !!(guide?.equipment?.length || guide?.equipmentText)
       case 'notes':
         return !!guide?.notes?.length
     }
@@ -129,23 +129,30 @@
   </div>
 {/snippet}
 
-<!-- Prerequisites — itemised when the guide gives a list, else a single line. -->
+<!-- Prerequisites — an optional lead-in, the itemised list (or a single line),
+     and an optional trailing note, all in one card. -->
 {#snippet prereqBlock()}
   <h3 class="text-lg font-bold text-white">{$t.courseDetail.prerequisites}</h3>
-  {#if guide?.prereqList?.length}
-    <ul class="glass mt-3 space-y-2 rounded-2xl p-5">
-      {#each guide.prereqList as item}
-        <li class="flex gap-2 text-brand-100">
-          <span class="mt-0.5 text-reef-300" aria-hidden="true">✓</span>
-          <span>{item}</span>
-        </li>
-      {/each}
-    </ul>
-  {:else if guide?.prerequisites}
-    <div class="glass mt-3 rounded-2xl p-5">
+  <div class="glass mt-3 rounded-2xl p-5">
+    {#if guide?.prereqLead}
+      <p class="leading-relaxed text-brand-100">{guide.prereqLead}</p>
+    {/if}
+    {#if guide?.prereqList?.length}
+      <ul class="space-y-2 {guide?.prereqLead ? 'mt-3' : ''}">
+        {#each guide.prereqList as item}
+          <li class="flex gap-2 text-brand-100">
+            <span class="mt-0.5 text-reef-300" aria-hidden="true">✓</span>
+            <span>{item}</span>
+          </li>
+        {/each}
+      </ul>
+    {:else if guide?.prerequisites && !guide?.prereqLead}
       <p class="leading-relaxed text-brand-100">{guide.prerequisites}</p>
-    </div>
-  {/if}
+    {/if}
+    {#if guide?.prereqNote}
+      <p class="mt-3 leading-relaxed text-brand-100">{guide.prereqNote}</p>
+    {/if}
+  </div>
 {/snippet}
 
 <!-- A labelled, always-expanded list (Materials / Equipment / Notes), in a card. -->
@@ -221,9 +228,45 @@
       {/if}
     </div>
   {:else if key === 'materials'}
-    <div>{@render bulletList($t.courseDetail.materials, guide?.materials ?? [])}</div>
+    {#if guide?.materialsRecommended?.length}
+      <div>
+        <h3 class="text-lg font-bold text-white">{$t.courseDetail.materials}</h3>
+        <div class="glass mt-3 rounded-2xl p-5">
+          <ul class="space-y-2">
+            {#each guide?.materials ?? [] as it}
+              <li class="flex gap-2 text-brand-100">
+                <span class="mt-0.5 text-reef-300" aria-hidden="true">•</span>
+                <span>{it}</span>
+              </li>
+            {/each}
+          </ul>
+          <p class="mt-4 text-sm font-semibold uppercase tracking-wide text-brand-300">
+            {$t.courseDetail.recommended}
+          </p>
+          <ul class="mt-2 space-y-2">
+            {#each guide.materialsRecommended as it}
+              <li class="flex gap-2 text-brand-100">
+                <span class="mt-0.5 text-reef-300" aria-hidden="true">•</span>
+                <span>{it}</span>
+              </li>
+            {/each}
+          </ul>
+        </div>
+      </div>
+    {:else}
+      <div>{@render bulletList($t.courseDetail.materials, guide?.materials ?? [])}</div>
+    {/if}
   {:else if key === 'equipment'}
-    <div>{@render bulletList($t.courseDetail.equipment, guide?.equipment ?? [])}</div>
+    {#if guide?.equipmentText}
+      <div>
+        <h3 class="text-lg font-bold text-white">{$t.courseDetail.equipment}</h3>
+        <div class="glass mt-3 rounded-2xl p-5">
+          <p class="leading-relaxed text-brand-100">{guide.equipmentText}</p>
+        </div>
+      </div>
+    {:else}
+      <div>{@render bulletList($t.courseDetail.equipment, guide?.equipment ?? [])}</div>
+    {/if}
   {:else if key === 'notes'}
     <div>{@render bulletList($t.courseDetail.notes, guide?.notes ?? [])}</div>
   {/if}

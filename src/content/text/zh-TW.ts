@@ -160,6 +160,7 @@ export const zhTW: Dict = {
     certifies: '取得資格',
     timeFrame: '課程時程',
     materials: '教材',
+    recommended: '建議項目',
     equipment: '裝備',
     notes: '注意事項',
     upcoming: '近期日期',
