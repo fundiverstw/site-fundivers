@@ -9,11 +9,18 @@ export type CourseGuide = {
   // course card's `desc` when absent).
   intro?: string
   overview: string
+  // Optional "why take this" list shown under the overview (subsection 2), with
+  // its own heading and rendered as a numbered list.
+  reasonsTitle?: string
+  reasons?: string[]
   youWillLearn: string[]
   prerequisites: string
   // Richer, itemised prerequisites for the staggered layout. When present these
   // replace the single-line `prerequisites` string in the page body.
   prereqList?: string[]
+  // By default prerequisites sit in subsection 2 (beside overview). Set this to
+  // move them into subsection 3, alongside the time frame.
+  prereqInTimeframe?: boolean
   minAge: string
   duration: string
   depth: string | null
@@ -91,8 +98,23 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
     next: ['padi-advanced-course', 'padi-enriched-air-specialty-course'],
   },
   'padi-advanced-course': {
+    intro:
+      "The PADI Advanced Open Water Diver Course is a great way to improve your diving skills, get additional diving experience under the supervision of an instructor and increase your knowledge about diving. This course can be taken immediately after completing the PADI Open Water Diver certification. It's titled PADI Advanced Open Water Diver because it advances your diving skills and knowledge.",
     overview:
-      "Ready for more? Advanced Open Water builds your skills over five “adventure” dives — a Deep dive and an Underwater Navigation dive plus three of your choice. It's the fastest way to gain experience under instructor guidance and extends your depth limit to 30 metres.",
+      'By taking the PADI Advanced Course, you will learn more about the underwater world while expanding your diving skills. You will practice your navigation and go deeper. After the course, you will be certified to 30 meters, which will open up more dive sites to you around the world. There is a Deep dive, a Navigation dive, and you will also be able to choose 3 specialty dives based on your interests!',
+    reasonsTitle: 'Top 10 reasons to take the PADI Advanced Course',
+    reasons: [
+      'Increase your knowledge of diving',
+      "Expand the skills you've learned while supervised",
+      'Dive as deep as 30 m and see more',
+      'Gain confidence in yourself',
+      'Be more comfortable in the water',
+      'Be more comfortable with the equipment',
+      'Try 5 different kinds of adventure dives',
+      'Have more chances to explore different dive sites locally and worldwide',
+      'Higher credentials mean less hassle when traveling',
+      'Meet new dive buddies',
+    ],
     youWillLearn: [
       'Deep-diving technique and planning to 30 m',
       'Underwater navigation by compass and natural reference',
@@ -100,10 +122,33 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
       'Greater confidence and in-water control',
     ],
     prerequisites: 'PADI (Junior) Open Water Diver or qualifying certification',
+    prereqList: [
+      '12 years old (12–14 year old students can earn Junior Advanced Open Water).',
+      'Certified as a PADI (Junior) Open Water Diver.',
+    ],
+    prereqInTimeframe: true,
     minAge: '12+',
     duration: '2–3 days',
     depth: '30 m',
     certifies: 'Dive to 30 m; counts toward Master Scuba Diver',
+    timeFrame: 'The PADI Advanced Course consists of PADI E-learning and 5 specialty dives.',
+    phases: [
+      { name: 'Day 1', text: 'Open water dives 1 & 2.' },
+      { name: 'Day 2', text: 'Open water dives 3, 4 & 5.' },
+    ],
+    materials: [
+      'PADI Advanced Open Water E-learning',
+      'Continuing Education Administrative Document',
+      'Fun Divers Log Book',
+      'Fun Divers Sticker',
+      'Fun Divers Pen',
+    ],
+    equipment: ['Equipment rental is NOT included.'],
+    notes: [
+      'Dates and schedule may vary depending on conditions and chosen specialties.',
+      'Return transport is included.',
+      'For private 1-on-1 service, a surcharge may apply.',
+    ],
     matchCodes: ['aow'],
     next: ['padi-rescue-diver-course', 'padi-deep-diver-specialty'],
   },

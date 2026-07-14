@@ -34,6 +34,12 @@
     !!(guide?.materials?.length || guide?.equipment?.length || guide?.notes?.length),
   )
 
+  // Prerequisites live in subsection 2 by default, or subsection 3 when the
+  // guide opts in (prereqInTimeframe) — some courses read better that way.
+  let hasPrereq = $derived(!!(guide?.prereqList?.length || guide?.prerequisites))
+  let prereqInOverview = $derived(hasPrereq && !guide?.prereqInTimeframe)
+  let prereqInTimeframe = $derived(hasPrereq && !!guide?.prereqInTimeframe)
+
   // Live upcoming sessions for THIS course, matched by category code.
   let sessions = $state<UpcomingEvent[]>([])
   $effect(() => {
@@ -84,6 +90,25 @@
   </div>
 {/snippet}
 
+<!-- Prerequisites — itemised when the guide gives a list, else a single line. -->
+{#snippet prereqBlock()}
+  <h3 class="text-lg font-bold text-white">{$t.courseDetail.prerequisites}</h3>
+  {#if guide?.prereqList?.length}
+    <ul class="glass mt-3 space-y-2 rounded-2xl p-5">
+      {#each guide.prereqList as item}
+        <li class="flex gap-2 text-brand-100">
+          <span class="mt-0.5 text-reef-300" aria-hidden="true">✓</span>
+          <span>{item}</span>
+        </li>
+      {/each}
+    </ul>
+  {:else if guide?.prerequisites}
+    <div class="glass mt-3 rounded-2xl p-5">
+      <p class="leading-relaxed text-brand-100">{guide.prerequisites}</p>
+    </div>
+  {/if}
+{/snippet}
+
 <!-- A labelled, always-expanded list (Materials / Equipment / Notes), in a card. -->
 {#snippet bulletList(label: string, items: string[])}
   <h3 class="text-lg font-bold text-white">{label}</h3>
@@ -126,8 +151,8 @@
       {/snippet}
       {@render row(images[0], course.title, false, intro)}
 
-      <!-- 2 · overview + prerequisites left, img2 right -->
-      {#if guide?.overview || guide?.prereqList?.length || guide?.prerequisites}
+      <!-- 2 · overview (+ reasons, + prerequisites when here) left, img2 right -->
+      {#if guide?.overview || guide?.reasons?.length || prereqInOverview}
         {#snippet overview()}
           {#if guide?.overview}
             <h2 class="text-xl font-bold text-white sm:text-2xl">{$t.courseDetail.overview}</h2>
@@ -135,32 +160,42 @@
               <p class="leading-relaxed text-brand-100">{guide.overview}</p>
             </div>
           {/if}
-          {#if guide?.prereqList?.length}
-            <h3 class="mt-6 text-lg font-bold text-white">{$t.courseDetail.prerequisites}</h3>
-            <ul class="glass mt-3 space-y-2 rounded-2xl p-5">
-              {#each guide.prereqList as item}
+          {#if guide?.reasons?.length}
+            {#if guide?.reasonsTitle}
+              <h3 class="mt-6 text-lg font-bold text-white">{guide.reasonsTitle}</h3>
+            {/if}
+            <ol class="glass mt-3 space-y-2 rounded-2xl p-5">
+              {#each guide.reasons as reason, i}
                 <li class="flex gap-2 text-brand-100">
-                  <span class="mt-0.5 text-reef-300" aria-hidden="true">✓</span>
-                  <span>{item}</span>
+                  <span class="mt-0.5 font-semibold tabular-nums text-reef-300">{i + 1}.</span>
+                  <span>{reason}</span>
                 </li>
               {/each}
-            </ul>
-          {:else if guide?.prerequisites}
-            <h3 class="mt-6 text-lg font-bold text-white">{$t.courseDetail.prerequisites}</h3>
-            <div class="glass mt-3 rounded-2xl p-5">
-              <p class="leading-relaxed text-brand-100">{guide.prerequisites}</p>
+            </ol>
+          {/if}
+          {#if prereqInOverview}
+            <div class:mt-6={!!(guide?.overview || guide?.reasons?.length)}>
+              {@render prereqBlock()}
             </div>
           {/if}
         {/snippet}
         {@render row(images[1], course.title, true, overview)}
       {/if}
 
-      <!-- 3 · img3 left, time frame + phases (or "what you'll learn") right -->
-      {#if hasTimeframe || guide?.youWillLearn?.length}
+      <!-- 3 · img3 left, prerequisites (when here) + time frame + phases right -->
+      {#if prereqInTimeframe || hasTimeframe || guide?.youWillLearn?.length}
         {#snippet details()}
+          {#if prereqInTimeframe}
+            {@render prereqBlock()}
+          {/if}
           {#if hasTimeframe}
             {#if guide?.timeFrame}
-              <h2 class="text-xl font-bold text-white sm:text-2xl">{$t.courseDetail.timeFrame}</h2>
+              <h2
+                class="text-xl font-bold text-white sm:text-2xl"
+                class:mt-8={prereqInTimeframe}
+              >
+                {$t.courseDetail.timeFrame}
+              </h2>
               <div class="glass mt-3 rounded-2xl p-5">
                 <p class="leading-relaxed text-brand-100">{guide.timeFrame}</p>
               </div>
