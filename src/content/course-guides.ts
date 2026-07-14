@@ -2,22 +2,40 @@
 // descriptions of the standard PADI curricula (not PADI's own copy), plus quick
 // facts and the DB category codes (matchCodes) used to surface this course's
 // upcoming sessions. Keyed by the course route id (courses.ts courseId()).
+export type CoursePhase = { name: string; text: string }
+
 export type CourseGuide = {
+  // Short lead-in shown beside the first staggered image (falls back to the
+  // course card's `desc` when absent).
+  intro?: string
   overview: string
   youWillLearn: string[]
   prerequisites: string
+  // Richer, itemised prerequisites for the staggered layout. When present these
+  // replace the single-line `prerequisites` string in the page body.
+  prereqList?: string[]
   minAge: string
   duration: string
   depth: string | null
   certifies: string
+  // Optional deep-content for the third staggered subsection. Any that are
+  // present render; the materials/equipment/notes lists collapse behind a
+  // "Read more" disclosure. Courses without these fall back to `youWillLearn`.
+  timeFrame?: string
+  phases?: CoursePhase[]
+  materials?: string[]
+  equipment?: string[]
+  notes?: string[]
   matchCodes: string[] // event admin_title codes (lowercased) for upcoming sessions
   next: string[] // suggested next-course route ids
 }
 
 export const COURSE_GUIDES: Record<string, CourseGuide> = {
   'padi-open-water-course': {
+    intro:
+      'Your Scuba Diving Adventure starts here. Take your PADI Open Water Course and see why so many people have gotten hooked on the aquatic world. No prior experience necessary!',
     overview:
-      'The PADI Open Water Diver course is your first full scuba certification and the most popular dive course in the world. Across knowledge sessions, confined-water practice and four open-water dives, you learn everything you need to dive independently with a buddy — anywhere on Earth.',
+      'If you want to learn scuba diving, the PADI Open Water course is your first step. Become a scuba diver by taking this course and start exploring the underwater world. Your PADI Open Water Certification is recognized around the world, has no expiry date and certifies you to dive to 18 meters.',
     youWillLearn: [
       'Setting up, using and caring for scuba gear',
       'Essential underwater skills and safety procedures',
@@ -26,10 +44,49 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
       'Four training dives in open water',
     ],
     prerequisites: 'None — able to swim and in good health',
+    prereqList: [
+      'No prior Scuba Diving Experience Required! If you have never dived before, this is the Certification Course for you!',
+      '12 years old (12–14 year old students can earn Junior Open Water).',
+      'Students should have adequate swimming skills and should be in good physical health.',
+    ],
     minAge: '10+ (Junior 10–14)',
     duration: '3–4 days',
     depth: '18 m',
     certifies: 'Dive independently with a buddy to 18 m worldwide',
+    timeFrame:
+      'The PADI Open Water course takes place over 3 days. Courses are usually scheduled for weekends, so the 3-day course will take 2 weekends. This course consists of 3 phases:',
+    phases: [
+      {
+        name: 'E-Learning & Classroom Session',
+        text: 'We will begin in the classroom and develop your understanding of general scuba diving knowledge and how water pressure affects your body and how to deal with it. Most of this phase is done on your own at home via PADI E-learning.',
+      },
+      {
+        name: 'Pool Session',
+        text: 'In the pool you will learn how to use the scuba gear as well as basic skills necessary for scuba diving in a safe, controlled and step-by-step manner.',
+      },
+      {
+        name: 'Open Water Session',
+        text: 'During the 4 open water dives, you will practice and refine the skills already learned in the pool and begin to explore the underwater realm.',
+      },
+    ],
+    materials: [
+      'PADI Open Water Course Manual / E-Learning',
+      'PADI Open Water Course Videos / E-Learning',
+      'PIC Envelope',
+      'Fun Divers Log Book',
+      'Fun Divers Sticker',
+      'Fun Divers Pen',
+    ],
+    equipment: [
+      'Basic equipment rental is included in the course price.',
+      'Students need to buy their own Mask and Snorkel.',
+      'Purchase of Soft Gear (boots, fins, wetsuit) is also recommended.',
+    ],
+    notes: [
+      'Dates are subject to change due to weather or wave conditions.',
+      'Return transport is included.',
+      'For private 1-on-1 service, a surcharge may apply.',
+    ],
     matchCodes: ['ow'],
     next: ['padi-advanced-course', 'padi-enriched-air-specialty-course'],
   },

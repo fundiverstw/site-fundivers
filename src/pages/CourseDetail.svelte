@@ -2,18 +2,37 @@
   import { path } from '$engine/router'
   import { courseByRouteId, courseId, coursePath, COURSES, type CourseCard } from '$content/courses'
   import { COURSE_GUIDES, sessionMatchesCourse } from '$content/course-guides'
+  import { coursePoolImage } from '$engine/photo-pool'
   import { fetchUpcomingEvents, type UpcomingEvent } from '$engine/events'
   import { formatSpan, twd } from '$engine/format'
   import { registerUrl } from '$content/settings'
   import { t } from '$engine/i18n'
   import CallToAction from '$components/CallToAction.svelte'
 
-  const COURSE_BASE = 'https://www.fundiverstw.com/courses-1/'
-
   // Route param: /courses/<id>.
   let id = $derived($path.replace(/^\/courses\//, '').replace(/\/+$/, ''))
   let course = $derived(courseByRouteId(id))
   let guide = $derived(course ? (COURSE_GUIDES[courseId(course.slug)] ?? null) : null)
+
+  // Four images staggered down the page. A course can pin its own set;
+  // otherwise we use its cover plus three stable picks from the course photo pool.
+  let images = $derived.by((): [string, string, string, string] => {
+    if (!course) return ['', '', '', '']
+    if (course.images) return course.images
+    return [
+      course.image,
+      coursePoolImage(`${id}-2`) ?? course.image,
+      coursePoolImage(`${id}-3`) ?? course.image,
+      coursePoolImage(`${id}-4`) ?? course.image,
+    ]
+  })
+
+  // Row 3 carries the time frame / phases when a course has them, else it falls
+  // back to "what you'll learn". Row 4 carries the materials/equipment/notes.
+  let hasTimeframe = $derived(!!(guide?.timeFrame || guide?.phases?.length))
+  let hasResources = $derived(
+    !!(guide?.materials?.length || guide?.equipment?.length || guide?.notes?.length),
+  )
 
   // Live upcoming sessions for THIS course, matched by category code.
   let sessions = $state<UpcomingEvent[]>([])
@@ -34,17 +53,6 @@
     if (course) document.title = `${course.title} — FunDivers TW`
   })
 
-  let facts = $derived.by(() => {
-    const rows: Array<{ label: string; value: string }> = []
-    if (guide?.prerequisites)
-      rows.push({ label: $t.courseDetail.prerequisites, value: guide.prerequisites })
-    if (guide?.minAge) rows.push({ label: $t.courseDetail.minAge, value: guide.minAge })
-    if (guide?.duration) rows.push({ label: $t.courseDetail.duration, value: guide.duration })
-    if (guide?.depth) rows.push({ label: $t.courseDetail.depth, value: guide.depth })
-    if (guide?.certifies) rows.push({ label: $t.courseDetail.certifies, value: guide.certifies })
-    return rows
-  })
-
   // "Where to next" — resolve the guide's next ids to course cards.
   let nextCourses = $derived.by((): CourseCard[] => {
     if (!guide?.next?.length) return []
@@ -53,6 +61,41 @@
       .filter((c): c is CourseCard => !!c)
   })
 </script>
+
+<!-- One staggered row: an image on one side, arbitrary body on the other. On
+     mobile it stacks (image first). `reverse` puts the image on the right. -->
+{#snippet row(image: string, alt: string, reverse: boolean, body: import('svelte').Snippet)}
+  <div
+    class="flex flex-col gap-6 md:items-center md:gap-10 lg:gap-14 {reverse
+      ? 'md:flex-row-reverse'
+      : 'md:flex-row'}"
+  >
+    <div class="md:w-[46%]">
+      <img
+        src={image}
+        {alt}
+        loading="lazy"
+        class="aspect-[4/3] w-full rounded-3xl border border-white/15 object-cover shadow-lg shadow-black/20"
+      />
+    </div>
+    <div class="min-w-0 md:w-[54%]">
+      {@render body()}
+    </div>
+  </div>
+{/snippet}
+
+<!-- A labelled, always-expanded list (Materials / Equipment / Notes), in a card. -->
+{#snippet bulletList(label: string, items: string[])}
+  <h3 class="text-lg font-bold text-white">{label}</h3>
+  <ul class="glass mt-3 space-y-2 rounded-2xl p-5">
+    {#each items as it}
+      <li class="flex gap-2 text-brand-100">
+        <span class="mt-0.5 text-reef-300" aria-hidden="true">•</span>
+        <span>{it}</span>
+      </li>
+    {/each}
+  </ul>
+{/snippet}
 
 {#if !course}
   <section class="mx-auto max-w-2xl px-4 py-24 text-center sm:px-6">
@@ -70,104 +113,137 @@
       {$t.courseDetail.back}
     </a>
 
-    <!-- Hero -->
-    <div
-      class="relative mt-4 flex min-h-[16rem] flex-col justify-end overflow-hidden rounded-3xl border border-white/15 sm:min-h-[22rem]"
-    >
-      <img
-        src={course.image}
-        alt={course.title}
-        class="absolute inset-0 h-full w-full object-cover"
-      />
-      <div
-        class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent"
-      ></div>
-      <div class="relative z-10 p-6 sm:p-8">
+    <!-- Staggered main content: image ⟷ text, alternating down the page. -->
+    <div class="mt-6 space-y-14 sm:mt-8 lg:space-y-20">
+      <!-- 1 · img1 left, title + intro right -->
+      {#snippet intro()}
         <h1 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">{course.title}</h1>
-        <p class="mt-2 max-w-2xl text-sm text-white/90 sm:text-base">{course.desc}</p>
-      </div>
-    </div>
-
-    <div class="mt-8 grid gap-8 lg:grid-cols-[1fr_20rem]">
-      <!-- Main column -->
-      <div class="min-w-0">
-        {#if guide?.overview}
-          <h2 class="text-xl font-bold text-white">{$t.courseDetail.overview}</h2>
-          <p class="mt-3 leading-relaxed text-brand-100">{guide.overview}</p>
-        {/if}
-
-        {#if guide?.youWillLearn?.length}
-          <h2 class="mt-8 text-xl font-bold text-white">{$t.courseDetail.youWillLearn}</h2>
-          <ul class="mt-3 space-y-2">
-            {#each guide.youWillLearn as item}
-              <li class="flex gap-2 text-brand-100">
-                <span class="mt-0.5 text-reef-300" aria-hidden="true">✓</span>
-                <span>{item}</span>
-              </li>
-            {/each}
-          </ul>
-        {/if}
-
-        <!-- Upcoming sessions -->
-        <h2 class="mt-8 text-xl font-bold text-white">{$t.courseDetail.upcoming}</h2>
-        {#if sessions.length === 0}
-          <p class="mt-3 text-brand-100">{$t.courseDetail.noDates}</p>
-        {:else}
-          <ul class="mt-3 grid gap-3">
-            {#each sessions as ev (ev.id)}
-              {@const price = twd(ev.startingAt)}
-              <li class="glass flex items-center justify-between gap-4 rounded-xl p-4">
-                <div class="min-w-0">
-                  <p class="text-sm font-medium text-brand-200">
-                    {formatSpan(ev.startDate, ev.endDate, ev.time)}
-                  </p>
-                </div>
-                <div class="flex shrink-0 items-center gap-3">
-                  {#if price}<span class="text-sm font-semibold text-white">from {price}</span>{/if}
-                  <a
-                    href={ev.fullyBooked ? '#contact' : registerUrl('course', ev.id)}
-                    target={ev.fullyBooked ? undefined : '_blank'}
-                    rel="noopener"
-                    class="rounded-full bg-brand-600 px-4 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
-                  >
-                    {$t.courses.enroll}
-                  </a>
-                </div>
-              </li>
-            {/each}
-          </ul>
-        {/if}
-      </div>
-
-      <!-- Sidebar -->
-      <aside class="lg:sticky lg:top-6 lg:self-start">
-        <div class="glass rounded-2xl p-5">
-          <h2 class="text-sm font-semibold uppercase tracking-wide text-white">
-            {$t.courseDetail.quickFacts}
-          </h2>
-          <dl class="mt-3 space-y-2.5 text-sm">
-            {#each facts as f}
-              <div class="flex flex-col gap-0.5">
-                <dt class="text-brand-300">{f.label}</dt>
-                <dd class="font-medium text-white">{f.value}</dd>
-              </div>
-            {/each}
-          </dl>
-          <a
-            href={`${COURSE_BASE}${course.slug}`}
-            target="_blank"
-            rel="noopener"
-            class="mt-5 block rounded-full border border-white/40 px-4 py-2 text-center text-sm font-medium text-brand-100 transition-colors hover:bg-white/10"
-          >
-            {$t.courseDetail.fullPage}
-          </a>
+        <div class="glass mt-4 rounded-2xl p-5">
+          <p class="text-base leading-relaxed text-brand-100 sm:text-lg">
+            {guide?.intro ?? course.desc}
+          </p>
         </div>
-      </aside>
+      {/snippet}
+      {@render row(images[0], course.title, false, intro)}
+
+      <!-- 2 · overview + prerequisites left, img2 right -->
+      {#if guide?.overview || guide?.prereqList?.length || guide?.prerequisites}
+        {#snippet overview()}
+          {#if guide?.overview}
+            <h2 class="text-xl font-bold text-white sm:text-2xl">{$t.courseDetail.overview}</h2>
+            <div class="glass mt-3 rounded-2xl p-5">
+              <p class="leading-relaxed text-brand-100">{guide.overview}</p>
+            </div>
+          {/if}
+          {#if guide?.prereqList?.length}
+            <h3 class="mt-6 text-lg font-bold text-white">{$t.courseDetail.prerequisites}</h3>
+            <ul class="glass mt-3 space-y-2 rounded-2xl p-5">
+              {#each guide.prereqList as item}
+                <li class="flex gap-2 text-brand-100">
+                  <span class="mt-0.5 text-reef-300" aria-hidden="true">✓</span>
+                  <span>{item}</span>
+                </li>
+              {/each}
+            </ul>
+          {:else if guide?.prerequisites}
+            <h3 class="mt-6 text-lg font-bold text-white">{$t.courseDetail.prerequisites}</h3>
+            <div class="glass mt-3 rounded-2xl p-5">
+              <p class="leading-relaxed text-brand-100">{guide.prerequisites}</p>
+            </div>
+          {/if}
+        {/snippet}
+        {@render row(images[1], course.title, true, overview)}
+      {/if}
+
+      <!-- 3 · img3 left, time frame + phases (or "what you'll learn") right -->
+      {#if hasTimeframe || guide?.youWillLearn?.length}
+        {#snippet details()}
+          {#if hasTimeframe}
+            {#if guide?.timeFrame}
+              <h2 class="text-xl font-bold text-white sm:text-2xl">{$t.courseDetail.timeFrame}</h2>
+              <div class="glass mt-3 rounded-2xl p-5">
+                <p class="leading-relaxed text-brand-100">{guide.timeFrame}</p>
+              </div>
+            {/if}
+            {#if guide?.phases?.length}
+              <ol class="mt-4 space-y-3">
+                {#each guide.phases as ph}
+                  <li class="glass rounded-xl p-4">
+                    <p class="font-semibold text-white">{ph.name}</p>
+                    <p class="mt-1 text-sm leading-relaxed text-brand-100">{ph.text}</p>
+                  </li>
+                {/each}
+              </ol>
+            {/if}
+          {:else if guide?.youWillLearn?.length}
+            <h2 class="text-xl font-bold text-white sm:text-2xl">{$t.courseDetail.youWillLearn}</h2>
+            <ul class="glass mt-3 space-y-2 rounded-2xl p-5">
+              {#each guide.youWillLearn as item}
+                <li class="flex gap-2 text-brand-100">
+                  <span class="mt-0.5 text-reef-300" aria-hidden="true">✓</span>
+                  <span>{item}</span>
+                </li>
+              {/each}
+            </ul>
+          {/if}
+        {/snippet}
+        {@render row(images[2], course.title, false, details)}
+      {/if}
+
+      <!-- 4 · materials / equipment / notes left, img4 right -->
+      {#if hasResources}
+        {#snippet resources()}
+          {#if guide?.materials?.length}
+            {@render bulletList($t.courseDetail.materials, guide.materials)}
+          {/if}
+          {#if guide?.equipment?.length}
+            <div class:mt-8={!!guide?.materials?.length}>
+              {@render bulletList($t.courseDetail.equipment, guide.equipment)}
+            </div>
+          {/if}
+          {#if guide?.notes?.length}
+            <div class:mt-8={!!(guide?.materials?.length || guide?.equipment?.length)}>
+              {@render bulletList($t.courseDetail.notes, guide.notes)}
+            </div>
+          {/if}
+        {/snippet}
+        {@render row(images[3], course.title, true, resources)}
+      {/if}
     </div>
+
+    <!-- Upcoming sessions -->
+    <h2 class="mt-10 text-xl font-bold text-white sm:text-2xl">{$t.courseDetail.upcoming}</h2>
+    {#if sessions.length === 0}
+      <p class="mt-3 text-brand-100">{$t.courseDetail.noDates}</p>
+    {:else}
+      <ul class="mt-3 grid gap-3">
+        {#each sessions as ev (ev.id)}
+          {@const price = twd(ev.startingAt)}
+          <li class="glass flex items-center justify-between gap-4 rounded-xl p-4">
+            <div class="min-w-0">
+              <p class="text-sm font-medium text-brand-200">
+                {formatSpan(ev.startDate, ev.endDate, ev.time)}
+              </p>
+            </div>
+            <div class="flex shrink-0 items-center gap-3">
+              {#if price}<span class="text-sm font-semibold text-white">from {price}</span>{/if}
+              <a
+                href={ev.fullyBooked ? '#contact' : registerUrl('course', ev.id)}
+                target={ev.fullyBooked ? undefined : '_blank'}
+                rel="noopener"
+                class="rounded-full bg-brand-600 px-4 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
+              >
+                {$t.courses.enroll}
+              </a>
+            </div>
+          </li>
+        {/each}
+      </ul>
+    {/if}
 
     <!-- Where to next -->
     {#if nextCourses.length}
-      <h2 class="mt-10 text-xl font-bold text-white">{$t.courseDetail.next}</h2>
+      <h2 class="mt-10 text-xl font-bold text-white sm:text-2xl">{$t.courseDetail.next}</h2>
       <div class="mt-4 grid gap-4 sm:grid-cols-2">
         {#each nextCourses as nc}
           <a

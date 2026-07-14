@@ -94,6 +94,18 @@ export function eventImage(ev: {
   return url
 }
 
+/** A course-class photo for a course that hasn't pinned its own (keyed +
+ *  memoized so it stays stable across re-renders). Falls back to the general
+ *  pool if the course folder is empty. Used to fill the staggered detail page. */
+export function coursePoolImage(seed: string): string | null {
+  const key = `course-pool:${seed}`
+  const cached = assigned.get(key)
+  if (cached) return cached
+  const url = pick(coursePool.length ? coursePool : generalPool)
+  if (url) assigned.set(key, url)
+  return url
+}
+
 /** A general dive photo for anything without its own image (keyed + memoized so
  *  it stays stable across re-renders). Used so no card ever shows a placeholder. */
 export function fallbackImage(seed: string): string | null {

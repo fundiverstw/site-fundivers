@@ -8,7 +8,16 @@ import { mediaIdLocal } from '$engine/images'
 // (slugs scraped from the live page; note they don't always match the title,
 // e.g. Discover Scuba → padi-discover-scuba-diving-program).
 
-export type CourseCard = { title: string; slug: string; image: string; desc: string }
+export type CourseCard = {
+  title: string
+  slug: string
+  image: string
+  desc: string
+  // The detail page staggers four images down the main content. When a course
+  // supplies its own set here they're used verbatim; otherwise the page falls
+  // back to [cover, …three from the course photo pool] (see CourseDetail).
+  images?: [string, string, string, string]
+}
 
 const img = (seg: string) => mediaIdLocal(seg)
 
@@ -37,6 +46,12 @@ export const COURSES: CourseCard[] = [
     title: 'PADI Open Water Course',
     slug: 'padi-open-water-course',
     image: img('b37fef_9c73f7e0bb244570a119812991ef0ab9~mv2.jpg'),
+    images: [
+      img('b37fef_9c73f7e0bb244570a119812991ef0ab9~mv2.jpg'),
+      img('b37fef_2ea720f3f0c94fb8bc703856514b0a6c~mv2.jpg'),
+      img('b37fef_37847cf1b32a413990cb7b558835954f~mv2.jpg'),
+      img('b37fef_594f84e342954c95b442c5b67f5fb454~mv2.jpg'),
+    ],
     desc: 'Your scuba adventure starts here — your first full certification, diving to 18m anywhere in the world.',
   },
   {
