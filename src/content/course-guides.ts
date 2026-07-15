@@ -590,22 +590,41 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
     next: ['padi-deep-diver-specialty', 'padi-advanced-course'],
   },
   'padi-search-recovery-specialty': {
+    intro:
+      'Learn how to retrieve lost items big or small, heavy or light, and which swimming pattern is best suited for objects that have fallen overboard or off a dock. Learn how to use a lift bag for heavy objects of more than 4 kilograms.',
     overview:
-      'Lost something underwater, or want the skills to find and recover objects safely? The Search & Recovery specialty teaches proven search patterns and lifting techniques to locate and raise lost items.',
+      "It happens: people accidentally drop something off the boat, while diving or off the dock. Your first response may be to go back down and find it, but how? There are effective ways to search that increase your chances of finding it. Your search begins with knowing the size of the object and the general area to search. You'll use different methods according to the bottom contours, depth and resources available to you. Then you will determine the most appropriate search pattern. If the object is large and/or heavy, you will need to use a lift bag. This course is challenging but can be a lot of fun! Gathering information and resources, then carefully planning a search, are the first important steps you learn.",
+    topicsTitle: "During the Search and Recovery dives you'll practice:",
     youWillLearn: [
-      'Planning and running search patterns',
-      'Navigating a search with a compass',
-      'Using lift bags to raise objects',
-      'Knots and rigging for recovery',
-      'Four training dives',
+      'Swimming search patterns using your compass and natural navigation.',
+      'Locating large and small objects using various search patterns.',
+      'Using a lift bag for large or heavy objects, plus other recovery methods.',
+      'Planning a search operation based on facts gathered about a lost object prior to the dive.',
     ],
-    prerequisites: 'PADI Adventure Diver or higher',
+    prerequisites: '(Junior) Open Water Diver',
+    prereqList: ['12 years old.', 'Certified as a PADI (Junior) Open Water Diver.'],
     minAge: '12+',
     duration: '2 days (4 dives)',
     depth: null,
     certifies: 'PADI Search & Recovery Diver',
+    timeFrame:
+      'The Search and Recovery Specialty includes 4 dives, so it is usually done over 2 days.',
+    materials: ['PADI E-learning'],
+    equipmentText: 'Equipment is not included in the course, but we provide rental gear as needed.',
+    notes: [
+      'Dates and schedule may vary depending on conditions and chosen specialties.',
+      'Return transport is included.',
+      'For private 1-on-1 service, a surcharge may apply.',
+      'If you wish to purchase an underwater compass, contact Fun Divers TW for assistance!',
+    ],
+    subsections: [
+      [],
+      ['overview'],
+      ['topics', 'prerequisites', 'timeFrame'],
+      ['materials', 'equipment', 'notes'],
+    ],
     matchCodes: [],
-    next: [],
+    next: ['padi-deep-diver-specialty', 'padi-advanced-course'],
   },
   'padi-drift-diver-specialty': {
     overview:
