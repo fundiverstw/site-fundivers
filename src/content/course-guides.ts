@@ -850,22 +850,39 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
     next: ['padi-advanced-course', 'padi-peak-performance-buoyancy-specialty'],
   },
   'padi-fish-identification-specialty': {
+    intro:
+      'Enjoy your dives even more when you can recognize and identify fish families and their characteristics.',
     overview:
-      'Turn “what was that fish?” into instant recognition. The Fish Identification specialty teaches you the major fish families and how to identify the species you meet on every dive.',
+      '"What was that fish?" is a common question heard after a dive. If you want to be the scuba diver with the answers, instead of the one asking the questions, then take the Fish Identification Specialty course. You\'ll enjoy your dives even more when you recognize the creatures that you see and can identify the main fish families and their characteristics. Once you learn to recognize what types of fish you see, you\'ll find it easier to reference the exact species after a scuba dive. For example, a butterfly fish in the Caribbean has a similar shape to a butterfly fish in Southeast Asia, but colors and markings may be wildly different. If you know what fish family it belongs to, you can more easily look up the local name, or at least intelligently ask the local scuba instructor what you saw.',
+    topicsTitle: "During the Fish ID scuba dives, you'll learn:",
     youWillLearn: [
-      'Recognising common fish families',
-      'Identification techniques and features',
-      "Local species you'll see in Taiwan",
-      'Surveying and recording what you see',
-      'Two training dives',
+      'How to identify characteristics of local fish families and species.',
+      'Fish survey techniques and strategies.',
+      'About Project AWARE activities that can help protect aquatic life.',
     ],
     prerequisites: '(Junior) Open Water Diver',
-    minAge: '10+',
-    duration: '1–2 days (2 dives)',
+    prereqList: ['12 years old.', 'Certified as a PADI (Junior) Open Water Diver.'],
+    minAge: '12+',
+    duration: '1 day (2 dives)',
     depth: null,
     certifies: 'PADI Fish Identification',
+    timeFrame: 'The Fish ID Specialty includes 2 dives, so it can be done in one day.',
+    materials: ['PADI E-learning'],
+    equipmentText: 'Equipment is not included in the course, but we provide rental gear as needed.',
+    notes: [
+      'Dates and schedule may vary depending on conditions and chosen specialties.',
+      'Return transport is included.',
+      'For private 1-on-1 service, a surcharge may apply.',
+      'If you are interested in purchasing Fish ID slates or books, contact us at Fun Divers TW for assistance!',
+    ],
+    subsections: [
+      [],
+      ['overview'],
+      ['topics', 'prerequisites', 'timeFrame'],
+      ['materials', 'equipment', 'notes'],
+    ],
     matchCodes: [],
-    next: [],
+    next: ['padi-advanced-course', 'padi-digital-underwater-photographer-specialty'],
   },
 }
 
