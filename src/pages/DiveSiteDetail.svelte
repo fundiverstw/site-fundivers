@@ -8,6 +8,7 @@
   import { t } from '$engine/i18n'
   import CallToAction from '$components/CallToAction.svelte'
   import CoverPhoto from '$components/CoverPhoto.svelte'
+  import SurfaceTransition from '$components/SurfaceTransition.svelte'
 
   // The route param: /sites/<id>. The router serves this component for any
   // /sites/<something> path, so we resolve the id from the current path.
@@ -132,10 +133,24 @@
           </ul>
         {/if}
 
+        {#if guide?.aboveSurface}
+          <h2 class="mt-8 text-xl font-bold text-white">{$t.siteDetail.aboveSurface}</h2>
+          <div class="mt-3 space-y-3 text-brand-100">
+            {#each paras(guide.aboveSurface) as p}
+              <p class="leading-relaxed">{p}</p>
+            {/each}
+          </div>
+        {/if}
+
         <!-- Below the Surface: the shop's prose where we have it, otherwise the
-             marine-life chips stand on their own under their old heading. -->
+             marine-life chips stand on their own under their old heading. The
+             surface-transition band marks the air-water boundary, like dropping
+             below on a descent. -->
         {#if guide?.belowSurface || guide?.marineLife?.length}
-          <h2 class="mt-8 text-xl font-bold text-white">
+          <div class="mt-6">
+            <SurfaceTransition />
+          </div>
+          <h2 class="mt-2 text-xl font-bold text-white">
             {guide?.belowSurface ? $t.siteDetail.belowSurface : $t.siteDetail.marineLife}
           </h2>
           {#if guide?.belowSurface}
@@ -155,15 +170,6 @@
               {/each}
             </div>
           {/if}
-        {/if}
-
-        {#if guide?.aboveSurface}
-          <h2 class="mt-8 text-xl font-bold text-white">{$t.siteDetail.aboveSurface}</h2>
-          <div class="mt-3 space-y-3 text-brand-100">
-            {#each paras(guide.aboveSurface) as p}
-              <p class="leading-relaxed">{p}</p>
-            {/each}
-          </div>
         {/if}
 
         {#if guide?.gettingThere}
