@@ -24,6 +24,8 @@
   let anchorOffset = $state(1e9)
   // Scroll-velocity-driven sideways "current" sway (px), eased.
   let drift = $state(0)
+  // The takeover starts below the site header so the logo/nav stay visible.
+  let topOffset = $state(0)
 
   // Bubbles rising through the water. Hardcoded so the layout is stable.
   const bubbles = [
@@ -40,6 +42,9 @@
 
   function measure() {
     if (!inner || !vp) return
+    // Keep the header uncovered: start the descent at its bottom edge.
+    const header = document.querySelector('header')
+    topOffset = header ? Math.max(0, header.getBoundingClientRect().bottom) : 0
     maxScroll = Math.max(0, inner.scrollHeight - vp.clientHeight)
     if (target > maxScroll) target = maxScroll
     if (current > maxScroll) current = maxScroll
@@ -156,7 +161,7 @@
 {#if reduce}
   {@render children()}
 {:else}
-  <div class="vp" bind:this={vp}>
+  <div class="vp" bind:this={vp} style="top: {topOffset}px">
     <div class="inner" bind:this={inner} style="transform: translateY({-current}px)">
       {@render children()}
     </div>
@@ -201,7 +206,10 @@
      covers the nav and footer rather than letting them bleed through. */
   .vp {
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     z-index: 30;
     overflow: hidden;
     background:
@@ -228,12 +236,12 @@
     top: var(--line);
     bottom: 0;
     background:
-      radial-gradient(120% 55% at 50% 0%, rgba(140, 224, 235, 0.14), transparent 60%),
+      radial-gradient(120% 55% at 50% 0%, rgba(140, 224, 235, 0.1), transparent 60%),
       linear-gradient(
         180deg,
-        rgba(34, 130, 156, 0.34) 0%,
-        rgba(14, 52, 96, 0.6) 42%,
-        rgba(2, 10, 30, 0.86) 100%
+        rgba(34, 130, 156, 0.18) 0%,
+        rgba(14, 52, 96, 0.28) 45%,
+        rgba(6, 24, 52, 0.4) 100%
       );
   }
   /* Bubbles rising in the water, swaying with the scroll "current". */
