@@ -495,12 +495,8 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
       'The PADI Enriched Air Nitrox Diver Course consists of 2 sections. The PADI E-learning is done on your own, and the in-person review is usually done on the same day as the dives.',
     phases: [
       {
-        name: 'Section 1',
-        text: 'PADI E-learning and in-person review.',
-      },
-      {
-        name: 'Section 2',
-        text: '2 ocean dives using nitrox tanks.',
+        name: 'Course structure',
+        text: 'Section 1 is the PADI E-learning and in-person review. Section 2 is 2 ocean dives using nitrox tanks.',
       },
     ],
     materials: ['PADI Enriched Air Nitrox E-learning'],
