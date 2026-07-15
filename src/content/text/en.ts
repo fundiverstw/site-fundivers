@@ -204,7 +204,6 @@ export const en = {
     diveType: 'Dive type',
     region: 'Region',
     directions: 'Open in Google Maps',
-    morePage: 'Full site page',
     cta: 'Dive this site',
     ctaText: 'See it on our calendar or ask us about a trip.',
     seeCalendar: 'See the calendar',

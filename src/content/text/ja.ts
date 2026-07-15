@@ -199,7 +199,6 @@ export const ja: Dict = {
     diveType: 'ダイブタイプ',
     region: 'エリア',
     directions: 'Google マップで開く',
-    morePage: 'サイト詳細ページ',
     cta: 'このサイトで潜る',
     ctaText: 'カレンダーで確認するか、ツアーについてお問い合わせください。',
     seeCalendar: 'カレンダーを見る',

@@ -197,7 +197,6 @@ export const zhTW: Dict = {
     diveType: '潛水類型',
     region: '區域',
     directions: '在 Google 地圖開啟',
-    morePage: '完整潛點頁面',
     cta: '來潛這個點',
     ctaText: '在行事曆上查看，或詢問我們的行程。',
     seeCalendar: '查看行事曆',

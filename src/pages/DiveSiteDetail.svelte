@@ -4,7 +4,7 @@
   import { fetchDestinations, type Destination } from '$engine/destinations'
   import { siteImage } from '$engine/photo-pool'
   import { DIVE_SITE_GUIDES } from '$content/dive-site-guides'
-  import { wixSiteUrl, mapsUrl } from '$engine/links'
+  import { mapsUrl } from '$engine/links'
   import { t } from '$engine/i18n'
   import CallToAction from '$components/CallToAction.svelte'
   import CoverPhoto from '$components/CoverPhoto.svelte'
@@ -39,10 +39,6 @@
   let tagline = $derived(dest?.tagline ?? site?.tagline ?? null)
   let regionLabel = $derived(site ? (REGION_META[site.region]?.label ?? site.region) : '')
   let mapsHref = $derived(site ? mapsUrl(site) : '#')
-  let morePage = $derived.by(() => {
-    if (dest?.slug) return `https://www.fundiverstw.com${dest.slug}`
-    return site ? wixSiteUrl(site.wix_slug) : null
-  })
 
   // Quick-facts rows, in order, skipping anything we don't have.
   let facts = $derived.by(() => {
@@ -219,16 +215,6 @@
             >
               {$t.siteDetail.directions}
             </a>
-            {#if morePage}
-              <a
-                href={morePage}
-                target="_blank"
-                rel="noopener"
-                class="rounded-full border border-white/25 px-4 py-2 text-center text-sm font-medium text-brand-100 transition-colors hover:bg-white/10"
-              >
-                {$t.siteDetail.morePage}
-              </a>
-            {/if}
           </div>
         </div>
       </aside>
