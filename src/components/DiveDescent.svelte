@@ -4,9 +4,10 @@
   // A scroll-jacked "descent". Native page scrolling is disabled; wheel / touch
   // / keyboard input instead drives a smoothed virtual scroll that pans the
   // content (so everything stays reachable) while a water layer rises over the
-  // whole viewport. Above the water line the backdrop is sunlit; below it the
-  // content reads underwater. The whole thing is a fixed takeover (z above the
-  // nav), so the water covers the entire page.
+  // whole viewport. A rolling wavy line marks the surface (pinned to the
+  // above/below section boundary), bubbles rise below it, and the underwater
+  // scene sways with scroll velocity. The whole thing is a fixed takeover (z
+  // above the nav), so the water covers the entire page.
   //
   // Reduce-motion users get a plain, natively-scrolling page with no jack and
   // no water (a hijacked, eased scroll is exactly what that setting avoids).
@@ -21,6 +22,21 @@
   // Distance (px) from the top of the content to the surface anchor — the
   // boundary between the "above" and "below" sections. Large default => dry.
   let anchorOffset = $state(1e9)
+  // Scroll-velocity-driven sideways "current" sway (px), eased.
+  let drift = $state(0)
+
+  // Bubbles rising through the water. Hardcoded so the layout is stable.
+  const bubbles = [
+    { x: 8, d: 6, dur: 8, delay: 0 },
+    { x: 19, d: 4, dur: 10, delay: 2.6 },
+    { x: 31, d: 9, dur: 6.8, delay: 1.2 },
+    { x: 43, d: 5, dur: 9, delay: 3.4 },
+    { x: 55, d: 3, dur: 11, delay: 0.6 },
+    { x: 64, d: 7, dur: 7.4, delay: 4.1 },
+    { x: 74, d: 5, dur: 9.6, delay: 1.9 },
+    { x: 85, d: 8, dur: 6.6, delay: 3 },
+    { x: 93, d: 4, dur: 10.5, delay: 0.9 },
+  ]
 
   function measure() {
     if (!inner || !vp) return
@@ -90,9 +106,18 @@
     }
 
     let rafId = 0
+    let lastCurrent = 0
+    let driftEase = 0
     const tick = () => {
       current += (target - current) * 0.14
       if (Math.abs(target - current) < 0.4) current = target
+      // Sideways sway proportional to (and lagging behind) scroll velocity, so
+      // the underwater scene sloshes as you descend and settles when you stop.
+      const v = current - lastCurrent
+      lastCurrent = current
+      const targetDrift = Math.max(-20, Math.min(20, -v * 0.8))
+      driftEase += (targetDrift - driftEase) * 0.1
+      drift = driftEase
       rafId = requestAnimationFrame(tick)
     }
 
@@ -136,11 +161,37 @@
       {@render children()}
     </div>
 
-    <!-- Water layer, on top of the content but click-through. The line rides
-         the boundary between the above/below sections. -->
-    <div class="flood" aria-hidden="true" style="--line: {lineTop}px">
-      <div class="water"></div>
-      <div class="line"></div>
+    <!-- Water layer, on top of the content but click-through. The wavy line
+         rides the boundary between the above/below sections; bubbles rise in the
+         water; both sway with scroll velocity. -->
+    <div class="flood" aria-hidden="true" style="--line: {lineTop}px; --drift: {drift}px">
+      <div class="water">
+        <div class="bubbles">
+          {#each bubbles as b}
+            <span
+              class="bubble"
+              style="left:{b.x}%; width:{b.d}px; height:{b.d}px; animation-duration:{b.dur}s; animation-delay:{b.delay}s;"
+            ></span>
+          {/each}
+        </div>
+      </div>
+      <div class="waves">
+        <svg class="wave wave-back" viewBox="0 0 2880 40" preserveAspectRatio="none">
+          <path
+            d="M0,20 Q90,6 180,20 T360,20 T540,20 T720,20 T900,20 T1080,20 T1260,20 T1440,20 T1620,20 T1800,20 T1980,20 T2160,20 T2340,20 T2520,20 T2700,20 T2880,20 L2880,40 L0,40 Z"
+            fill="rgba(44, 208, 197, 0.3)"
+          />
+        </svg>
+        <svg class="wave wave-front" viewBox="0 0 2880 40" preserveAspectRatio="none">
+          <path
+            d="M0,18 Q90,4 180,18 T360,18 T540,18 T720,18 T900,18 T1080,18 T1260,18 T1440,18 T1620,18 T1800,18 T1980,18 T2160,18 T2340,18 T2520,18 T2700,18 T2880,18"
+            fill="none"
+            stroke="#89dceb"
+            stroke-opacity="0.8"
+            stroke-width="2"
+          />
+        </svg>
+      </div>
     </div>
   </div>
 {/if}
@@ -185,14 +236,96 @@
         rgba(2, 10, 30, 0.86) 100%
       );
   }
-  .line {
+  /* Bubbles rising in the water, swaying with the scroll "current". */
+  .bubbles {
+    position: absolute;
+    inset: 0;
+    transform: translateX(var(--drift));
+  }
+  .bubble {
+    position: absolute;
+    bottom: 0;
+    border-radius: 9999px;
+    background: radial-gradient(
+      circle at 35% 30%,
+      rgba(255, 255, 255, 0.9),
+      rgba(137, 220, 235, 0.3)
+    );
+    box-shadow: 0 0 4px rgba(137, 220, 235, 0.4);
+    animation-name: dd-bubble;
+    animation-timing-function: ease-in;
+    animation-iteration-count: infinite;
+    opacity: 0;
+  }
+  @keyframes dd-bubble {
+    0% {
+      transform: translateY(0);
+      opacity: 0;
+    }
+    12% {
+      opacity: 0.7;
+    }
+    88% {
+      opacity: 0.5;
+    }
+    100% {
+      transform: translateY(-70vh) translateX(10px);
+      opacity: 0;
+    }
+  }
+
+  /* Rolling surface line at the boundary. Two tiled copies slide -50% for a
+     seamless loop; two layers roll opposite ways for a parallax shimmer. The
+     whole thing sways sideways with the scroll current. */
+  .waves {
     position: absolute;
     left: 0;
     right: 0;
     top: var(--line);
-    height: 2px;
-    transform: translateY(-1px);
-    background: linear-gradient(90deg, transparent, rgba(137, 220, 235, 0.8), transparent);
-    box-shadow: 0 0 14px 1px rgba(137, 220, 235, 0.5);
+    height: 40px;
+    overflow: hidden;
+    transform: translate(var(--drift), -50%);
+  }
+  .wave {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 100%;
+    will-change: transform;
+  }
+  .wave-back {
+    animation: dd-roll 15s linear infinite;
+  }
+  .wave-front {
+    animation: dd-roll-rev 10s linear infinite;
+    filter: drop-shadow(0 0 6px rgba(137, 220, 235, 0.5));
+  }
+  @keyframes dd-roll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes dd-roll-rev {
+    from {
+      transform: translateX(-50%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wave-back,
+    .wave-front,
+    .bubble {
+      animation: none;
+    }
+    .bubble {
+      opacity: 0.35;
+    }
   }
 </style>
