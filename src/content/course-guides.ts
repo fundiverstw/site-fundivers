@@ -627,22 +627,41 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
     next: ['padi-deep-diver-specialty', 'padi-advanced-course'],
   },
   'padi-drift-diver-specialty': {
+    intro:
+      'Dive with minimal effort and let the current do the work. Drift diving is one of the most relaxing and exhilarating ways to explore a reef, gliding effortlessly over the scenery as it drifts past you.',
     overview:
-      'Drift diving feels like flying, letting the current carry you effortlessly over reefs and walls. This specialty teaches the technique and awareness to make current your friend.',
+      "Diving in a current can feel like flying underwater. In the PADI Drift Diver course, you'll learn valuable tips from an experienced instructor: how to avoid getting separated from your group, how to reduce overexertion and cramps, and how to make the most of the current instead of fighting it. Along the way you will sharpen your buoyancy control, navigation and communication so that every drift dive feels calm, controlled and fun.",
+    topicsTitle: "During your drift dives you'll practice:",
     youWillLearn: [
-      'Drift-diving technique and body position',
-      'Buoyancy control in current',
-      'Staying with your buddy and the group',
-      'Using floats and surface signalling',
-      'Two training dives',
+      'Staying oriented and avoiding separation from your group.',
+      'Reducing overexertion and preventing cramps.',
+      'Buoyancy control and body positioning in a current.',
+      'Navigation and the use of signalling equipment.',
+      'Good buddy communication throughout the dive.',
     ],
     prerequisites: '(Junior) Open Water Diver',
+    prereqList: ['12 years old.', 'Certified as a PADI (Junior) Open Water Diver.'],
     minAge: '12+',
     duration: '1–2 days (2 dives)',
     depth: null,
     certifies: 'PADI Drift Diver',
+    timeFrame:
+      'The PADI Drift Diver Specialty includes 2 dives. It is best done as a boat dive, which is an additional cost.',
+    materials: ['PADI E-learning'],
+    equipmentText: 'Equipment is not included in the course, but we provide rental gear as needed.',
+    notes: [
+      'Dates and schedule may vary depending on conditions and chosen specialties.',
+      'Return transport is included.',
+      'For private 1-on-1 service, a surcharge may apply.',
+    ],
+    subsections: [
+      [],
+      ['overview'],
+      ['topics', 'prerequisites', 'timeFrame'],
+      ['materials', 'equipment', 'notes'],
+    ],
     matchCodes: [],
-    next: [],
+    next: ['padi-deep-diver-specialty', 'padi-advanced-course'],
   },
   'padi-peak-performance-buoyancy-specialty': {
     overview:
