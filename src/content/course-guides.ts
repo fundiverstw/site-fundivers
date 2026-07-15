@@ -774,21 +774,41 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
     next: ['padi-drift-diver-specialty', 'padi-advanced-course'],
   },
   'padi-equipment-specialist': {
+    intro:
+      'Learn how to properly take care of your equipment and perform basic maintenance to extend the life of your gear!',
     overview:
-      'Understand the gear that keeps you alive underwater. The Equipment Specialist course, no dives required, teaches routine care, maintenance and simple field adjustments so a minor problem never ends your dive day.',
+      'Do you know how your regulators work? Would you know what to do if your BCD starts leaking? What is the best way to properly clean and dry your gear before long-term storage? During the PADI Equipment Specialist Course, we will answer these questions and more. Students will get a chance to handle and even disassemble some parts of their gear under the supervision of a dive instructor. Learn more about your gear, how it works, how to prevent problems, and how to deal with problems that occur!',
+    topicsTitle: 'Topics covered during the course:',
     youWillLearn: [
-      'How your dive gear works',
-      'Routine maintenance and storage',
-      'Simple field repairs and adjustments',
-      'Recognising when gear needs a service',
+      'Cleaning techniques.',
+      'How first and second stage regulators work.',
+      'How pressure gauges work.',
+      'Checks and maintenance the diver is able to do.',
+      'Gear troubleshooting techniques.',
     ],
-    prerequisites: '(Junior) Open Water Diver',
-    minAge: '10+',
+    prerequisites: 'None, anyone can take the course',
+    prereqList: ['No prerequisites, anyone can take the course.'],
+    minAge: 'No minimum',
     duration: '1 day (dry, no dives)',
     depth: null,
     certifies: 'PADI Equipment Specialist',
+    timeFrame:
+      'The PADI Equipment Specialist is a non-diving course, so it can be done in 3 hours at Fun Divers Dive Shop.',
+    materials: ['PADI E-learning'],
+    equipmentText:
+      'Students should bring their own equipment to the course, but they can also use ours.',
+    notes: [
+      'This course is NOT a brand-specific certification course. It is general information and a chance to see how some of the gear works, as well as what you CAN do on your own.',
+      'Full gear maintenance should still be done by a certified professional.',
+    ],
+    subsections: [
+      [],
+      ['overview'],
+      ['topics', 'prerequisites', 'timeFrame'],
+      ['materials', 'equipment', 'notes'],
+    ],
     matchCodes: ['equip'],
-    next: [],
+    next: ['padi-advanced-course', 'padi-boat-diver-specialty'],
   },
   'padi-digital-underwater-photographer-specialty': {
     overview:
