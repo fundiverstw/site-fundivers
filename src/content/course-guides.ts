@@ -700,22 +700,41 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
     next: ['padi-advanced-course', 'padi-deep-diver-specialty'],
   },
   'padi-underwater-navigator-specialty': {
+    intro:
+      'Become more confident with your underwater navigation, picking up observation skills that help you know your direction, use landmarks, and master how to use the compass.',
     overview:
-      'Never lose your way, or the boat, again. The Underwater Navigator specialty sharpens your natural and compass navigation so you can explore with confidence and always find your way back.',
+      "Be the scuba diver everyone wants to follow because you know where you are and where you're going. The PADI Underwater Navigator course fine-tunes your observation skills and teaches you to more accurately use your compass underwater. If you like challenges with big rewards, take this course and have fun finding your way. You'll learn the tools of the trade, including navigation using natural clues and by following compass headings.",
+    topicsTitle: "During the navigation dives, you'll practice:",
     youWillLearn: [
-      'Natural navigation using the environment',
-      'Compass navigation and patterns',
-      'Estimating distance underwater',
-      'Marking and relocating a spot',
-      'Three training dives',
+      'Methods to estimate distance underwater.',
+      'Compass navigation while making at least five turns.',
+      'Marking or relocating a submerged object or position from the surface.',
+      'Underwater map making.',
     ],
     prerequisites: '(Junior) Open Water Diver',
-    minAge: '10+',
+    prereqList: ['12 years old.', 'Certified as a PADI (Junior) Open Water Diver.'],
+    minAge: '12+',
     duration: '1–2 days (3 dives)',
     depth: null,
     certifies: 'PADI Underwater Navigator',
+    timeFrame:
+      'The Underwater Navigator Specialty includes 3 dives, so it is usually done over 2 days.',
+    materials: ['PADI E-learning'],
+    equipmentText: 'Equipment is not included in the course, but we provide rental gear as needed.',
+    notes: [
+      'Dates and schedule may vary depending on conditions and chosen specialties.',
+      'Return transport is included.',
+      'For private 1-on-1 service, a surcharge may apply.',
+      'If students wish to purchase a compass, contact Fun Divers TW and we can assist you!',
+    ],
+    subsections: [
+      [],
+      ['overview'],
+      ['topics', 'prerequisites', 'timeFrame'],
+      ['materials', 'equipment', 'notes'],
+    ],
     matchCodes: [],
-    next: ['padi-advanced-course'],
+    next: ['padi-advanced-course', 'padi-search-recovery-specialty'],
   },
   'padi-boat-diver-specialty': {
     overview:
