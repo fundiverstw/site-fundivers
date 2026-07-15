@@ -190,8 +190,9 @@
         {/if}
       </div>
 
-      <!-- Sidebar -->
-      <aside class="lg:sticky lg:top-6 lg:self-start">
+      <!-- Sidebar: pinned at the top of the grid row (level with the "About
+           this site" heading), not sticky, so it does not follow the scroll. -->
+      <aside class="lg:self-start">
         <div class="glass rounded-2xl p-5">
           <h2 class="text-sm font-semibold uppercase tracking-wide text-white">
             {$t.siteDetail.quickFacts}
