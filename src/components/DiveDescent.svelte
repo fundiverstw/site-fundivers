@@ -65,6 +65,9 @@
     const root = document.documentElement
     const prevOverflow = root.style.overflow
     root.style.overflow = 'hidden'
+    // Hide the site footer while the takeover is up (it would otherwise bleed
+    // through the now-transparent layer, over the ocean background).
+    root.classList.add('dd-active')
     window.scrollTo(0, 0)
 
     const clamp = () => {
@@ -144,6 +147,7 @@
       cancelAnimationFrame(rafId)
       ro.disconnect()
       root.style.overflow = prevOverflow
+      root.classList.remove('dd-active')
       window.removeEventListener('wheel', onWheel)
       window.removeEventListener('touchstart', onTouchStart)
       window.removeEventListener('touchmove', onTouchMove)
@@ -202,8 +206,8 @@
 {/if}
 
 <style>
-  /* Opaque ocean backdrop (mirrors the body background) so the takeover fully
-     covers the nav and footer rather than letting them bleed through. */
+  /* Transparent so the site's normal animated ocean background shows through;
+     the footer is hidden (see :global rule) so it doesn't bleed through. */
   .vp {
     position: fixed;
     top: 0;
@@ -212,12 +216,9 @@
     bottom: 0;
     z-index: 30;
     overflow: hidden;
-    background:
-      radial-gradient(120% 90% at 12% -10%, rgba(203, 166, 247, 0.28) 0%, transparent 55%),
-      radial-gradient(120% 90% at 92% 8%, rgba(44, 208, 197, 0.26) 0%, transparent 55%),
-      radial-gradient(100% 70% at 50% -15%, rgba(137, 220, 235, 0.22) 0%, transparent 60%),
-      radial-gradient(140% 120% at 50% 120%, rgba(36, 116, 235, 0.34) 0%, transparent 60%),
-      linear-gradient(180deg, #13294b 0%, #0f1f3d 45%, #0b1730 100%);
+  }
+  :global(html.dd-active footer) {
+    display: none;
   }
   .inner {
     will-change: transform;
