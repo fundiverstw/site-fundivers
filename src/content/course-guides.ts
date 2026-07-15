@@ -553,22 +553,41 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
     next: ['padi-enriched-air-specialty-course', 'padi-advanced-course'],
   },
   'padi-night-diver-specialty': {
+    intro:
+      "The underwater world changes as day creatures retire and nocturnal organisms emerge. If you've wondered what happens underwater after the sun goes down, enroll in the PADI Night Diver Specialty course.",
     overview:
-      'The reef transforms after dark. The Night Diver specialty builds the skills and confidence to explore the underwater world at night, when nocturnal creatures emerge and familiar sites feel brand new.',
+      "The thought of dipping below the surface at night seems mysterious, yet so alluring. Although you've been scuba diving at a site many times before, at night you drop into a whole new world and watch it come to life under the glow of your dive light. The scene changes as day creatures retire and nocturnal organisms emerge. Scuba diving at night teaches you to focus on what you can see in your light's beam, on controlling your buoyancy by feel, on staying with your buddy and on paying attention to details you may overlook during the day.",
+    topicsTitle: "During three night dives, you'll practice:",
     youWillLearn: [
-      'Dive-light use and night signalling',
-      'Navigating and staying oriented in the dark',
-      'Entering, exiting and communicating at night',
-      'Spotting nocturnal marine life',
-      'Three night training dives',
+      'Light handling and communication techniques.',
+      'Entering, exiting and navigating in the dark.',
+      'Identifying how plants and animals differ or change behavior at night.',
     ],
     prerequisites: '(Junior) Open Water Diver',
+    prereqList: ['12 years old.', 'Certified as a PADI (Junior) Open Water Diver.'],
     minAge: '12+',
     duration: '2–3 evenings (3 dives)',
     depth: null,
     certifies: 'PADI Night Diver',
+    timeFrame:
+      'The Night Diver Specialty includes 3 dives, so it is usually done over 2 or 3 days.',
+    materials: ['PADI E-learning'],
+    equipmentText:
+      'Equipment is not included in the course, but we provide rental gear as needed. Divers need a dive light, which can be rented from Fun Divers.',
+    notes: [
+      'Dates and schedule may vary depending on conditions and chosen specialties.',
+      'Return transport is included.',
+      'For private 1-on-1 service, a surcharge may apply.',
+      'If students wish to purchase their own dive light, contact Fun Divers TW for assistance!',
+    ],
+    subsections: [
+      [],
+      ['overview'],
+      ['topics'],
+      ['prerequisites', 'timeFrame', 'materials', 'equipment', 'notes'],
+    ],
     matchCodes: [],
-    next: [],
+    next: ['padi-deep-diver-specialty', 'padi-advanced-course'],
   },
   'padi-search-recovery-specialty': {
     overview:
