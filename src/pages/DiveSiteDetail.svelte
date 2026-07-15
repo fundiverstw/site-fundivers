@@ -144,9 +144,11 @@
           {/if}
 
           <!-- Below the Surface: the shop's prose where we have it, otherwise the
-             marine-life chips stand on their own under their old heading. -->
+             marine-life chips stand on their own under their old heading. The
+             marker sets where the descent's water surface line sits. -->
           {#if guide?.belowSurface || guide?.marineLife?.length}
-            <h2 class="mt-8 text-xl font-bold text-white">
+            <div data-surface aria-hidden="true" class="mt-8"></div>
+            <h2 class="mt-4 text-xl font-bold text-white">
               {guide?.belowSurface ? $t.siteDetail.belowSurface : $t.siteDetail.marineLife}
             </h2>
             {#if guide?.belowSurface}

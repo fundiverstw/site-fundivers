@@ -18,12 +18,22 @@
   let current = $state(0) // where it is now (eased toward target)
   let maxScroll = $state(0)
   let reduce = $state(false)
+  // Distance (px) from the top of the content to the surface anchor — the
+  // boundary between the "above" and "below" sections. Large default => dry.
+  let anchorOffset = $state(1e9)
 
   function measure() {
     if (!inner || !vp) return
     maxScroll = Math.max(0, inner.scrollHeight - vp.clientHeight)
     if (target > maxScroll) target = maxScroll
     if (current > maxScroll) current = maxScroll
+    // The gap between the two sections carries [data-surface]; its offset within
+    // the (translated) content is translate-invariant, so measuring the two
+    // rects and subtracting gives a stable content-space offset.
+    const marker = inner.querySelector('[data-surface]')
+    if (marker) {
+      anchorOffset = marker.getBoundingClientRect().top - inner.getBoundingClientRect().top
+    }
   }
 
   $effect(() => {
@@ -112,10 +122,10 @@
     }
   })
 
-  let progress = $derived(maxScroll > 0 ? Math.min(1, Math.max(0, current / maxScroll)) : 0)
-  // Water surface line: 100% (bottom, dry) at the top of the descent, 0% (top,
-  // fully flooded) at the bottom.
-  let lineTop = $derived((1 - progress) * 100)
+  // The surface line sits exactly at the section boundary: its viewport
+  // position is the anchor's content-space offset minus how far we've scrolled.
+  // Below the viewport => dry; above it => fully submerged.
+  let lineTop = $derived(anchorOffset - current)
 </script>
 
 {#if reduce}
@@ -126,9 +136,9 @@
       {@render children()}
     </div>
 
-    <!-- Water layer, on top of the content but click-through. -->
-    <div class="flood" aria-hidden="true" style="--line: {lineTop}%">
-      <div class="air"></div>
+    <!-- Water layer, on top of the content but click-through. The line rides
+         the boundary between the above/below sections. -->
+    <div class="flood" aria-hidden="true" style="--line: {lineTop}px">
       <div class="water"></div>
       <div class="line"></div>
     </div>
@@ -158,23 +168,6 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-  }
-  /* Above the line: warm sunlight, screen-blended so it brightens. */
-  .air {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    height: var(--line);
-    mix-blend-mode: screen;
-    background:
-      radial-gradient(75% 60% at 50% -6%, rgba(255, 246, 214, 0.72), transparent 66%),
-      linear-gradient(
-        180deg,
-        rgba(255, 231, 175, 0.46) 0%,
-        rgba(173, 216, 255, 0.28) 52%,
-        rgba(140, 200, 250, 0.12) 100%
-      );
   }
   /* Below the line: deep underwater tint. */
   .water {
