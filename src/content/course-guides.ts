@@ -737,22 +737,41 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
     next: ['padi-advanced-course', 'padi-search-recovery-specialty'],
   },
   'padi-boat-diver-specialty': {
+    intro:
+      "This course helps you expand your knowledge about boats and diving from boats, from small inflatables to large liveaboards. You'll gain experience by completing two dives from a boat.",
     overview:
-      'From small RIBs to liveaboards, boats open up the best dive sites. The Boat Diver specialty makes you comfortable and competent diving from boats of every kind.',
+      "Much of the world's best scuba diving is accessible only by boat. Diving from a boat is fun and relatively easy because you usually descend directly onto your dive site. Whether you've never made a boat dive or you've logged dozens, the PADI Boat Diver Specialty course will benefit you, because boats in various parts of the world do things differently. You'll gain experience by completing two dives from a boat in your local area.",
+    topicsTitle: 'On the PADI Boat Diver course you will learn:',
     youWillLearn: [
-      'Boat terminology and etiquette',
-      'Entries and exits from different boats',
-      'Stowing and handling gear aboard',
-      'Planning a safe dive from a boat',
-      'Two training dives',
+      'Boat terminology.',
+      'Boat diving procedures and etiquette, including how to enter and exit, and where to stow your gear.',
+      'Boating safety, including how to locate safety equipment.',
     ],
     prerequisites: '(Junior) Open Water Diver',
-    minAge: '10+',
+    prereqList: ['12 years old.', 'Certified as a PADI (Junior) Open Water Diver.'],
+    minAge: '12+',
     duration: '1 day (2 dives)',
     depth: null,
     certifies: 'PADI Boat Diver',
+    timeFrame: 'The Boat Diver Specialty includes 2 dives, so it can be done in one day.',
+    materials: ['PADI E-learning'],
+    equipmentText:
+      'Equipment is not included in the course, but we provide rental gear as needed. An SMB and dive computer are required for all boat dives, and both can be rented from Fun Divers.',
+    notes: [
+      'Dates and schedule may vary depending on conditions and chosen specialties.',
+      'Return transport is included.',
+      'For private 1-on-1 service, a surcharge may apply.',
+      'Contact us to find out more about our boat diving schedule!',
+      'If students wish to purchase an SMB or dive computer, contact us at Fun Divers TW for assistance!',
+    ],
+    subsections: [
+      [],
+      ['overview'],
+      ['topics', 'prerequisites', 'timeFrame'],
+      ['materials', 'equipment', 'notes'],
+    ],
     matchCodes: [],
-    next: [],
+    next: ['padi-drift-diver-specialty', 'padi-advanced-course'],
   },
   'padi-equipment-specialist': {
     overview:
