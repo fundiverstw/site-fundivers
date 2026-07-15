@@ -811,22 +811,43 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
     next: ['padi-advanced-course', 'padi-boat-diver-specialty'],
   },
   'padi-digital-underwater-photographer-specialty': {
+    intro:
+      "The second most popular diving specialty course. Nowadays, it's easy and fun to capture images of your underwater scuba adventures.",
     overview:
-      'Bring home the underwater world. This specialty gets you shooting great photos and video fast, using the PADI approach to composition, camera settings and getting close to your subject.',
+      'Underwater photography is one of the most popular diving activities, and with so many underwater cameras to choose from, it has become easier and more fun than ever to capture images of your underwater scuba adventures. The PADI Digital Underwater Imaging course gets you going quickly, whether you use a point-and-shoot camera or a sophisticated dSLR like the pros.',
+    topicsTitle:
+      "Through hands-on training during photography scuba dives and guidance from your PADI Professional, you'll discover:",
     youWillLearn: [
-      'Choosing and setting up a camera',
-      'The shoot-examine-adjust method',
-      'Composition and getting close',
-      'Working with available light and strobes',
-      'Two training dives',
+      'How to choose the right underwater camera system for you.',
+      'The PADI SEA (Shoot, Examine, Adjust) method for getting great shots quickly.',
+      'Principles for good composition of underwater images.',
+      'Practical techniques to take great photos with your digital camera.',
     ],
     prerequisites: '(Junior) Open Water Diver',
-    minAge: '10+',
-    duration: '1–2 days (2 dives)',
+    prereqList: ['12 years old.', 'Certified as a PADI (Junior) Open Water Diver.'],
+    minAge: '12+',
+    duration: '1 day (2 dives)',
     depth: null,
-    certifies: 'PADI Digital Underwater Photographer',
+    certifies: 'PADI Digital Underwater Imaging',
+    timeFrame:
+      'The Digital Underwater Imaging Specialty includes 2 dives, so it can be done in one day.',
+    materials: ['PADI E-learning'],
+    equipmentText:
+      'Equipment is not included in the course, but we provide rental gear as needed. An underwater camera is required for this course, and a dive light is also recommended. Both can be rented from Fun Divers.',
+    notes: [
+      'Dates and schedule may vary depending on conditions and chosen specialties.',
+      'Return transport is included.',
+      'For private 1-on-1 service, a surcharge may apply.',
+      'If you wish to purchase a dive camera, contact Fun Divers TW for assistance and recommendations!',
+    ],
+    subsections: [
+      [],
+      ['overview'],
+      ['topics', 'prerequisites', 'timeFrame'],
+      ['materials', 'equipment', 'notes'],
+    ],
     matchCodes: [],
-    next: [],
+    next: ['padi-advanced-course', 'padi-peak-performance-buoyancy-specialty'],
   },
   'padi-fish-identification-specialty': {
     overview:
