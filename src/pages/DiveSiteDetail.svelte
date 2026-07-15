@@ -8,6 +8,7 @@
   import { t } from '$engine/i18n'
   import CallToAction from '$components/CallToAction.svelte'
   import CoverPhoto from '$components/CoverPhoto.svelte'
+  import DiveDescent from '$components/DiveDescent.svelte'
 
   // The route param: /sites/<id>. The router serves this component for any
   // /sites/<something> path, so we resolve the id from the current path.
@@ -68,165 +69,167 @@
     >
   </section>
 {:else}
-  <article class="mx-auto max-w-[1100px] px-4 py-8 sm:px-6 sm:py-12">
-    <a
-      href="/sites"
-      class="text-sm font-medium text-reef-300 transition-colors hover:text-reef-200"
-    >
-      {$t.siteDetail.back}
-    </a>
+  <DiveDescent>
+    <article class="mx-auto max-w-[1100px] px-4 py-8 sm:px-6 sm:py-12">
+      <a
+        href="/sites"
+        class="text-sm font-medium text-reef-300 transition-colors hover:text-reef-200"
+      >
+        {$t.siteDetail.back}
+      </a>
 
-    <!-- Hero -->
-    <div
-      class="relative mt-4 flex min-h-[16rem] flex-col justify-end overflow-hidden rounded-3xl border border-white/15 sm:min-h-[22rem]"
-    >
-      <CoverPhoto
-        src={heroImg}
-        alt={site.name}
-        imgClass="absolute inset-0 h-full w-full object-cover"
-      />
+      <!-- Hero -->
       <div
-        class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent"
-      ></div>
-      <div class="relative z-10 p-6 sm:p-8">
-        <div class="flex flex-wrap items-center gap-2">
-          <span class="mono text-xs font-medium uppercase tracking-wide text-sky-300"
-            >{regionLabel}</span
-          >
-          {#if site.dive_type}
-            <span
-              class="rounded bg-reef-400/25 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-reef-100"
+        class="relative mt-4 flex min-h-[16rem] flex-col justify-end overflow-hidden rounded-3xl border border-white/15 sm:min-h-[22rem]"
+      >
+        <CoverPhoto
+          src={heroImg}
+          alt={site.name}
+          imgClass="absolute inset-0 h-full w-full object-cover"
+        />
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent"
+        ></div>
+        <div class="relative z-10 p-6 sm:p-8">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="mono text-xs font-medium uppercase tracking-wide text-sky-300"
+              >{regionLabel}</span
             >
-              {site.dive_type}
-            </span>
+            {#if site.dive_type}
+              <span
+                class="rounded bg-reef-400/25 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-reef-100"
+              >
+                {site.dive_type}
+              </span>
+            {/if}
+          </div>
+          <h1 class="mt-1 text-3xl font-bold tracking-tight text-white sm:text-4xl">{site.name}</h1>
+          {#if tagline}
+            <p class="mt-2 max-w-2xl text-sm text-white/90 sm:text-base">{tagline}</p>
           {/if}
         </div>
-        <h1 class="mt-1 text-3xl font-bold tracking-tight text-white sm:text-4xl">{site.name}</h1>
-        {#if tagline}
-          <p class="mt-2 max-w-2xl text-sm text-white/90 sm:text-base">{tagline}</p>
-        {/if}
       </div>
-    </div>
 
-    <div class="mt-8 grid gap-8 lg:grid-cols-[1fr_20rem]">
-      <!-- Main column -->
-      <div class="min-w-0">
-        {#if paragraphs.length}
-          <h2 class="text-xl font-bold text-white">{$t.siteDetail.overview}</h2>
-          <div class="mt-3 space-y-3 text-brand-100">
-            {#each paragraphs as p}
-              <p class="leading-relaxed">{p}</p>
-            {/each}
-          </div>
-        {/if}
-
-        {#if guide?.highlights?.length}
-          <h2 class="mt-8 text-xl font-bold text-white">{$t.siteDetail.highlights}</h2>
-          <ul class="mt-3 space-y-2">
-            {#each guide.highlights as h}
-              <li class="flex gap-2 text-brand-100">
-                <span class="mt-1 text-reef-300" aria-hidden="true">◆</span>
-                <span>{h}</span>
-              </li>
-            {/each}
-          </ul>
-        {/if}
-
-        {#if guide?.aboveSurface}
-          <h2 class="mt-8 text-xl font-bold text-white">{$t.siteDetail.aboveSurface}</h2>
-          <div class="mt-3 space-y-3 text-brand-100">
-            {#each paras(guide.aboveSurface) as p}
-              <p class="leading-relaxed">{p}</p>
-            {/each}
-          </div>
-        {/if}
-
-        <!-- Below the Surface: the shop's prose where we have it, otherwise the
-             marine-life chips stand on their own under their old heading. -->
-        {#if guide?.belowSurface || guide?.marineLife?.length}
-          <h2 class="mt-8 text-xl font-bold text-white">
-            {guide?.belowSurface ? $t.siteDetail.belowSurface : $t.siteDetail.marineLife}
-          </h2>
-          {#if guide?.belowSurface}
+      <div class="mt-8 grid gap-8 lg:grid-cols-[1fr_20rem]">
+        <!-- Main column -->
+        <div class="min-w-0">
+          {#if paragraphs.length}
+            <h2 class="text-xl font-bold text-white">{$t.siteDetail.overview}</h2>
             <div class="mt-3 space-y-3 text-brand-100">
-              {#each paras(guide.belowSurface) as p}
+              {#each paragraphs as p}
                 <p class="leading-relaxed">{p}</p>
               {/each}
             </div>
           {/if}
-          {#if guide?.marineLife?.length}
-            <div class="mt-4 flex flex-wrap gap-2">
-              {#each guide.marineLife as m}
-                <span
-                  class="rounded-full border border-reef-400/40 bg-reef-400/10 px-3 py-1 text-sm text-reef-100"
-                  >{m}</span
-                >
+
+          {#if guide?.highlights?.length}
+            <h2 class="mt-8 text-xl font-bold text-white">{$t.siteDetail.highlights}</h2>
+            <ul class="mt-3 space-y-2">
+              {#each guide.highlights as h}
+                <li class="flex gap-2 text-brand-100">
+                  <span class="mt-1 text-reef-300" aria-hidden="true">◆</span>
+                  <span>{h}</span>
+                </li>
+              {/each}
+            </ul>
+          {/if}
+
+          {#if guide?.aboveSurface}
+            <h2 class="mt-8 text-xl font-bold text-white">{$t.siteDetail.aboveSurface}</h2>
+            <div class="mt-3 space-y-3 text-brand-100">
+              {#each paras(guide.aboveSurface) as p}
+                <p class="leading-relaxed">{p}</p>
               {/each}
             </div>
           {/if}
-        {/if}
 
-        {#if guide?.gettingThere}
-          <h2 class="mt-8 text-xl font-bold text-white">{$t.siteDetail.gettingThere}</h2>
-          <div class="mt-3 space-y-3 text-brand-100">
-            {#each paras(guide.gettingThere) as p}
-              <p class="leading-relaxed">{p}</p>
-            {/each}
-          </div>
-          <a
-            href={mapsHref}
-            target="_blank"
-            rel="noopener"
-            class="mt-3 inline-block text-sm font-semibold text-reef-300 transition-colors hover:text-reef-200"
-          >
-            {$t.siteDetail.directions} →
-          </a>
-        {/if}
-      </div>
-
-      <!-- Sidebar: pinned at the top of the grid row (level with the "About
-           this site" heading), not sticky, so it does not follow the scroll. -->
-      <aside class="lg:self-start">
-        <div class="glass rounded-2xl p-5">
-          <h2 class="text-sm font-semibold uppercase tracking-wide text-white">
-            {$t.siteDetail.quickFacts}
-          </h2>
-          <dl class="mt-3 space-y-2.5 text-sm">
-            {#each facts as f}
-              <div class="flex items-start justify-between gap-3">
-                <dt class="shrink-0 text-brand-300">{f.label}</dt>
-                <dd class="text-right font-medium text-white">{f.value}</dd>
+          <!-- Below the Surface: the shop's prose where we have it, otherwise the
+             marine-life chips stand on their own under their old heading. -->
+          {#if guide?.belowSurface || guide?.marineLife?.length}
+            <h2 class="mt-8 text-xl font-bold text-white">
+              {guide?.belowSurface ? $t.siteDetail.belowSurface : $t.siteDetail.marineLife}
+            </h2>
+            {#if guide?.belowSurface}
+              <div class="mt-3 space-y-3 text-brand-100">
+                {#each paras(guide.belowSurface) as p}
+                  <p class="leading-relaxed">{p}</p>
+                {/each}
               </div>
-            {/each}
-          </dl>
-
-          {#if requirements}
-            <div class="mt-4 border-t border-white/10 pt-3">
-              <dt class="text-brand-300">{$t.siteDetail.requirements}</dt>
-              <dd class="mt-1 text-sm text-white/90">{requirements}</dd>
-            </div>
+            {/if}
+            {#if guide?.marineLife?.length}
+              <div class="mt-4 flex flex-wrap gap-2">
+                {#each guide.marineLife as m}
+                  <span
+                    class="rounded-full border border-reef-400/40 bg-reef-400/10 px-3 py-1 text-sm text-reef-100"
+                    >{m}</span
+                  >
+                {/each}
+              </div>
+            {/if}
           {/if}
 
-          <div class="mt-5 flex flex-col gap-2">
+          {#if guide?.gettingThere}
+            <h2 class="mt-8 text-xl font-bold text-white">{$t.siteDetail.gettingThere}</h2>
+            <div class="mt-3 space-y-3 text-brand-100">
+              {#each paras(guide.gettingThere) as p}
+                <p class="leading-relaxed">{p}</p>
+              {/each}
+            </div>
             <a
               href={mapsHref}
               target="_blank"
               rel="noopener"
-              class="rounded-full border border-white/40 px-4 py-2 text-center text-sm font-bold text-white transition-colors hover:bg-white/15"
+              class="mt-3 inline-block text-sm font-semibold text-reef-300 transition-colors hover:text-reef-200"
             >
-              {$t.siteDetail.directions}
+              {$t.siteDetail.directions} →
             </a>
-          </div>
+          {/if}
         </div>
-      </aside>
-    </div>
 
-    <!-- CTA -->
-    <CallToAction
-      title={$t.siteDetail.cta}
-      text={$t.siteDetail.ctaText}
-      calendarLabel={$t.siteDetail.seeCalendar}
-      contactLabel={$t.siteDetail.contact}
-    />
-  </article>
+        <!-- Sidebar: pinned at the top of the grid row (level with the "About
+           this site" heading), not sticky, so it does not follow the scroll. -->
+        <aside class="lg:self-start">
+          <div class="glass rounded-2xl p-5">
+            <h2 class="text-sm font-semibold uppercase tracking-wide text-white">
+              {$t.siteDetail.quickFacts}
+            </h2>
+            <dl class="mt-3 space-y-2.5 text-sm">
+              {#each facts as f}
+                <div class="flex items-start justify-between gap-3">
+                  <dt class="shrink-0 text-brand-300">{f.label}</dt>
+                  <dd class="text-right font-medium text-white">{f.value}</dd>
+                </div>
+              {/each}
+            </dl>
+
+            {#if requirements}
+              <div class="mt-4 border-t border-white/10 pt-3">
+                <dt class="text-brand-300">{$t.siteDetail.requirements}</dt>
+                <dd class="mt-1 text-sm text-white/90">{requirements}</dd>
+              </div>
+            {/if}
+
+            <div class="mt-5 flex flex-col gap-2">
+              <a
+                href={mapsHref}
+                target="_blank"
+                rel="noopener"
+                class="rounded-full border border-white/40 px-4 py-2 text-center text-sm font-bold text-white transition-colors hover:bg-white/15"
+              >
+                {$t.siteDetail.directions}
+              </a>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <!-- CTA -->
+      <CallToAction
+        title={$t.siteDetail.cta}
+        text={$t.siteDetail.ctaText}
+        calendarLabel={$t.siteDetail.seeCalendar}
+        contactLabel={$t.siteDetail.contact}
+      />
+    </article>
+  </DiveDescent>
 {/if}
