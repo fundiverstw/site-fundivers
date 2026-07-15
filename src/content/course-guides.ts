@@ -664,22 +664,40 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
     next: ['padi-deep-diver-specialty', 'padi-advanced-course'],
   },
   'padi-peak-performance-buoyancy-specialty': {
+    intro:
+      'Observe aquatic life without disturbing their surroundings. Improve the buoyancy skills you learned as a new diver and elevate them to the next level.',
     overview:
-      'Great divers make it look effortless, hovering motionless, gliding past delicate corals, using less air. Peak Performance Buoyancy fine-tunes your weighting and control so you dive like a pro.',
+      "Excellent buoyancy control is what defines skilled scuba divers. You've seen them underwater. They glide effortlessly, use less air and ascend, descend or hover almost as if by thought. They more easily observe aquatic life without disturbing their surroundings. You can achieve this, too. The PADI Peak Performance Buoyancy Specialty course improves the buoyancy skills you learned as a new diver and elevates them to the next level.",
+    topicsTitle: "During the PADI Peak Performance Buoyancy Course, you'll learn how to:",
     youWillLearn: [
-      'Perfecting your weighting and trim',
-      'Streamlining to save energy and air',
-      'Hovering effortlessly in any position',
-      'Gliding close without contact',
-      'Two training dives',
+      "Determine the exact weight you need, so you're not too light or too heavy.",
+      "Trim your weight system and scuba gear so you're perfectly balanced in the water.",
+      'Streamline to save energy, use air more efficiently and move more smoothly through the water.',
+      'Hover effortlessly in any position, vertical or horizontal.',
     ],
     prerequisites: '(Junior) Open Water Diver',
-    minAge: '10+',
+    prereqList: ['12 years old.', 'Certified as a PADI (Junior) Open Water Diver.'],
+    minAge: '12+',
     duration: '1 day (2 dives)',
     depth: null,
     certifies: 'PADI Peak Performance Buoyancy',
+    timeFrame:
+      'The Peak Performance Buoyancy course includes 2 dives, so it can be done in one day.',
+    materials: ['PADI E-learning'],
+    equipmentText: 'Equipment is not included in the course, but we provide rental gear as needed.',
+    notes: [
+      'Dates and schedule may vary depending on conditions and chosen specialties.',
+      'Return transport is included.',
+      'For private 1-on-1 service, a surcharge may apply.',
+    ],
+    subsections: [
+      [],
+      ['overview'],
+      ['topics', 'prerequisites', 'timeFrame'],
+      ['materials', 'equipment', 'notes'],
+    ],
     matchCodes: [],
-    next: [],
+    next: ['padi-advanced-course', 'padi-deep-diver-specialty'],
   },
   'padi-underwater-navigator-specialty': {
     overview:
