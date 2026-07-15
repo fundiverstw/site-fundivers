@@ -517,21 +517,40 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
     next: ['padi-deep-diver-specialty', 'padi-advanced-course'],
   },
   'padi-deep-diver-specialty': {
+    intro:
+      'Explore deeper dive sites with confidence at depths down to 40 metres / 130 ft. Learn to manage your gas supply, sharpen your buddy contact procedures, and refine your buoyancy control.',
     overview:
-      'Some of the most exciting dives, wrecks, walls and big animals, lie beyond 18 metres. The Deep Diver specialty teaches you to plan and safely enjoy dives down to 40 metres, the recreational limit.',
+      "There is something about the deep that lures in all divers. It is exciting and mysterious. Sometimes it's descending to a shipwreck or down a sheer wall, or just to say that you've been to 40 meters. But you will need to follow some special safety measures to do it with confidence. You will need to know the importance of your personal limits. Proper planning, good buddy contact procedures, good buoyancy control, dealing with gas supply and knowing when you may be suffering from nitrogen narcosis are all essential.",
     youWillLearn: [
       'Planning and executing deep dives',
       'Managing gas, time and no-stop limits',
       'Handling the effects of pressure and narcosis',
       'Four training dives to a maximum of 40 m',
     ],
-    prerequisites: 'PADI Adventure Diver or higher',
+    prerequisites: 'PADI Advanced Open Water Diver',
+    prereqList: ['PADI Advanced Open Water certification.'],
     minAge: '15+',
     duration: '2 days (4 dives)',
     depth: '40 m',
     certifies: 'Dive to the 40 m recreational limit',
+    timeFrame: 'The Deep Diver Specialty includes 4 ocean dives, usually over 2 days.',
+    materials: ['PADI E-learning'],
+    equipmentText:
+      'Equipment is not included in the course, but we provide rental gear as needed. Students must use a dive computer during the course, which can be purchased or rented from Fun Divers.',
+    notes: [
+      'Dates and schedule may vary depending on conditions and chosen specialties.',
+      'Return transport is included.',
+      'For private 1-on-1 service, a surcharge may apply.',
+      'After completing the course, divers will be certified to 40 m.',
+    ],
+    subsections: [
+      [],
+      ['overview'],
+      ['prerequisites', 'timeFrame', 'materials'],
+      ['equipment', 'notes'],
+    ],
     matchCodes: ['deep'],
-    next: ['padi-enriched-air-specialty-course'],
+    next: ['padi-enriched-air-specialty-course', 'padi-advanced-course'],
   },
   'padi-night-diver-specialty': {
     overview:
