@@ -475,8 +475,10 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
     next: ['padi-rescue-diver-course', 'padi-efr-course'],
   },
   'padi-enriched-air-specialty-course': {
+    intro:
+      'The PADI Enriched Air Nitrox Course is the most popular PADI specialty course. Diving with EANx gives you extra no-decompression time, especially on repetitive dives, so you can stay down longer and get back in the water sooner.',
     overview:
-      'Enriched Air (Nitrox) is the most popular PADI specialty. Breathing more oxygen and less nitrogen lets you extend your no-stop bottom times, more time exploring, and shorter surface intervals between dives.',
+      "The PADI Enriched Air Nitrox Diver course is PADI's most popular specialty scuba course for several reasons. Nitrox lets you dive at deeper depths for longer times, gives you more no-decompression time (especially on repetitive dives), and allows for a shorter surface interval between multi-dive days. It is especially popular with divers who plan to dive while traveling, as some resorts and liveaboards dive only with nitrox and require the certification. If staying down longer and getting back in the water sooner sounds appealing, then don't hesitate to become an Enriched Air Diver.",
     youWillLearn: [
       'How enriched air extends no-stop limits',
       "Analysing your cylinder's oxygen content",
@@ -484,12 +486,39 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
       'Managing oxygen exposure and depth limits',
     ],
     prerequisites: '(Junior) Open Water Diver',
+    prereqList: ['12 years old.', 'Certified as a PADI (Junior) Open Water Diver.'],
     minAge: '12+',
     duration: '1 day (dry, optional dives)',
     depth: null,
     certifies: 'Dive with enriched air up to 40% oxygen',
+    timeFrame:
+      'The PADI Enriched Air Nitrox Diver Course consists of 2 sections. The PADI E-learning is done on your own, and the in-person review is usually done on the same day as the dives.',
+    phases: [
+      {
+        name: 'Section 1',
+        text: 'PADI E-learning and in-person review.',
+      },
+      {
+        name: 'Section 2',
+        text: '2 ocean dives using nitrox tanks.',
+      },
+    ],
+    materials: ['PADI Enriched Air Nitrox E-learning'],
+    equipmentText:
+      'Equipment is not included in the course, but we provide rental gear as needed. Students must use a dive computer during the course, which can be purchased or rented from Fun Divers.',
+    notes: [
+      'Dates are subject to change due to weather or wave conditions.',
+      'Return transport is included.',
+      'For private 1-on-1 service, a surcharge may apply.',
+    ],
+    subsections: [
+      [],
+      ['overview'],
+      ['prerequisites', 'timeFrame'],
+      ['materials', 'equipment', 'notes'],
+    ],
     matchCodes: ['eanx', 'nitrox'],
-    next: ['padi-deep-diver-specialty'],
+    next: ['padi-deep-diver-specialty', 'padi-advanced-course'],
   },
   'padi-deep-diver-specialty': {
     overview:
