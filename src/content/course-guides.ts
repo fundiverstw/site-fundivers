@@ -447,21 +447,32 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
     next: ['padi-rescue-diver-course', 'padi-o2-provider-course'],
   },
   'padi-o2-provider-course': {
+    intro:
+      'Learn to provide emergency oxygen to an injured diver when it matters most. In just a few hours you gain a skill that can make a real difference in the outcome of a diving emergency.',
     overview:
-      'Emergency oxygen is a key part of caring for an injured diver. This course teaches you to recognise the dive injuries where oxygen helps and to administer emergency O2 safely and effectively.',
+      "One of the most important steps in any diving emergency is the prompt administration of oxygen to the injured diver. In the PADI O2 Provider Course, you will learn how to safely assemble emergency oxygen equipment, recognise the different types of emergency oxygen units, and administer oxygen safely and effectively. The skills you learn in this course can help make a real difference in an injured diver's recovery.",
     youWillLearn: [
-      'Recognising illnesses oxygen can help',
-      'Assembling and using an emergency oxygen kit',
-      'Delivering emergency oxygen safely',
-      'Caring for a diver until help arrives',
+      'Recognising the dive injuries oxygen can help',
+      'Identifying different types of emergency oxygen equipment',
+      'Safely assembling an emergency oxygen unit',
+      'Administering emergency oxygen to an injured diver',
     ],
-    prerequisites: 'None',
-    minAge: '12+',
+    prerequisites: 'None, open to everyone',
+    prereqList: [
+      'No minimum age, but recommended for students 12 years old or older.',
+      'This course is NOT a scuba diving course.',
+    ],
+    minAge: 'No minimum',
     duration: '1 day',
     depth: null,
     certifies: 'Emergency Oxygen Provider',
+    timeFrame:
+      'The PADI O2 Provider Course is a performance-based course, so classroom session length varies, but the average course is 1-2 hours. The course is taught at Fun Divers Dive Center.',
+    materials: ['PADI E-learning'],
+    equipment: ['All equipment is provided.'],
+    subsections: [[], ['overview'], ['prerequisites', 'timeFrame'], ['materials', 'equipment']],
     matchCodes: ['o2 provider', 'o2'],
-    next: ['padi-rescue-diver-course'],
+    next: ['padi-rescue-diver-course', 'padi-efr-course'],
   },
   'padi-enriched-air-specialty-course': {
     overview:
