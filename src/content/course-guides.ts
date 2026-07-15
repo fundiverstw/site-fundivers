@@ -583,8 +583,8 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
     subsections: [
       [],
       ['overview'],
-      ['topics'],
-      ['prerequisites', 'timeFrame', 'materials', 'equipment', 'notes'],
+      ['topics', 'prerequisites', 'timeFrame'],
+      ['materials', 'equipment', 'notes'],
     ],
     matchCodes: [],
     next: ['padi-deep-diver-specialty', 'padi-advanced-course'],
