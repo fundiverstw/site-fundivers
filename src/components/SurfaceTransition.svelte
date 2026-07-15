@@ -1,35 +1,23 @@
 <script lang="ts">
-  // The air-water boundary between a site's "above the surface" and "below the
-  // surface" sections. It reads as the moment of a descent: a bright rolling
-  // surface line up top, then water deepening downward with drifting light
-  // shafts and a few bubbles rising back toward the surface. Purely decorative
-  // (aria-hidden); all motion is held still for reduce-motion users.
+  // The sea surface between a site's "above the surface" and "below the surface"
+  // sections. Rather than a band that scrolls past, the water is a FIXED layer
+  // pinned to the lower viewport: its surface line sits wherever the in-flow
+  // anchor currently is, and everything below the line is tinted underwater. As
+  // you scroll down, the anchor rises, so the surface rises and the text scrolls
+  // down from "above the sea" into "below the sea". Purely decorative
+  // (aria-hidden); the rolling motion is held still for reduce-motion users.
 
-  // The band lives inside the centered, sidebar-offset content column but is
-  // stretched to span the full viewport width. There's no pure-CSS full-bleed
-  // that survives an off-centre parent, so we measure the in-flow wrapper's
-  // left edge and pull the inner band out to the viewport edges. Recomputed on
-  // resize (breakpoint / sidebar / scrollbar changes shift the left edge).
-  let host = $state<HTMLDivElement>()
-  let bleed = $state({ marginLeft: '0px', width: '100%' })
-
-  // Scroll-linked "descent": as the surface band rises up through the top of
-  // the viewport, `depth` runs 0 -> 1 and fades in a full-screen underwater
-  // overlay behind the content, so scrolling past the surface feels like
-  // dropping below the water.
-  let depth = $state(0)
+  // The in-flow anchor sits between the two sections; we track its viewport
+  // position and project the fixed water surface onto it.
+  let anchor = $state<HTMLDivElement>()
+  let surfaceY = $state(99999) // px from the top of the viewport to the surface
 
   function measure() {
-    if (!host) return
-    const rect = host.getBoundingClientRect()
-    const vw = document.documentElement.clientWidth
+    if (!anchor) return
     const vh = window.innerHeight || document.documentElement.clientHeight
-    bleed = { marginLeft: `${-rect.left}px`, width: `${vw}px` }
-    // Fully "above water" while the band sits low in the view (top >= 60% vh);
-    // fully "below" once it reaches the upper 15%. Linear between.
-    const hi = vh * 0.6
-    const lo = vh * 0.15
-    depth = Math.min(1, Math.max(0, (hi - rect.top) / (hi - lo)))
+    const rect = anchor.getBoundingClientRect()
+    // Clamp to the viewport: above it -> full-screen water, below it -> no water.
+    surfaceY = Math.max(0, Math.min(vh, rect.top + rect.height / 2))
   }
 
   $effect(() => {
@@ -53,61 +41,23 @@
     }
   })
 
-  // Hardcoded so the layout is stable (no random reflow / hydration jitter):
-  // left %, diameter in px, rise duration s, start delay s.
+  // A few bubbles rising through the water. Hardcoded so the layout is stable
+  // (no random reflow): left %, diameter px, rise duration s, start delay s.
   const bubbles = [
-    { x: 12, d: 6, dur: 7.5, delay: 0 },
-    { x: 22, d: 4, dur: 9, delay: 1.8 },
-    { x: 34, d: 9, dur: 6.5, delay: 3.1 },
-    { x: 46, d: 5, dur: 8.5, delay: 0.9 },
-    { x: 57, d: 3, dur: 10, delay: 2.4 },
-    { x: 66, d: 7, dur: 7, delay: 4.2 },
-    { x: 78, d: 5, dur: 9.5, delay: 1.2 },
-    { x: 88, d: 8, dur: 6.8, delay: 3.6 },
+    { x: 14, d: 6, dur: 8, delay: 0 },
+    { x: 30, d: 4, dur: 10, delay: 2.4 },
+    { x: 48, d: 8, dur: 7, delay: 1.1 },
+    { x: 63, d: 5, dur: 9.5, delay: 3.3 },
+    { x: 79, d: 4, dur: 8.5, delay: 0.7 },
+    { x: 90, d: 7, dur: 7.5, delay: 2 },
   ]
 </script>
 
-<!-- Full-screen underwater tint, fading in as you scroll below the surface.
-     Fixed and behind the page content (z-index:-1 within the content layer, so
-     it dims the backdrop and caustics but never the text). -->
-<div class="descent" aria-hidden="true" style="opacity:{depth}"></div>
-
-<!-- In-flow wrapper keeps the band's vertical spacing and is the anchor we
-     measure; the inner .surface is stretched out to the viewport edges. -->
-<div class="bleed" bind:this={host}>
-  <div
-    class="surface"
-    aria-hidden="true"
-    style="margin-left:{bleed.marginLeft}; width:{bleed.width}"
-  >
-    <!-- Slanted light shafts filtering down from the surface. -->
-    <div class="rays"></div>
-
-    <!-- Two rolling wave layers (each is two identical tiles side by side, so a
-       -50% slide loops seamlessly). Back layer fills the water body; the front
-       layer is the bright surface line. -->
-    <svg class="wave wave-back" viewBox="0 0 2880 120" preserveAspectRatio="none">
-      <defs>
-        <linearGradient id="st-water" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#2cd0c5" stop-opacity="0.30" />
-          <stop offset="100%" stop-color="#0b1730" stop-opacity="0" />
-        </linearGradient>
-      </defs>
-      <path
-        d="M0,58 Q90,22 180,58 T360,58 T540,58 T720,58 T900,58 T1080,58 T1260,58 T1440,58 T1620,58 T1800,58 T1980,58 T2160,58 T2340,58 T2520,58 T2700,58 T2880,58 L2880,120 L0,120 Z"
-        fill="url(#st-water)"
-      />
-    </svg>
-    <svg class="wave wave-front" viewBox="0 0 2880 120" preserveAspectRatio="none">
-      <path
-        d="M0,50 Q90,16 180,50 T360,50 T540,50 T720,50 T900,50 T1080,50 T1260,50 T1440,50 T1620,50 T1800,50 T1980,50 T2160,50 T2340,50 T2520,50 T2700,50 T2880,50"
-        fill="none"
-        stroke="#89dceb"
-        stroke-opacity="0.7"
-        stroke-width="2"
-      />
-    </svg>
-
+<!-- Fixed sea, behind the page content (z-index:-1 within the content layer, so
+     it tints the backdrop and caustics but never the text). --surface-y is the
+     current height of the water column, driven by the anchor below. -->
+<div class="sea" aria-hidden="true" style="--surface-y:{surfaceY}px">
+  <div class="water">
     <div class="bubbles">
       {#each bubbles as b}
         <span
@@ -117,49 +67,68 @@
       {/each}
     </div>
   </div>
+
+  <!-- The rolling surface line, sitting right on the water's edge. Two tiles
+       side by side so a -50% slide loops seamlessly; two layers roll opposite
+       ways for a parallax shimmer. -->
+  <div class="line">
+    <svg class="wave wave-back" viewBox="0 0 2880 40" preserveAspectRatio="none">
+      <path
+        d="M0,20 Q90,6 180,20 T360,20 T540,20 T720,20 T900,20 T1080,20 T1260,20 T1440,20 T1620,20 T1800,20 T1980,20 T2160,20 T2340,20 T2520,20 T2700,20 T2880,20 L2880,40 L0,40 Z"
+        fill="rgba(44, 208, 197, 0.28)"
+      />
+    </svg>
+    <svg class="wave wave-front" viewBox="0 0 2880 40" preserveAspectRatio="none">
+      <path
+        d="M0,18 Q90,4 180,18 T360,18 T540,18 T720,18 T900,18 T1080,18 T1260,18 T1440,18 T1620,18 T1800,18 T1980,18 T2160,18 T2340,18 T2520,18 T2700,18 T2880,18"
+        fill="none"
+        stroke="#89dceb"
+        stroke-opacity="0.75"
+        stroke-width="2"
+      />
+    </svg>
+  </div>
 </div>
 
-<style>
-  /* In-flow anchor: keeps the column's normal width so its left edge (measured
-     in JS) is the offset we pull the band back by. */
-  .bleed {
-    height: 7rem;
-  }
+<!-- In-flow anchor: a small gap between the two sections whose viewport
+     position sets the sea surface height above. -->
+<div class="anchor" bind:this={anchor}></div>
 
-  /* Underwater atmosphere that deepens with scroll. Sits behind the page
-     content but above the caustics/background (see component comment). */
-  .descent {
+<style>
+  .sea {
     position: fixed;
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    will-change: opacity;
-    background:
-      radial-gradient(140% 90% at 50% -10%, rgba(44, 208, 197, 0.12), transparent 55%),
-      linear-gradient(180deg, rgba(6, 26, 50, 0.15) 0%, rgba(3, 12, 30, 0.78) 100%);
   }
 
-  .surface {
-    position: relative;
-    height: 7rem;
+  /* The water column: from the surface line down to the bottom of the viewport.
+     Grows as the surface rises, so scrolling down floods the view. */
+  .water {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: var(--surface-y);
+    bottom: 0;
     overflow: hidden;
-    /* Air up top fading into deepening water below. */
     background: linear-gradient(
       180deg,
-      transparent 0%,
-      rgba(44, 208, 197, 0.05) 42%,
-      rgba(13, 40, 66, 0.35) 100%
+      rgba(44, 208, 197, 0.16) 0%,
+      rgba(13, 40, 66, 0.5) 42%,
+      rgba(3, 12, 30, 0.82) 100%
     );
-    -webkit-mask-image: linear-gradient(
-      180deg,
-      transparent 0,
-      #000 18%,
-      #000 88%,
-      transparent 100%
-    );
-    mask-image: linear-gradient(180deg, transparent 0, #000 18%, #000 88%, transparent 100%);
   }
 
+  /* The surface line rides on the water's edge (centred on --surface-y). */
+  .line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: var(--surface-y);
+    height: 40px;
+    transform: translateY(-50%);
+    overflow: hidden;
+  }
   .wave {
     position: absolute;
     top: 0;
@@ -169,14 +138,12 @@
     will-change: transform;
   }
   .wave-back {
-    animation: st-roll 14s linear infinite;
+    animation: st-roll 15s linear infinite;
   }
-  /* Front line rolls the other way, a touch faster, for a parallax shimmer. */
   .wave-front {
-    animation: st-roll-rev 9s linear infinite;
+    animation: st-roll-rev 10s linear infinite;
     filter: drop-shadow(0 0 6px rgba(137, 220, 235, 0.5));
   }
-
   @keyframes st-roll {
     from {
       transform: translateX(0);
@@ -191,31 +158,6 @@
     }
     to {
       transform: translateX(0);
-    }
-  }
-
-  /* Diagonal god rays sweeping slowly across the water. */
-  .rays {
-    position: absolute;
-    inset: -20% -20% 0 -20%;
-    background: repeating-linear-gradient(
-      74deg,
-      transparent 0,
-      transparent 34px,
-      rgba(137, 220, 235, 0.12) 40px,
-      transparent 52px
-    );
-    animation: st-rays 11s ease-in-out infinite alternate;
-    opacity: 0.8;
-  }
-  @keyframes st-rays {
-    from {
-      transform: translateX(-4%);
-      opacity: 0.5;
-    }
-    to {
-      transform: translateX(4%);
-      opacity: 0.9;
     }
   }
 
@@ -240,31 +182,34 @@
   }
   @keyframes st-bubble {
     0% {
-      transform: translateY(0) translateX(0);
+      transform: translateY(0);
       opacity: 0;
     }
     12% {
-      opacity: 0.8;
+      opacity: 0.7;
     }
     88% {
-      opacity: 0.6;
+      opacity: 0.5;
     }
     100% {
-      transform: translateY(-6.5rem) translateX(6px);
+      transform: translateY(-60vh) translateX(8px);
       opacity: 0;
     }
+  }
+
+  /* Small breathing gap between the two sections; drives the surface height. */
+  .anchor {
+    height: 3rem;
   }
 
   @media (prefers-reduced-motion: reduce) {
     .wave-back,
     .wave-front,
-    .rays,
     .bubble {
       animation: none;
     }
-    /* Keep the surface line and a hint of light visible, just still. */
     .bubble {
-      opacity: 0.4;
+      opacity: 0.35;
     }
   }
 </style>
