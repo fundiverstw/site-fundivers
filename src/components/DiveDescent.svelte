@@ -53,7 +53,9 @@
     // rects and subtracting gives a stable content-space offset.
     const marker = inner.querySelector('[data-surface]')
     if (marker) {
-      anchorOffset = marker.getBoundingClientRect().top - inner.getBoundingClientRect().top
+      const mr = marker.getBoundingClientRect()
+      // Centre of the spacer, so the wave sits mid-gap between the sections.
+      anchorOffset = mr.top + mr.height / 2 - inner.getBoundingClientRect().top
     }
   }
 
