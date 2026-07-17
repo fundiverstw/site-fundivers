@@ -1,11 +1,15 @@
 import { describe, it, expect } from 'vitest'
-import { existsSync } from 'node:fs'
+import { readdirSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { GALLERY, ALL_PHOTOS } from './photo-gallery'
 
-// These paths are typed by hand and served straight to the browser. A typo is
-// invisible in review and shows as a broken image on the Photos page.
-const publicDir = resolve(import.meta.dirname, '../../public')
+// The gallery is now discovered by a build-time glob over
+// src/content/photos/gallery/<category>/, so a listed-but-missing file can no
+// longer happen — the glob only ever returns files that exist. What is still
+// worth guarding is the shape: every section has photos, nothing is listed
+// twice, and every folder of photos on disk actually shows up as a section
+// (i.e. nobody added a folder that SECTION_ORDER forgot).
+const galleryDir = resolve(import.meta.dirname, 'photos/gallery')
 
 describe('the photo gallery', () => {
   it('has sections, and every section has photos', () => {
@@ -25,13 +29,16 @@ describe('the photo gallery', () => {
     expect(ALL_PHOTOS).toHaveLength(GALLERY.reduce((n, s) => n + s.images.length, 0))
   })
 
-  it('points every path at a file that exists', () => {
-    for (const path of ALL_PHOTOS) {
-      expect(existsSync(resolve(publicDir, `.${path}`)), `missing file: ${path}`).toBe(true)
+  it('surfaces every folder of photos as a section', () => {
+    // A category folder that SECTION_ORDER forgot would silently never appear on
+    // the page. Catch that: every non-empty folder on disk must be a section.
+    const onDisk = readdirSync(galleryDir, { withFileTypes: true })
+      .filter((e) => e.isDirectory())
+      .filter((e) => readdirSync(resolve(galleryDir, e.name)).some((f) => /\.\w+$/.test(f)))
+      .map((e) => e.name)
+    const shown = new Set(GALLERY.map((s) => s.key))
+    for (const cat of onDisk) {
+      expect(shown.has(cat), `folder '${cat}' exists but is not in SECTION_ORDER`).toBe(true)
     }
-  })
-
-  it('serves every path from the site root, not from public/', () => {
-    for (const path of ALL_PHOTOS) expect(path.startsWith('/imgs/')).toBe(true)
   })
 })

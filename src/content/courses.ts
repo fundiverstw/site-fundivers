@@ -2,7 +2,7 @@ import { mediaIdLocal } from '$engine/images'
 
 // PADI course catalog, mirroring the live fundiverstw.com/courses cards.
 // Titles + photos were harvested from the live page (in order); the cover
-// photos are self-hosted under /imgs/media/. Short
+// photos are self-hosted under src/content/photos/media/. Short
 // descriptions are authored here. `slug` is the course's page slug on the
 // marketing site, each card links to fundiverstw.com/courses-1/<slug>
 // (slugs scraped from the live page; note they don't always match the title,

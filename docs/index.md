@@ -56,7 +56,7 @@ folder". `$engine/router` means "the router, in the engine folder".
 | What we charge for FunDive and for websites | `src/content/services.ts` |
 | The words on the Services page | `src/content/text/en.ts`, under `services:` |
 | The long write-up for one course | `src/content/course-guides.ts` |
-| Which photos appear on the Photos page | `src/content/photo-gallery.ts` — see [Adding photos](adding-photos.md) |
+| A photo on the Photos gallery page | Drop a file in `src/content/photos/gallery/` — see [Adding photos](adding-photos.md) |
 | The photo on a dive-site or event card | Drop a file in `src/content/photos/` — see [Adding photos](adding-photos.md) |
 | A colour, a font, or how round the corners are | `src/styles/theme.css` — see [Changing how it looks](changing-look.md) |
 | The frosted-glass panel look | `src/styles/components.css` |

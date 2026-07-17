@@ -62,7 +62,7 @@ Roughly in order of how likely you are to need it.
 | `i18n.ts` | Remembers which language the visitor picked. The words themselves are in `content/text/`. |
 | `format.ts` | Turns `2026-07-14T09:00` into `Jul 14, 9:00 am`. |
 | `photo-pool.ts` | Decides which photo each card gets. Reads `content/photos/`. |
-| `images.ts` | Turns the old website's photo names into local file paths. |
+| `images.ts` | Resolves the old website's photo ids to bundled photos in `content/photos/media/`. |
 | `event-colors.ts` | Which colour a calendar entry gets (blue for Open Water, and so on). |
 | `calendar-layout.ts` | The maths that stops overlapping trips from covering each other on the month grid. |
 | `map-layout.ts` | The maths that turns latitude and longitude into a position on the Taiwan map. |

@@ -236,7 +236,7 @@ line, and usually the fix. It is almost never as bad as the wall of text suggest
 | --- | --- |
 | `Property 'x' is missing in type` | You added a word to `en.ts` and not to `zh-TW.ts` or `ja.ts` |
 | `no dive site with id 'bat-caves'` | A guide or photo folder is misspelled |
-| `missing file: /imgs/gallery/…` | A photo is listed in the code but not on disk |
+| `folder '…' exists but is not in SECTION_ORDER` | A new gallery section folder wasn't listed in `photo-gallery.ts` |
 | `expected [] to equal [ 'HTTP 404' ]` | A page asks for a file that is not there |
 | `Delete `··`` (from Prettier) | Run `npm run format` |
 

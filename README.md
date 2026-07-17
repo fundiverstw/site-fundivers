@@ -89,7 +89,7 @@ This site never authenticates anyone — all booking/login happens in `app-fundi
 | Calendar | Month grid (ported from app-fundivers) — `EO_dives` + `EO_courses`, priced via `EO_prices`, dive trip/local color from `eo_dive_destinations`/`TravelDestinations` |
 | Sites    | Static catalog in `src/content/dive-sites.ts`, grouped Domestic / International off each site's `international` flag (the shared `dive_sites` table was dropped upstream) |
 | Courses  | Static PADI catalog + live upcoming course sessions       |
-| Photos   | Self-hosted gallery under `public/imgs/gallery/`, listed in `src/content/photo-gallery.ts` |
+| Photos   | Self-hosted gallery discovered from `src/content/photos/gallery/`; section order in `src/content/photo-gallery.ts` |
 | Team     | Placeholder roster (swap in real names/photos)            |
 
 Live data access lives in `src/engine/events.ts`; the static dive-site catalog is

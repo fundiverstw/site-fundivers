@@ -14,11 +14,16 @@
 
 import { EVENT_TITLE_MATCHERS } from '$content/dive-sites'
 
-const files = import.meta.glob('../content/photos/**/*.{webp,avif,jpg,jpeg,png}', {
-  eager: true,
-  query: '?url',
-  import: 'default',
-}) as Record<string, string>
+// Only the card-pool folders — the gallery and media folders live alongside
+// these under photos/ but are catalogued elsewhere, so they are not scanned in.
+const files = import.meta.glob(
+  '../content/photos/{dive-sites,courses,general}/**/*.{webp,avif,jpg,jpeg,png}',
+  {
+    eager: true,
+    query: '?url',
+    import: 'default',
+  },
+) as Record<string, string>
 
 const sitePools: Record<string, string[]> = {}
 const generalPool: string[] = []
