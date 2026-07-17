@@ -148,10 +148,9 @@ it. They take about twelve seconds and they test what a visitor would notice:
 - the contact form refuses an incomplete enquiry and confirms a complete one
 - the photo viewer opens, steps with the arrow keys, wraps around, and closes
 - the map zooms into a region — by mouse and by keyboard — and back out again
-- the octopus opens the Wreck Maze, the maze actually draws, and the arrow keys turn you
 
 They run twice: once at desktop size, once at phone size. A few only make sense at one
-size — the Wreck Maze needs the octopus, which is hidden on a phone — so those are tagged
+size — the desktop-nav layout checks assume the wide top bar — so those are tagged
 `@desktop-only` or `@mobile-only` and are simply not collected for the other size. Nothing
 is skipped: every test either runs or does not exist for that project.
 
@@ -160,7 +159,7 @@ takes a couple of minutes, once. Every run after that is quick.
 
 ```bash
 npm run test:e2e                          # all of them
-npx playwright test e2e/game.spec.ts      # one file
+npx playwright test e2e/navigation.spec.ts  # one file
 npx playwright test --ui                  # watch them run, click through them
 npx playwright show-report                # look at the last failure in detail
 ```
@@ -239,7 +238,6 @@ line, and usually the fix. It is almost never as bad as the wall of text suggest
 | `no dive site with id 'bat-caves'` | A guide or photo folder is misspelled |
 | `missing file: /imgs/gallery/…` | A photo is listed in the code but not on disk |
 | `expected [] to equal [ 'HTTP 404' ]` | A page asks for a file that is not there |
-| `the game canvas is blank` | The Wreck Maze stopped drawing |
 | `Delete `··`` (from Prettier) | Run `npm run format` |
 
 If a test fails and you are sure the site is fine, the test may be the thing that is

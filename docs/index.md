@@ -58,7 +58,6 @@ folder". `$engine/router` means "the router, in the engine folder".
 | The long write-up for one course | `src/content/course-guides.ts` |
 | Which photos appear on the Photos page | `src/content/photo-gallery.ts` — see [Adding photos](adding-photos.md) |
 | The photo on a dive-site or event card | Drop a file in `src/content/photos/` — see [Adding photos](adding-photos.md) |
-| The questions in the octopus's maze game | `src/content/quiz-questions.ts` |
 | A colour, a font, or how round the corners are | `src/styles/theme.css` — see [Changing how it looks](changing-look.md) |
 | The frosted-glass panel look | `src/styles/components.css` |
 | The underwater background | `src/styles/background.css` |

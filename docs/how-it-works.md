@@ -68,7 +68,6 @@ Roughly in order of how likely you are to need it.
 | `map-layout.ts` | The maths that turns latitude and longitude into a position on the Taiwan map. |
 | `taiwan.geo.json` | The outline of Taiwan, as coordinates. |
 | `links.ts` | Builds links out to the old fundiverstw.com pages. |
-| `game.ts` | Six lines. Remembers whether the octopus's game is open. |
 
 ---
 
@@ -108,26 +107,6 @@ Without it, Tailwind would look only in the folder holding the stylesheet
 
 This is also why you can't build class names out of pieces — see the last section of
 [Changing how it looks](changing-look.md).
-
----
-
-## The octopus and the maze
-
-The little octopus that pops out of the logo is a button. Clicking it opens **Wreck
-Maze**, a quiz game hidden in `src/components/game/WreckMaze.svelte`. Its 52 questions
-are content, and live in `src/content/quiz-questions.ts` — you can add more without
-touching the game itself.
-
-The game is not part of the file every visitor downloads. `App.svelte` fetches it only
-when somebody first clicks the octopus, so the 15 kB it weighs is paid by the few people
-who play it. A browser test in `e2e/game.spec.ts` checks this is still true.
-
-Two known problems, if you want to fix them:
-
-- The octopus is `hidden xl:block`, so **on a phone or tablet there is no way to open the
-  game at all.**
-- The game's questions and buttons are **English only**, while the rest of the site
-  speaks three languages.
 
 ---
 

@@ -120,11 +120,6 @@ A prefix means "only on this size screen and wider":
 *One column on a phone, two on a tablet, four on a big monitor.* The prefixes are `sm:`
 (640px), `md:` (768px), `lg:` (1024px), `xl:` (1280px).
 
-> **A limitation worth knowing.** The little octopus in the corner is `hidden xl:block` — it
-> only appears on screens 1280px and wider. Since the octopus is the only way into the
-> maze game, **the game cannot be reached on a phone.** If you want it everywhere, that
-> `hidden xl:block` in `src/components/NavMascot.svelte` is the line to change.
-
 ### One rule to remember
 
 Only class names **written out in full, in a file under `src`**, end up in the finished

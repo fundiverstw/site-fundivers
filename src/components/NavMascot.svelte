@@ -1,7 +1,6 @@
 <script lang="ts">
   import { fade } from 'svelte/transition'
   import { ADS } from '$content/settings'
-  import { openGame } from '$engine/game'
   import MascotChar from './MascotChar.svelte'
 
   // The character lives hidden behind the logo. Every so often he slides out
@@ -89,16 +88,10 @@
           <span in:fade={{ duration: 250 }} class="block">{ad.text}</span>
         {/key}
       </a>
-      <!-- The octopus is the way into the Wreck Maze easter egg. -->
-      <button
-        type="button"
-        onclick={openGame}
-        aria-label="Play Wreck Maze"
-        title="Play Wreck Maze"
-        class="-mt-1 cursor-pointer rounded-full transition-transform duration-200 hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-reef-300"
-      >
+      <!-- The octopus mascot holds up the promo banner. Purely decorative. -->
+      <div class="-mt-1">
         <MascotChar size={54} />
-      </button>
+      </div>
     </div>
   </div>
 {/if}

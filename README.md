@@ -32,7 +32,7 @@ come from (`$content/dive-sites`, `$engine/router`), so you never count `../../`
 | `src/content/` | The words, facts, links and photos. Text is per-language in `content/text/`. | Constantly |
 | `src/styles/`  | `theme.css` (colours, fonts), `components.css` (`.glass`, `.waybar`), `background.css` | Sometimes |
 | `src/pages/`   | One component per route | Sometimes |
-| `src/components/` | Shared UI, plus `game/` (the Wreck Maze easter egg) | Sometimes |
+| `src/components/` | Shared UI | Sometimes |
 | `src/engine/`  | Router, Supabase client, layout maths, photo pool | Rarely |
 
 Marketing content is deliberately **not** in the shared database: that database is

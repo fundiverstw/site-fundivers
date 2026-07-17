@@ -1,9 +1,7 @@
 <script lang="ts">
-  import { untrack, type Component } from 'svelte'
+  import { type Component } from 'svelte'
   import { path, handleLinkClick } from '$engine/router'
   import { locale } from '$engine/i18n'
-  // Easter-egg game state — opened by clicking the nav mascot (NavMascot.svelte).
-  import { gameOpen } from '$engine/game'
   import Nav from '$components/Nav.svelte'
   import Footer from '$components/Footer.svelte'
   import Home from '$pages/Home.svelte'
@@ -45,21 +43,6 @@
   $effect(() => {
     document.documentElement.lang = $locale
   })
-
-  // The Wreck Maze is an easter egg almost nobody opens, and it costs 15 kB
-  // gzipped. Fetch it the first time somebody clicks the octopus, then keep it
-  // mounted — it renders nothing at all while `open` is false, and staying
-  // mounted means a second visit does not re-download it.
-  let Game = $state<Component<{ open?: boolean; onClose: () => void }> | null>(null)
-  $effect(() => {
-    if (!$gameOpen) return
-    // Reading `Game` untracked: this effect writes it, and depending on what it
-    // writes is how you get effect_update_depth_exceeded.
-    untrack(() => {
-      if (Game) return
-      import('$components/game/WreckMaze.svelte').then((m) => (Game = m.default))
-    })
-  })
 </script>
 
 <svelte:window onclick={handleLinkClick} />
@@ -71,7 +54,3 @@
   </main>
   <Footer />
 </div>
-
-{#if Game}
-  <Game open={$gameOpen} onClose={() => gameOpen.set(false)} />
-{/if}

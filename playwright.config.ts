@@ -3,7 +3,7 @@ import { defineConfig, devices } from '@playwright/test'
 // End-to-end tests. These drive a real browser against the real built site —
 // the same files `npm run deploy` uploads — so they catch what unit tests cannot:
 // a component that throws on mount, a route that renders nothing, a photo whose
-// path is wrong, an easter egg that no longer opens.
+// path is wrong.
 //
 // They do NOT talk to the booking app's database. Every request to it is
 // intercepted and answered with an empty list (see e2e/helpers.ts), so a run is
@@ -22,9 +22,8 @@ export default defineConfig({
 
     // Ask every page for less motion. Without it the octopus beside the logo
     // stays hidden for 12 seconds, slides out, wiggles, and hides again for up
-    // to 90 — so a test that clicks it either waits 14 seconds or misses the
-    // window entirely. With reduced motion it simply sits there, and the
-    // background stops animating.
+    // to 90 — so a test that waits on the mascot's banner is racing that cycle.
+    // With reduced motion it simply sits there in view.
     //
     // It goes under `contextOptions`, not straight into `use`. `reducedMotion`
     // is a browser-context option, not one of the test options, so a top-level
@@ -35,9 +34,9 @@ export default defineConfig({
 
   projects: [
     // Every spec runs in both projects, except the handful that only make sense
-    // in one — the Wreck Maze tests need the octopus, which only exists at
-    // 1280px and wider. Excluding them by tag means they never appear as
-    // "skipped": each test either runs or is not collected.
+    // in one — e.g. the desktop-nav layout tests, which only apply at 1280px and
+    // wider. Excluding them by tag means they never appear as "skipped": each
+    // test either runs or is not collected.
     {
       name: 'desktop',
       // Wide enough for the nav mascot, which is hidden below 1280px.
