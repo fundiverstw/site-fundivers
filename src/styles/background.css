@@ -29,15 +29,22 @@ body {
   /* Riced ocean base: a sunlit-twilight sea (brighter than midnight so the site
      reads open and airy, not gloomy) with soft neon spotlights bleeding in from
      the corners and a shaft of daylight refracting down from the surface — the
-     tell-tale "unixporn wallpaper" glow. Over it, a faint triangular lattice
-     (three line families at 0deg / 60deg / 120deg, same perpendicular spacing =
-     equilateral triangles) tinted in the mauve/teal/sky accents — a static,
-     mathematically-generated geometric mesh. Fixed so it stays put on scroll. */
+     tell-tale "unixporn wallpaper" glow.
+
+     Over it, two frozen water-caustic textures: full-screen fractalNoise, run
+     through a tint + gamma so only the bright crests survive as sparse, wavy
+     light veins (teal fine ribbons, a broader mauve layer at a different seed
+     and scale so the two interfere and never look tiled). They are static SVGs
+     baked into the CSS as data URIs, so the noise is rasterised exactly once at
+     decode time — no per-frame recompute, unlike the old animated caustics —
+     and stitchTiles='stitch' with an integer tile makes the 2000px tile seam-
+     less. Irregular and ocean-like, but effectively free to paint.
+
+     Fixed so the whole backdrop stays put while the page scrolls over it. */
   background-color: #0d1c38;
   background-image:
-    repeating-linear-gradient(0deg, rgba(137, 220, 235, 0.05) 0 1px, transparent 1px 46px),
-    repeating-linear-gradient(60deg, rgba(165, 243, 234, 0.06) 0 1px, transparent 1px 46px),
-    repeating-linear-gradient(120deg, rgba(203, 166, 247, 0.055) 0 1px, transparent 1px 46px),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2000' height='2000'%3E%3Cfilter id='a' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.004 0.012' numOctaves='3' seed='9' stitchTiles='stitch' result='n'/%3E%3CfeColorMatrix in='n' type='matrix' values='0 0 0 0 0.647 0 0 0 0 0.953 0 0 0 0 0.918 0.34 0.34 0.34 0 0' result='c'/%3E%3CfeComponentTransfer in='c'%3E%3CfeFuncA type='gamma' amplitude='2.2' exponent='5'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='2000' height='2000' filter='url(%23a)'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2000' height='2000'%3E%3Cfilter id='b' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.006 0.009' numOctaves='2' seed='23' stitchTiles='stitch' result='n'/%3E%3CfeColorMatrix in='n' type='matrix' values='0 0 0 0 0.796 0 0 0 0 0.651 0 0 0 0 0.969 0.30 0.30 0.30 0 0' result='c'/%3E%3CfeComponentTransfer in='c'%3E%3CfeFuncA type='gamma' amplitude='1.6' exponent='6'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='2000' height='2000' filter='url(%23b)'/%3E%3C/svg%3E"),
     radial-gradient(120% 90% at 12% -10%, rgba(203, 166, 247, 0.28) 0%, transparent 55%),
     radial-gradient(120% 90% at 92% 8%, rgba(44, 208, 197, 0.26) 0%, transparent 55%),
     radial-gradient(100% 70% at 50% -15%, rgba(137, 220, 235, 0.22) 0%, transparent 60%),
@@ -49,8 +56,8 @@ body {
 /* Mobile / touch performance. A fixed background attachment forces a repaint on
    every scroll frame, and backdrop-blur is costly — both rough on phone GPUs. On
    touch/narrow devices: let the background scroll with the page (no fixed
-   repaint) and swap glass blur for a near-opaque fill. The static lattice itself
-   is cheap, so it stays. */
+   repaint) and swap glass blur for a near-opaque fill. The caustic textures are
+   pre-rasterised images, so they are cheap and stay. */
 @media (hover: none) and (pointer: coarse), (max-width: 820px) {
   body {
     background-attachment: scroll;
