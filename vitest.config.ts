@@ -10,7 +10,7 @@ export default defineConfig({
   test: {
     environment: 'node',
     include: ['src/**/*.test.ts'],
-    // A test that reads files from disk (checking every gallery photo exists)
+    // A test that reads files from disk (e.g. scanning the gallery folders)
     // resolves them from the project root, so keep the working directory fixed.
     root: import.meta.dirname,
   },

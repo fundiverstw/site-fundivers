@@ -106,9 +106,8 @@ These run in about a second and never open a browser. They test two things.
 - every guide in `dive-site-guides.ts` is keyed to a dive site that exists — a typo
   there means the page renders with none of the text you wrote, and no error
 - every photo folder is named after a real dive site
-- every photo listed in `photo-gallery.ts` exists on disk
+- every gallery folder shows up as a section on the Photos page, so a folder of photos is never silently left off
 - every course guide is keyed to a course that exists, and every "next course" link resolves
-- no quiz question offers the same answer twice — which would mark a right answer wrong
 - the three language files hold **exactly** the same words, and none of them is blank
 
 They also cover the two piles of geometry nobody wants to debug by eye: the month grid's

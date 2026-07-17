@@ -238,6 +238,7 @@ Cloudflare runs on those computers.
 
 ```toml
 name = "site-fundiverstw"
+compatibility_date = "2026-04-01"
 
 [assets]
 directory = "./dist"
@@ -246,6 +247,7 @@ not_found_handling = "single-page-application"
 
 It says: name this `site-fundiverstw`, send out the files in `dist/`, and if a visitor
 asks for an address you do not recognise, send the main page instead.
+(`compatibility_date` just pins which version of Cloudflare's runtime behaviour to use.)
 
 That last setting matters. It is what makes `fundiverstw.com/calendar` work when someone
 pastes that address into a new browser tab. The next section explains why.

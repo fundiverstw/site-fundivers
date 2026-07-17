@@ -24,7 +24,7 @@ Here is every one, sorted by how much you should care.
 | Name | What it is |
 | --- | --- |
 | **`index.html`** | The one page the browser downloads. It is nearly empty on purpose — it has an empty `<div id="app">`, and the JavaScript fills it in. Its `<title>` and description are what Google shows. |
-| **`wrangler.toml`** | Tells Cloudflare how to serve the site: hand out the files in `dist/`, and answer an unknown address with the main page. Nine lines. |
+| **`wrangler.toml`** | Tells Cloudflare how to serve the site: hand out the files in `dist/`, and answer an unknown address with the main page. Eight lines. |
 | **`.env`** | Passwords and addresses, kept out of git. **Never commit this.** It probably is not there when you first clone the project. |
 | **`.env.example`** | A copy of `.env` with the real values removed, so you can see which ones you need. Copy it to `.env` and fill it in. |
 | **`package.json`** | Which borrowed code the project needs, and every `npm run …` command. If you want to know what `npm run verify` actually does, read it here. |
@@ -61,7 +61,7 @@ See [How we check the site still works](testing.md) for what the last four are a
 | **`contract/`** | The one test that talks to the real database, to check the booking app has not renamed a column the site reads. |
 | **`.github/`** | Contains one file, `workflows/ci.yml`, which tells GitHub to run all the checks every time somebody pushes. |
 | **`.vscode/`** | Two small files that set your editor up: which extensions to offer you, and "tidy my file when I save". |
-| **`reference/`** | Dead code. An old version of the map page, written in React, copied from the booking app when the map was moved here. It is **never** part of the site. It exists to be read, not run. Its two `.test.tsx` files are not real tests and cannot run. |
+| **`reference/`** | Dead code. An old version of the map page, written in React, copied from the booking app when the map was moved here. It is **never** part of the site, and its tests never run — the test runner only looks inside `src/` — so it exists to be read, not run. |
 
 ---
 

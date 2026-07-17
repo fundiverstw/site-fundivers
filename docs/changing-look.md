@@ -64,7 +64,9 @@ If you want *every* card to be less see-through, change `.glass` here once.
 
 ## The underwater background → `src/styles/background.css`
 
-The drifting light ribbons, the deep blue gradient, the scrollbar. Rarely needs touching.
+The static caustic light veins, the deep blue gradient, the corner glows, the scrollbar.
+It is a plain painted backdrop with no animation, so it is cheap and rarely needs
+touching.
 
 ---
 

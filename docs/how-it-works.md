@@ -59,6 +59,8 @@ Roughly in order of how likely you are to need it.
 | `supabase.ts` | Opens the read-only connection to the booking app's database. |
 | `events.ts` | Fetches trips and classes for the calendar and joins their prices on. |
 | `destinations.ts` | Fetches the travel destinations. |
+| `db-columns.ts` | The names of the database columns this site reads — checked by the contract test so a rename upstream is caught early. |
+| `radio.ts` | Whether the shop's live radio stream is on air, for the nav's radio player. |
 | `i18n.ts` | Remembers which language the visitor picked. The words themselves are in `content/text/`. |
 | `format.ts` | Turns `2026-07-14T09:00` into `Jul 14, 9:00 am`. |
 | `photo-pool.ts` | Decides which photo each card gets. Reads `content/photos/`. |
@@ -80,14 +82,16 @@ import { CONTACT } from '$content/settings'
 import { formatEventSpan } from '$engine/format'
 ```
 
-Those `$` names are shortcuts for folders, so you never write `../../../`. They're
-defined in **two** places, which must agree:
+Those `$` names are shortcuts for folders, so you never write `../../../`. The list lives
+in **`vite.alias.ts`**, and it has to be repeated in one more place, which must agree:
 
-- `vite.config.ts` — so the site builds
-- `tsconfig.json` — so the editor and `npm run check` understand them
+- `vite.alias.ts` — the one real list, read by both the build (`vite.config.ts`) and the
+  tests (`vitest.config.ts`)
+- `tsconfig.json` — the same shortcuts again, so the editor and `npm run check` understand
+  them
 
-If you add a folder shortcut to one and forget the other, you get a confusing "cannot
-find module" error. Add it to both.
+If you add a folder shortcut to `vite.alias.ts` and forget `tsconfig.json` (or the other
+way round), you get a confusing "cannot find module" error. Add it to both.
 
 ---
 
