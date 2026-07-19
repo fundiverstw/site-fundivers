@@ -10,18 +10,23 @@
 #   1. The key must match the filename exactly, including the extension.
 #   2. If a value contains a colon followed by a space, wrap it in quotes.
 #      Otherwise YAML reads the second half as a new field and the build stops.
-#
-# Copy this block, change the filename, fill in what you know, and delete the #
-# from the front of each line:
-#
-# b37fef_dd6d2e0dddf84a60a77330e75ea41253_mv2.avif:
-#   species: Gymnothorax javanicus       # scientific name, shown in italics
-#   commonName: Giant moray              # what people actually call it
-#   site: Long Dong (82.5)               # where it was taken
-#   taken: 2025-08-14                    # a year, or a full date
-#   depth: 12 m
-#   camera: Olympus TG-6
-#   lens: 60 mm macro
-#   settings: f/8 · 1/160 s · ISO 200
-#   photographer: Ming
-#   notes: 'One sentence on what makes this one worth a look.'
+
+# NOTE: this entry is a worked example, so the caption panel can be seen on the
+# site. The photo carries no EXIF, so the site, date, depth, camera and settings
+# below are invented to fill the layout — not records. Correct them, or delete
+# the lines that cannot be confirmed.
+b37fef_dd6d2e0dddf84a60a77330e75ea41253_mv2.avif:
+  species: Cypraea sp.
+  commonName: Cowrie, mantle extended
+  site: Long Dong (82.5)
+  taken: 2025
+  depth: 14 m
+  camera: Olympus TG-6
+  lens: 60 mm macro
+  settings: f/8 · 1/160 s · ISO 200
+  photographer: Fun Divers
+  notes: >-
+    The shell is under there. A cowrie carries two flaps of mantle that fold up
+    over the shell and lay down fresh enamel as it goes, which is why a living
+    one shines and a beached one is chalk. Touch it and the flaps snap back
+    inside in about a second.

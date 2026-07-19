@@ -50,14 +50,25 @@ test('a shortcut exists for every group, including the empty ones', async ({ pag
   const shortcuts = page.locator('nav[aria-label] a[href^="#"]')
   const sections = page.locator('main [id][class*="scroll-mt"]')
 
-  // One shortcut per section, in the same order — an empty group is still
-  // something you should be able to find.
+  // One shortcut per section — an empty group is still something you should be
+  // able to find.
   expect(await shortcuts.count()).toBe(await sections.count())
   expect(await shortcuts.count()).toBeGreaterThan(50)
 
   const hrefs = await shortcuts.evaluateAll((els) => els.map((e) => e.getAttribute('href')))
   expect(hrefs).toContain('#whale_sharks') // no photos yet
   expect(hrefs).toContain('#nudibranchs') // has photos
+})
+
+test('the shortcuts read alphabetically', async ({ page }) => {
+  await visit(page, '/photos')
+  // The shortcuts are an index, so they sort by name. The sections they point
+  // at keep the vocabulary's own order, which is a different thing on purpose.
+  const labels = await page
+    .locator('nav[aria-label] a[href^="#"]')
+    .evaluateAll((els) => els.map((e) => e.textContent?.trim() ?? ''))
+
+  expect(labels).toEqual([...labels].sort((a, b) => a.localeCompare(b)))
 })
 
 test('a shortcut scrolls to its group and opens it', async ({ page }) => {
