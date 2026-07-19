@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Snippet } from 'svelte'
+  import { untrack, type Snippet } from 'svelte'
 
   // A scroll-jacked "descent". Native page scrolling is disabled; wheel / touch
   // / keyboard input instead drives a smoothed virtual scroll that pans the
@@ -26,6 +26,10 @@
   let drift = $state(0)
   // The takeover starts below the site header so the logo/nav stay visible.
   let topOffset = $state(0)
+  // Where the finger was last frame. Lives out here, not inside the effect: if
+  // the effect ever re-runs mid-gesture the handlers are rebuilt, and a fresh
+  // `lastY = 0` would read as a swipe all the way from the top of the screen.
+  let lastY = 0
 
   // Bubbles rising through the water. Hardcoded so the layout is stable.
   const bubbles = [
@@ -60,9 +64,10 @@
   }
 
   $effect(() => {
-    reduce =
+    const prefersReduce =
       typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (reduce) return
+    reduce = prefersReduce
+    if (prefersReduce) return
 
     const root = document.documentElement
     const prevOverflow = root.style.overflow
@@ -80,7 +85,6 @@
       target += e.deltaY
       clamp()
     }
-    let lastY = 0
     const onTouchStart = (e: TouchEvent) => {
       lastY = e.touches[0]?.clientY ?? 0
     }
@@ -131,7 +135,11 @@
       rafId = requestAnimationFrame(tick)
     }
 
-    measure()
+    // `measure()` reads state it also writes (current, maxScroll), so calling it
+    // straight from the effect would make the effect depend on them — and `tick`
+    // writes `current` every frame, so the whole takeover would tear itself down
+    // and rebuild mid-scroll. Untrack it: this effect must run exactly once.
+    untrack(measure)
     const raf0 = requestAnimationFrame(() => {
       measure()
       rafId = requestAnimationFrame(tick)
