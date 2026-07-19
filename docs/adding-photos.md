@@ -10,7 +10,7 @@ filenames to keep in sync.
 | The photo is… | It goes in | Do you edit any code? |
 | --- | --- | --- |
 | on a **card** — a dive site, a course, a calendar trip | `src/content/photos/{dive-sites,courses,general}/` | **No.** Just drop the file in. |
-| in the **Photos gallery** page | `src/content/photos/gallery/<section>/` | **No,** unless you add a whole new section. |
+| in the **Photos gallery** page | `src/content/photos/gallery/<creature>/` | **No.** The section already exists. |
 | a **course cover** or **team/home** photo from the old site | `src/content/photos/media/` | Only to point a page at a different file. |
 
 ```
@@ -21,7 +21,8 @@ src/content/photos/
   courses/             ← photos of classes
   general/             ← anything; used when nothing better fits
   gallery/
-    nudibranchs/       ← the Photos-page gallery, one folder per section
+    nudibranchs/       ← the Photos-page gallery, one folder per creature
+      photos.yaml      ← what each picture is (optional, see below)
     reef/
   media/               ← old-site photos referenced by id (courses, team, home)
 ```
@@ -41,14 +42,65 @@ Put a picture in the right folder and it appears. There is no list to update.
 
 ## Gallery photos — just drop the file in
 
-Put the file in `src/content/photos/gallery/reef/` or
-`src/content/photos/gallery/nudibranchs/`. It shows up on the Photos page automatically,
-ordered by filename within its section — there is no path to type out anymore.
+The Photos page already has a section for **every creature a dive-site guide can
+mention** — about sixty of them. Most say *"Photos coming soon"*, because there are no
+pictures in them yet. Your job is to fill them.
 
-The one time you touch code is if you add a **brand-new section** (say, `wrecks/`): make
-the folder, drop photos in, then add its name to `SECTION_ORDER` in
-`src/content/photo-gallery.ts` so the page knows where to show it. A matching label goes
-in the three `src/content/text/*.ts` files under `photos.sections`.
+Each section is a folder named after the creature, lowercased with underscores:
+
+| The chip on a dive-site page | The folder to create | The link it answers |
+| --- | --- | --- |
+| Moray eels | `gallery/moray_eels/` | `/photos#moray_eels` |
+| Sea fans | `gallery/sea_fans/` | `/photos#sea_fans` |
+| Shrimp and crabs | `gallery/shrimp_and_crabs/` | `/photos#shrimp_and_crabs` |
+
+Make the folder, drop photos in, and the section stops saying "coming soon" by itself.
+**There is no code to edit** — not even for a creature nobody has photographed yet,
+because the section is already there waiting.
+
+The full list of creatures, and the exact folder name each one wants, is
+`src/content/marine-life.ts`. Adding a *new* creature to that list is the one thing that
+does touch code, and it has to come first: a dive-site guide may only use wording that
+appears there, and a test fails the build if it doesn't. That is what keeps every chip on
+a dive-site page clickable.
+
+If you name a folder something no section expects — `moray-eels` with a hyphen, say — the
+photos silently never appear. A test catches that too: run `npm test`.
+
+---
+
+## Telling people what they're looking at
+
+Beside the photos, add a **`photos.yaml`**. When somebody opens a picture, whatever you
+put here appears next to it: what the animal is, where and when you took it, what camera
+settings you used.
+
+```yaml
+# src/content/photos/gallery/moray_eels/photos.yaml
+giant-moray-longdong.webp:
+  species: Gymnothorax javanicus
+  commonName: Giant moray
+  site: Long Dong (82.5)
+  taken: 2025-08-14
+  depth: 12 m
+  camera: Olympus TG-6
+  lens: 60 mm macro
+  settings: f/8 · 1/160 s · ISO 200
+  photographer: Ming
+  notes: 'Free-swimming at dusk, which this species rarely does in daylight.'
+```
+
+Every field is optional — leave out what you don't know and that row just doesn't show.
+The whole file is optional too; without it the photos still appear, just with no caption.
+Each folder starts with a commented-out example you can copy.
+
+**Two rules, and they are the only two:**
+
+1. The key must be the filename **exactly**, extension included. Rename the photo and the
+   caption stops finding it.
+2. If a value contains **a colon followed by a space**, put quotes around it. Otherwise
+   YAML reads the rest of the line as a new field and the build stops with an error naming
+   the file.
 
 ---
 
@@ -107,5 +159,7 @@ npm run dev
 Look at the page. A photo that doesn't appear almost always means one of:
 
 - the folder name doesn't exactly match the dive site's `id` (check hyphens);
-- a new gallery **section** folder wasn't added to `SECTION_ORDER`;
+- a gallery folder name doesn't match the creature's slug in `src/content/marine-life.ts`
+  (`moray_eels`, not `moray-eels` or `Moray eels`);
+- a caption doesn't show because its key isn't the filename exactly;
 - the file extension is `.JPG` and the code expects `.jpg` — rename it lowercase.

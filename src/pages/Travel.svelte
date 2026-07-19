@@ -1,5 +1,6 @@
 <script lang="ts">
   import { fetchDestinations, type Destination } from '$engine/destinations'
+  import { scrollToId, hashId } from '$engine/router'
   import { fetchUpcomingTripTitles } from '$engine/events'
   import { siteImage, fallbackImage } from '$engine/photo-pool'
   import { DIVE_SITES } from '$content/dive-sites'
@@ -28,11 +29,7 @@
   // renders the target section, so it never lands otherwise.
   $effect(() => {
     if (loading) return
-    const id = window.location.hash.slice(1)
-    if (!id) return
-    requestAnimationFrame(() => {
-      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    })
+    scrollToId(hashId())
   })
 
   // The five "trip" destinations around Taiwan: the travel_destinations title,

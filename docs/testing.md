@@ -235,7 +235,8 @@ line, and usually the fix. It is almost never as bad as the wall of text suggest
 | --- | --- |
 | `Property 'x' is missing in type` | You added a word to `en.ts` and not to `zh-TW.ts` or `ja.ts` |
 | `no dive site with id 'bat-caves'` | A guide or photo folder is misspelled |
-| `folder '…' exists but is not in SECTION_ORDER` | A new gallery section folder wasn't listed in `photo-gallery.ts` |
+| `photo folders that no section will ever show` | A gallery folder's name doesn't match a creature's slug in `marine-life.ts` |
+| `… lists '…', which is not in MARINE_LIFE` | A dive-site guide invented its own wording for a creature |
 | `expected [] to equal [ 'HTTP 404' ]` | A page asks for a file that is not there |
 | `Delete `··`` (from Prettier) | Run `npm run format` |
 

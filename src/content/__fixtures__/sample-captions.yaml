@@ -1,0 +1,14 @@
+# Not part of the site. This file exists so a test can prove that importing a
+# .yaml gives back a plain object — that the build-time YAML step in
+# vite.yaml.ts is registered and working. If photo captions ever stop showing
+# up, run the tests: this one failing means the plugin is not loaded.
+chromodoris.webp:
+  species: Chromodoris annae
+  commonName: Anna's chromodoris
+  site: Long Dong (82.5)
+  taken: 2025-08-14
+  depth: 12 m
+  camera: Olympus TG-6
+  settings: f/8 · 1/160 s · ISO 200
+  # A value containing ": " must be quoted, or YAML reads it as another field.
+  notes: 'A caption with a colon: and a comma, to check the quoting rules.'

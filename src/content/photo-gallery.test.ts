@@ -1,44 +1,88 @@
 import { describe, it, expect } from 'vitest'
-import { readdirSync } from 'node:fs'
-import { resolve } from 'node:path'
-import { GALLERY, ALL_PHOTOS } from './photo-gallery'
+import { GALLERY, FILLED_SECTIONS, ALL_PHOTOS, ORPHAN_FOLDERS } from './photo-gallery'
+import { MARINE_LIFE, marineSlug } from './marine-life'
+import { DIVE_SITE_GUIDES } from './dive-site-guides'
 
-// The gallery is now discovered by a build-time glob over
-// src/content/photos/gallery/<category>/, so a listed-but-missing file can no
-// longer happen — the glob only ever returns files that exist. What is still
-// worth guarding is the shape: every section has photos, nothing is listed
-// twice, and every folder of photos on disk actually shows up as a section
-// (i.e. nobody added a folder that SECTION_ORDER forgot).
-const galleryDir = resolve(import.meta.dirname, 'photos/gallery')
+// The gallery is discovered by a build-time glob over
+// src/content/photos/gallery/<slug>/, so a listed-but-missing file cannot
+// happen — the glob only returns files that exist. What matters instead is that
+// the three lists agree: the vocabulary a dive-site guide may use, the sections
+// the photos page renders, and the folders somebody put on disk.
+
+describe('the marine-life vocabulary', () => {
+  it('slugs the way the links expect', () => {
+    expect(marineSlug('Moray eels')).toBe('moray_eels')
+    expect(marineSlug('Sea fans')).toBe('sea_fans')
+    expect(marineSlug('Xenograpsus vent crabs')).toBe('xenograpsus_vent_crabs')
+  })
+
+  it('gives every creature a distinct slug', () => {
+    // Two chips sharing a slug would share a gallery, and one of them would
+    // quietly never get its own photos.
+    const slugs = MARINE_LIFE.map(marineSlug)
+    expect(new Set(slugs).size, 'two creatures slug to the same anchor').toBe(slugs.length)
+  })
+})
+
+describe('dive-site guides', () => {
+  it('only name creatures the vocabulary knows', () => {
+    // This is the guard that keeps every chip clickable. A guide inventing its
+    // own wording ("Wrasse" instead of "Wrasses") would link to a section that
+    // does not exist, and the visitor would land nowhere.
+    const known = new Set<string>(MARINE_LIFE)
+    for (const [id, guide] of Object.entries(DIVE_SITE_GUIDES)) {
+      for (const creature of guide.marineLife ?? []) {
+        expect(
+          known.has(creature),
+          `'${id}' lists '${creature}', which is not in MARINE_LIFE`,
+        ).toBe(true)
+      }
+    }
+  })
+
+  it('never lists the same creature twice on one site', () => {
+    for (const [id, guide] of Object.entries(DIVE_SITE_GUIDES)) {
+      const list = guide.marineLife ?? []
+      expect(new Set(list).size, `'${id}' repeats a creature`).toBe(list.length)
+    }
+  })
+})
 
 describe('the photo gallery', () => {
-  it('has sections, and every section has photos', () => {
-    expect(GALLERY.length).toBeGreaterThan(0)
-    for (const section of GALLERY) {
-      expect(section.images.length, `section '${section.key}' is empty`).toBeGreaterThan(0)
+  it('has a section for every creature, so every chip has somewhere to land', () => {
+    const keys = new Set(GALLERY.map((s) => s.key))
+    for (const label of MARINE_LIFE) {
+      expect(keys.has(marineSlug(label)), `no section for '${label}'`).toBe(true)
     }
+  })
+
+  it('gives every section a distinct key', () => {
+    // Duplicate keys would mean two elements sharing one id, and the anchor
+    // would scroll to whichever came first.
+    const keys = GALLERY.map((s) => s.key)
+    expect(new Set(keys).size).toBe(keys.length)
+  })
+
+  it('claims every folder of photos on disk', () => {
+    // A folder whose name matches no section is invisible on the page. Usually a
+    // typo — `moray-eels` instead of `moray_eels`.
+    expect(ORPHAN_FOLDERS, 'photo folders that no section will ever show').toEqual([])
   })
 
   it('lists every photo exactly once', () => {
     // Photos.svelte keys its each-block by the image path. A repeated path is a
     // duplicate key, and Svelte throws on those — the whole page goes blank.
-    expect(ALL_PHOTOS).toHaveLength(new Set(ALL_PHOTOS).size)
+    const srcs = ALL_PHOTOS.map((p) => p.src)
+    expect(srcs).toHaveLength(new Set(srcs).size)
   })
 
-  it('flattens to the sum of its sections', () => {
-    expect(ALL_PHOTOS).toHaveLength(GALLERY.reduce((n, s) => n + s.images.length, 0))
-  })
-
-  it('surfaces every folder of photos as a section', () => {
-    // A category folder that SECTION_ORDER forgot would silently never appear on
-    // the page. Catch that: every non-empty folder on disk must be a section.
-    const onDisk = readdirSync(galleryDir, { withFileTypes: true })
-      .filter((e) => e.isDirectory())
-      .filter((e) => readdirSync(resolve(galleryDir, e.name)).some((f) => /\.\w+$/.test(f)))
-      .map((e) => e.name)
-    const shown = new Set(GALLERY.map((s) => s.key))
-    for (const cat of onDisk) {
-      expect(shown.has(cat), `folder '${cat}' exists but is not in SECTION_ORDER`).toBe(true)
+  it('flattens to the sum of the filled sections', () => {
+    expect(ALL_PHOTOS).toHaveLength(FILLED_SECTIONS.reduce((n, s) => n + s.photos.length, 0))
+    for (const section of FILLED_SECTIONS) {
+      expect(
+        section.photos.length,
+        `'${section.key}' is in FILLED_SECTIONS but empty`,
+      ).toBeGreaterThan(0)
     }
   })
 })

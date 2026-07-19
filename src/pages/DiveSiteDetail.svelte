@@ -1,6 +1,7 @@
 <script lang="ts">
   import { path } from '$engine/router'
   import { diveSiteById, REGION_META } from '$content/dive-sites'
+  import { marineSlug } from '$content/marine-life'
   import { siteImage } from '$engine/photo-pool'
   import { DIVE_SITE_GUIDES } from '$content/dive-site-guides'
   import { mapsUrl } from '$engine/links'
@@ -149,12 +150,17 @@
               </div>
             {/if}
             {#if guide?.marineLife?.length}
+              <!-- Each chip opens its section of the photo gallery. The wording
+                 comes from the fixed vocabulary in content/marine-life.ts, so
+                 the slug always matches a section that exists. -->
               <div class="mt-4 flex flex-wrap gap-2">
                 {#each guide.marineLife as m}
-                  <span
-                    class="rounded-full border border-reef-400/40 bg-reef-400/10 px-3 py-1 text-sm text-reef-100"
-                    >{m}</span
+                  <a
+                    href={`/photos#${marineSlug(m)}`}
+                    class="rounded-full border border-reef-400/40 bg-reef-400/10 px-3 py-1 text-sm text-reef-100 transition-colors hover:border-reef-400 hover:bg-reef-400/20 hover:text-white"
                   >
+                    {m}
+                  </a>
                 {/each}
               </div>
             {/if}

@@ -32,7 +32,10 @@
   }
 
   /** Which entry of PAGES serves this address. */
-  function routeKey(p: string): string {
+  function routeKey(href: string): string {
+    // Links carry anchors and query strings (/photos#moray_eels); the page that
+    // serves them is the same either way.
+    const p = href.split(/[#?]/)[0]
     if (p.startsWith('/sites/') && p.length > '/sites/'.length) return ':site'
     if (p.startsWith('/courses/') && p.length > '/courses/'.length) return ':course'
     return PAGES[p] ? p : ':missing'
@@ -67,10 +70,18 @@
     if (cached) return void (Current = cached)
     let cancelled = false
     // The page on screen stays until the new one arrives, rather than blanking.
-    PAGES[key]().then((m) => {
-      loaded[key] = m.default
-      if (!cancelled) Current = m.default
-    })
+    PAGES[key]()
+      .then((m) => {
+        loaded[key] = m.default
+        if (!cancelled) Current = m.default
+      })
+      .catch(() => {
+        // The chunk did not arrive — a dropped connection, or a deploy that
+        // renamed it while this tab was open. The address bar already says the
+        // new page, so leaving the old one rendered would be a lie. A reload
+        // fetches the current index.html and its current chunk names.
+        if (!cancelled) location.reload()
+      })
     return () => {
       cancelled = true
     }

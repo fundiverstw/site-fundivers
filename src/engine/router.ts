@@ -17,10 +17,17 @@ export const path = readable(window.location.pathname, (set) => {
 /** Programmatic navigation. Pushes history and notifies the `path` store.
  *  Not exported: nothing outside this file needs it yet. */
 function navigate(to: string): void {
-  if (to === window.location.pathname) return
+  // Compare the whole address, not just the path. Comparing paths alone meant
+  // clicking "Photos" while sitting on /photos#nudibranchs did nothing at all —
+  // same path, so it returned early, leaving the stale anchor in the address bar
+  // and the page still scrolled where it was.
+  const next = new URL(to, window.location.href)
+  const here = window.location
+  if (next.href === here.href) return
   window.history.pushState({}, '', to)
   window.dispatchEvent(new Event('app:navigate'))
-  window.scrollTo({ top: 0, behavior: 'instant' })
+  // A link to an anchor is asking for a place in the page, not the top of it.
+  if (!next.hash) window.scrollTo({ top: 0, behavior: 'instant' })
 }
 
 /**
@@ -38,6 +45,26 @@ export function internalHref(anchor: Element | null | undefined): string | null 
   if (/^(https?:|#|mailto:|tel:)/.test(href)) return null
   if (anchor.getAttribute('target') === '_blank') return null
   return href
+}
+
+/**
+ * Scroll to the element with this id, next frame.
+ *
+ * The frame matters: pages call this after opening a collapsed section or after
+ * async data has arrived, and the element is not in the document until Svelte
+ * has flushed. The browser's own jump to an anchor has already happened and
+ * missed by then, which is why these pages scroll themselves.
+ */
+export function scrollToId(id: string): void {
+  if (!id) return
+  requestAnimationFrame(() => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  })
+}
+
+/** The id named by the current URL hash, decoded, or '' if there is none. */
+export function hashId(): string {
+  return decodeURIComponent(window.location.hash.replace(/^#/, ''))
 }
 
 /** Intercept clicks on internal <a> links for SPA navigation. */

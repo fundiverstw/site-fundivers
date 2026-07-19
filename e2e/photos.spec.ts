@@ -1,19 +1,32 @@
 import { test, expect } from '@playwright/test'
-import { visit, watchForProblems } from './helpers'
+import { visit, stubDatabase, watchForProblems } from './helpers'
 
 // The Photos page opens a full-screen viewer when you tap a picture, and you
-// move through the gallery with the arrow keys. None of that was tested.
+// move through the gallery with the arrow keys.
+//
+// Every section on that page starts collapsed, so there is nothing to click
+// until one is opened. `openGallery` arrives at an anchor, which expands that
+// section on the way in — see e2e/photo-links.spec.ts for that behaviour itself.
 
 const viewer = (page: import('@playwright/test').Page) => page.locator('[role="presentation"] img')
+
+/** Open the photos page with the nudibranch section already expanded. */
+async function openGallery(page: import('@playwright/test').Page) {
+  await stubDatabase(page)
+  await page.goto('/photos#nudibranchs')
+  await expect(page.locator('#nudibranchs button').first()).toHaveAttribute('aria-expanded', 'true')
+}
+
+const thumbs = (page: import('@playwright/test').Page) => page.locator('#nudibranchs img')
 
 test.describe('the photo viewer', () => {
   test('opens on the picture you clicked', async ({ page }) => {
     const problems = watchForProblems(page)
-    await visit(page, '/photos')
+    await openGallery(page)
 
     await expect(viewer(page)).toHaveCount(0)
 
-    const thumb = page.locator('section img').first()
+    const thumb = thumbs(page).first()
     const thumbSrc = await thumb.getAttribute('src')
     await thumb.click()
 
@@ -25,8 +38,8 @@ test.describe('the photo viewer', () => {
   })
 
   test('moves to the next and previous photo with the arrow keys', async ({ page }) => {
-    await visit(page, '/photos')
-    await page.locator('section img').first().click()
+    await openGallery(page)
+    await thumbs(page).first().click()
 
     const first = await viewer(page).getAttribute('src')
 
@@ -39,8 +52,8 @@ test.describe('the photo viewer', () => {
   })
 
   test('wraps around at the start of the gallery', async ({ page }) => {
-    await visit(page, '/photos')
-    await page.locator('section img').first().click()
+    await openGallery(page)
+    await thumbs(page).first().click()
     const first = await viewer(page).getAttribute('src')
 
     // Stepping back from the first photo must land on the LAST one. Clamping to
@@ -56,8 +69,8 @@ test.describe('the photo viewer', () => {
   })
 
   test('moves with the on-screen buttons too', async ({ page }) => {
-    await visit(page, '/photos')
-    await page.locator('section img').first().click()
+    await openGallery(page)
+    await thumbs(page).first().click()
     const first = await viewer(page).getAttribute('src')
 
     await page.getByRole('button', { name: 'Next' }).click()
@@ -68,14 +81,14 @@ test.describe('the photo viewer', () => {
   })
 
   test('closes with Escape and with the close button', async ({ page }) => {
-    await visit(page, '/photos')
+    await openGallery(page)
 
-    await page.locator('section img').first().click()
+    await thumbs(page).first().click()
     await expect(viewer(page)).toBeVisible()
     await page.keyboard.press('Escape')
     await expect(viewer(page)).toHaveCount(0)
 
-    await page.locator('section img').first().click()
+    await thumbs(page).first().click()
     await expect(viewer(page)).toBeVisible()
     await page.getByRole('button', { name: 'Close' }).click()
     await expect(viewer(page)).toHaveCount(0)

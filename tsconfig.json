@@ -33,6 +33,7 @@
     "contract/**/*.ts",
     "vite.alias.ts",
     "vite.config.ts",
+    "vite.yaml.ts",
     "vitest.config.ts",
     "vitest.contract.config.ts",
     "playwright.config.ts",

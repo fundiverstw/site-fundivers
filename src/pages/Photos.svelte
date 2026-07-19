@@ -1,14 +1,27 @@
 <script lang="ts">
   import { SOCIAL } from '$content/settings'
   import { t } from '$engine/i18n'
-  import { GALLERY, ALL_PHOTOS } from '$content/photo-gallery'
+  import { scrollToId, hashId } from '$engine/router'
+  import { GALLERY, FILLED_SECTIONS, ALL_PHOTOS, type PhotoMeta } from '$content/photo-gallery'
   import PageHeader from '$components/PageHeader.svelte'
+
+  // Every section starts shut. There is one per creature in the marine-life
+  // vocabulary — about sixty — and a dive-site chip may link to any of them, so
+  // they all have to exist. Opening them all at once would mean laying out and
+  // decoding every photo on the site to show you the one you asked for.
+  //
+  // `open` holds the keys currently expanded.
+  let open = $state<Record<string, boolean>>({})
 
   // Lightbox: index into ALL_PHOTOS, or null when closed.
   let lightbox = $state<number | null>(null)
+  let shown = $derived(lightbox === null ? null : ALL_PHOTOS[lightbox])
 
-  function open(src: string) {
-    lightbox = ALL_PHOTOS.indexOf(src)
+  function show(src: string) {
+    // Guard the -1: a miss would leave the viewer "open" on nothing, showing no
+    // picture but still answering the arrow keys.
+    const i = ALL_PHOTOS.findIndex((p) => p.src === src)
+    if (i >= 0) lightbox = i
   }
   function close() {
     lightbox = null
@@ -24,6 +37,53 @@
     else if (e.key === 'ArrowRight') step(1)
     else if (e.key === 'ArrowLeft') step(-1)
   }
+
+  // Arriving at /photos#moray_eels — from a dive-site chip, a jump-to pill, or
+  // the back button — opens that section and scrolls to it. Without this the
+  // browser would jump to a collapsed heading and appear to do nothing.
+  function reveal(key: string) {
+    const section = GALLERY.find((s) => s.key === key)
+    if (!section) return
+    // Only mark a section open if it has something to open. An empty one stays
+    // shut and stays `aria-expanded="false"`, which is what it is: a heading
+    // saying "coming soon", not a container hiding anything.
+    if (section.photos.length) open[key] = true
+    scrollToId(key)
+  }
+
+  function openFromHash() {
+    const key = hashId()
+    if (key) reveal(key)
+  }
+
+  $effect(() => {
+    openFromHash()
+    // `hashchange` covers clicking a pill while already here. `app:navigate` is
+    // the router's own event: it moves between pages with pushState, which does
+    // not fire hashchange, so arriving from a dive-site chip needs this one.
+    window.addEventListener('hashchange', openFromHash)
+    window.addEventListener('app:navigate', openFromHash)
+    return () => {
+      window.removeEventListener('hashchange', openFromHash)
+      window.removeEventListener('app:navigate', openFromHash)
+    }
+  })
+
+  /** The caption rows to show for a photo, skipping anything not filled in. */
+  function captionRows(meta: PhotoMeta): Array<{ label: string; value: string }> {
+    const L = $t.photos.meta
+    const rows: Array<{ label: string; value: string }> = []
+    if (meta.species) rows.push({ label: L.species, value: meta.species })
+    if (meta.commonName) rows.push({ label: L.commonName, value: meta.commonName })
+    if (meta.site) rows.push({ label: L.site, value: meta.site })
+    if (meta.taken) rows.push({ label: L.taken, value: meta.taken })
+    if (meta.depth) rows.push({ label: L.depth, value: meta.depth })
+    if (meta.camera) rows.push({ label: L.camera, value: meta.camera })
+    if (meta.lens) rows.push({ label: L.lens, value: meta.lens })
+    if (meta.settings) rows.push({ label: L.settings, value: meta.settings })
+    if (meta.photographer) rows.push({ label: L.photographer, value: meta.photographer })
+    return rows
+  }
 </script>
 
 <svelte:window onkeydown={onKey} />
@@ -31,44 +91,77 @@
 <PageHeader title={$t.photos.title} subtitle={$t.photos.subtitle} />
 
 <section class="mx-auto max-w-[1600px] px-4 py-12 sm:px-6">
-  <!-- Jump-to-section pills -->
-  <div class="mb-8 flex flex-wrap gap-3">
+  <!-- Jump-to pills, for the sections that have something in them. -->
+  {#if FILLED_SECTIONS.length}
+    <div class="mb-8 flex flex-wrap gap-3">
+      {#each FILLED_SECTIONS as sect (sect.key)}
+        <!-- The href keeps this a real link (copyable, middle-clickable). The
+             handler is what makes a second click work: if the hash is already
+             the one in the address bar the browser fires no event at all, so
+             nothing would happen after you collapse a section and click its
+             pill again. -->
+        <a
+          href={`#${sect.key}`}
+          onclick={() => reveal(sect.key)}
+          class="waybar mono rounded-full px-5 py-2 text-sm font-semibold text-brand-50 transition-colors hover:text-reef-300"
+        >
+          {sect.label}
+        </a>
+      {/each}
+    </div>
+  {/if}
+
+  <div class="mb-12 space-y-2">
     {#each GALLERY as sect (sect.key)}
-      <a
-        href={`#${sect.key}`}
-        class="waybar mono rounded-full px-5 py-2 text-sm font-semibold text-brand-50 transition-colors hover:text-reef-300"
-      >
-        {$t.photos.sections[sect.key as keyof typeof $t.photos.sections]}
-      </a>
+      {@const filled = sect.photos.length > 0}
+      <div id={sect.key} class="scroll-mt-24">
+        <!-- An empty section is aria-disabled rather than disabled: `disabled`
+             takes it out of the reading order, and "coming soon" is exactly
+             the thing a screen-reader user needs to hear. It carries no
+             aria-expanded, because it is not a container that could open. -->
+        <button
+          type="button"
+          onclick={() => filled && (open[sect.key] = !open[sect.key])}
+          aria-disabled={!filled}
+          aria-expanded={filled ? open[sect.key] === true : undefined}
+          class="glass flex w-full items-center gap-3 rounded-2xl px-5 py-3 text-left transition-colors {filled
+            ? 'hover:border-reef-400/50'
+            : 'cursor-default opacity-55'}"
+        >
+          <span class="mono text-reef-400" aria-hidden="true">
+            {filled ? (open[sect.key] ? '▿' : '▹') : '·'}
+          </span>
+          <span class="flex-1 text-lg font-bold text-white">{sect.label}</span>
+          <span class="mono text-xs text-brand-300">
+            {filled ? `${sect.photos.length} ${$t.photos.photoCount}` : $t.photos.comingSoon}
+          </span>
+        </button>
+
+        {#if filled && open[sect.key]}
+          <!-- Masonry via CSS columns so each landscape shot keeps its aspect. -->
+          <div class="[column-fill:_balance] mt-3 gap-3 sm:columns-2 lg:columns-3">
+            {#each sect.photos as photo, i (photo.src)}
+              <button
+                type="button"
+                onclick={() => show(photo.src)}
+                class="group mb-3 block w-full break-inside-avoid overflow-hidden rounded-2xl border border-white/10 shadow-sm transition-all duration-300 hover:border-reef-400/60 hover:shadow-[0_0_26px_-8px_rgba(44,208,197,0.6)]"
+              >
+                <!-- Most photos have no caption yet, so fall back to the section
+                     name and a number. An alt of "" on a button leaves the
+                     control with no name at all. -->
+                <img
+                  src={photo.src}
+                  alt={photo.meta.commonName ?? photo.meta.species ?? `${sect.label} ${i + 1}`}
+                  loading="lazy"
+                  class="block w-full transition-transform duration-500 group-hover:scale-[1.04]"
+                />
+              </button>
+            {/each}
+          </div>
+        {/if}
+      </div>
     {/each}
   </div>
-
-  {#each GALLERY as sect (sect.key)}
-    <div id={sect.key} class="mb-12 scroll-mt-24">
-      <h2 class="mb-5 flex items-center gap-2 text-2xl font-bold text-white">
-        <span class="mono text-reef-400">▹</span>{$t.photos.sections[
-          sect.key as keyof typeof $t.photos.sections
-        ]}
-      </h2>
-      <!-- Masonry via CSS columns so each landscape shot keeps its aspect. -->
-      <div class="[column-fill:_balance] gap-3 sm:columns-2 lg:columns-3">
-        {#each sect.images as src (src)}
-          <button
-            type="button"
-            onclick={() => open(src)}
-            class="group mb-3 block w-full break-inside-avoid overflow-hidden rounded-2xl border border-white/10 shadow-sm transition-all duration-300 hover:border-reef-400/60 hover:shadow-[0_0_26px_-8px_rgba(44,208,197,0.6)]"
-          >
-            <img
-              {src}
-              alt=""
-              loading="lazy"
-              class="block w-full transition-transform duration-500 group-hover:scale-[1.04]"
-            />
-          </button>
-        {/each}
-      </div>
-    </div>
-  {/each}
 
   <div class="glass rounded-2xl p-8 text-center">
     <h2 class="text-xl font-bold text-white">{$t.photos.seeMore}</h2>
@@ -94,7 +187,7 @@
   </div>
 </section>
 
-{#if lightbox !== null}
+{#if shown}
   <!-- Lightbox overlay -->
   <div
     class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm sm:p-8"
@@ -103,11 +196,42 @@
     }}
     role="presentation"
   >
-    <img
-      src={ALL_PHOTOS[lightbox]}
-      alt=""
-      class="max-h-full max-w-full rounded-xl object-contain shadow-2xl"
-    />
+    <div class="flex max-h-full w-full max-w-6xl flex-col items-center gap-4 lg:flex-row">
+      <!-- min-w-0: a flex item defaults to min-width:auto, so without it the
+           photo refuses to shrink below its natural width and shoves the
+           caption panel off the right of the screen. -->
+      <img
+        src={shown.src}
+        alt={shown.meta.commonName ?? shown.meta.species ?? ''}
+        class="min-h-0 min-w-0 flex-1 rounded-xl object-contain shadow-2xl"
+      />
+
+      <!-- What the picture is, where and how it was taken. Only appears when
+           the folder's photos.yaml has something to say about this file. -->
+      {#if captionRows(shown.meta).length || shown.meta.notes}
+        <aside
+          class="glass max-h-full w-full shrink-0 overflow-y-auto rounded-xl p-5 lg:w-72"
+          onclick={(e) => e.stopPropagation()}
+          role="presentation"
+        >
+          <dl class="space-y-2 text-sm">
+            {#each captionRows(shown.meta) as row (row.label)}
+              <div>
+                <dt class="mono text-[11px] uppercase tracking-wide text-brand-300">{row.label}</dt>
+                <dd class="text-white {row.label === $t.photos.meta.species ? 'italic' : ''}">
+                  {row.value}
+                </dd>
+              </div>
+            {/each}
+          </dl>
+          {#if shown.meta.notes}
+            <p class="mt-4 border-t border-white/10 pt-3 text-sm leading-relaxed text-brand-100">
+              {shown.meta.notes}
+            </p>
+          {/if}
+        </aside>
+      {/if}
+    </div>
 
     <button
       type="button"
@@ -142,7 +266,7 @@
     <span
       class="mono absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-black/50 px-3 py-1 text-xs text-white/80"
     >
-      {lightbox + 1} / {ALL_PHOTOS.length}
+      {(lightbox ?? 0) + 1} / {ALL_PHOTOS.length}
     </span>
   </div>
 {/if}

@@ -1,17 +1,34 @@
-// Photo-gallery catalog for the /photos page. The photos are self-hosted dive
-// shots living in src/content/photos/gallery/<category>/ — drop a file in the
-// right folder and it appears; there is no list of filenames to maintain. The
-// build discovers them with a glob (hashed + bundled like every other photo).
+import { MARINE_LIFE, marineSlug } from './marine-life'
+
+// Photo-gallery catalog for the /photos page.
 //
-// The one thing a folder scan can't decide is the order the sections appear in,
-// so that stays hand-listed here in SECTION_ORDER. Within a section, photos are
-// ordered by filename so the layout is stable between builds.
+// There is one section per creature in the marine-life vocabulary, plus "reef"
+// for shots of the reef itself. Every section exists whether or not it has any
+// photos yet, because the dive-site pages link to all of them: a chip reading
+// "Moray eels" points at /photos#moray_eels, and that has to land somewhere.
+//
+// To fill a section, create src/content/photos/gallery/<slug>/ and drop files
+// in. Nothing here needs editing — the build finds them with a glob, and the
+// section stops saying "coming soon" on its own.
+//
+// Captions live in a `photos.yaml` beside the pictures, keyed by filename. See
+// docs/adding-photos.md; every field is optional.
 
-export type GallerySection = { key: string; images: string[] }
+export type PhotoMeta = {
+  species?: string
+  commonName?: string
+  site?: string
+  taken?: string
+  depth?: string
+  camera?: string
+  lens?: string
+  settings?: string
+  photographer?: string
+  notes?: string
+}
 
-// The subfolder name is the section `key`; it maps to an i18n label
-// ($t.photos.sections). List them in the order they should appear on the page.
-const SECTION_ORDER = ['nudibranchs', 'reef']
+export type Photo = { src: string; meta: PhotoMeta }
+export type GallerySection = { key: string; label: string; photos: Photo[] }
 
 const files = import.meta.glob('./photos/gallery/*/*.{avif,webp,jpg,jpeg,png}', {
   eager: true,
@@ -19,17 +36,49 @@ const files = import.meta.glob('./photos/gallery/*/*.{avif,webp,jpg,jpeg,png}', 
   import: 'default',
 }) as Record<string, string>
 
-// Bucket the discovered files by their immediate subfolder, filename-sorted.
-const byCategory: Record<string, string[]> = {}
-for (const [path, url] of Object.entries(files).sort(([a], [b]) => a.localeCompare(b))) {
-  const category = path.match(/\/gallery\/([^/]+)\//)?.[1]
-  if (category) (byCategory[category] ??= []).push(url)
+// One captions file per folder. Keyed by the picture's filename, so renaming a
+// photo drops its caption rather than attaching it to the wrong animal.
+const captionFiles = import.meta.glob('./photos/gallery/*/photos.{yaml,yml}', {
+  eager: true,
+  import: 'default',
+}) as Record<string, Record<string, PhotoMeta>>
+
+/** The folder a globbed path sits in: './photos/gallery/reef/a.webp' -> 'reef'. */
+function folderOf(path: string): string | undefined {
+  return path.match(/\/gallery\/([^/]+)\//)?.[1]
 }
 
-// Sections in display order, skipping any that turned up empty.
-export const GALLERY: GallerySection[] = SECTION_ORDER.filter((key) => byCategory[key]?.length).map(
-  (key) => ({ key, images: byCategory[key] }),
-)
+const captionsByFolder: Record<string, Record<string, PhotoMeta>> = {}
+for (const [path, data] of Object.entries(captionFiles)) {
+  const folder = folderOf(path)
+  if (folder) captionsByFolder[folder] = data ?? {}
+}
 
-/** Flat list of every image, in section order — used by the lightbox. */
-export const ALL_PHOTOS: string[] = GALLERY.flatMap((s) => s.images)
+// Bucket the discovered pictures by their folder, filename-sorted so the layout
+// is stable between builds.
+const byFolder: Record<string, Photo[]> = {}
+for (const [path, src] of Object.entries(files).sort(([a], [b]) => a.localeCompare(b))) {
+  const folder = folderOf(path)
+  if (!folder) continue
+  const filename = path.split('/').pop() ?? ''
+  ;(byFolder[folder] ??= []).push({ src, meta: captionsByFolder[folder]?.[filename] ?? {} })
+}
+
+/** Sections that are not one of the marine-life creatures. */
+const EXTRA_SECTIONS: Array<{ key: string; label: string }> = [{ key: 'reef', label: 'The reef' }]
+
+export const GALLERY: GallerySection[] = [
+  ...MARINE_LIFE.map((label) => ({ key: marineSlug(label), label })),
+  ...EXTRA_SECTIONS,
+].map(({ key, label }) => ({ key, label, photos: byFolder[key] ?? [] }))
+
+/** Sections that actually have pictures — what the jump-to pills offer. */
+export const FILLED_SECTIONS: GallerySection[] = GALLERY.filter((s) => s.photos.length > 0)
+
+/** Flat list of every photo, in section order — used by the lightbox. */
+export const ALL_PHOTOS: Photo[] = FILLED_SECTIONS.flatMap((s) => s.photos)
+
+/** Folders on disk that no section claims — a typo in a folder name, usually. */
+export const ORPHAN_FOLDERS: string[] = Object.keys(byFolder).filter(
+  (folder) => !GALLERY.some((s) => s.key === folder),
+)
