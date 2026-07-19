@@ -196,8 +196,8 @@
       aria-label="Toggle dives"
       class={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 transition-colors ${
         diveShown
-          ? 'border-white bg-white text-blue-900'
-          : 'border-white/30 bg-white/10 font-medium text-white/70 line-through'
+          ? 'border-white bg-white text-blue-900 hover:bg-white/85'
+          : 'border-white/30 bg-white/10 font-medium text-white/70 line-through hover:border-white/60 hover:text-white'
       }`}
     >
       <span class="flex h-2 w-2 overflow-hidden rounded-full" aria-hidden="true">
@@ -216,8 +216,8 @@
         aria-label="Filter courses"
         class={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 transition-colors ${
           allCoursesHidden
-            ? 'border-white/30 bg-white/10 font-medium text-white/70 line-through'
-            : 'border-white bg-white text-blue-900'
+            ? 'border-white/30 bg-white/10 font-medium text-white/70 line-through hover:border-white/60 hover:text-white'
+            : 'border-white bg-white text-blue-900 hover:bg-white/85'
         }`}
       >
         <span class="flex h-2 w-2 overflow-hidden rounded-full" aria-hidden="true">
@@ -313,13 +313,16 @@
         <div class="relative mt-1" style={`height:${eventStripHeight}px`}>
           {#each daySegments(day) as [track, seg] (`${seg.event.id}_${seg.event.start_time}`)}
             {@const disabled = disablePastEvents && isPastEvent(seg.event)}
+            <!-- A past event does not light up. It carries cursor-default and
+                 refuses the click, so reacting to the pointer as well would be
+                 the bar contradicting itself. -->
             <button
               type="button"
               onclick={(e) => {
                 e.stopPropagation()
                 pick(seg)
               }}
-              onmouseenter={() => (hoveredEventId = seg.event.id)}
+              onmouseenter={() => !disabled && (hoveredEventId = seg.event.id)}
               onmouseleave={() => (hoveredEventId = null)}
               aria-disabled={disabled || undefined}
               title={disabled ? `${seg.event.title} (already happened)` : seg.event.title}

@@ -319,10 +319,14 @@
               stroke-opacity="0.8"
               marker-end="url(#site-arrow)"
             />
+            <!-- The marker grows on hover. The region pins already answer the
+                 pointer; these were the one clickable thing on the map that
+                 did not, which read as decoration next to them. `group` drives
+                 it, since an SVG <a> cannot be hovered as a text colour. -->
             <a
               href={diveSitePath(item.site)}
               aria-label={item.site.name}
-              class="pointer-events-auto cursor-pointer"
+              class="group pointer-events-auto cursor-pointer"
             >
               <circle
                 cx={item.vx}
@@ -331,6 +335,7 @@
                 fill="#dc2626"
                 stroke="white"
                 stroke-width="1.2"
+                class="transition-all group-hover:[fill:#ef4444] group-hover:[r:4.5]"
               />
               <text
                 x={item.labelX}

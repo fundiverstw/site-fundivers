@@ -99,8 +99,13 @@
       <h2 class="mb-5 text-2xl font-bold text-white">{title}</h2>
       <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {#each items as d (d.id)}
+          <!-- The border only answers the pointer when there is a link under it.
+               A destination with no href is a picture and a caption; lighting
+               its edge would promise a page that does not exist. -->
           <div
-            class="group relative flex aspect-square flex-col justify-end overflow-hidden rounded-3xl border border-white/15 shadow-sm transition-colors hover:border-reef-400/50"
+            class="group relative flex aspect-square flex-col justify-end overflow-hidden rounded-3xl border border-white/15 shadow-sm transition-colors {d.href
+              ? 'hover:border-reef-400/50'
+              : ''}"
           >
             <CoverPhoto src={d.image} alt={d.title} />
             <div

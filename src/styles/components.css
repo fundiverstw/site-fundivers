@@ -21,9 +21,29 @@
     backdrop-filter: blur(12px) saturate(1.2);
     -webkit-backdrop-filter: blur(12px) saturate(1.2);
   }
-  .glass:hover {
+  /* Only a panel you can actually activate reacts to the pointer.
+     `.glass` is on about forty elements and most are plain containers — a
+     paragraph, a list of course requirements, the lightbox caption. When the
+     hover was on `.glass` itself, every one of them lit its border teal, which
+     is the site's own signal for "this goes somewhere". Reading a page meant
+     watching inert boxes promise things they could not do.
+
+     So the reaction is scoped to the tags that carry a click: <a> and <button>.
+     A card built as a <div> with a stretched link inside writes its own hover
+     in the markup, next to the {#if} that decides whether the link exists.
+     `aria-disabled` opts back out — see the "coming soon" headings on /photos,
+     which are buttons in name only. */
+  a.glass:hover,
+  button.glass:not([aria-disabled='true']):hover,
+  label.glass:hover,
+  summary.glass:hover {
     background: color-mix(in oklab, #0d1a2e 72%, transparent);
     border-color: color-mix(in oklab, var(--color-reef-400) 55%, transparent);
+  }
+
+  /* Nothing that cannot be activated may claim the hand cursor either. */
+  [aria-disabled='true'] {
+    cursor: default;
   }
 
   /* Neon-glow accent border — the "active window" look. Pair with a card. */

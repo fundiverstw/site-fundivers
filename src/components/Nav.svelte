@@ -125,7 +125,11 @@
       <div class="flex items-center gap-3">
         {@render langSwitch()}
         <RadioPlayer />
-        <button class="text-brand-50" aria-label="Toggle menu" onclick={() => (open = !open)}>
+        <button
+          class="text-brand-50 transition-colors hover:text-reef-300"
+          aria-label="Toggle menu"
+          onclick={() => (open = !open)}
+        >
           <MenuIcon {open} />
         </button>
       </div>

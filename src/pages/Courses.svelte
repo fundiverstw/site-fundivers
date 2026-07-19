@@ -57,7 +57,11 @@
     {:else if upcoming.length === 0}
       <p class="mt-4 text-brand-100">
         {$t.courses.noDates}
-        <a href={bookUrl} target="_blank" rel="noopener" class="font-semibold text-reef-300"
+        <a
+          href={bookUrl}
+          target="_blank"
+          rel="noopener"
+          class="font-semibold text-reef-300 transition-colors hover:text-reef-200"
           >{$t.courses.getInTouch}</a
         >.
       </p>
