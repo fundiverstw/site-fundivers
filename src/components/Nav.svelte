@@ -4,7 +4,6 @@
   import MenuIcon from './MenuIcon.svelte'
   import GlobeIcon from './GlobeIcon.svelte'
   import RadioPlayer from './RadioPlayer.svelte'
-  import NavMascot from './NavMascot.svelte'
 
   let leftLinks = $derived([
     { href: '/courses', label: $t.nav.courses },
@@ -84,12 +83,10 @@
          Shown from xl (1280px), not md. Nine links plus the logo simply do not
          fit below that: the bar used to run off the side of the page and give
          every tablet a horizontal scrollbar. Narrower screens get the menu
-         button below, which is built to fit. This is also exactly where the nav
-         mascot appears (hidden xl:block), so the two now agree. -->
+         button below, which is built to fit. -->
     <div class="hidden items-center justify-between gap-6 py-3 xl:flex">
-      <div class="relative shrink-0">
-        <NavMascot />
-        <a href="/" aria-label="FunDivers TW home" class="group relative z-20 block">
+      <div class="shrink-0">
+        <a href="/" aria-label="FunDivers TW home" class="group block">
           <!-- The logo is the first thing on screen on most pages, so it is
                fetched at high priority. width/height are the file's own, to
                reserve the space before it arrives; the classes size it. -->
@@ -103,10 +100,7 @@
           />
         </a>
       </div>
-      <!-- z-20: the nav mascot beside the logo is absolutely positioned and reaches
-           right, into this bar. Its promo banner was covering the first link and
-           swallowing the click. Navigation wins over decoration. -->
-      <nav class="waybar relative z-20 flex items-center gap-1 rounded-2xl px-2 py-1.5 shadow-lg">
+      <nav class="waybar relative flex items-center gap-1 rounded-2xl px-2 py-1.5 shadow-lg">
         {#each allLinks as link}
           <a href={link.href} class={linkClass(link.href)}>{link.label}</a>
         {/each}
