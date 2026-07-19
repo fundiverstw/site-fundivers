@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { GALLERY, FILLED_SECTIONS, ALL_PHOTOS, ORPHAN_FOLDERS } from './photo-gallery'
+import { GALLERY, ALL_PHOTOS, ORPHAN_FOLDERS } from './photo-gallery'
 import { MARINE_LIFE, marineSlug } from './marine-life'
 import { DIVE_SITE_GUIDES } from './dive-site-guides'
 
@@ -76,13 +76,9 @@ describe('the photo gallery', () => {
     expect(srcs).toHaveLength(new Set(srcs).size)
   })
 
-  it('flattens to the sum of the filled sections', () => {
-    expect(ALL_PHOTOS).toHaveLength(FILLED_SECTIONS.reduce((n, s) => n + s.photos.length, 0))
-    for (const section of FILLED_SECTIONS) {
-      expect(
-        section.photos.length,
-        `'${section.key}' is in FILLED_SECTIONS but empty`,
-      ).toBeGreaterThan(0)
-    }
+  it('flattens to the sum of its sections', () => {
+    // The lightbox steps through ALL_PHOTOS by index, so it must contain every
+    // photo the page can show and nothing else.
+    expect(ALL_PHOTOS).toHaveLength(GALLERY.reduce((n, s) => n + s.photos.length, 0))
   })
 })

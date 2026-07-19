@@ -72,11 +72,9 @@ export const GALLERY: GallerySection[] = [
   ...EXTRA_SECTIONS,
 ].map(({ key, label }) => ({ key, label, photos: byFolder[key] ?? [] }))
 
-/** Sections that actually have pictures — what the jump-to pills offer. */
-export const FILLED_SECTIONS: GallerySection[] = GALLERY.filter((s) => s.photos.length > 0)
-
-/** Flat list of every photo, in section order — used by the lightbox. */
-export const ALL_PHOTOS: Photo[] = FILLED_SECTIONS.flatMap((s) => s.photos)
+/** Flat list of every photo, in section order — what the lightbox steps through.
+ *  Empty sections contribute nothing, so an index here is always a real photo. */
+export const ALL_PHOTOS: Photo[] = GALLERY.flatMap((s) => s.photos)
 
 /** Folders on disk that no section claims — a typo in a folder name, usually. */
 export const ORPHAN_FOLDERS: string[] = Object.keys(byFolder).filter(

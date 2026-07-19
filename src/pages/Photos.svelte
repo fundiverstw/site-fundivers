@@ -2,16 +2,17 @@
   import { SOCIAL } from '$content/settings'
   import { t } from '$engine/i18n'
   import { scrollToId, hashId } from '$engine/router'
-  import { GALLERY, FILLED_SECTIONS, ALL_PHOTOS, type PhotoMeta } from '$content/photo-gallery'
+  import { GALLERY, ALL_PHOTOS, type PhotoMeta } from '$content/photo-gallery'
   import PageHeader from '$components/PageHeader.svelte'
 
-  // Every section starts shut. There is one per creature in the marine-life
-  // vocabulary — about sixty — and a dive-site chip may link to any of them, so
-  // they all have to exist. Opening them all at once would mean laying out and
-  // decoding every photo on the site to show you the one you asked for.
-  //
+  // The section open when you arrive with no anchor. Everything else starts
+  // shut: there is one section per creature in the marine-life vocabulary —
+  // about sixty — and opening them all would mean laying out and decoding every
+  // photo on the site to show you the one you came for.
+  const AUTO_OPEN = 'nudibranchs'
+
   // `open` holds the keys currently expanded.
-  let open = $state<Record<string, boolean>>({})
+  let open = $state<Record<string, boolean>>({ [AUTO_OPEN]: true })
 
   // Lightbox: index into ALL_PHOTOS, or null when closed.
   let lightbox = $state<number | null>(null)
@@ -91,25 +92,33 @@
 <PageHeader title={$t.photos.title} subtitle={$t.photos.subtitle} />
 
 <section class="mx-auto max-w-[1600px] px-4 py-12 sm:px-6">
-  <!-- Jump-to pills, for the sections that have something in them. -->
-  {#if FILLED_SECTIONS.length}
-    <div class="mb-8 flex flex-wrap gap-3">
-      {#each FILLED_SECTIONS as sect (sect.key)}
-        <!-- The href keeps this a real link (copyable, middle-clickable). The
-             handler is what makes a second click work: if the hash is already
-             the one in the address bar the browser fires no event at all, so
-             nothing would happen after you collapse a section and click its
-             pill again. -->
-        <a
-          href={`#${sect.key}`}
-          onclick={() => reveal(sect.key)}
-          class="waybar mono rounded-full px-5 py-2 text-sm font-semibold text-brand-50 transition-colors hover:text-reef-300"
-        >
-          {sect.label}
-        </a>
-      {/each}
-    </div>
-  {/if}
+  <!-- Shortcuts to every group, so the whole gallery is one click away rather
+       than a scroll through sixty headings. Groups with no photos yet are here
+       too, dimmed: seeing what is missing is half the point of the list. -->
+  <!-- On a phone these sixty pills run to twenty rows and push every photo off
+       the first screen, so the list gets its own height and scrolls inside it.
+       On anything wider they fit in a handful of rows and are left alone. -->
+  <nav
+    aria-label={$t.photos.jumpTo}
+    class="mb-8 flex max-h-44 flex-wrap gap-1.5 overflow-y-auto pr-1 sm:max-h-none sm:overflow-visible sm:pr-0"
+  >
+    {#each GALLERY as sect (sect.key)}
+      <!-- The href keeps this a real link (copyable, middle-clickable). The
+           handler is what makes a second click work: if the hash is already the
+           one in the address bar the browser fires no event at all, so nothing
+           would happen after you collapse a section and click its pill again. -->
+      <a
+        href={`#${sect.key}`}
+        onclick={() => reveal(sect.key)}
+        class="mono rounded-full border px-3 py-1 text-xs font-semibold transition-colors {sect
+          .photos.length
+          ? 'border-reef-400/40 bg-reef-400/10 text-reef-100 hover:border-reef-400 hover:bg-reef-400/20 hover:text-white'
+          : 'border-white/10 text-brand-300 hover:border-white/30 hover:text-brand-100'}"
+      >
+        {sect.label}
+      </a>
+    {/each}
+  </nav>
 
   <div class="mb-12 space-y-2">
     {#each GALLERY as sect (sect.key)}

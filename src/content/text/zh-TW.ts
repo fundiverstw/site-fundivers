@@ -241,6 +241,7 @@ export const zhTW: Dict = {
     seeMore: '在社群看更多',
     follow: '追蹤我們，看行程回顧、海洋生物與幕後花絮。',
     comingSoon: '照片即將上線',
+    jumpTo: '跳至分類',
     photoCount: '張照片',
     meta: {
       species: '學名',

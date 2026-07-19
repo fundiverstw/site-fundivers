@@ -250,6 +250,7 @@ export const en = {
     seeMore: 'See more on social',
     follow: 'Follow along for trip recaps, marine life, and behind-the-scenes.',
     comingSoon: 'Photos coming soon',
+    jumpTo: 'Jump to a group',
     photoCount: 'photos',
     meta: {
       species: 'Species',

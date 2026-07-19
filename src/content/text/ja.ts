@@ -244,6 +244,7 @@ export const ja: Dict = {
     seeMore: 'SNS でもっと見る',
     follow: 'ツアーの様子や海の生き物、舞台裏をフォローしてチェック。',
     comingSoon: '写真は近日公開',
+    jumpTo: 'グループへ移動',
     photoCount: '枚',
     meta: {
       species: '学名',
