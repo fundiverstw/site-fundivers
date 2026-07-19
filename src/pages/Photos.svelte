@@ -11,11 +11,6 @@
   // photo on the site to show you the one you came for.
   const AUTO_OPEN = 'nudibranchs'
 
-  // The shortcut row is an index, so it reads alphabetically: you arrive knowing
-  // the animal's name and want to find it, not to browse. The sections below
-  // keep the vocabulary's own order, which groups related creatures together.
-  const SHORTCUTS = [...GALLERY].sort((a, b) => a.label.localeCompare(b.label))
-
   // `open` holds the keys currently expanded.
   let open = $state<Record<string, boolean>>({ [AUTO_OPEN]: true })
 
@@ -97,9 +92,10 @@
 <PageHeader title={$t.photos.title} subtitle={$t.photos.subtitle} />
 
 <section class="mx-auto max-w-[1600px] px-4 py-12 sm:px-6">
-  <!-- Shortcuts to every group, alphabetical, so the whole gallery is one click
-       away rather than a scroll through sixty headings. Groups with no photos
-       yet are here too, dimmed: seeing what is missing is half the point. -->
+  <!-- Shortcuts to every group, so the whole gallery is one click away rather
+       than a scroll through sixty headings. Same order as the sections below,
+       which is alphabetical. Groups with no photos yet are here too, dimmed:
+       seeing what is missing is half the point of the list. -->
   <!-- On a phone these sixty pills run to twenty rows and push every photo off
        the first screen, so the list gets its own height and scrolls inside it.
        On anything wider they fit in a handful of rows and are left alone. -->
@@ -107,7 +103,7 @@
     aria-label={$t.photos.jumpTo}
     class="mb-8 flex max-h-44 flex-wrap gap-1.5 overflow-y-auto pr-1 sm:max-h-none sm:overflow-visible sm:pr-0"
   >
-    {#each SHORTCUTS as sect (sect.key)}
+    {#each GALLERY as sect (sect.key)}
       <!-- The href keeps this a real link (copyable, middle-clickable). The
            handler is what makes a second click work: if the hash is already the
            one in the address bar the browser fires no event at all, so nothing

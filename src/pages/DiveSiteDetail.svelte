@@ -2,6 +2,7 @@
   import { path } from '$engine/router'
   import { diveSiteById, REGION_META } from '$content/dive-sites'
   import { marineSlug } from '$content/marine-life'
+  import { FILLED_SECTIONS } from '$content/photo-gallery'
   import { siteImage } from '$engine/photo-pool'
   import { DIVE_SITE_GUIDES } from '$content/dive-site-guides'
   import { mapsUrl } from '$engine/links'
@@ -150,17 +151,33 @@
               </div>
             {/if}
             {#if guide?.marineLife?.length}
-              <!-- Each chip opens its section of the photo gallery. The wording
-                 comes from the fixed vocabulary in content/marine-life.ts, so
-                 the slug always matches a section that exists. -->
+              <!-- What you can expect to see here. The wording comes from the
+                 fixed vocabulary in content/marine-life.ts, so a chip's slug
+                 always matches a gallery section.
+
+                 A chip is a link only when that section has photos in it. The
+                 rest stay plain text: the animal really is at this site, and
+                 saying so is the point of the list — but sending somebody to a
+                 heading reading "coming soon" is a promise the page cannot
+                 keep. Today that is most of them. Add photos to a folder and
+                 its chips light up across every site that names it. -->
               <div class="mt-4 flex flex-wrap gap-2">
                 {#each guide.marineLife as m}
-                  <a
-                    href={`/photos#${marineSlug(m)}`}
-                    class="rounded-full border border-reef-400/40 bg-reef-400/10 px-3 py-1 text-sm text-reef-100 transition-colors hover:border-reef-400 hover:bg-reef-400/20 hover:text-white"
-                  >
-                    {m}
-                  </a>
+                  {@const slug = marineSlug(m)}
+                  {#if FILLED_SECTIONS.has(slug)}
+                    <a
+                      href={`/photos#${slug}`}
+                      class="rounded-full border border-reef-400/40 bg-reef-400/10 px-3 py-1 text-sm text-reef-100 transition-colors hover:border-reef-400 hover:bg-reef-400/20 hover:text-white"
+                    >
+                      {m}
+                    </a>
+                  {:else}
+                    <span
+                      class="rounded-full border border-white/10 px-3 py-1 text-sm text-brand-200"
+                    >
+                      {m}
+                    </span>
+                  {/if}
                 {/each}
               </div>
             {/if}

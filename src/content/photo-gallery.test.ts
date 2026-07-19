@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { GALLERY, ALL_PHOTOS, ORPHAN_FOLDERS } from './photo-gallery'
+import { GALLERY, ALL_PHOTOS, ORPHAN_FOLDERS, FILLED_SECTIONS } from './photo-gallery'
 import { MARINE_LIFE, marineSlug } from './marine-life'
 import { DIVE_SITE_GUIDES } from './dive-site-guides'
 
@@ -53,6 +53,24 @@ describe('the photo gallery', () => {
     const keys = new Set(GALLERY.map((s) => s.key))
     for (const label of MARINE_LIFE) {
       expect(keys.has(marineSlug(label)), `no section for '${label}'`).toBe(true)
+    }
+  })
+
+  it('reads alphabetically', () => {
+    // The shortcut row and the sections are rendered from this one list, so
+    // sorting it here is what keeps the two in step. The vocabulary's own order
+    // is grouped by kind and deliberately not this.
+    const labels = GALLERY.map((s) => s.label)
+    expect(labels).toEqual([...labels].sort((a, b) => a.localeCompare(b)))
+  })
+
+  it('counts a section as filled exactly when it has photos', () => {
+    // Dive-site chips link only to filled sections. If this set drifted, chips
+    // would either dead-end or stay plain text with photos sitting behind them.
+    for (const s of GALLERY) {
+      expect(FILLED_SECTIONS.has(s.key), `'${s.key}' filled state disagrees`).toBe(
+        s.photos.length > 0,
+      )
     }
   })
 

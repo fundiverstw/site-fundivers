@@ -11,9 +11,12 @@
 // src/content/photos/gallery/ and drop files in (see docs/adding-photos.md).
 
 /**
- * Every creature and coral a dive-site guide may list, in the order their
- * sections appear on the photos page. Roughly: the things people come to see,
- * then the reef itself, then the rarities.
+ * Every creature and coral a dive-site guide may list.
+ *
+ * The order here is only how the list reads: roughly the things people come to
+ * see, then the reef itself, then the rarities. The photos page sorts its
+ * sections alphabetically, so adding an entry in the middle changes nothing on
+ * the site — put it wherever it belongs among its relatives.
  */
 export const MARINE_LIFE = [
   'Nudibranchs',

@@ -60,15 +60,46 @@ test('a shortcut exists for every group, including the empty ones', async ({ pag
   expect(hrefs).toContain('#nudibranchs') // has photos
 })
 
-test('the shortcuts read alphabetically', async ({ page }) => {
+test('the shortcuts and the sections are both alphabetical, in the same order', async ({
+  page,
+}) => {
   await visit(page, '/photos')
-  // The shortcuts are an index, so they sort by name. The sections they point
-  // at keep the vocabulary's own order, which is a different thing on purpose.
+  // Sixty groups is well past the point where anyone remembers an order, so
+  // there is only one: alphabetical, in both lists. Two orders on one page is
+  // how you look for "Shrimp and crabs", fail to find it, and conclude it is
+  // not there.
+  const shortcuts = await page
+    .locator('nav[aria-label] a[href^="#"]')
+    .evaluateAll((els) => els.map((e) => e.getAttribute('href')?.slice(1) ?? ''))
+  const sections = await page
+    .locator('main [id][class*="scroll-mt"]')
+    .evaluateAll((els) => els.map((e) => e.id))
+
+  expect(shortcuts).toEqual(sections)
+
   const labels = await page
     .locator('nav[aria-label] a[href^="#"]')
     .evaluateAll((els) => els.map((e) => e.textContent?.trim() ?? ''))
-
   expect(labels).toEqual([...labels].sort((a, b) => a.localeCompare(b)))
+})
+
+test('a chip is a link only when its section has photos', async ({ page }) => {
+  await visit(page, '/sites/82-5')
+
+  // The linked chips must all land somewhere with pictures in it. A link to a
+  // "coming soon" heading is a dead end that looks like a destination.
+  const targets = await page
+    .locator('a[href^="/photos#"]')
+    .evaluateAll((els) => els.map((e) => e.getAttribute('href')!.replace('/photos#', '')))
+  expect(targets.length).toBeGreaterThan(0)
+
+  await page.goto('/photos')
+  for (const key of targets) {
+    await expect(
+      page.locator(`#${key} button`).first(),
+      `chip '${key}' links to a section with no photos`,
+    ).toHaveAttribute('aria-expanded')
+  }
 })
 
 test('a shortcut scrolls to its group and opens it', async ({ page }) => {
