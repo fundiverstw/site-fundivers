@@ -1,16 +1,24 @@
 <script lang="ts">
   import { untrack, type Snippet } from 'svelte'
 
-  // A scroll-jacked "descent". Native page scrolling is disabled; wheel / touch
-  // / keyboard input instead drives a smoothed virtual scroll that pans the
-  // content (so everything stays reachable) while a water layer rises over the
-  // whole viewport. A rolling wavy line marks the surface (pinned to the
-  // above/below section boundary), bubbles rise below it, and the underwater
-  // scene sways with scroll velocity. The whole thing is a fixed takeover (z
-  // above the nav), so the water covers the entire page.
+  // The "descent": as you read down a dive-site page, water rises over it. A
+  // rolling wavy line marks the surface, pinned to the boundary between the
+  // above-water and below-water sections; bubbles rise in the water below it.
   //
-  // Reduce-motion users get a plain, natively-scrolling page with no jack and
-  // no water (a hijacked, eased scroll is exactly what that setting avoids).
+  // There are three modes, picked once on mount.
+  //
+  //   jack    (mouse/trackpad) Native scrolling is switched off and wheel /
+  //           keyboard input drives a smoothed virtual scroll that pans the
+  //           content by a transform, so the water can sit in a fixed takeover
+  //           over the whole page and the descent feels eased.
+  //   native  (touch) The page scrolls normally and the water is a fixed
+  //           overlay that follows the surface marker. Scroll-jacking a
+  //           touchscreen means reimplementing fling, rubber-banding and the
+  //           browser's own gesture arbitration, and getting any of it wrong
+  //           leaves the page unscrollable — which is exactly what happened.
+  //           Phones keep the effect; they just keep their scrolling too.
+  //   plain   (prefers-reduced-motion) No water, no jack. A hijacked, eased
+  //           scroll is precisely what that setting asks us not to do.
   let { children }: { children: Snippet } = $props()
 
   let vp = $state<HTMLDivElement>()
@@ -18,18 +26,15 @@
   let target = 0 // where the virtual scroll wants to be (px)
   let current = $state(0) // where it is now (eased toward target)
   let maxScroll = $state(0)
-  let reduce = $state(false)
-  // Distance (px) from the top of the content to the surface anchor — the
-  // boundary between the "above" and "below" sections. Large default => dry.
-  let anchorOffset = $state(1e9)
-  // Scroll-velocity-driven sideways "current" sway (px), eased.
+  let mode = $state<'jack' | 'native' | 'plain'>('plain')
+  // Where the surface line sits, in the flood overlay's own coordinates.
+  // Below the viewport => dry; above it => fully submerged. Large default => dry.
+  let lineTop = $state(1e9)
+  // Scroll-velocity-driven sideways "current" sway (px), eased. Jack mode only:
+  // on touch it would mean a rAF loop running the whole time you scroll.
   let drift = $state(0)
-  // The takeover starts below the site header so the logo/nav stay visible.
+  // The water starts below the site header so the logo/nav stay visible.
   let topOffset = $state(0)
-  // Where the finger was last frame. Lives out here, not inside the effect: if
-  // the effect ever re-runs mid-gesture the handlers are rebuilt, and a fresh
-  // `lastY = 0` would read as a swipe all the way from the top of the screen.
-  let lastY = 0
 
   // Bubbles rising through the water. Hardcoded so the layout is stable.
   const bubbles = [
@@ -44,30 +49,43 @@
     { x: 93, d: 4, dur: 10.5, delay: 0.9 },
   ]
 
+  /** The bottom edge of the site header, so the water never covers the logo. */
+  function headerBottom(): number {
+    const header = document.querySelector('header')
+    return header ? Math.max(0, header.getBoundingClientRect().bottom) : 0
+  }
+
+  /** Centre of the surface marker, in viewport coordinates. */
+  function markerCentre(): number | null {
+    const marker = document.querySelector('[data-surface]')
+    if (!marker) return null
+    const r = marker.getBoundingClientRect()
+    return r.top + r.height / 2
+  }
+
+  // ---- jack mode ------------------------------------------------------------
+
   function measure() {
     if (!inner || !vp) return
-    // Keep the header uncovered: start the descent at its bottom edge.
-    const header = document.querySelector('header')
-    topOffset = header ? Math.max(0, header.getBoundingClientRect().bottom) : 0
+    topOffset = headerBottom()
     maxScroll = Math.max(0, inner.scrollHeight - vp.clientHeight)
     if (target > maxScroll) target = maxScroll
     if (current > maxScroll) current = maxScroll
-    // The gap between the two sections carries [data-surface]; its offset within
-    // the (translated) content is translate-invariant, so measuring the two
-    // rects and subtracting gives a stable content-space offset.
-    const marker = inner.querySelector('[data-surface]')
-    if (marker) {
-      const mr = marker.getBoundingClientRect()
-      // Centre of the spacer, so the wave sits mid-gap between the sections.
-      anchorOffset = mr.top + mr.height / 2 - inner.getBoundingClientRect().top
-    }
+    // The marker's viewport position already accounts for the pan, so it is the
+    // surface line directly, less where the flood box starts.
+    const centre = markerCentre()
+    if (centre !== null) lineTop = centre - topOffset
   }
 
   $effect(() => {
-    const prefersReduce =
-      typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches
-    reduce = prefersReduce
-    if (prefersReduce) return
+    const mq = (q: string) => typeof matchMedia !== 'undefined' && matchMedia(q).matches
+    const picked = mq('(prefers-reduced-motion: reduce)')
+      ? 'plain'
+      : mq('(pointer: coarse)')
+        ? 'native'
+        : 'jack'
+    mode = picked
+    if (picked !== 'jack') return
 
     const root = document.documentElement
     const prevOverflow = root.style.overflow
@@ -83,16 +101,6 @@
     const onWheel = (e: WheelEvent) => {
       e.preventDefault()
       target += e.deltaY
-      clamp()
-    }
-    const onTouchStart = (e: TouchEvent) => {
-      lastY = e.touches[0]?.clientY ?? 0
-    }
-    const onTouchMove = (e: TouchEvent) => {
-      e.preventDefault()
-      const y = e.touches[0]?.clientY ?? lastY
-      target += lastY - y
-      lastY = y
       clamp()
     }
     const onKey = (e: KeyboardEvent) => {
@@ -132,6 +140,9 @@
       const targetDrift = Math.max(-20, Math.min(20, -v * 0.8))
       driftEase += (targetDrift - driftEase) * 0.1
       drift = driftEase
+      // The pan has moved the marker, so the surface line moves with it.
+      const centre = markerCentre()
+      if (centre !== null) lineTop = centre - topOffset
       rafId = requestAnimationFrame(tick)
     }
 
@@ -141,15 +152,13 @@
     // and rebuild mid-scroll. Untrack it: this effect must run exactly once.
     untrack(measure)
     const raf0 = requestAnimationFrame(() => {
-      measure()
+      untrack(measure)
       rafId = requestAnimationFrame(tick)
     })
     // Re-measure when the content resizes (e.g. the hero image loads in).
     const ro = new ResizeObserver(measure)
     if (inner) ro.observe(inner)
     window.addEventListener('wheel', onWheel, { passive: false })
-    window.addEventListener('touchstart', onTouchStart, { passive: false })
-    window.addEventListener('touchmove', onTouchMove, { passive: false })
     window.addEventListener('keydown', onKey)
     window.addEventListener('resize', measure)
     return () => {
@@ -159,65 +168,105 @@
       root.style.overflow = prevOverflow
       root.classList.remove('dd-active')
       window.removeEventListener('wheel', onWheel)
-      window.removeEventListener('touchstart', onTouchStart)
-      window.removeEventListener('touchmove', onTouchMove)
       window.removeEventListener('keydown', onKey)
       window.removeEventListener('resize', measure)
     }
   })
 
-  // The surface line sits exactly at the section boundary: its viewport
-  // position is the anchor's content-space offset minus how far we've scrolled.
-  // Below the viewport => dry; above it => fully submerged.
-  let lineTop = $derived(anchorOffset - current)
+  // ---- native mode ----------------------------------------------------------
+
+  $effect(() => {
+    if (mode !== 'native') return
+
+    // The marker's viewport position is already the surface line: the browser
+    // moved it as the page scrolled. So there is no virtual scroll to keep in
+    // step with, and nothing here can stop the page from scrolling.
+    const track = () => {
+      topOffset = headerBottom()
+      const centre = markerCentre()
+      lineTop = centre === null ? 1e9 : centre - topOffset
+    }
+
+    // Read layout at most once per frame, and only while something is moving.
+    let queued = false
+    const onScroll = () => {
+      if (queued) return
+      queued = true
+      requestAnimationFrame(() => {
+        queued = false
+        track()
+      })
+    }
+
+    untrack(track)
+    const ro = new ResizeObserver(onScroll)
+    if (inner) ro.observe(inner)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    return () => {
+      ro.disconnect()
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
+  })
 </script>
 
-{#if reduce}
+<!-- Water layer: on top of the content but click-through. Shared by both the
+     jack and the native path; only the box it lives in differs. -->
+{#snippet flood()}
+  <div class="flood" aria-hidden="true" style="--line: {lineTop}px; --drift: {drift}px">
+    <div class="water">
+      <div class="bubbles">
+        {#each bubbles as b}
+          <span
+            class="bubble"
+            style="left:{b.x}%; width:{b.d}px; height:{b.d}px; animation-duration:{b.dur}s; animation-delay:{b.delay}s;"
+          ></span>
+        {/each}
+      </div>
+    </div>
+    <div class="waves">
+      <svg class="wave wave-back" viewBox="0 0 2880 40" preserveAspectRatio="none">
+        <path
+          d="M0,20 Q90,6 180,20 T360,20 T540,20 T720,20 T900,20 T1080,20 T1260,20 T1440,20 T1620,20 T1800,20 T1980,20 T2160,20 T2340,20 T2520,20 T2700,20 T2880,20 L2880,40 L0,40 Z"
+          fill="rgba(44, 208, 197, 0.3)"
+        />
+      </svg>
+      <svg class="wave wave-front" viewBox="0 0 2880 40" preserveAspectRatio="none">
+        <path
+          d="M0,18 Q90,4 180,18 T360,18 T540,18 T720,18 T900,18 T1080,18 T1260,18 T1440,18 T1620,18 T1800,18 T1980,18 T2160,18 T2340,18 T2520,18 T2700,18 T2880,18"
+          fill="none"
+          stroke="#89dceb"
+          stroke-opacity="0.8"
+          stroke-width="2"
+        />
+      </svg>
+    </div>
+  </div>
+{/snippet}
+
+{#if mode === 'plain'}
   {@render children()}
+{:else if mode === 'native'}
+  <div bind:this={inner}>
+    {@render children()}
+  </div>
+  <!-- Fixed to the viewport, so it stays put while the page scrolls under it. -->
+  <div class="overlay" style="top: {topOffset}px">
+    {@render flood()}
+  </div>
 {:else}
   <div class="vp" bind:this={vp} style="top: {topOffset}px">
     <div class="inner" bind:this={inner} style="transform: translateY({-current}px)">
       {@render children()}
     </div>
-
-    <!-- Water layer, on top of the content but click-through. The wavy line
-         rides the boundary between the above/below sections; bubbles rise in the
-         water; both sway with scroll velocity. -->
-    <div class="flood" aria-hidden="true" style="--line: {lineTop}px; --drift: {drift}px">
-      <div class="water">
-        <div class="bubbles">
-          {#each bubbles as b}
-            <span
-              class="bubble"
-              style="left:{b.x}%; width:{b.d}px; height:{b.d}px; animation-duration:{b.dur}s; animation-delay:{b.delay}s;"
-            ></span>
-          {/each}
-        </div>
-      </div>
-      <div class="waves">
-        <svg class="wave wave-back" viewBox="0 0 2880 40" preserveAspectRatio="none">
-          <path
-            d="M0,20 Q90,6 180,20 T360,20 T540,20 T720,20 T900,20 T1080,20 T1260,20 T1440,20 T1620,20 T1800,20 T1980,20 T2160,20 T2340,20 T2520,20 T2700,20 T2880,20 L2880,40 L0,40 Z"
-            fill="rgba(44, 208, 197, 0.3)"
-          />
-        </svg>
-        <svg class="wave wave-front" viewBox="0 0 2880 40" preserveAspectRatio="none">
-          <path
-            d="M0,18 Q90,4 180,18 T360,18 T540,18 T720,18 T900,18 T1080,18 T1260,18 T1440,18 T1620,18 T1800,18 T1980,18 T2160,18 T2340,18 T2520,18 T2700,18 T2880,18"
-            fill="none"
-            stroke="#89dceb"
-            stroke-opacity="0.8"
-            stroke-width="2"
-          />
-        </svg>
-      </div>
-    </div>
+    {@render flood()}
   </div>
 {/if}
 
 <style>
-  /* Transparent so the site's normal animated ocean background shows through;
-     the footer is hidden (see :global rule) so it doesn't bleed through. */
+  /* Transparent so the site's normal ocean background shows through; the footer
+     is hidden (see :global rule) so it doesn't bleed through. */
   .vp {
     position: fixed;
     top: 0;
@@ -232,6 +281,17 @@
   }
   .inner {
     will-change: transform;
+  }
+
+  /* Native (touch) mode: the water alone is fixed, the page scrolls normally. */
+  .overlay {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 30;
+    overflow: hidden;
+    pointer-events: none;
   }
 
   .flood {
