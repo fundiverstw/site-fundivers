@@ -5,6 +5,11 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="alternate icon" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- The calendar and travel pages call the booking app's database, but not
+         until the JavaScript has downloaded and parsed. Opening the connection
+         now means the DNS lookup and TLS handshake happen alongside that
+         download instead of after it. Vite substitutes the value at build time. -->
+    <link rel="preconnect" href="%VITE_SUPABASE_URL%" crossorigin />
     <meta
       name="description"
       content="FunDivers TW — guided scuba diving trips, PADI courses, and dive site adventures across Taiwan and beyond."

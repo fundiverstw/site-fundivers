@@ -90,9 +90,15 @@
       <div class="relative shrink-0">
         <NavMascot />
         <a href="/" aria-label="FunDivers TW home" class="group relative z-20 block">
+          <!-- The logo is the first thing on screen on most pages, so it is
+               fetched at high priority. width/height are the file's own, to
+               reserve the space before it arrives; the classes size it. -->
           <img
-            src="/imgs/fd_logo.png"
+            src="/imgs/fd_logo.webp"
             alt="FunDivers TW"
+            width="634"
+            height="320"
+            fetchpriority="high"
             class="h-28 w-auto transition-all duration-300 group-hover:scale-105 group-hover:brightness-110 group-hover:drop-shadow-[0_0_18px_rgba(44,208,197,0.55)] lg:h-36"
           />
         </a>
@@ -114,8 +120,11 @@
     <div class="flex items-center justify-between py-3 xl:hidden">
       <a href="/" aria-label="FunDivers TW home" class="group block">
         <img
-          src="/imgs/fd_logo.png"
+          src="/imgs/fd_logo.webp"
           alt="FunDivers TW"
+          width="634"
+          height="320"
+          fetchpriority="high"
           class="h-16 w-auto transition-all duration-300 group-hover:scale-105 group-hover:brightness-110 group-hover:drop-shadow-[0_0_18px_rgba(44,208,197,0.55)]"
         />
       </a>

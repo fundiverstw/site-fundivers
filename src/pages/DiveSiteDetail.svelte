@@ -1,7 +1,6 @@
 <script lang="ts">
   import { path } from '$engine/router'
   import { diveSiteById, REGION_META } from '$content/dive-sites'
-  import { fetchDestinations, type Destination } from '$engine/destinations'
   import { siteImage } from '$engine/photo-pool'
   import { DIVE_SITE_GUIDES } from '$content/dive-site-guides'
   import { mapsUrl } from '$engine/links'
@@ -16,20 +15,11 @@
   let site = $derived(diveSiteById(id))
   let guide = $derived(site ? (DIVE_SITE_GUIDES[site.id] ?? null) : null)
 
-  // The shop's own catalog copy for this site (tagline, requirements, photo)
-  // lives in travel_destinations. Match by name; the three Badouzi sites carry a
-  // "Badouzi Bay:" prefix there that their short map names drop.
-  let dest = $state<Destination | null>(null)
-  $effect(() => {
-    const s = site
-    if (!s) return void (dest = null)
-    fetchDestinations()
-      .then((all) => {
-        const byName = new Map(all.map((d) => [d.title, d]))
-        dest = byName.get(s.name) ?? byName.get(`Badouzi Bay: ${s.name}`) ?? null
-      })
-      .catch(() => (dest = null))
-  })
+  // This page is entirely static. It used to also fetch travel_destinations and
+  // match this site by name, to let the booking app override the tagline and the
+  // requirements line — 17 kB over the network, after the JavaScript had parsed,
+  // for at most two short strings that already have copy in this repository.
+  // Dive sites are marketing content, so they live here (see docs/how-it-works).
 
   // Keep the browser tab title in sync with the current site.
   $effect(() => {
@@ -37,7 +27,7 @@
   })
 
   let heroImg = $derived(site ? siteImage(site.id) : null)
-  let tagline = $derived(dest?.tagline ?? site?.tagline ?? null)
+  let tagline = $derived(site?.tagline ?? null)
   let regionLabel = $derived(site ? (REGION_META[site.region]?.label ?? site.region) : '')
   let mapsHref = $derived(site ? mapsUrl(site) : '#')
 
@@ -57,8 +47,7 @@
   const paras = (text: string | undefined | null) => (text ?? '').split('\n\n').filter(Boolean)
   let paragraphs = $derived(paras(guide?.overview))
 
-  // Our own copy wins over the app's travel_destinations text (the DB is app-first).
-  let requirements = $derived(guide?.requirements ?? dest?.requirements ?? null)
+  let requirements = $derived(guide?.requirements ?? null)
 </script>
 
 {#if !site}
@@ -85,6 +74,7 @@
         <CoverPhoto
           src={heroImg}
           alt={site.name}
+          priority
           imgClass="absolute inset-0 h-full w-full object-cover"
         />
         <div

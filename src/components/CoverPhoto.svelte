@@ -5,11 +5,17 @@
   // Drop into any `relative` box (cards, heroes). The site serves only its own
   // bundled photos, so if `src` is empty — or points at an image we don't have
   // locally (onerror) — we show the placeholder instead of a broken image.
+  //
+  // `priority` is for the one image a page is *about* — a detail page's hero.
+  // Those are almost always the largest thing on screen, so lazy-loading them
+  // means the browser waits for layout before it even asks for the photo the
+  // visitor came to see. Cards below the fold want the opposite; they stay lazy.
   let {
     src = null,
     alt = '',
+    priority = false,
     imgClass = 'absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105',
-  }: { src?: string | null; alt?: string; imgClass?: string } = $props()
+  }: { src?: string | null; alt?: string; priority?: boolean; imgClass?: string } = $props()
 
   let failed = $state(false)
   // Reset the failure flag when the source changes (components are reused in
@@ -21,7 +27,14 @@
 </script>
 
 {#if src && !failed}
-  <img {src} {alt} loading="lazy" onerror={() => (failed = true)} class={imgClass} />
+  <img
+    {src}
+    {alt}
+    loading={priority ? 'eager' : 'lazy'}
+    fetchpriority={priority ? 'high' : 'auto'}
+    onerror={() => (failed = true)}
+    class={imgClass}
+  />
 {:else}
   <div
     class="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-gradient-to-br from-brand-800 via-brand-900 to-brand-950 text-brand-400/80"

@@ -14,7 +14,7 @@ Here is every one, sorted by how much you should care.
 | Name | What it is |
 | --- | --- |
 | **`src/`** | The website. Everything you edit lives in here. It has its own five folders — see [the front page](index.md). |
-| **`public/`** | Files served exactly as they are: the logo and the favicon. A file at `public/imgs/x.png` is reachable at `fundiverstw.com/imgs/x.png`. (Photos live in `src/content/` — see [Adding photos](adding-photos.md).) |
+| **`public/`** | Files served exactly as they are: the logo, the favicon, and `_headers`. A file at `public/imgs/x.png` is reachable at `fundiverstw.com/imgs/x.png`. (Photos live in `src/content/` — see [Adding photos](adding-photos.md).) |
 | **`docs/`** | These pages. Markdown, published to the web by GitHub. |
 
 ---
@@ -25,6 +25,7 @@ Here is every one, sorted by how much you should care.
 | --- | --- |
 | **`index.html`** | The one page the browser downloads. It is nearly empty on purpose — it has an empty `<div id="app">`, and the JavaScript fills it in. Its `<title>` and description are what Google shows. |
 | **`wrangler.toml`** | Tells Cloudflare how to serve the site: hand out the files in `dist/`, and answer an unknown address with the main page. Eight lines. |
+| **`public/_headers`** | How long the browser may keep each kind of file. Files under `/assets/` have a content hash in their name, so they are cached for a year; files you replace by name, like the logo, are re-checked hourly. Cloudflare reads it; it never appears on the site. |
 | **`.env`** | Passwords and addresses, kept out of git. **Never commit this.** It probably is not there when you first clone the project. |
 | **`.env.example`** | A copy of `.env` with the real values removed, so you can see which ones you need. Copy it to `.env` and fill it in. |
 | **`package.json`** | Which borrowed code the project needs, and every `npm run …` command. If you want to know what `npm run verify` actually does, read it here. |

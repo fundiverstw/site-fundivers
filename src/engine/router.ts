@@ -23,23 +23,29 @@ function navigate(to: string): void {
   window.scrollTo({ top: 0, behavior: 'instant' })
 }
 
+/**
+ * The path this link points at, if it is one this router handles.
+ *
+ * Null for anything that must reach the browser untouched: another site, an
+ * anchor on this page, a mail or phone link, or a link opening in a new tab.
+ * Shared by the click handler and by App's prefetching, so the two can never
+ * disagree about what counts as an internal link.
+ */
+export function internalHref(anchor: Element | null | undefined): string | null {
+  if (!anchor) return null
+  const href = anchor.getAttribute('href')
+  if (!href) return null
+  if (/^(https?:|#|mailto:|tel:)/.test(href)) return null
+  if (anchor.getAttribute('target') === '_blank') return null
+  return href
+}
+
 /** Intercept clicks on internal <a> links for SPA navigation. */
 export function handleLinkClick(event: MouseEvent): void {
   if (event.defaultPrevented || event.button !== 0) return
   if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
-  const anchor = (event.target as HTMLElement).closest('a')
-  if (!anchor) return
-  const href = anchor.getAttribute('href')
-  const target = anchor.getAttribute('target')
-  if (
-    !href ||
-    href.startsWith('http') ||
-    href.startsWith('#') ||
-    href.startsWith('mailto:') ||
-    href.startsWith('tel:')
-  )
-    return
-  if (target === '_blank') return
+  const href = internalHref((event.target as HTMLElement).closest('a'))
+  if (!href) return
   event.preventDefault()
   navigate(href)
 }

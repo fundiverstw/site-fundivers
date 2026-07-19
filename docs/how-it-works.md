@@ -17,6 +17,21 @@ It's written in **Svelte**, built by **Vite**, styled with **Tailwind**, and hos
 **Cloudflare**. Files ending in `.svelte` are pieces of the page: a `<script>` block at
 the top for logic, HTML underneath for what you see.
 
+### Pages arrive one at a time
+
+`src/App.svelte` does not import the pages. It holds a list of `() => import(...)`
+functions, one per address, and fetches a page the first time somebody opens it. So
+reading a dive site no longer downloads the Taiwan map's coordinates and every course
+write-up as well.
+
+Two things follow from that, and both are already handled:
+
+- Moving the pointer over a link starts fetching that page before the click, so the wait
+  is usually over before it begins.
+- A page that never touches the database also never downloads the database library.
+
+If you add a page, add it to that list in `App.svelte`. Nothing else changes.
+
 ---
 
 ## The database that does not belong to this site

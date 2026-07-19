@@ -1,0 +1,15 @@
+# Response headers for the deployed site. Cloudflare reads this file out of the
+# uploaded assets; it is not part of the site itself.
+#
+# Everything under /assets/ is written by the build with a content hash in its
+# name (index-CRmkOZpE.js). A changed file gets a new name, so the old name can
+# never go stale — which is exactly what `immutable` promises the browser.
+# Without this Cloudflare sends `max-age=0, must-revalidate` and every repeat
+# visitor re-checks the whole bundle before it can draw anything.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Files in public/ keep their names across builds, so they must stay
+# revalidated: a new logo has to be able to replace the old one.
+/imgs/*
+  Cache-Control: public, max-age=3600, must-revalidate

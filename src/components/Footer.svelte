@@ -10,7 +10,7 @@
   <div class="mx-auto grid max-w-[1600px] gap-8 px-4 py-12 sm:px-6 md:grid-cols-3">
     <div>
       <div class="flex items-center gap-2">
-        <img src="/imgs/fd_logo.png" alt="FunDivers TW" class="h-10 w-auto" />
+        <img src="/imgs/fd_logo.webp" alt="FunDivers TW" class="h-10 w-auto" />
         <span class="text-lg font-bold text-white">FunDivers TW</span>
       </div>
       <p class="mt-3 max-w-xs text-sm text-brand-200">{$t.footer.blurb}</p>
