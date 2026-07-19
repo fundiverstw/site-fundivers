@@ -14,11 +14,11 @@
 # Copy this block, change the filename, fill in what you know, and delete the #
 # from the front of each line:
 #
-# b37fef_0a355c68c5494e7fb465f28898d870b6_mv2.avif:
-#   species: Chromodoris annae          # scientific name, shown in italics
-#   commonName: Anna's chromodoris      # what people actually call it
-#   site: Long Dong (82.5)              # where it was taken
-#   taken: 2025-08-14                   # a year, or a full date
+# b37fef_29ba8d22db53481fb80e5fa43f4b3b3c_mv2.avif:
+#   species: Gymnothorax javanicus       # scientific name, shown in italics
+#   commonName: Giant moray              # what people actually call it
+#   site: Long Dong (82.5)               # where it was taken
+#   taken: 2025-08-14                    # a year, or a full date
 #   depth: 12 m
 #   camera: Olympus TG-6
 #   lens: 60 mm macro

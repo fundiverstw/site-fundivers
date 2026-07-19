@@ -2,10 +2,11 @@ import { MARINE_LIFE, marineSlug } from './marine-life'
 
 // Photo-gallery catalog for the /photos page.
 //
-// There is one section per creature in the marine-life vocabulary, plus "reef"
-// for shots of the reef itself. Every section exists whether or not it has any
-// photos yet, because the dive-site pages link to all of them: a chip reading
-// "Moray eels" points at /photos#moray_eels, and that has to land somewhere.
+// One section per creature in the marine-life vocabulary, and nothing else —
+// the page is organised by what is in the picture. Every section exists whether
+// or not it has any photos yet, because the dive-site pages link to all of them:
+// a chip reading "Moray eels" points at /photos#moray_eels, and that has to land
+// somewhere.
 //
 // To fill a section, create src/content/photos/gallery/<slug>/ and drop files
 // in. Nothing here needs editing — the build finds them with a glob, and the
@@ -43,7 +44,7 @@ const captionFiles = import.meta.glob('./photos/gallery/*/photos.{yaml,yml}', {
   import: 'default',
 }) as Record<string, Record<string, PhotoMeta>>
 
-/** The folder a globbed path sits in: './photos/gallery/reef/a.webp' -> 'reef'. */
+/** The folder a globbed path sits in: '…/gallery/moray_eels/a.webp' -> 'moray_eels'. */
 function folderOf(path: string): string | undefined {
   return path.match(/\/gallery\/([^/]+)\//)?.[1]
 }
@@ -64,13 +65,10 @@ for (const [path, src] of Object.entries(files).sort(([a], [b]) => a.localeCompa
   ;(byFolder[folder] ??= []).push({ src, meta: captionsByFolder[folder]?.[filename] ?? {} })
 }
 
-/** Sections that are not one of the marine-life creatures. */
-const EXTRA_SECTIONS: Array<{ key: string; label: string }> = [{ key: 'reef', label: 'The reef' }]
-
-export const GALLERY: GallerySection[] = [
-  ...MARINE_LIFE.map((label) => ({ key: marineSlug(label), label })),
-  ...EXTRA_SECTIONS,
-].map(({ key, label }) => ({ key, label, photos: byFolder[key] ?? [] }))
+export const GALLERY: GallerySection[] = MARINE_LIFE.map((label) => {
+  const key = marineSlug(label)
+  return { key, label, photos: byFolder[key] ?? [] }
+})
 
 /** Flat list of every photo, in section order — what the lightbox steps through.
  *  Empty sections contribute nothing, so an index here is always a real photo. */

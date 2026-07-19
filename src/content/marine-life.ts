@@ -17,6 +17,7 @@
  */
 export const MARINE_LIFE = [
   'Nudibranchs',
+  'Cowries',
   'Moray eels',
   'Scorpionfish',
   'Lionfish',
@@ -30,11 +31,15 @@ export const MARINE_LIFE = [
   'Anthias',
   'Damselfish',
   'Butterflyfish',
+  'Angelfish',
   'Wrasses',
   'Napoleon wrasse',
   'Parrotfish',
   'Surgeonfish',
   'Trumpetfish',
+  'Pufferfish',
+  'Boxfish',
+  'Flying gurnards',
   'Groupers',
   'Snappers',
   'Grunts',

@@ -56,7 +56,7 @@ test('a shortcut exists for every group, including the empty ones', async ({ pag
   expect(await shortcuts.count()).toBeGreaterThan(50)
 
   const hrefs = await shortcuts.evaluateAll((els) => els.map((e) => e.getAttribute('href')))
-  expect(hrefs).toContain('#moray_eels') // no photos yet
+  expect(hrefs).toContain('#whale_sharks') // no photos yet
   expect(hrefs).toContain('#nudibranchs') // has photos
 })
 
@@ -77,19 +77,19 @@ test('a shortcut scrolls to its group and opens it', async ({ page }) => {
 
 test('opening a section shows its photos', async ({ page }) => {
   await visit(page, '/photos')
-  // 'reef' has photos but, unlike nudibranchs, does not start open.
-  const header = page.locator('#reef button').first()
+  // 'scorpionfish' has photos but, unlike nudibranchs, does not start open.
+  const header = page.locator('#scorpionfish button').first()
   await expect(header).toHaveAttribute('aria-expanded', 'false')
-  await expect(page.locator('#reef img')).toHaveCount(0)
+  await expect(page.locator('#scorpionfish img')).toHaveCount(0)
 
   await header.click()
   await expect(header).toHaveAttribute('aria-expanded', 'true')
-  expect(await page.locator('#reef img').count()).toBeGreaterThan(0)
+  expect(await page.locator('#scorpionfish img').count()).toBeGreaterThan(0)
 })
 
 test('a section with no photos says so and does not open', async ({ page }) => {
   await visit(page, '/photos')
-  const header = page.locator('#moray_eels button').first()
+  const header = page.locator('#whale_sharks button').first()
   // aria-disabled, not disabled: a `disabled` button is skipped by screen
   // readers, and "coming soon" is the thing worth hearing.
   await expect(header).toHaveAttribute('aria-disabled', 'true')
@@ -100,7 +100,7 @@ test('a section with no photos says so and does not open', async ({ page }) => {
   // which is the point. Forcing it through proves the handler is a no-op too,
   // not just that the button is hard to reach.
   await header.click({ force: true })
-  await expect(page.locator('#moray_eels img')).toHaveCount(0)
+  await expect(page.locator('#whale_sharks img')).toHaveCount(0)
   await expect(header).not.toHaveAttribute('aria-expanded')
 })
 

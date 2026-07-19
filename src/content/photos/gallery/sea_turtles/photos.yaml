@@ -1,0 +1,27 @@
+# Captions for the photos in this folder.
+#
+# One entry per picture, keyed by its exact filename. Every field is optional:
+# leave out anything you do not know and that row simply does not appear. The
+# photos show fine without this file at all — it only adds the panel beside the
+# picture when somebody opens it.
+#
+# Two rules, and they are the only two:
+#
+#   1. The key must match the filename exactly, including the extension.
+#   2. If a value contains a colon followed by a space, wrap it in quotes.
+#      Otherwise YAML reads the second half as a new field and the build stops.
+#
+# Copy this block, change the filename, fill in what you know, and delete the #
+# from the front of each line:
+#
+# b37fef_0a355c68c5494e7fb465f28898d870b6_mv2.avif:
+#   species: Gymnothorax javanicus       # scientific name, shown in italics
+#   commonName: Giant moray              # what people actually call it
+#   site: Long Dong (82.5)               # where it was taken
+#   taken: 2025-08-14                    # a year, or a full date
+#   depth: 12 m
+#   camera: Olympus TG-6
+#   lens: 60 mm macro
+#   settings: f/8 · 1/160 s · ISO 200
+#   photographer: Ming
+#   notes: 'One sentence on what makes this one worth a look.'
