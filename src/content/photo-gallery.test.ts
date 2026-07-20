@@ -90,7 +90,10 @@ describe('the photo gallery', () => {
   it('lists every photo exactly once', () => {
     // Photos.svelte keys its each-block by the image path. A repeated path is a
     // duplicate key, and Svelte throws on those — the whole page goes blank.
-    const srcs = ALL_PHOTOS.map((p) => p.src)
+    // `.image.src`, not `.image`: each glob entry is its own object, so a Set of
+    // the objects counts identities and would pass no matter what. The URL is
+    // the thing that has to be unique, because the URL is the key.
+    const srcs = ALL_PHOTOS.map((p) => p.image.src)
     expect(srcs).toHaveLength(new Set(srcs).size)
   })
 

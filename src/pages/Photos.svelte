@@ -3,6 +3,7 @@
   import { t } from '$engine/i18n'
   import { scrollToId, hashId } from '$engine/router'
   import { GALLERY, ALL_PHOTOS, type PhotoMeta } from '$content/photo-gallery'
+  import { SIZES } from '$engine/responsive-image'
   import PageHeader from '$components/PageHeader.svelte'
 
   // The section open when you arrive with no anchor. Everything else starts
@@ -21,7 +22,7 @@
   function show(src: string) {
     // Guard the -1: a miss would leave the viewer "open" on nothing, showing no
     // picture but still answering the arrow keys.
-    const i = ALL_PHOTOS.findIndex((p) => p.src === src)
+    const i = ALL_PHOTOS.findIndex((p) => p.image.src === src)
     if (i >= 0) lightbox = i
   }
   function close() {
@@ -150,18 +151,22 @@
         {#if filled && open[sect.key]}
           <!-- Masonry via CSS columns so each landscape shot keeps its aspect. -->
           <div class="[column-fill:_balance] mt-3 gap-3 sm:columns-2 lg:columns-3">
-            {#each sect.photos as photo, i (photo.src)}
+            {#each sect.photos as photo, i (photo.image.src)}
               <button
                 type="button"
-                onclick={() => show(photo.src)}
+                onclick={() => show(photo.image.src)}
                 class="group mb-3 block w-full break-inside-avoid overflow-hidden rounded-2xl border border-white/10 shadow-sm transition-all duration-300 hover:border-reef-400/60 hover:shadow-[0_0_26px_-8px_rgba(44,208,197,0.6)]"
               >
                 <!-- Most photos have no caption yet, so fall back to the section
                      name and a number. An alt of "" on a button leaves the
                      control with no name at all. -->
                 <img
-                  src={photo.src}
+                  src={photo.image.src}
+                  srcset={photo.image.srcset}
+                  sizes={SIZES.gallery}
                   alt={photo.meta.commonName ?? photo.meta.species ?? `${sect.label} ${i + 1}`}
+                  width={photo.image.width}
+                  height={photo.image.height}
                   loading="lazy"
                   class="block w-full transition-transform duration-500 group-hover:scale-[1.04]"
                 />
@@ -211,7 +216,9 @@
            photo refuses to shrink below its natural width and shoves the
            caption panel off the right of the screen. -->
       <img
-        src={shown.src}
+        src={shown.image.src}
+        srcset={shown.image.srcset}
+        sizes={SIZES.full}
         alt={shown.meta.commonName ?? shown.meta.species ?? ''}
         class="min-h-0 min-w-0 flex-1 rounded-xl object-contain shadow-2xl"
       />

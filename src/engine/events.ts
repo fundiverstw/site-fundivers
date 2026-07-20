@@ -11,6 +11,7 @@ import {
 } from './db-columns'
 import { type DiveOuting } from './event-colors'
 import { eventImage } from './photo-pool'
+import type { ResponsiveImage } from './responsive-image'
 
 // Public, read-only view of the shared event catalog. The app consolidated the
 // old EO_dives + EO_courses Wix-sync tables into a single `events` table keyed
@@ -31,7 +32,7 @@ export type UpcomingEvent = {
   fullyBooked: boolean
   featured: boolean
   description: string | null // short blurb for cards (dive notes / course schedule)
-  image: string | null // resolved cover image URL
+  image: ResponsiveImage | null // resolved cover photo, in its several sizes
 }
 
 type DiveRow = {

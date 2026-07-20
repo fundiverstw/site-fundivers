@@ -1,4 +1,6 @@
 <script lang="ts">
+  import Photo from '$components/Photo.svelte'
+  import { SIZES } from '$engine/responsive-image'
   import { fetchUpcomingEvents, type UpcomingEvent, type ModalEvent } from '$engine/events'
   import { formatSpan, twd } from '$engine/format'
   import GetInTouch from '$components/GetInTouch.svelte'
@@ -56,7 +58,7 @@
       href: 'https://site-fundiverstw.fundiverstw.workers.dev/travel#international',
       image: mediaIdLocal('b37fef_80f90894e75f47f8809d14663dd8e8bd~mv2.jpg'),
     },
-    { href: '/travel', image: siteImage('penghu') ?? '' },
+    { href: '/travel', image: siteImage('penghu') },
     {
       href: 'https://site-fundiverstw.fundiverstw.workers.dev/courses/padi-efr-course',
       image: mediaIdLocal('b37fef_49df7d482eb44585a605a489e2b1d653~mv2.jpg'),
@@ -175,10 +177,9 @@
         href={s.href}
         class="group relative flex aspect-square flex-col justify-end overflow-hidden rounded-3xl border border-white/15 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-reef-400/60 hover:shadow-[0_0_30px_-8px_rgba(44,208,197,0.6)]"
       >
-        <img
-          src={s.image}
+        <Photo
+          image={s.image}
           alt=""
-          loading="lazy"
           class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
         <div
@@ -220,21 +221,21 @@
         <figure
           class="group col-span-2 aspect-[16/10] overflow-hidden rounded-3xl border border-white/10 shadow-sm"
         >
-          <img
-            src={diveScenes[0]}
+          <Photo
+            image={diveScenes[0]}
             alt=""
-            loading="lazy"
+            sizes={SIZES.card}
             class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
         </figure>
-        {#each diveScenes.slice(1) as src}
+        {#each diveScenes.slice(1) as image}
           <figure
             class="group aspect-square overflow-hidden rounded-2xl border border-white/10 shadow-sm"
           >
-            <img
-              {src}
+            <Photo
+              {image}
               alt=""
-              loading="lazy"
+              sizes={SIZES.tile}
               class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
           </figure>
@@ -245,14 +246,14 @@
 
   <!-- A glimpse of the reef life beneath the waves -->
   <div class="mt-8 grid grid-cols-3 gap-3 sm:mt-10 sm:grid-cols-6">
-    {#each marineLife as src}
+    {#each marineLife as image}
       <figure
         class="group aspect-square overflow-hidden rounded-2xl border border-white/10 shadow-sm"
       >
-        <img
-          {src}
+        <Photo
+          {image}
           alt=""
-          loading="lazy"
+          sizes={SIZES.tile}
           class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 group-hover:brightness-105"
         />
       </figure>

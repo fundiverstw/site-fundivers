@@ -42,6 +42,7 @@ You will open these roughly never. Each one is commented at the top.
 | **`vite.config.ts`** | Vite | How the site is built. |
 | **`vite.alias.ts`** | Vite + Vitest | The folder shortcuts, so `$content/dive-sites` means `src/content/dive-sites`. |
 | **`vite.yaml.ts`** | Vite + Vitest | Lets a `.yaml` file be imported like code. It is what turns each gallery's `photos.yaml` into captions while the site builds, so no YAML reader is sent to the browser. |
+| **`vite.images.ts`** | Vite + Vitest | Re-saves every photo at six widths while the site builds, so a phone downloads a small copy and a laptop a large one. See [Adding photos](adding-photos.md). |
 | **`svelte.config.js`** | Svelte | Two lines. Leave it. |
 | **`tsconfig.json`** | TypeScript | How strict the type checking is. It also repeats the folder shortcuts — **if you add one, add it in both places.** |
 | **`eslint.config.js`** | ESLint | Which mistakes the linter complains about. Two rules are off, each with a comment saying why. |

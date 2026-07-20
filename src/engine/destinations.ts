@@ -1,6 +1,7 @@
 import { supabase } from './supabase'
 import { DESTINATION_COLS } from './db-columns'
 import { wixImageLocal } from './images'
+import type { ResponsiveImage } from './responsive-image'
 
 // travel_destinations holds the dive destinations + tour locations, each with a
 // cover photo (location_picture). Used by the Travel page and to give the Sites
@@ -16,8 +17,8 @@ export type Destination = {
   international: boolean
   diveType: string | null
   requirements: string | null // diver_requirements — cert / experience needed
-  image: string | null // location_picture — card / cover photo
-  background: string | null // background_picture — wide hero photo
+  image: ResponsiveImage | null // location_picture — card / cover photo
+  background: ResponsiveImage | null // background_picture — wide hero photo
 }
 
 export async function fetchDestinations(): Promise<Destination[]> {

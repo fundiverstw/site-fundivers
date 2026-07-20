@@ -1,4 +1,5 @@
 import { MARINE_LIFE, marineSlug } from './marine-life'
+import type { ResponsiveImage } from '$engine/responsive-image'
 
 // Photo-gallery catalog for the /photos page.
 //
@@ -28,14 +29,14 @@ export type PhotoMeta = {
   notes?: string
 }
 
-export type Photo = { src: string; meta: PhotoMeta }
+export type Photo = { image: ResponsiveImage; meta: PhotoMeta }
 export type GallerySection = { key: string; label: string; photos: Photo[] }
 
 const files = import.meta.glob('./photos/gallery/*/*.{avif,webp,jpg,jpeg,png}', {
   eager: true,
-  query: '?url',
+  query: '?responsive',
   import: 'default',
-}) as Record<string, string>
+}) as Record<string, ResponsiveImage>
 
 // One captions file per folder. Keyed by the picture's filename, so renaming a
 // photo drops its caption rather than attaching it to the wrong animal.
@@ -58,11 +59,11 @@ for (const [path, data] of Object.entries(captionFiles)) {
 // Bucket the discovered pictures by their folder, filename-sorted so the layout
 // is stable between builds.
 const byFolder: Record<string, Photo[]> = {}
-for (const [path, src] of Object.entries(files).sort(([a], [b]) => a.localeCompare(b))) {
+for (const [path, image] of Object.entries(files).sort(([a], [b]) => a.localeCompare(b))) {
   const folder = folderOf(path)
   if (!folder) continue
   const filename = path.split('/').pop() ?? ''
-  ;(byFolder[folder] ??= []).push({ src, meta: captionsByFolder[folder]?.[filename] ?? {} })
+  ;(byFolder[folder] ??= []).push({ image, meta: captionsByFolder[folder]?.[filename] ?? {} })
 }
 
 // Alphabetical, and alphabetical everywhere: the shortcut row, the sections it

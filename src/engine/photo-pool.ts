@@ -13,6 +13,7 @@
 // courses draw from the course folder.
 
 import { EVENT_TITLE_MATCHERS } from '$content/dive-sites'
+import type { ResponsiveImage } from './responsive-image'
 
 // Only the card-pool folders — the gallery and media folders live alongside
 // these under photos/ but are catalogued elsewhere, so they are not scanned in.
@@ -20,28 +21,28 @@ const files = import.meta.glob(
   '../content/photos/{dive-sites,courses,general}/**/*.{webp,avif,jpg,jpeg,png}',
   {
     eager: true,
-    query: '?url',
+    query: '?responsive',
     import: 'default',
   },
-) as Record<string, string>
+) as Record<string, ResponsiveImage>
 
-const sitePools: Record<string, string[]> = {}
-const generalPool: string[] = []
-const coursePool: string[] = []
+const sitePools: Record<string, ResponsiveImage[]> = {}
+const generalPool: ResponsiveImage[] = []
+const coursePool: ResponsiveImage[] = []
 
-for (const [path, url] of Object.entries(files)) {
-  if (path.includes('/general/')) generalPool.push(url)
-  else if (path.includes('/courses/')) coursePool.push(url)
+for (const [path, image] of Object.entries(files)) {
+  if (path.includes('/general/')) generalPool.push(image)
+  else if (path.includes('/courses/')) coursePool.push(image)
   else {
     const m = path.match(/\/dive-sites\/([^/]+)\//)
-    if (m) (sitePools[m[1]] ??= []).push(url)
+    if (m) (sitePools[m[1]] ??= []).push(image)
   }
 }
 // Stable order so a site's "cover" (first photo) doesn't change between builds.
-for (const k of Object.keys(sitePools)) sitePools[k].sort()
+for (const k of Object.keys(sitePools)) sitePools[k].sort((a, b) => a.src.localeCompare(b.src))
 
 /** A dive site's cover photo (first in its folder), or null if it has none. */
-export function siteImage(siteId: string): string | null {
+export function siteImage(siteId: string): ResponsiveImage | null {
   const pool = sitePools[siteId]
   return pool && pool.length ? pool[0] : null
 }
@@ -58,15 +59,18 @@ export function siteIdForTitle(title: string): string | null {
 // at random, so repeats are spread out across everything on screen. Assignments
 // are memoized per event id so re-renders keep the same photo (no flicker).
 const usedCount = new Map<string, number>()
-const assigned = new Map<string, string>()
+const assigned = new Map<string, ResponsiveImage>()
 
-function pick(pool: string[]): string | null {
+function pick(pool: ResponsiveImage[]): ResponsiveImage | null {
   if (!pool.length) return null
+  // Counted by `src`, not by object identity: the same photo can reach two
+  // pools as two glob entries, and counting the objects would let it show up
+  // twice on one screen while the tally said each had been used once.
   let min = Infinity
-  for (const p of pool) min = Math.min(min, usedCount.get(p) ?? 0)
-  const candidates = pool.filter((p) => (usedCount.get(p) ?? 0) === min)
+  for (const p of pool) min = Math.min(min, usedCount.get(p.src) ?? 0)
+  const candidates = pool.filter((p) => (usedCount.get(p.src) ?? 0) === min)
   const choice = candidates[Math.floor(Math.random() * candidates.length)]
-  usedCount.set(choice, (usedCount.get(choice) ?? 0) + 1)
+  usedCount.set(choice.src, (usedCount.get(choice.src) ?? 0) + 1)
   return choice
 }
 
@@ -79,11 +83,11 @@ export function eventImage(ev: {
   id: string
   type: 'dive' | 'course'
   title: string
-}): string | null {
+}): ResponsiveImage | null {
   const cached = assigned.get(ev.id)
   if (cached) return cached
 
-  let pool: string[]
+  let pool: ResponsiveImage[]
   if (ev.type === 'course') {
     pool = coursePool.length ? coursePool : generalPool
   } else {
@@ -94,30 +98,30 @@ export function eventImage(ev: {
     pool = sitePool.length >= 2 ? sitePool : [...sitePool, ...generalPool]
   }
 
-  const url = pick(pool)
-  if (url) assigned.set(ev.id, url)
-  return url
+  const image = pick(pool)
+  if (image) assigned.set(ev.id, image)
+  return image
 }
 
 /** A course-class photo for a course that hasn't pinned its own (keyed +
  *  memoized so it stays stable across re-renders). Falls back to the general
  *  pool if the course folder is empty. Used to fill the staggered detail page. */
-export function coursePoolImage(seed: string): string | null {
+export function coursePoolImage(seed: string): ResponsiveImage | null {
   const key = `course-pool:${seed}`
   const cached = assigned.get(key)
   if (cached) return cached
-  const url = pick(coursePool.length ? coursePool : generalPool)
-  if (url) assigned.set(key, url)
-  return url
+  const image = pick(coursePool.length ? coursePool : generalPool)
+  if (image) assigned.set(key, image)
+  return image
 }
 
 /** A general dive photo for anything without its own image (keyed + memoized so
  *  it stays stable across re-renders). Used so no card ever shows a placeholder. */
-export function fallbackImage(seed: string): string | null {
+export function fallbackImage(seed: string): ResponsiveImage | null {
   const key = `fb:${seed}`
   const cached = assigned.get(key)
   if (cached) return cached
-  const url = pick(generalPool)
-  if (url) assigned.set(key, url)
-  return url
+  const image = pick(generalPool)
+  if (image) assigned.set(key, image)
+  return image
 }

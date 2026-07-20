@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { SIZES } from '$engine/responsive-image'
   import { path } from '$engine/router'
   import { diveSiteById, REGION_META } from '$content/dive-sites'
   import { marineSlug } from '$content/marine-life'
@@ -77,6 +78,7 @@
           src={heroImg}
           alt={site.name}
           priority
+          sizes={SIZES.hero}
           imgClass="absolute inset-0 h-full w-full object-cover"
         />
         <div

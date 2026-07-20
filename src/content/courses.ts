@@ -1,4 +1,5 @@
 import { mediaIdLocal } from '$engine/images'
+import type { ResponsiveImage } from '$engine/responsive-image'
 
 // PADI course catalog, mirroring the live fundiverstw.com/courses cards.
 // Titles + photos were harvested from the live page (in order); the cover
@@ -11,12 +12,17 @@ import { mediaIdLocal } from '$engine/images'
 export type CourseCard = {
   title: string
   slug: string
-  image: string
+  image: ResponsiveImage | null
   desc: string
   // The detail page staggers four images down the main content. When a course
   // supplies its own set here they're used verbatim; otherwise the page falls
   // back to [cover, …three from the course photo pool] (see CourseDetail).
-  images?: [string, string, string, string]
+  images?: [
+    ResponsiveImage | null,
+    ResponsiveImage | null,
+    ResponsiveImage | null,
+    ResponsiveImage | null,
+  ]
 }
 
 const img = (seg: string) => mediaIdLocal(seg)

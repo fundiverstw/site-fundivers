@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Photo from '$components/Photo.svelte'
   import { fetchUpcomingEvents, type UpcomingEvent } from '$engine/events'
   import { formatSpan, twd } from '$engine/format'
   import { bookUrl, registerUrl } from '$content/settings'
@@ -26,10 +27,9 @@
         href={coursePath(c)}
         class="group relative flex aspect-square flex-col justify-end overflow-hidden rounded-3xl border border-white/15 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-reef-400/60 hover:shadow-[0_0_28px_-8px_rgba(44,208,197,0.6)]"
       >
-        <img
-          src={c.image}
+        <Photo
+          image={c.image}
           alt=""
-          loading="lazy"
           class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
         <div

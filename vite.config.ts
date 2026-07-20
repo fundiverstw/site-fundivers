@@ -3,10 +3,11 @@ import { svelte } from '@sveltejs/vite-plugin-svelte'
 import tailwindcss from '@tailwindcss/vite'
 import { alias } from './vite.alias'
 import { yamlPlugin } from './vite.yaml'
+import { imagesPlugin } from './vite.images'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [svelte(), tailwindcss(), yamlPlugin()],
+  plugins: [svelte(), tailwindcss(), yamlPlugin(), imagesPlugin()],
   resolve: { alias },
   build: {
     target: 'es2022',

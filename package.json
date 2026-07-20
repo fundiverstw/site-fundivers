@@ -37,6 +37,7 @@
     "js-yaml": "^5.2.1",
     "prettier": "^3.9.5",
     "prettier-plugin-svelte": "^4.1.1",
+    "sharp": "^0.34.5",
     "svelte": "^5.20.0",
     "svelte-check": "^4.1.4",
     "tailwindcss": "^4.1.3",

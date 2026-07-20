@@ -106,19 +106,31 @@ Each folder starts with a commented-out example you can copy.
 
 ## Getting the file right
 
-**Use `.webp` or `.avif`.** A photo straight off a camera can be 5 MB; the same photo as
-`.webp` is around 200 KB and looks the same on a screen. A visitor on a phone connection
-waits far less time for it.
+**The build handles the sizing. Give it the big copy.**
 
-To convert one, on most machines:
+When the site is built, every photo you have added is re-saved at several widths — 384,
+480, 640, 768, 960 and 1216 pixels — and each `<img>` on the page is given the whole set
+to choose from. A phone showing a small tile takes the 384; a laptop showing a hero takes
+the 1216. Nobody downloads pixels they are not going to paint, which is most of why the
+site is quick on a phone.
+
+So the old advice to shrink a photo before adding it is now exactly backwards: shrinking it
+to 1600 and then letting the build shrink it again just loses detail twice. What the build
+cannot do is invent detail that was never there — it never enlarges a photo past its own
+width, so a 600px file stays a 600px file and looks soft on a large screen.
+
+**Add the largest good copy you have, at least 1216 pixels wide.** Straight off the camera
+is fine. If the file is enormous and you want it smaller first, keep the width and go easy
+on the quality:
 
 ```bash
-# a card photo, resized to a sensible width
-magick photo.jpg -resize 1600x -quality 82 photo.webp
-
-# a gallery photo
-magick photo.jpg -resize 2000x -quality 60 photo.avif
+# keep the width, just take the weight off — the build does the rest
+magick photo.jpg -resize 2400x -quality 88 photo.webp
 ```
+
+You do not need to match anything about the format or the quality to the rest of the site.
+The build re-encodes everything to AVIF at its own settings; your file is the source it
+works from, not the thing that gets sent.
 
 **Never copy the same photo into two folders.** If a picture needs to move, *move* it —
 don't leave a copy behind:

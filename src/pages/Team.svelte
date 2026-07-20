@@ -2,7 +2,9 @@
   import { CONTACT } from '$content/settings'
   import { mediaIdLocal } from '$engine/images'
   import { t } from '$engine/i18n'
+  import type { ResponsiveImage } from '$engine/responsive-image'
   import PageHeader from '$components/PageHeader.svelte'
+  import Photo from '$components/Photo.svelte'
 
   // `image` is a self-hosted headshot; `monkey` swaps in a placeholder avatar
   // when there's no photo yet (Eric). `role` is an i18n key; bios stay English
@@ -11,7 +13,7 @@
     name: string
     role: 'idc' | 'instructor' | 'divemaster'
     bio: string
-    image?: string
+    image?: ResponsiveImage | null
     monkey?: boolean
     link?: string
   }
@@ -63,10 +65,10 @@ Whether underwater or building something on the run.`,
       >
         <div class="flex items-center gap-4">
           {#if m.image}
-            <img
-              src={m.image}
+            <Photo
+              image={m.image}
               alt={m.name}
-              loading="lazy"
+              sizes="4rem"
               class="h-16 w-16 shrink-0 rounded-full object-cover ring-2 ring-white/20"
             />
           {:else if m.monkey}

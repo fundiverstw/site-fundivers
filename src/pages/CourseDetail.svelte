@@ -1,4 +1,6 @@
 <script lang="ts">
+  import Photo from '$components/Photo.svelte'
+  import { SIZES, type ResponsiveImage } from '$engine/responsive-image'
   import { path } from '$engine/router'
   import { courseByRouteId, courseId, coursePath, COURSES, type CourseCard } from '$content/courses'
   import {
@@ -21,8 +23,8 @@
 
   // Four images staggered down the page. A course can pin its own set;
   // otherwise we use its cover plus three stable picks from the course photo pool.
-  let images = $derived.by((): [string, string, string, string] => {
-    if (!course) return ['', '', '', '']
+  let images = $derived.by((): Array<ResponsiveImage | null> => {
+    if (!course) return [null, null, null, null]
     if (course.images) return course.images
     return [
       course.image,
@@ -119,17 +121,22 @@
 
 <!-- One staggered row: an image on one side, arbitrary body on the other. On
      mobile it stacks (image first). `reverse` puts the image on the right. -->
-{#snippet row(image: string, alt: string, reverse: boolean, body: import('svelte').Snippet)}
+{#snippet row(
+  image: ResponsiveImage | null,
+  alt: string,
+  reverse: boolean,
+  body: import('svelte').Snippet,
+)}
   <div
     class="flex flex-col gap-6 md:items-center md:gap-10 lg:gap-14 {reverse
       ? 'md:flex-row-reverse'
       : 'md:flex-row'}"
   >
     <div class="md:w-[46%]">
-      <img
-        src={image}
+      <Photo
+        {image}
         {alt}
-        loading="lazy"
+        sizes={SIZES.card}
         class="aspect-[4/3] w-full rounded-3xl border border-white/15 object-cover shadow-lg shadow-black/20"
       />
     </div>
@@ -385,10 +392,9 @@
             href={coursePath(nc)}
             class="group relative flex min-h-[9rem] flex-col justify-end overflow-hidden rounded-2xl border border-white/15 transition-colors hover:border-reef-400/50"
           >
-            <img
-              src={nc.image}
+            <Photo
+              image={nc.image}
               alt=""
-              loading="lazy"
               class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
             <div
