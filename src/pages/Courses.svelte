@@ -20,7 +20,7 @@
 
 <PageHeader title={$t.courses.title} subtitle={$t.courses.subtitle} />
 
-<section class="mx-auto max-w-[1600px] px-4 py-12 sm:px-6">
+<section class="mx-auto max-w-[1600px] px-4 pb-12 sm:px-6">
   <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
     {#each COURSES as c}
       <a

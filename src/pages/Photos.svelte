@@ -92,7 +92,7 @@
 
 <PageHeader title={$t.photos.title} subtitle={$t.photos.subtitle} />
 
-<section class="mx-auto max-w-[1600px] px-4 py-12 sm:px-6">
+<section class="mx-auto max-w-[1600px] px-4 pb-12 sm:px-6">
   <!-- Shortcuts to every group, so the whole gallery is one click away rather
        than a scroll through sixty headings. Same order as the sections below,
        which is alphabetical. Groups with no photos yet are here too, dimmed:

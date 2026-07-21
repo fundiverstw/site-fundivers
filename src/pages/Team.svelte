@@ -53,7 +53,7 @@ Whether underwater or building something on the run.`,
 
 <PageHeader title={$t.team.title} subtitle={$t.team.subtitle} />
 
-<section class="mx-auto max-w-[1600px] px-4 py-12 sm:px-6 sm:py-16">
+<section class="mx-auto max-w-[1600px] px-4 pb-12 sm:px-6 sm:pb-16">
   <div class="grid gap-6 md:grid-cols-2">
     {#each team as m}
       <svelte:element

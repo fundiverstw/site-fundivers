@@ -47,7 +47,7 @@
 
 <PageHeader title={$t.calendar.title} subtitle={$t.calendar.subtitle} />
 
-<section class="mx-auto max-w-5xl px-4 py-12 sm:px-6">
+<section class="mx-auto max-w-5xl px-4 pb-12 sm:px-6">
   {#if error}
     <p class="mb-4 rounded-lg bg-red-500/15 p-4 text-sm text-red-200">
       {$t.calendar.loadError}: {error}

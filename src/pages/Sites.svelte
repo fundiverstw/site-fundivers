@@ -31,7 +31,7 @@
 
 <PageHeader title={$t.sites.title} subtitle={$t.sites.subtitle} />
 
-<section class="mx-auto max-w-[1600px] px-4 py-12 sm:px-6">
+<section class="mx-auto max-w-[1600px] px-4 pb-12 sm:px-6">
   {#if loading}
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {#each Array(6) as _}
