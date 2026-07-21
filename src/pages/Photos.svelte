@@ -2,7 +2,7 @@
   import { SOCIAL } from '$content/settings'
   import { t } from '$engine/i18n'
   import { scrollToId, hashId } from '$engine/router'
-  import { GALLERY, ALL_PHOTOS, type PhotoMeta } from '$content/photo-gallery'
+  import { GALLERY, ALL_PHOTOS, SHOWCASE, type PhotoMeta } from '$content/photo-gallery'
   import { SIZES } from '$engine/responsive-image'
   import PageHeader from '$components/PageHeader.svelte'
 
@@ -10,7 +10,10 @@
   // shut: there is one section per creature in the marine-life vocabulary —
   // about sixty — and opening them all would mean laying out and decoding every
   // photo on the site to show you the one you came for.
-  const AUTO_OPEN = 'nudibranchs'
+  //
+  // The showcase, which is also the section that leads the page — one source for
+  // both, so the open section and the top section can never disagree.
+  const AUTO_OPEN = SHOWCASE
 
   // `open` holds the keys currently expanded.
   let open = $state<Record<string, boolean>>({ [AUTO_OPEN]: true })
@@ -94,9 +97,9 @@
 
 <section class="mx-auto max-w-[1600px] px-4 pb-12 sm:px-6">
   <!-- Shortcuts to every group, so the whole gallery is one click away rather
-       than a scroll through sixty headings. Same order as the sections below,
-       which is alphabetical. Groups with no photos yet are here too, dimmed:
-       seeing what is missing is half the point of the list. -->
+       than a scroll through sixty headings. Same order as the sections below:
+       the showcase first, then alphabetical. Groups with no photos yet are here
+       too, dimmed: seeing what is missing is half the point of the list. -->
   <!-- On a phone these sixty pills run to twenty rows and push every photo off
        the first screen, so the list gets its own height and scrolls inside it.
        On anything wider they fit in a handful of rows and are left alone. -->

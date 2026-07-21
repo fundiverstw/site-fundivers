@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { GALLERY, ALL_PHOTOS, ORPHAN_FOLDERS, FILLED_SECTIONS } from './photo-gallery'
+import { GALLERY, ALL_PHOTOS, ORPHAN_FOLDERS, FILLED_SECTIONS, SHOWCASE } from './photo-gallery'
 import { MARINE_LIFE, marineSlug } from './marine-life'
 import { DIVE_SITE_GUIDES } from './dive-site-guides'
 
@@ -56,12 +56,14 @@ describe('the photo gallery', () => {
     }
   })
 
-  it('reads alphabetically', () => {
+  it('leads with the showcase, then reads alphabetically', () => {
     // The shortcut row and the sections are rendered from this one list, so
-    // sorting it here is what keeps the two in step. The vocabulary's own order
-    // is grouped by kind and deliberately not this.
-    const labels = GALLERY.map((s) => s.label)
-    expect(labels).toEqual([...labels].sort((a, b) => a.localeCompare(b)))
+    // ordering it here is what keeps the two in step. The showcase leads the
+    // page; everything after it is alphabetical. The vocabulary's own order is
+    // grouped by kind and deliberately neither.
+    expect(GALLERY[0].key, 'the showcase must lead the page').toBe(SHOWCASE)
+    const rest = GALLERY.slice(1).map((s) => s.label)
+    expect(rest).toEqual([...rest].sort((a, b) => a.localeCompare(b)))
   })
 
   it('counts a section as filled exactly when it has photos', () => {

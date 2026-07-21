@@ -60,14 +60,16 @@ test('a shortcut exists for every group, including the empty ones', async ({ pag
   expect(hrefs).toContain('#nudibranchs') // has photos
 })
 
-test('the shortcuts and the sections are both alphabetical, in the same order', async ({
+test('the shortcuts and the sections lead with the showcase, then run alphabetical, in the same order', async ({
   page,
 }) => {
   await visit(page, '/photos')
-  // Sixty groups is well past the point where anyone remembers an order, so
-  // there is only one: alphabetical, in both lists. Two orders on one page is
-  // how you look for "Shrimp and crabs", fail to find it, and conclude it is
-  // not there.
+  // One showcase leads the page — the shop's showpiece, open on arrival — and
+  // everything after it is alphabetical. Sixty groups is well past the point
+  // where anyone remembers an order, so after that one exception the rest has to
+  // be predictable: that is how you find "Shrimp and crabs" instead of
+  // concluding it is not there. Both lists must agree, or the two orders on one
+  // page defeat the purpose.
   const shortcuts = await page
     .locator('nav[aria-label] a[href^="#"]')
     .evaluateAll((els) => els.map((e) => e.getAttribute('href')?.slice(1) ?? ''))
@@ -80,7 +82,10 @@ test('the shortcuts and the sections are both alphabetical, in the same order', 
   const labels = await page
     .locator('nav[aria-label] a[href^="#"]')
     .evaluateAll((els) => els.map((e) => e.textContent?.trim() ?? ''))
-  expect(labels).toEqual([...labels].sort((a, b) => a.localeCompare(b)))
+  // The first is the showcase; everything after it is alphabetical.
+  expect(labels[0]).toBe('Nudibranchs')
+  const rest = labels.slice(1)
+  expect(rest).toEqual([...rest].sort((a, b) => a.localeCompare(b)))
 })
 
 test('a chip is a link only when its section has photos', async ({ page }) => {

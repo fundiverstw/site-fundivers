@@ -66,14 +66,26 @@ for (const [path, image] of Object.entries(files).sort(([a], [b]) => a.localeCom
   ;(byFolder[folder] ??= []).push({ image, meta: captionsByFolder[folder]?.[filename] ?? {} })
 }
 
-// Alphabetical, and alphabetical everywhere: the shortcut row, the sections it
-// points at, and the order the lightbox steps through. Sixty sections is past
-// the point where anyone holds the order in their head, so the only order that
-// helps is the one you can predict without looking.
+// The one section that leads the page — the showcase. It sits first in the
+// shortcut row, first in the sections, and first in the lightbox, and it is the
+// section that starts open on arrival (Photos.svelte reads this). Nudibranchs
+// are the shop's showpiece, so they go here; everything after them is
+// alphabetical.
+export const SHOWCASE = 'nudibranchs'
+
+// Showcase first, then alphabetical, and the same order everywhere: the shortcut
+// row, the sections it points at, and the order the lightbox steps through.
+// Sixty sections is past the point where anyone holds the order in their head,
+// so after the one showcase the only order that helps is the one you can predict
+// without looking.
 export const GALLERY: GallerySection[] = MARINE_LIFE.map((label) => {
   const key = marineSlug(label)
   return { key, label, photos: byFolder[key] ?? [] }
-}).sort((a, b) => a.label.localeCompare(b.label))
+}).sort((a, b) => {
+  if (a.key === SHOWCASE) return -1
+  if (b.key === SHOWCASE) return 1
+  return a.label.localeCompare(b.label)
+})
 
 /** Slugs of the sections that actually have pictures in them today.
  *
