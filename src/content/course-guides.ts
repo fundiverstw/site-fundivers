@@ -67,6 +67,14 @@ export type CourseGuide = {
   next: string[] // suggested next-course route ids
 }
 
+// The translatable half of a course guide: everything except the structural
+// fields (`subsections` layout, `matchCodes`, `next` route ids) and `depth`
+// (a bare figure like "18 m"). The per-locale overlays (course-guides.ja.ts,
+// course-guides.zh-TW.ts) carry only these text fields, keyed by the same
+// course route id; $engine/i18n-content merges them over the English, which
+// supplies the omitted structural fields.
+export type CourseGuideText = Omit<CourseGuide, 'subsections' | 'matchCodes' | 'next' | 'depth'>
+
 export const COURSE_GUIDES: Record<string, CourseGuide> = {
   'padi-open-water-course': {
     intro:

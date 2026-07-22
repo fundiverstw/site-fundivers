@@ -1,13 +1,14 @@
 <script lang="ts">
   import { SIZES } from '$engine/responsive-image'
   import { path } from '$engine/router'
-  import { diveSiteById, REGION_META } from '$content/dive-sites'
+  import { diveSiteById } from '$content/dive-sites'
   import { marineSlug } from '$content/marine-life'
   import { FILLED_SECTIONS } from '$content/photo-gallery'
   import { siteImage } from '$engine/photo-pool'
-  import { DIVE_SITE_GUIDES } from '$content/dive-site-guides'
   import { mapsUrl } from '$engine/links'
-  import { t } from '$engine/i18n'
+  import { t, locale } from '$engine/i18n'
+  import { siteText, regionLabel, marineLabel } from '$engine/i18n-content'
+  import { diveGuide } from '$engine/i18n-guides'
   import CallToAction from '$components/CallToAction.svelte'
   import CoverPhoto from '$components/CoverPhoto.svelte'
   import DiveDescent from '$components/DiveDescent.svelte'
@@ -16,7 +17,10 @@
   // /sites/<something> path, so we resolve the id from the current path.
   let id = $derived($path.replace(/^\/sites\//, '').replace(/\/+$/, ''))
   let site = $derived(diveSiteById(id))
-  let guide = $derived(site ? (DIVE_SITE_GUIDES[site.id] ?? null) : null)
+  let guide = $derived(site ? diveGuide(site.id, $locale) : null)
+  // The site's name and tagline in the current language (English is the
+  // identifier; siteText resolves the display text).
+  let siteName = $derived(site ? siteText(site.id, $locale).name : '')
 
   // This page is entirely static. It used to also fetch travel_destinations and
   // match this site by name, to let the booking app override the tagline and the
@@ -26,12 +30,12 @@
 
   // Keep the browser tab title in sync with the current site.
   $effect(() => {
-    if (site) document.title = `${site.name} · FunDivers TW`
+    if (site) document.title = `${siteName} · FunDivers TW`
   })
 
   let heroImg = $derived(site ? siteImage(site.id) : null)
-  let tagline = $derived(site?.tagline ?? null)
-  let regionLabel = $derived(site ? (REGION_META[site.region]?.label ?? site.region) : '')
+  let tagline = $derived(site ? siteText(site.id, $locale).tagline || null : null)
+  let regionName = $derived(site ? regionLabel(site.region, $locale) : '')
   let mapsHref = $derived(site ? mapsUrl(site) : '#')
 
   // Quick-facts rows, in order, skipping anything we don't have.
@@ -43,7 +47,7 @@
     if (guide?.bestSeason) rows.push({ label: $t.siteDetail.season, value: guide.bestSeason })
     if (guide?.waterTemp) rows.push({ label: $t.siteDetail.waterTemp, value: guide.waterTemp })
     if (guide?.visibility) rows.push({ label: $t.siteDetail.visibility, value: guide.visibility })
-    rows.push({ label: $t.siteDetail.region, value: regionLabel })
+    rows.push({ label: $t.siteDetail.region, value: regionName })
     return rows
   })
 
@@ -76,7 +80,7 @@
       >
         <CoverPhoto
           src={heroImg}
-          alt={site.name}
+          alt={siteName}
           priority
           sizes={SIZES.hero}
           imgClass="absolute inset-0 h-full w-full object-cover"
@@ -87,7 +91,7 @@
         <div class="relative z-10 p-6 sm:p-8">
           <div class="flex flex-wrap items-center gap-2">
             <span class="mono text-xs font-medium uppercase tracking-wide text-sky-300"
-              >{regionLabel}</span
+              >{regionName}</span
             >
             {#if site.dive_type}
               <span
@@ -97,7 +101,7 @@
               </span>
             {/if}
           </div>
-          <h1 class="mt-1 text-3xl font-bold tracking-tight text-white sm:text-4xl">{site.name}</h1>
+          <h1 class="mt-1 text-3xl font-bold tracking-tight text-white sm:text-4xl">{siteName}</h1>
           {#if tagline}
             <p class="mt-2 max-w-2xl text-sm text-white/90 sm:text-base">{tagline}</p>
           {/if}
@@ -171,13 +175,13 @@
                       href={`/photos#${slug}`}
                       class="rounded-full border border-reef-400/40 bg-reef-400/10 px-3 py-1 text-sm text-reef-100 transition-colors hover:border-reef-400 hover:bg-reef-400/20 hover:text-white"
                     >
-                      {m}
+                      {marineLabel(m, $locale)}
                     </a>
                   {:else}
                     <span
                       class="rounded-full border border-white/10 px-3 py-1 text-sm text-brand-200"
                     >
-                      {m}
+                      {marineLabel(m, $locale)}
                     </span>
                   {/if}
                 {/each}

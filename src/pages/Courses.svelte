@@ -4,7 +4,8 @@
   import { formatSpan, twd } from '$engine/format'
   import { bookUrl, registerUrl } from '$content/settings'
   import { COURSES, coursePath } from '$content/courses'
-  import { t } from '$engine/i18n'
+  import { t, locale } from '$engine/i18n'
+  import { courseText } from '$engine/i18n-content'
   import PageHeader from '$components/PageHeader.svelte'
 
   let upcoming = $state<UpcomingEvent[]>([])
@@ -36,8 +37,8 @@
           class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent"
         ></div>
         <div class="relative z-10 p-5">
-          <h3 class="text-lg font-bold text-white">{c.title}</h3>
-          <p class="mt-1 line-clamp-3 text-sm text-white/85">{c.desc}</p>
+          <h3 class="text-lg font-bold text-white">{courseText(c, $locale).title}</h3>
+          <p class="mt-1 line-clamp-3 text-sm text-white/85">{courseText(c, $locale).desc}</p>
         </div>
       </a>
     {/each}

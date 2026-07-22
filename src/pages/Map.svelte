@@ -7,7 +7,8 @@
     type TaiwanRegion,
   } from '$content/dive-sites'
   import { placeLabels } from '$engine/map-layout'
-  import { t } from '$engine/i18n'
+  import { t, locale } from '$engine/i18n'
+  import { mapRegionText, siteText } from '$engine/i18n-content'
   import PageHeader from '$components/PageHeader.svelte'
 
   // Ported from app-fundivers MapPage.tsx (see reference/dive-map). Inline SVG
@@ -15,79 +16,49 @@
   // to each site's travel page. Projection + label placement are the original
   // framework-agnostic logic; only the rendering is Svelte.
 
+  // Geometry only. The region's name and description are reader-facing text and
+  // live (with their translations) in content/dive-sites.ts — read here through
+  // mapRegionText(id, $locale) so the map speaks the current language.
   interface RegionInfo {
-    name: string
     center: [number, number] // [lon, lat] overview marker
     bbox: [number, number, number, number] // [minLon, minLat, maxLon, maxLat]
-    description: string
     maxZoom?: number
   }
 
   const REGIONS: Record<TaiwanRegion, RegionInfo> = {
     keelung: {
-      name: 'Keelung / Badouzi',
       center: [121.81, 25.15],
       bbox: [121.785, 25.122, 121.836, 25.195],
-      description:
-        'Northern port-area diving, Badouzi Bay reefs and shipwrecks, with Keelung Islet just offshore.',
       maxZoom: 40,
     },
     longdong: {
-      name: 'Long Dong Bay',
       center: [121.91, 25.118],
       bbox: [121.895, 25.108, 121.927, 25.13],
-      description:
-        'The classic northeast wall and reef dives, sheer basalt cliffs, deep gullies, dramatic rock formations.',
       maxZoom: 40,
     },
     yilan: {
-      name: 'Yilan / Turtle Island',
       center: [121.95, 24.95],
       bbox: [121.81, 24.8, 121.99, 25.05],
-      description:
-        "East-coast diving, Toucheng / Wai'ao reefs, the Cathedral and Cauliflower Garden walls, the Wan An Jian wreck, " +
-        'and Turtle Island offshore (Guishan Dao).',
     },
     greenisland: {
-      name: 'Green Island (Lyudao)',
       center: [121.4901443, 22.6620886],
       bbox: [121.46, 22.625, 121.53, 22.7],
-      description:
-        'Green Island is located off the coast of Taitung, on the southeast coast of Taiwan. It is a favorite dive ' +
-        'destination for many locals. Renowned for its impressive visibility, which can reach up to 30–40 m, it is ideal ' +
-        'for photography enthusiasts.',
     },
     lanyu: {
-      name: 'Lanyu (Orchid Island)',
       center: [121.548418, 22.0435616],
       bbox: [121.47, 21.985, 121.605, 22.115],
-      description:
-        'Orchid Island is best known for the Badai Wreck, a Korean lumber-carrying vessel that starts at 26 m and ' +
-        'descends to 40 m deep.',
     },
     xiaoliuqiu: {
-      name: 'Xiao Liuqiu (Lambai Island)',
       center: [120.3715149, 22.3404158],
       bbox: [120.35, 22.315, 120.405, 22.365],
-      description:
-        'Xiao Liuqiu / Lambai is a large coral island. Due to its nesting beach, it is home to hundreds of green sea ' +
-        'turtles that both snorkelers and divers can enjoy.',
     },
     kenting: {
-      name: 'Kenting',
       center: [120.7797516, 21.9483307],
       bbox: [120.685, 21.925, 120.845, 22.02],
-      description:
-        'Kenting has been a top dive destination in Taiwan for decades. It is best known for its myriad of corals that ' +
-        'are plastered atop the reef.',
     },
     penghu: {
-      name: 'Penghu Islands',
       center: [119.5793157, 23.5711899],
       bbox: [119.29, 23.09, 119.76, 23.7],
-      description:
-        'Of all the dive locations in Taiwan, Penghu has the most fish in numbers, size, and diversity! If you have the ' +
-        "experience and time, it's a definite must-see!",
     },
   }
 
@@ -294,7 +265,7 @@
           <g
             role="button"
             tabindex="0"
-            aria-label={REGIONS[id].name}
+            aria-label={mapRegionText(id, $locale).name}
             onclick={() => pick(id)}
             onkeydown={(e) => regionKeyDown(e, id)}
             class="cursor-pointer text-emerald-500 outline-none transition-colors hover:text-emerald-600 focus:text-emerald-700"
@@ -325,7 +296,7 @@
                  it, since an SVG <a> cannot be hovered as a text colour. -->
             <a
               href={diveSitePath(item.site)}
-              aria-label={item.site.name}
+              aria-label={siteText(item.site.id, $locale).name}
               class="group pointer-events-auto cursor-pointer"
             >
               <circle
@@ -348,7 +319,7 @@
                 stroke-width="3.2"
                 paint-order="stroke fill"
                 stroke-linejoin="round"
-                style="text-decoration: underline">{item.site.name}</text
+                style="text-decoration: underline">{siteText(item.site.id, $locale).name}</text
               >
             </a>
           </g>
@@ -366,7 +337,7 @@
         onclick={() => pick(id)}
         class={`mono rounded-xl border p-3 text-left text-sm transition-all ${active ? 'border-reef-400/60 bg-reef-400/15 font-semibold text-reef-200 shadow-[0_0_18px_-6px_rgba(44,208,197,0.7)]' : 'border-white/15 bg-white/5 text-brand-50 hover:border-white/25 hover:bg-white/10'}`}
       >
-        {REGIONS[id].name}
+        {mapRegionText(id, $locale).name}
       </button>
     {/each}
   </div>
@@ -375,7 +346,7 @@
   {#if selected}
     <div class="glass rounded-2xl p-5">
       <div class="mb-2 flex items-start justify-between gap-2">
-        <h2 class="text-lg font-bold text-white">{REGIONS[selected].name}</h2>
+        <h2 class="text-lg font-bold text-white">{mapRegionText(selected, $locale).name}</h2>
         <button
           type="button"
           onclick={() => (selected = null)}
@@ -383,7 +354,7 @@
           class="-mt-1 px-2 text-2xl leading-none text-white/60 hover:text-white">×</button
         >
       </div>
-      <p class="mb-3 text-sm text-brand-100">{REGIONS[selected].description}</p>
+      <p class="mb-3 text-sm text-brand-100">{mapRegionText(selected, $locale).description}</p>
       {#if visibleSites.length > 0}
         <h3 class="mono mb-2 text-xs font-semibold uppercase tracking-wider text-reef-300">
           {$t.map.diveSites}
@@ -394,9 +365,11 @@
               <a
                 href={diveSitePath(s)}
                 class="font-semibold text-white underline decoration-reef-400/50 underline-offset-2 hover:decoration-reef-300"
-                >{s.name}</a
+                >{siteText(s.id, $locale).name}</a
               >
-              {#if s.tagline}<p class="mt-0.5 text-xs text-brand-200">{s.tagline}</p>{/if}
+              {#if siteText(s.id, $locale).tagline}<p class="mt-0.5 text-xs text-brand-200">
+                  {siteText(s.id, $locale).tagline}
+                </p>{/if}
             </li>
           {/each}
         </ul>

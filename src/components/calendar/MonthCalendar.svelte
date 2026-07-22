@@ -193,7 +193,7 @@
       type="button"
       onclick={() => (diveShown = !diveShown)}
       aria-pressed={diveShown}
-      aria-label="Toggle dives"
+      aria-label={$t.calendar.toggleDives}
       class={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 transition-colors ${
         diveShown
           ? 'border-white bg-white text-blue-900 hover:bg-white/85'
@@ -213,7 +213,7 @@
         onclick={() => (legendOpen = !legendOpen)}
         aria-expanded={legendOpen}
         aria-haspopup="menu"
-        aria-label="Filter courses"
+        aria-label={$t.calendar.filterCourses}
         class={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 transition-colors ${
           allCoursesHidden
             ? 'border-white/30 bg-white/10 font-medium text-white/70 line-through hover:border-white/60 hover:text-white'
@@ -241,7 +241,9 @@
           class="absolute left-0 top-full z-20 mt-1 min-w-[180px] space-y-1 rounded-lg border border-red-500 bg-white p-2 shadow-lg"
         >
           {#if courseCategories.length === 0}
-            <p class="px-2 py-1 text-xs font-medium text-blue-900">No courses in this range.</p>
+            <p class="px-2 py-1 text-xs font-medium text-blue-900">
+              {$t.calendar.noCoursesInRange}
+            </p>
           {/if}
           {#each courseCategories as { category, color } (category)}
             <label
@@ -266,14 +268,14 @@
   <div class="flex items-center justify-between gap-2">
     <button
       onclick={() => onMonthChange(subMonths(month, 1))}
-      aria-label="Previous month"
+      aria-label={$t.calendar.prevMonth}
       class="flex flex-1 items-center justify-center rounded-xl border border-white/30 bg-white/10 px-4 py-2 text-2xl leading-none text-white transition-colors hover:bg-white/20"
       >‹</button
     >
     <h2 class="shrink-0 text-lg font-bold text-white">{format(month, 'MMMM yyyy')}</h2>
     <button
       onclick={() => onMonthChange(addMonths(month, 1))}
-      aria-label="Next month"
+      aria-label={$t.calendar.nextMonth}
       class="flex flex-1 items-center justify-center rounded-xl border border-white/30 bg-white/10 px-4 py-2 text-2xl leading-none text-white transition-colors hover:bg-white/20"
       >›</button
     >

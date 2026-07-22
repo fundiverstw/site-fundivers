@@ -15,6 +15,8 @@ export const zhTW: Dict = {
     gear: '裝備',
     services: '技術服務',
     radio: '廣播節目',
+    menu: '選單',
+    language: '語言',
   },
   gear: {
     title: '裝備銷售、維修與租借',
@@ -223,8 +225,13 @@ export const zhTW: Dict = {
     courses: '課程',
     thisMonth: '本月',
     noEvents: '尚無排定的活動。',
+    noCoursesInRange: '此期間沒有課程。',
     loadError: '無法載入行事曆',
     full: '此活動已額滿，請加入候補名單。',
+    toggleDives: '切換潛水顯示',
+    filterCourses: '篩選課程',
+    prevMonth: '上個月',
+    nextMonth: '下個月',
     details: {
       about: '活動介紹',
       included: '費用包含',
@@ -275,6 +282,8 @@ export const zhTW: Dict = {
     proudly: '在台北以 🤿 ❤️ 用心打造',
     openSource: '開源專案',
     openSourceBlurb: '我們自豪地開發 FunDive，我們的開源潛水店管理軟體。',
+    openSourceAria: 'FunDive：我們的開源潛店管理軟體（GitHub）',
+    fundiveAlt: 'FunDive 潛店管理軟體',
   },
   services: {
     title: '為潛水店打造的 FunDive 託管服務',

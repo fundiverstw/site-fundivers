@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { fetchDiveSites, diveSitePath, REGION_META, type DiveSite } from '$content/dive-sites'
+  import { fetchDiveSites, diveSitePath, type DiveSite } from '$content/dive-sites'
   import { siteImage } from '$engine/photo-pool'
   import { mapsUrl } from '$engine/links'
-  import { t } from '$engine/i18n'
+  import { t, locale } from '$engine/i18n'
+  import { siteText, regionLabel } from '$engine/i18n-content'
   import PageHeader from '$components/PageHeader.svelte'
   import CoverPhoto from '$components/CoverPhoto.svelte'
 
@@ -52,17 +53,21 @@
             <div
               class="group relative flex aspect-square flex-col justify-end overflow-hidden rounded-3xl border border-white/15 shadow-sm transition-colors hover:border-reef-400/50"
             >
-              <CoverPhoto src={img} alt={s.name} />
+              <CoverPhoto src={img} alt={siteText(s.id, $locale).name} />
               <div
                 class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"
               ></div>
               <!-- Stretched link: the whole card opens the dive-site detail page. -->
-              <a href={diveSitePath(s)} class="absolute inset-0 z-10" aria-label={s.name}></a>
+              <a
+                href={diveSitePath(s)}
+                class="absolute inset-0 z-10"
+                aria-label={siteText(s.id, $locale).name}
+              ></a>
               <!-- Content sits above the image but lets clicks fall through to the
                    stretched link, except the map button which re-enables pointers. -->
               <div class="pointer-events-none relative z-20 p-5">
                 <div class="flex items-center justify-between gap-2">
-                  <h3 class="text-lg font-bold text-white">{s.name}</h3>
+                  <h3 class="text-lg font-bold text-white">{siteText(s.id, $locale).name}</h3>
                   {#if s.dive_type}
                     <span
                       class="rounded bg-reef-400/25 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-reef-100"
@@ -72,10 +77,12 @@
                   {/if}
                 </div>
                 <p class="mt-1 text-xs font-medium text-sky-300">
-                  {REGION_META[s.region]?.label ?? s.region}
+                  {regionLabel(s.region, $locale)}
                 </p>
-                {#if s.tagline}
-                  <p class="mt-2 line-clamp-2 text-sm text-white/85">{s.tagline}</p>
+                {#if siteText(s.id, $locale).tagline}
+                  <p class="mt-2 line-clamp-2 text-sm text-white/85">
+                    {siteText(s.id, $locale).tagline}
+                  </p>
                 {/if}
                 <div class="mt-3 flex flex-wrap gap-2">
                   <span

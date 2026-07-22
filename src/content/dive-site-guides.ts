@@ -35,6 +35,14 @@ export type DiveSiteGuide = {
   requirements?: string
 }
 
+// The translatable half of a guide: everything except `marineLife`. That field
+// is an array of MARINE_LIFE identifiers (they double as photo-gallery links),
+// so it stays in English and is supplied by the canonical entry — the per-locale
+// overlay files (dive-site-guides.ja.ts, dive-site-guides.zh-TW.ts) carry only
+// these text fields, keyed by the same site id, and $engine/i18n-content merges
+// them back over the English at read time.
+export type DiveSiteGuideText = Omit<DiveSiteGuide, 'marineLife'>
+
 export const DIVE_SITE_GUIDES: Record<string, DiveSiteGuide> = {
   // ── Keelung / Badouzi Bay (boat) ──────────────────────────────────────────
   'iron-house-iron-reef': {

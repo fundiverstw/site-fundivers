@@ -19,6 +19,8 @@ export const en = {
     gear: 'Gear',
     services: 'Services',
     radio: 'Radio show',
+    menu: 'Menu',
+    language: 'Language',
   },
   gear: {
     title: 'Gear Sales, Service & Rental',
@@ -232,8 +234,13 @@ export const en = {
     courses: 'Courses',
     thisMonth: 'This month',
     noEvents: 'No events scheduled.',
+    noCoursesInRange: 'No courses in this range.',
     loadError: 'Couldn’t load the calendar',
     full: 'This event is full, join the waitlist.',
+    toggleDives: 'Toggle dives',
+    filterCourses: 'Filter courses',
+    prevMonth: 'Previous month',
+    nextMonth: 'Next month',
     details: {
       about: 'About this event',
       included: "What's included",
@@ -284,6 +291,8 @@ export const en = {
     proudly: 'Proudly created with 🤿 ❤️ in Taipei',
     openSource: 'Open source',
     openSourceBlurb: 'We proudly develop FunDive, our open-source dive-shop management software.',
+    openSourceAria: 'FunDive: our open-source dive-shop software on GitHub',
+    fundiveAlt: 'FunDive dive shop management software',
   },
   services: {
     title: 'Managed FunDive for dive shops',

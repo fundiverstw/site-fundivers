@@ -85,6 +85,13 @@ export const MARINE_LIFE = [
 
 export type MarineLife = (typeof MARINE_LIFE)[number]
 
+// A translated display label for every creature, keyed by its English name.
+// The English name stays the identifier everywhere (it makes the gallery slug,
+// and dive-site guides list creatures by it); only the label a reader sees is
+// translated. Overlays live in marine-life.ja.ts / marine-life.zh-TW.ts and are
+// resolved through $engine/i18n-content. A parity test keeps them complete.
+export type MarineLifeText = Record<MarineLife, string>
+
 /**
  * The anchor a chip links to, and the gallery folder that fills it.
  *

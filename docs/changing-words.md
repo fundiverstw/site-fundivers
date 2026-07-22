@@ -89,15 +89,17 @@ where you want it to appear:
 
 ## The long write-ups
 
-Some text is too long to live in the dictionary, so it sits in its own file — and it is
-**English only**.
+Some text is too long to live in the dictionary, so it sits in its own file. Each of
+these files keeps the **English** and has a `.zh-TW` and a `.ja` sibling beside it holding
+the translations, keyed by the same id:
 
-| Text | File |
-| --- | --- |
-| The paragraphs on a dive-site page (*Below the Surface*, *Above the Surface*, *How to Get There*) | `src/content/dive-site-guides.ts` |
-| The paragraphs on a course page | `src/content/course-guides.ts` |
-| The one-line summary on a dive-site card | `tagline` in `src/content/dive-sites.ts` |
-| The one-line summary on a course card | `desc` in `src/content/courses.ts` |
+| Text | English file | Translations |
+| --- | --- | --- |
+| The paragraphs on a dive-site page (*Below the Surface*, *Above the Surface*, *How to Get There*) | `src/content/dive-site-guides.ts` | `dive-site-guides.zh-TW.ts`, `dive-site-guides.ja.ts` |
+| The paragraphs on a course page | `src/content/course-guides.ts` | `course-guides.zh-TW.ts`, `course-guides.ja.ts` |
+| A dive-site's name, one-line summary, and its region label | `src/content/dive-sites.ts` | `dive-sites.zh-TW.ts`, `dive-sites.ja.ts` |
+| A course's title and one-line summary | `src/content/courses.ts` | `courses.zh-TW.ts`, `courses.ja.ts` |
+| The creature names on the Photos page and the dive-site chips | `src/content/marine-life.ts` | `marine-life.zh-TW.ts`, `marine-life.ja.ts` |
 
 In `dive-site-guides.ts`, each dive site is a block that starts with its id:
 
@@ -119,6 +121,18 @@ middle by typing `\n\n`:
 ```ts
 overview: 'The first paragraph.\n\nThe second paragraph.',
 ```
+
+When you change or add one of these, do the same in the `.zh-TW` and `.ja` file — the same
+id, the same fields. The block there looks the same, just in the other language and without
+the `marineLife` line (that stays English, because it's what links each creature to its
+photos). As with the dictionary, `npm run check` and the tests stop you if a translation is
+missing a site, a field, or leaves one blank — so a half-translated page never ships. If
+you don't have a translation yet, put the English text in the other two files for now.
+
+> **The English name stays put — even in the translations.** A dive site keeps its English
+> `name` in `dive-sites.ts` because the calendar finds a trip by matching that name. The
+> `.zh-TW`/`.ja` files only change what a *reader* sees. Same for a creature's English name
+> and a course's English title.
 
 ---
 

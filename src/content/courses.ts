@@ -47,6 +47,12 @@ export function courseByRouteId(id: string): CourseCard | null {
   return COURSES.find((c) => courseId(c.slug) === id) ?? null
 }
 
+// The translatable half of a course card: its title and short description.
+// (The `slug`, images and route id stay put — the slug is the outbound link and
+// the id keys the guide.) Overlays live in courses.ja.ts / courses.zh-TW.ts,
+// keyed by course route id (courseId(slug)); $engine/i18n-content merges them.
+export type CourseText = { title: string; desc: string }
+
 export const COURSES: CourseCard[] = [
   {
     title: 'PADI Open Water Course',
@@ -175,3 +181,10 @@ export const COURSES: CourseCard[] = [
     desc: 'Learn to recognize the fish families and species you meet on every dive.',
   },
 ]
+
+// English title + desc keyed by course route id — the fallback, and what the
+// overlay parity test measures against. Built from COURSES so a new course can
+// never be missed here.
+export const COURSES_TEXT_EN: Record<string, CourseText> = Object.fromEntries(
+  COURSES.map((c) => [courseId(c.slug), { title: c.title, desc: c.desc }]),
+)

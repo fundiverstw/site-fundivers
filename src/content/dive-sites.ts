@@ -50,6 +50,80 @@ export const REGION_META: Record<Region, { label: string }> = {
   palau: { label: 'Palau' },
 }
 
+// ── Translatable text, and its per-locale overlays ──────────────────────────
+//
+// A dive site's `name` and `tagline` (and a region's label) are shown to the
+// reader but are ALSO identifiers: the calendar matches trip titles against the
+// English name, and the sites are sorted by it. So the English stays put as the
+// canonical value here, and translations live in overlay files keyed by the
+// same id — dive-sites.ja.ts, dive-sites.zh-TW.ts — merged for display by
+// $engine/i18n-content. `DIVE_SITES_TEXT_EN` below is the English of that same
+// shape, both the fallback and what the parity test measures the overlays
+// against.
+
+/** One dive site's shown-to-the-reader text. */
+export type SiteText = { name: string; tagline: string }
+
+/** A Taiwan region as the /map page names it — a fuller label than REGION_META's
+ *  and a paragraph of description, distinct from the short Sites-page label. */
+export type MapRegionText = { name: string; description: string }
+
+/** Everything on the dive-site pages that gets translated, in one shape. */
+export type DiveSitesText = {
+  /** Short region label (the Sites-page heading). */
+  regions: Record<Region, string>
+  /** The /map page's region name + blurb. */
+  mapRegions: Record<TaiwanRegion, MapRegionText>
+  /** Per dive-site name + tagline, keyed by site id. */
+  sites: Record<string, SiteText>
+}
+
+// The /map page's region text — canonical English. (The map's geometry —
+// centres, bounding boxes — stays in Map.svelte; only the words are here so
+// they can be translated.)
+export const MAP_REGION_TEXT: Record<TaiwanRegion, MapRegionText> = {
+  keelung: {
+    name: 'Keelung / Badouzi',
+    description:
+      'Northern port-area diving, Badouzi Bay reefs and shipwrecks, with Keelung Islet just offshore.',
+  },
+  longdong: {
+    name: 'Long Dong Bay',
+    description:
+      'The classic northeast wall and reef dives, sheer basalt cliffs, deep gullies, dramatic rock formations.',
+  },
+  yilan: {
+    name: 'Yilan / Turtle Island',
+    description:
+      "East-coast diving, Toucheng / Wai'ao reefs, the Cathedral and Cauliflower Garden walls, the Wan An Jian wreck, and Turtle Island offshore (Guishan Dao).",
+  },
+  greenisland: {
+    name: 'Green Island (Lyudao)',
+    description:
+      'Green Island is located off the coast of Taitung, on the southeast coast of Taiwan. It is a favorite dive destination for many locals. Renowned for its impressive visibility, which can reach up to 30–40 m, it is ideal for photography enthusiasts.',
+  },
+  lanyu: {
+    name: 'Lanyu (Orchid Island)',
+    description:
+      'Orchid Island is best known for the Badai Wreck, a Korean lumber-carrying vessel that starts at 26 m and descends to 40 m deep.',
+  },
+  xiaoliuqiu: {
+    name: 'Xiao Liuqiu (Lambai Island)',
+    description:
+      'Xiao Liuqiu / Lambai is a large coral island. Due to its nesting beach, it is home to hundreds of green sea turtles that both snorkelers and divers can enjoy.',
+  },
+  kenting: {
+    name: 'Kenting',
+    description:
+      'Kenting has been a top dive destination in Taiwan for decades. It is best known for its myriad of corals that are plastered atop the reef.',
+  },
+  penghu: {
+    name: 'Penghu Islands',
+    description:
+      "Of all the dive locations in Taiwan, Penghu has the most fish in numbers, size, and diversity! If you have the experience and time, it's a definite must-see!",
+  },
+}
+
 export const DIVE_SITES: DiveSite[] = [
   {
     id: 'cauliflower-garden',
@@ -318,6 +392,19 @@ export const DIVE_SITES: DiveSite[] = [
     international: true,
   },
 ]
+
+// English text in the DiveSitesText shape — the fallback every locale falls back
+// to, and the yardstick the overlay parity test measures against. Assembled from
+// the data above so a new site or region can never be forgotten here.
+export const DIVE_SITES_TEXT_EN: DiveSitesText = {
+  regions: Object.fromEntries(
+    (Object.keys(REGION_META) as Region[]).map((r) => [r, REGION_META[r].label]),
+  ) as Record<Region, string>,
+  mapRegions: MAP_REGION_TEXT,
+  sites: Object.fromEntries(
+    DIVE_SITES.map((s) => [s.id, { name: s.name, tagline: s.tagline ?? '' }]),
+  ),
+}
 
 // Async to preserve the call sites (Map/Sites await it) even though the data is
 // now local and needs no round-trip.

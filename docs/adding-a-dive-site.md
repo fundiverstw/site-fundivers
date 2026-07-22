@@ -41,6 +41,23 @@ That's it — save, and the site appears on the **Sites** page and on the **Map*
 
 For an overseas site, add one more line: `international: true,`.
 
+### Then translate the name and tagline
+
+Add the same id to **`src/content/dive-sites.zh-TW.ts`** and **`src/content/dive-sites.ja.ts`**,
+under `sites:`, with the translated name and tagline:
+
+```ts
+// in dive-sites.zh-TW.ts
+'turtle-cove': { name: '海龜灣', tagline: '綠蠵龜前來覓食的溫和沙灣。' },
+
+// in dive-sites.ja.ts
+'turtle-cove': { name: 'タートル・コーブ', tagline: 'アオウミガメが餌を求めて訪れる穏やかな砂の入り江。' },
+```
+
+`npm run check` fails until both are there — that is how the Japanese and Chinese pages
+never quietly fall back to English. If you don't have translations yet, put the English text
+in for now.
+
 ### If the region doesn't exist yet
 
 Regions are the list at the top of the same file (`keelung`, `kenting`, `palau`…). To add
@@ -53,9 +70,14 @@ one, add its name to the type, then add a label for it in `REGION_META`:
 The label is all a region stores. The Sites page splits the list into Domestic and
 International using the `international` flag on each dive site, not the region.
 
-If it's a **Taiwan** region, the map also needs to know where to draw it. `npm run check`
-will tell you so, by name, pointing at `src/pages/Map.svelte`. That is the only step on
-this page that sends you outside `content/`.
+A new region also needs its label translated: add it under `regions:` in
+`dive-sites.zh-TW.ts` and `dive-sites.ja.ts`.
+
+If it's a **Taiwan** region, two more things. The map needs to know where to draw it —
+add its centre and bounding box to `src/pages/Map.svelte` (`npm run check` points you there
+by name). And the map shows a fuller name and a blurb for each Taiwan region: add the
+English to `MAP_REGION_TEXT` in `dive-sites.ts`, then the translations under `mapRegions:`
+in the two overlay files.
 
 ---
 
@@ -96,6 +118,11 @@ Open **`src/content/dive-site-guides.ts`** and add a block keyed by the same id:
 
 The last five are optional — leave any of them out and that section simply doesn't
 appear. Skip this whole step and the page still works; it just shows less.
+
+Then add the same block to **`src/content/dive-site-guides.zh-TW.ts`** and
+**`src/content/dive-site-guides.ja.ts`**, keyed by the same id — the same fields, in the
+other language, **without the `marineLife` line** (creature names stay English so their
+photo links keep working). `npm run check` and the tests will name any field you miss.
 
 ---
 

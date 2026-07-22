@@ -3,23 +3,23 @@
   import { SIZES, type ResponsiveImage } from '$engine/responsive-image'
   import { path } from '$engine/router'
   import { courseByRouteId, courseId, coursePath, COURSES, type CourseCard } from '$content/courses'
-  import {
-    COURSE_GUIDES,
-    sessionMatchesCourse,
-    type BlockKey,
-    type CourseGuide,
-  } from '$content/course-guides'
+  import { sessionMatchesCourse, type BlockKey, type CourseGuide } from '$content/course-guides'
   import { coursePoolImage } from '$engine/photo-pool'
   import { fetchUpcomingEvents, type UpcomingEvent } from '$engine/events'
   import { formatSpan, twd } from '$engine/format'
   import { registerUrl } from '$content/settings'
-  import { t } from '$engine/i18n'
+  import { t, locale } from '$engine/i18n'
+  import { courseText } from '$engine/i18n-content'
+  import { courseGuide } from '$engine/i18n-guides'
   import CallToAction from '$components/CallToAction.svelte'
 
   // Route param: /courses/<id>.
   let id = $derived($path.replace(/^\/courses\//, '').replace(/\/+$/, ''))
   let course = $derived(courseByRouteId(id))
-  let guide = $derived(course ? (COURSE_GUIDES[courseId(course.slug)] ?? null) : null)
+  let guide = $derived(course ? courseGuide(courseId(course.slug), $locale) : null)
+  // The course's title in the current language (the English title stays the
+  // identifier; courseText resolves the display text).
+  let courseTitle = $derived(course ? courseText(course, $locale).title : '')
 
   // Four images staggered down the page. A course can pin its own set;
   // otherwise we use its cover plus three stable picks from the course photo pool.
@@ -99,7 +99,7 @@
   })
 
   $effect(() => {
-    if (course) document.title = `${course.title} · FunDivers TW`
+    if (course) document.title = `${courseTitle} · FunDivers TW`
   })
 
   // "Where to next" — the guide's picks first, then filled to two with other
@@ -334,10 +334,10 @@
       {#each subsections as keys, i}
         {#snippet body()}
           {#if i === 0}
-            <h1 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">{course.title}</h1>
+            <h1 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">{courseTitle}</h1>
             <div class="glass mt-4 rounded-2xl p-5">
               <p class="text-base leading-relaxed text-brand-100 sm:text-lg">
-                {guide?.intro ?? course.desc}
+                {guide?.intro ?? courseText(course, $locale).desc}
               </p>
             </div>
           {/if}
@@ -349,7 +349,7 @@
             </div>
           {/if}
         {/snippet}
-        {@render row(images[i % images.length], course.title, i % 2 === 1, body)}
+        {@render row(images[i % images.length], courseTitle, i % 2 === 1, body)}
       {/each}
     </div>
 
@@ -401,7 +401,7 @@
               class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"
             ></div>
             <div class="relative z-10 p-4">
-              <h3 class="font-bold text-white">{nc.title}</h3>
+              <h3 class="font-bold text-white">{courseText(nc, $locale).title}</h3>
             </div>
           </a>
         {/each}

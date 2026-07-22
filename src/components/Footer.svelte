@@ -39,11 +39,11 @@
         target="_blank"
         rel="noopener noreferrer"
         class="group inline-flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-5"
-        aria-label="FunDive: our open-source dive-shop software on GitHub"
+        aria-label={$t.footer.openSourceAria}
       >
         <img
           src="/imgs/fundive-logo-dark.svg"
-          alt="FunDive dive shop management software"
+          alt={$t.footer.fundiveAlt}
           class="h-20 w-auto max-w-full opacity-90 transition-opacity group-hover:opacity-100 sm:h-28"
         />
         <span

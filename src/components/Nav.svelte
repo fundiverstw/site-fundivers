@@ -46,7 +46,7 @@
     <button
       type="button"
       onclick={() => (langOpen = !langOpen)}
-      aria-label="Language"
+      aria-label={$t.nav.language}
       aria-haspopup="menu"
       aria-expanded={langOpen}
       class="module flex items-center gap-1 rounded-xl px-2 py-2 text-brand-50"
@@ -127,7 +127,7 @@
         <RadioPlayer />
         <button
           class="text-brand-50 transition-colors hover:text-reef-300"
-          aria-label="Toggle menu"
+          aria-label={$t.nav.menu}
           onclick={() => (open = !open)}
         >
           <MenuIcon {open} />

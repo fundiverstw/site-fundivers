@@ -15,6 +15,8 @@ export const ja: Dict = {
     gear: 'ギア',
     services: 'サービス',
     radio: 'ラジオ番組',
+    menu: 'メニュー',
+    language: '言語',
   },
   gear: {
     title: 'ギアの販売・メンテナンス・レンタル',
@@ -226,8 +228,13 @@ export const ja: Dict = {
     courses: 'コース',
     thisMonth: '今月',
     noEvents: '予定されているイベントはありません。',
+    noCoursesInRange: 'この期間にコースはありません。',
     loadError: 'カレンダーを読み込めませんでした',
     full: 'このイベントは満席です、キャンセル待ちにご登録ください。',
+    toggleDives: 'ダイブの表示切替',
+    filterCourses: 'コースで絞り込み',
+    prevMonth: '前の月',
+    nextMonth: '次の月',
     details: {
       about: 'イベントについて',
       included: '料金に含まれるもの',
@@ -282,6 +289,8 @@ export const ja: Dict = {
     proudly: '台北で 🤿 ❤️ を込めて制作',
     openSource: 'オープンソース',
     openSourceBlurb: 'オープンソースのダイビングショップ管理ソフト「FunDive」を開発しています。',
+    openSourceAria: 'FunDive：オープンソースのダイブショップ運営ソフトウェア（GitHub）',
+    fundiveAlt: 'FunDive ダイブショップ運営ソフトウェア',
   },
   services: {
     title: 'ダイビングショップのためのFunDiveマネージドサービス',

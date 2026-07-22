@@ -1,6 +1,7 @@
 <script lang="ts">
   import { SOCIAL } from '$content/settings'
-  import { t } from '$engine/i18n'
+  import { t, locale } from '$engine/i18n'
+  import { marineLabel } from '$engine/i18n-content'
   import { scrollToId, hashId } from '$engine/router'
   import { GALLERY, ALL_PHOTOS, SHOWCASE, type PhotoMeta } from '$content/photo-gallery'
   import { SIZES } from '$engine/responsive-image'
@@ -120,7 +121,7 @@
           ? 'border-reef-400/40 bg-reef-400/10 text-reef-100 hover:border-reef-400 hover:bg-reef-400/20 hover:text-white'
           : 'border-white/10 text-brand-300 hover:border-white/30 hover:text-brand-100'}"
       >
-        {sect.label}
+        {marineLabel(sect.label, $locale)}
       </a>
     {/each}
   </nav>
@@ -145,7 +146,8 @@
           <span class="mono text-reef-400" aria-hidden="true">
             {filled ? (open[sect.key] ? '▿' : '▹') : '·'}
           </span>
-          <span class="flex-1 text-lg font-bold text-white">{sect.label}</span>
+          <span class="flex-1 text-lg font-bold text-white">{marineLabel(sect.label, $locale)}</span
+          >
           <span class="mono text-xs text-brand-300">
             {filled ? `${sect.photos.length} ${$t.photos.photoCount}` : $t.photos.comingSoon}
           </span>
@@ -167,7 +169,9 @@
                   src={photo.image.src}
                   srcset={photo.image.srcset}
                   sizes={SIZES.gallery}
-                  alt={photo.meta.commonName ?? photo.meta.species ?? `${sect.label} ${i + 1}`}
+                  alt={photo.meta.commonName ??
+                    photo.meta.species ??
+                    `${marineLabel(sect.label, $locale)} ${i + 1}`}
                   width={photo.image.width}
                   height={photo.image.height}
                   loading="lazy"
