@@ -86,13 +86,15 @@
 
 <!-- A compact image card. Square from `sm` up (where the cards sit three-across),
      so the photo's subject stays centred instead of being cropped to a letterbox
-     the way a fill-the-column card was. On a phone it is one-per-row at 16/10. -->
+     the way a fill-the-column card was. On a phone it is one-per-row at 16/10.
+     From `lg` up it is sized by its row's height (h-full, width follows the
+     square) so three strips of them fit the viewport without a scroll. -->
 {#snippet heroCard(ev: UpcomingEvent, big: boolean)}
   {@const price = twd(ev.startingAt)}
   <button
     type="button"
     onclick={() => open(ev)}
-    class={`group relative block aspect-[16/10] w-full overflow-hidden rounded-3xl border border-white/15 text-left transition-all duration-300 hover:-translate-y-0.5 sm:aspect-square ${big ? 'hover:border-mauve/60 hover:shadow-[0_0_26px_-6px_rgba(203,166,247,0.7)]' : 'hover:border-reef-400/60 hover:shadow-[0_0_26px_-6px_rgba(44,208,197,0.65)]'}`}
+    class={`group relative block aspect-[16/10] w-full overflow-hidden rounded-3xl border border-white/15 text-left transition-all duration-300 hover:-translate-y-0.5 sm:aspect-square lg:h-full lg:w-auto ${big ? 'hover:border-mauve/60 hover:shadow-[0_0_26px_-6px_rgba(203,166,247,0.7)]' : 'hover:border-reef-400/60 hover:shadow-[0_0_26px_-6px_rgba(44,208,197,0.65)]'}`}
   >
     <CoverPhoto src={ev.image} />
     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
@@ -127,7 +129,7 @@
   moreHref: string,
   big: boolean,
 )}
-  <div>
+  <div class="flex min-h-0 flex-col lg:flex-1">
     <div class="mb-2 flex items-center justify-between">
       <h2 class="flex items-center gap-2 text-xl font-bold text-white">
         <span class="mono {iconClass}">{icon}</span>{title}
@@ -138,10 +140,14 @@
         >
       {/if}
     </div>
-    <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+    <!-- A grid one-per-row → three-across on a phone/tablet; a height-filling
+         flex row on desktop, where the square cards are sized to fit. They no
+         longer span the column, so they sit left, under their heading, rather
+         than floating in the middle away from it. -->
+    <div class="grid min-h-0 grid-cols-1 gap-3 sm:grid-cols-3 lg:flex lg:flex-1">
       {#if loading}
         {#each Array(3) as _, i (i)}<div
-            class="aspect-[16/10] animate-pulse rounded-3xl bg-white/10 sm:aspect-square"
+            class="aspect-[16/10] animate-pulse rounded-3xl bg-white/10 sm:aspect-square lg:h-full lg:w-auto"
           ></div>{/each}
       {:else if items.length === 0}
         <p class="text-sm text-brand-200 sm:col-span-3">{$t.common.nothingScheduled}</p>
@@ -153,9 +159,11 @@
 {/snippet}
 
 <!-- Hero: three uniform strips — featured, then the soonest dives and courses.
-     Every card is the same square, so no photo is stretched into a letterbox. -->
+     Every card is the same square, so no photo is stretched into a letterbox.
+     On desktop the strips share one viewport-height budget so all three land
+     above the fold; the cards shrink to fit rather than pushing a scroll. -->
 <section class="mx-auto max-w-[1600px] px-4 py-4 sm:px-6">
-  <div class="space-y-6">
+  <div class="flex flex-col gap-4 lg:h-[calc(100vh-12.5rem)]">
     {@render strip('★', 'text-mauve', $t.home.featured, featured, '', true)}
     {@render strip('▹', 'text-reef-400', $t.home.upcomingDives, dives, '/calendar', false)}
     {@render strip('▹', 'text-reef-400', $t.home.upcomingCourses, courses, '/courses', false)}
