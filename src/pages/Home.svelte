@@ -41,8 +41,14 @@
     return [...feat, ...upcoming.filter((e) => !ids.has(e.id)).slice(0, 3 - feat.length)]
   })
   let featuredIds = $derived(new Set(featured.map((e) => e.id)))
+  // Trips (multi-day / away outings) get their own column, so they come out of
+  // the plain-dive column — a dive is either a local fun dive or a trip, never
+  // both here.
   let dives = $derived(
-    upcoming.filter((e) => e.type === 'dive' && !featuredIds.has(e.id)).slice(0, 3),
+    upcoming.filter((e) => e.type === 'dive' && !e.isTrip && !featuredIds.has(e.id)).slice(0, 3),
+  )
+  let trips = $derived(
+    upcoming.filter((e) => e.type === 'dive' && e.isTrip && !featuredIds.has(e.id)).slice(0, 3),
   )
   let courses = $derived(
     upcoming.filter((e) => e.type === 'course' && !featuredIds.has(e.id)).slice(0, 3),
@@ -88,7 +94,7 @@
      so the photo's subject stays centred instead of being cropped to a letterbox
      the way a fill-the-column card was. On a phone it is one-per-row at 16/10.
      From `lg` up it is sized by its row's height (h-full, width follows the
-     square) so three strips of them fit the viewport without a scroll. -->
+     square) so four columns of them fit the viewport without a scroll. -->
 {#snippet heroCard(ev: UpcomingEvent, big: boolean)}
   {@const price = twd(ev.startingAt)}
   <button
@@ -168,16 +174,19 @@
   </div>
 {/snippet}
 
-<!-- Hero: three uniform columns — featured, then the soonest dives and courses.
-     Every card is the same square, so no photo is stretched into a letterbox.
-     On desktop the three columns share one viewport-height budget so all of it
-     lands above the fold; the cards shrink to fit rather than pushing a scroll.
-     On a phone the columns fall back to a natural, scrolling stack. -->
+<!-- Hero: four uniform columns — featured, then the soonest dives, courses and
+     trips. Every card is the same square, so no photo is stretched into a
+     letterbox. On desktop the four columns share one viewport-height budget so
+     all of it lands above the fold; the cards shrink to fit rather than pushing
+     a scroll. On a phone the columns fall back to a natural, scrolling stack. -->
 <section class="mx-auto max-w-[1600px] px-4 py-4 sm:px-6">
-  <div class="flex flex-col gap-4 lg:grid lg:grid-cols-3 lg:gap-6 lg:h-[calc(100vh-12.5rem)]">
+  <div
+    class="flex flex-col gap-4 lg:mx-auto lg:grid lg:max-w-7xl lg:grid-cols-4 lg:gap-x-8 lg:gap-y-4 lg:h-[calc(100vh-12.5rem)]"
+  >
     {@render strip('★', 'text-mauve', $t.home.featured, featured, '', true)}
     {@render strip('▹', 'text-reef-400', $t.home.upcomingDives, dives, '/calendar', false)}
     {@render strip('▹', 'text-reef-400', $t.home.upcomingCourses, courses, '/courses', false)}
+    {@render strip('▹', 'text-sky-300', $t.home.upcomingTrips, trips, '/travel', false)}
   </div>
 </section>
 

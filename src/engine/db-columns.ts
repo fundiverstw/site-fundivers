@@ -20,7 +20,7 @@ export const EVENT_COURSE_COLS =
 
 /** Columns the homepage's "upcoming" cards need for a dive. */
 export const EVENT_UPCOMING_DIVE_COLS =
-  'id, display_title, admin_title, start_date, end_date, start_time, price, fully_booked, featured, notes'
+  'id, display_title, admin_title, start_date, end_date, start_time, price, fully_booked, featured, notes, is_trip'
 
 /** Columns the homepage's "upcoming" cards need for a course. */
 export const EVENT_UPCOMING_COURSE_COLS =

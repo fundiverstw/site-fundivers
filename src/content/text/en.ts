@@ -87,8 +87,9 @@ export const en = {
   },
   home: {
     featured: 'Featured',
-    upcomingDives: 'Upcoming Dives',
-    upcomingCourses: 'Upcoming Courses',
+    upcomingDives: 'Dives',
+    upcomingCourses: 'Courses',
+    upcomingTrips: 'Trips',
     exploreServices: 'Explore our Services',
     exploreServicesIntro:
       'Discover the unique and valuable aspects that make Fun Divers TW the top choice for diving enthusiasts. With our extensive experience and dedication to customer satisfaction, we provide exceptional guided trips and convenient booking services as well as all PADI Recreational Dive Courses.',

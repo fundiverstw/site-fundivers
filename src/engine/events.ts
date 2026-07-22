@@ -23,6 +23,7 @@ import type { ResponsiveImage } from './responsive-image'
 export type UpcomingEvent = {
   id: string
   type: 'dive' | 'course'
+  isTrip: boolean // a dive flagged is_trip — a multi-day / away outing, not a local fun dive
   title: string
   category: string | null // admin_title short code (e.g. 'OW', 'AOW') — course-page matching
   startDate: string // 'YYYY-MM-DD'
@@ -46,6 +47,7 @@ type DiveRow = {
   fully_booked: boolean | null
   featured: boolean | null
   notes: string | null
+  is_trip: boolean | null
 }
 
 type CourseRow = {
@@ -119,6 +121,7 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
     events.push({
       id: d.id,
       type: 'dive',
+      isTrip: d.is_trip ?? false,
       title: d.display_title || d.admin_title || 'Dive',
       category: d.admin_title,
       startDate: d.start_date,
@@ -143,6 +146,7 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
     events.push({
       id: c.id,
       type: 'course',
+      isTrip: false,
       title: c.display_title || c.admin_title || 'Course',
       category: c.admin_title,
       startDate: future[0],

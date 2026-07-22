@@ -84,8 +84,9 @@ export const ja: Dict = {
   },
   home: {
     featured: 'おすすめ',
-    upcomingDives: '今後のダイビング',
-    upcomingCourses: '今後のコース',
+    upcomingDives: 'ダイビング',
+    upcomingCourses: 'コース',
+    upcomingTrips: 'ツアー',
     exploreServices: 'サービス一覧',
     exploreServicesIntro:
       'Fun Divers TW がダイビング愛好家に選ばれる理由をご紹介します。豊富な経験とお客様満足への徹底したこだわりで、質の高いガイドツアーと便利な予約サービス、そして PADI レクリエーショナル・ダイビングコースの全種類をご提供します。',

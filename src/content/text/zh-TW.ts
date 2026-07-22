@@ -83,8 +83,9 @@ export const zhTW: Dict = {
   },
   home: {
     featured: '精選',
-    upcomingDives: '近期潛水',
-    upcomingCourses: '近期課程',
+    upcomingDives: '潛水',
+    upcomingCourses: '課程',
+    upcomingTrips: '旅遊',
     exploreServices: '探索我們的服務',
     exploreServicesIntro:
       '了解讓 Fun Divers TW 成為潛水愛好者首選的獨特之處。憑藉豐富的經驗與對顧客滿意度的堅持，我們提供出色的導潛行程、便捷的預約服務，以及全系列 PADI 休閒潛水課程。',
