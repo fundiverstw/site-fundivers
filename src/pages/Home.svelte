@@ -118,9 +118,9 @@
   </button>
 {/snippet}
 
-<!-- One row of three square cards under a titled header. `big` gives the
-     featured row its mauve accent; `moreHref` is the optional "view all" link
-     (featured has none — it is a hand-picked mix, not a page). -->
+<!-- One category as a column: a titled header over up to three square cards.
+     `big` gives the featured column its mauve accent; `moreHref` is the optional
+     "view all" link (featured has none — it is a hand-picked mix, not a page). -->
 {#snippet strip(
   icon: string,
   iconClass: string,
@@ -131,29 +131,35 @@
 )}
   <div class="flex min-h-0 flex-col">
     <div class="mb-2 flex items-center justify-between">
-      <h2 class="flex items-center gap-2 text-xl font-bold text-white">
-        <span class="mono {iconClass}">{icon}</span>{title}
+      <h2 class="flex items-center gap-2.5 text-xl font-bold text-white">
+        <!-- The section marker. Kept in the accent colour and given its own gap
+             so it reads as a heading bullet, not as the tail of the previous
+             column's teal "View all →" arrow sitting just across the gutter. -->
+        <span class="mono text-lg {iconClass}">{icon}</span>{title}
       </h2>
       {#if moreHref}
-        <a href={moreHref} class="mono text-sm font-semibold text-reef-300 hover:text-reef-200"
+        <a href={moreHref} class="mono text-sm font-semibold text-brand-200 hover:text-reef-200"
           >{$t.common.viewAll} →</a
         >
       {/if}
     </div>
-    <!-- A grid one-per-row → three-across on a phone/tablet; on desktop a
-         height-filling vertical stack, since each category is now its own
-         column. Each card sits in an equal-height slot and is sized square by
-         that slot's height, centred in the column width. -->
-    <div class="grid min-h-0 grid-cols-1 gap-3 sm:grid-cols-3 lg:flex lg:flex-1 lg:flex-col">
+    <!-- A grid one-per-row → three-across on a phone/tablet; on desktop three
+         fixed rows, since each category is now its own column. Fixed rows, not
+         flex-fill, so a card is the same square whether its column lists three
+         events or one — a shorter column just leaves its lower rows empty
+         rather than blowing its cards up to fill the height. -->
+    <div
+      class="grid min-h-0 grid-cols-1 gap-3 sm:grid-cols-3 lg:grid-cols-1 lg:grid-rows-3 lg:flex-1"
+    >
       {#if loading}
         {#each Array(3) as _, i (i)}<div
-            class="aspect-[16/10] animate-pulse rounded-3xl bg-white/10 sm:aspect-square lg:h-full lg:min-h-0 lg:w-auto lg:flex-1"
+            class="aspect-[16/10] animate-pulse rounded-3xl bg-white/10 sm:aspect-square lg:mx-auto lg:h-full lg:min-h-0 lg:w-auto"
           ></div>{/each}
       {:else if items.length === 0}
         <p class="text-sm text-brand-200 sm:col-span-3">{$t.common.nothingScheduled}</p>
       {:else}
         {#each items as ev (ev.id)}
-          <div class="contents lg:flex lg:min-h-0 lg:flex-1 lg:items-center lg:justify-center">
+          <div class="contents lg:flex lg:min-h-0 lg:items-center lg:justify-center">
             {@render heroCard(ev, big)}
           </div>
         {/each}
