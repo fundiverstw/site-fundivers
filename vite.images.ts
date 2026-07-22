@@ -39,10 +39,13 @@ const WIDTHS = [384, 480, 640, 768, 960, 1216]
 // AVIF everywhere. It beats WebP by a wide margin on these underwater photos,
 // and every browser we serve has taken it since Safari 16.4 (2023).
 //
-// quality 50 is measured, not guessed: on this library it is the point where
-// the file stops shrinking noticeably but the backscatter has not yet turned
-// into mush.
-const QUALITY = 50
+// quality 65. An earlier pass ran this at 50 on the theory that the shrinking
+// had flattened out by there; on screen it hadn't — the backscatter and the
+// soft reef textures went visibly mushy, which on a dive-photo site is the one
+// thing the compression must not do. 65 brings the detail back at a modest cost
+// in bytes, and it is still the *resize* — a phone taking a 384px copy instead
+// of the 1200px original — that does the real work of making the site light.
+const QUALITY = 65
 
 // effort 2, and this one is worth explaining because the obvious choice is
 // wrong. sharp's AVIF `effort` runs 0–9 and trades encode time for size. On
