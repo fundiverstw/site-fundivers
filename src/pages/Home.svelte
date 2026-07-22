@@ -84,13 +84,15 @@
   ]
 </script>
 
-<!-- A compact image card; fills its grid cell on desktop, has an aspect on mobile. -->
+<!-- A compact image card. Square from `sm` up (where the cards sit three-across),
+     so the photo's subject stays centred instead of being cropped to a letterbox
+     the way a fill-the-column card was. On a phone it is one-per-row at 16/10. -->
 {#snippet heroCard(ev: UpcomingEvent, big: boolean)}
   {@const price = twd(ev.startingAt)}
   <button
     type="button"
     onclick={() => open(ev)}
-    class={`group relative block aspect-[16/10] w-full overflow-hidden rounded-3xl border border-white/15 text-left transition-all duration-300 hover:-translate-y-0.5 lg:aspect-auto lg:h-full ${big ? 'hover:border-mauve/60 hover:shadow-[0_0_26px_-6px_rgba(203,166,247,0.7)]' : 'hover:border-reef-400/60 hover:shadow-[0_0_26px_-6px_rgba(44,208,197,0.65)]'}`}
+    class={`group relative block aspect-[16/10] w-full overflow-hidden rounded-3xl border border-white/15 text-left transition-all duration-300 hover:-translate-y-0.5 sm:aspect-square ${big ? 'hover:border-mauve/60 hover:shadow-[0_0_26px_-6px_rgba(203,166,247,0.7)]' : 'hover:border-reef-400/60 hover:shadow-[0_0_26px_-6px_rgba(44,208,197,0.65)]'}`}
   >
     <CoverPhoto src={ev.image} />
     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
@@ -114,53 +116,49 @@
   </button>
 {/snippet}
 
-{#snippet strip(title: string, items: UpcomingEvent[], moreHref: string)}
-  <div class="flex min-h-0 flex-1 flex-col">
+<!-- One row of three square cards under a titled header. `big` gives the
+     featured row its mauve accent; `moreHref` is the optional "view all" link
+     (featured has none — it is a hand-picked mix, not a page). -->
+{#snippet strip(
+  icon: string,
+  iconClass: string,
+  title: string,
+  items: UpcomingEvent[],
+  moreHref: string,
+  big: boolean,
+)}
+  <div>
     <div class="mb-2 flex items-center justify-between">
       <h2 class="flex items-center gap-2 text-xl font-bold text-white">
-        <span class="mono text-reef-400">▹</span>{title}
+        <span class="mono {iconClass}">{icon}</span>{title}
       </h2>
-      <a href={moreHref} class="mono text-sm font-semibold text-reef-300 hover:text-reef-200"
-        >{$t.common.viewAll} →</a
-      >
+      {#if moreHref}
+        <a href={moreHref} class="mono text-sm font-semibold text-reef-300 hover:text-reef-200"
+          >{$t.common.viewAll} →</a
+        >
+      {/if}
     </div>
-    <div class="grid min-h-0 flex-1 grid-cols-1 gap-3 sm:grid-cols-3">
+    <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
       {#if loading}
         {#each Array(3) as _, i (i)}<div
-            class="aspect-[16/10] animate-pulse rounded-3xl bg-white/10 lg:aspect-auto"
+            class="aspect-[16/10] animate-pulse rounded-3xl bg-white/10 sm:aspect-square"
           ></div>{/each}
       {:else if items.length === 0}
         <p class="text-sm text-brand-200 sm:col-span-3">{$t.common.nothingScheduled}</p>
       {:else}
-        {#each items as ev (ev.id)}{@render heroCard(ev, false)}{/each}
+        {#each items as ev (ev.id)}{@render heroCard(ev, big)}{/each}
       {/if}
     </div>
   </div>
 {/snippet}
 
-<!-- Hero: featured (left) + upcoming dives/courses (right), fits the viewport. -->
-<section class="mx-auto max-w-[1600px] px-4 py-4 sm:px-6 lg:h-[calc(100vh-11.5rem)]">
-  <div class="grid h-full gap-5 lg:grid-cols-2">
-    <!-- Featured -->
-    <div class="flex min-h-0 flex-col">
-      <h2 class="mb-2 flex items-center gap-2 text-xl font-bold text-white">
-        <span class="mono text-mauve">★</span>{$t.home.featured}
-      </h2>
-      <div class="grid min-h-0 flex-1 grid-cols-1 gap-3 lg:grid-rows-3">
-        {#if loading}
-          {#each Array(3) as _, i (i)}<div
-              class="aspect-[16/10] animate-pulse rounded-3xl bg-white/10 lg:aspect-auto"
-            ></div>{/each}
-        {:else}
-          {#each featured as ev (ev.id)}{@render heroCard(ev, true)}{/each}
-        {/if}
-      </div>
-    </div>
-    <!-- Upcoming dives (top) + courses (bottom) -->
-    <div class="flex min-h-0 flex-col gap-4">
-      {@render strip($t.home.upcomingDives, dives, '/calendar')}
-      {@render strip($t.home.upcomingCourses, courses, '/courses')}
-    </div>
+<!-- Hero: three uniform strips — featured, then the soonest dives and courses.
+     Every card is the same square, so no photo is stretched into a letterbox. -->
+<section class="mx-auto max-w-[1600px] px-4 py-4 sm:px-6">
+  <div class="space-y-6">
+    {@render strip('★', 'text-mauve', $t.home.featured, featured, '', true)}
+    {@render strip('▹', 'text-reef-400', $t.home.upcomingDives, dives, '/calendar', false)}
+    {@render strip('▹', 'text-reef-400', $t.home.upcomingCourses, courses, '/courses', false)}
   </div>
 </section>
 
