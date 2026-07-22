@@ -19,7 +19,7 @@ export const en = {
     gear: 'Gear',
     services: 'Services',
     radio: 'Radio show',
-    menu: 'Menu',
+    menu: 'Toggle menu',
     language: 'Language',
   },
   gear: {

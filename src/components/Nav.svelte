@@ -128,6 +128,7 @@
         <button
           class="text-brand-50 transition-colors hover:text-reef-300"
           aria-label={$t.nav.menu}
+          data-testid="menu-toggle"
           onclick={() => (open = !open)}
         >
           <MenuIcon {open} />

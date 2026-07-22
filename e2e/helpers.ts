@@ -104,12 +104,14 @@ export async function visit(page: Page, route: string, db: FakeDb = {}): Promise
  *
  * Below 768px the navigation bar is replaced by a hamburger button. The button
  * toggles, so calling it twice hides the menu again — this checks first. The
- * href is used as the probe because the link text changes with the language.
+ * href is used as the probe because the link text changes with the language,
+ * and the button is found by its test id for the same reason (its aria-label is
+ * translated too).
  */
 async function ensureMobileMenuOpen(page: Page): Promise<void> {
   const aLink = page.locator('header a[href="/courses"]:visible')
   if ((await aLink.count()) === 0) {
-    await page.locator('button[aria-label="Toggle menu"]:visible').click()
+    await page.locator('button[data-testid="menu-toggle"]:visible').click()
     await aLink.first().waitFor({ state: 'visible' })
   }
 }
