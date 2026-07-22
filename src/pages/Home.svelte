@@ -129,7 +129,7 @@
   moreHref: string,
   big: boolean,
 )}
-  <div class="flex min-h-0 flex-col lg:flex-1">
+  <div class="flex min-h-0 flex-col">
     <div class="mb-2 flex items-center justify-between">
       <h2 class="flex items-center gap-2 text-xl font-bold text-white">
         <span class="mono {iconClass}">{icon}</span>{title}
@@ -140,30 +140,35 @@
         >
       {/if}
     </div>
-    <!-- A grid one-per-row → three-across on a phone/tablet; a height-filling
-         flex row on desktop, where the square cards are sized to fit. They no
-         longer span the column, so they sit left, under their heading, rather
-         than floating in the middle away from it. -->
-    <div class="grid min-h-0 grid-cols-1 gap-3 sm:grid-cols-3 lg:flex lg:flex-1">
+    <!-- A grid one-per-row → three-across on a phone/tablet; on desktop a
+         height-filling vertical stack, since each category is now its own
+         column. Each card sits in an equal-height slot and is sized square by
+         that slot's height, centred in the column width. -->
+    <div class="grid min-h-0 grid-cols-1 gap-3 sm:grid-cols-3 lg:flex lg:flex-1 lg:flex-col">
       {#if loading}
         {#each Array(3) as _, i (i)}<div
-            class="aspect-[16/10] animate-pulse rounded-3xl bg-white/10 sm:aspect-square lg:h-full lg:w-auto"
+            class="aspect-[16/10] animate-pulse rounded-3xl bg-white/10 sm:aspect-square lg:h-full lg:min-h-0 lg:w-auto lg:flex-1"
           ></div>{/each}
       {:else if items.length === 0}
         <p class="text-sm text-brand-200 sm:col-span-3">{$t.common.nothingScheduled}</p>
       {:else}
-        {#each items as ev (ev.id)}{@render heroCard(ev, big)}{/each}
+        {#each items as ev (ev.id)}
+          <div class="contents lg:flex lg:min-h-0 lg:flex-1 lg:items-center lg:justify-center">
+            {@render heroCard(ev, big)}
+          </div>
+        {/each}
       {/if}
     </div>
   </div>
 {/snippet}
 
-<!-- Hero: three uniform strips — featured, then the soonest dives and courses.
+<!-- Hero: three uniform columns — featured, then the soonest dives and courses.
      Every card is the same square, so no photo is stretched into a letterbox.
-     On desktop the strips share one viewport-height budget so all three land
-     above the fold; the cards shrink to fit rather than pushing a scroll. -->
+     On desktop the three columns share one viewport-height budget so all of it
+     lands above the fold; the cards shrink to fit rather than pushing a scroll.
+     On a phone the columns fall back to a natural, scrolling stack. -->
 <section class="mx-auto max-w-[1600px] px-4 py-4 sm:px-6">
-  <div class="flex flex-col gap-4 lg:h-[calc(100vh-12.5rem)]">
+  <div class="flex flex-col gap-4 lg:grid lg:grid-cols-3 lg:gap-6 lg:h-[calc(100vh-12.5rem)]">
     {@render strip('★', 'text-mauve', $t.home.featured, featured, '', true)}
     {@render strip('▹', 'text-reef-400', $t.home.upcomingDives, dives, '/calendar', false)}
     {@render strip('▹', 'text-reef-400', $t.home.upcomingCourses, courses, '/courses', false)}
