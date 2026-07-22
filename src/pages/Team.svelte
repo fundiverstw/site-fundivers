@@ -1,61 +1,17 @@
 <script lang="ts">
   import { CONTACT } from '$content/settings'
-  import { mediaIdLocal } from '$engine/images'
-  import { t } from '$engine/i18n'
-  import type { ResponsiveImage } from '$engine/responsive-image'
+  import { TEAM } from '$content/team'
+  import { t, locale } from '$engine/i18n'
+  import { memberBio } from '$engine/i18n-content'
   import PageHeader from '$components/PageHeader.svelte'
   import Photo from '$components/Photo.svelte'
-
-  // `image` is a self-hosted headshot; `monkey` swaps in a placeholder avatar
-  // when there's no photo yet (Eric). `role` is an i18n key; bios stay English
-  // (first-pass — long personal copy, refine later).
-  type Member = {
-    name: string
-    role: 'idc' | 'instructor' | 'divemaster'
-    bio: string
-    image?: ResponsiveImage | null
-    monkey?: boolean
-    link?: string
-  }
-
-  const team: Member[] = [
-    {
-      name: 'Dennis Wong',
-      role: 'idc',
-      image: mediaIdLocal('b37fef_594f84e342954c95b442c5b67f5fb454~mv2.jpg'),
-      bio: 'Dennis Wong has been scuba diving since 1998. Upon seeing fish big or small in large schools swimming in unison, he wanted to share this mesmerizing underwater world with everyone. He decided to become a PADI Instructor in 2013, and is now IDC Staff since 2018. PADI has awarded him Elite Instructor status for his vigilance and attention to detail from 2020-2023.',
-    },
-    {
-      name: 'Billy Evalt',
-      role: 'instructor',
-      image: mediaIdLocal('b37fef_e2a651d4c1144d2286c2dbd0b9dc8018~mv2.jpg'),
-      bio: 'Billy is a PADI dive instructor from Seattle, Washington. He has been diving since 2008 and has been an instructor since 2012. He first started diving in Vietnam after a friend recommended it and once underwater, he was hooked! He has been diving in many countries, including: Thailand, Turkey, Italy and New Zealand. He became a dive instructor because he loves watching the students’ eyes light up, as his did, when the underwater world is revealed to them. He believes the more divers we have in the world, the better our chances of making a positive change for our oceans!',
-      link: 'https://www.thecookiejartaipei.com/',
-    },
-    {
-      name: 'Mike Lee 李邁先',
-      role: 'idc',
-      image: mediaIdLocal('b37fef_37847cf1b32a413990cb7b558835954f~mv2.jpg'),
-      bio: 'Mike is a PADI scuba instructor from Taiwan. He’s been teaching diving since 2017. Ever since his first dive, he’s been captivated by the peaceful and mysterious world beneath the surface. That passion led him to share the beauty of the ocean with others. He focuses on safety, patience, and building confidence underwater. He takes pride in creating a relaxed and supportive learning environment. Come dive with Mike and the Fun Divers Taiwan team, let’s explore the blue together and make unforgettable underwater memories!',
-    },
-    {
-      name: 'Eric Odle',
-      role: 'divemaster',
-      monkey: true,
-      bio: `Hi, I’m Eric, and I like to dive,
-Mess with computers, and keep things alive.
-I like learning new stuff and having some fun,
-Whether underwater or building something on the run.`,
-      link: 'https://www.ouairei.com',
-    },
-  ]
 </script>
 
 <PageHeader title={$t.team.title} subtitle={$t.team.subtitle} />
 
 <section class="mx-auto max-w-[1600px] px-4 pb-12 sm:px-6 sm:pb-16">
   <div class="grid gap-6 md:grid-cols-2">
-    {#each team as m}
+    {#each TEAM as m}
       <svelte:element
         this={m.link ? 'a' : 'div'}
         href={m.link}
@@ -86,7 +42,9 @@ Whether underwater or building something on the run.`,
             <h3 class="text-lg font-bold text-white">{m.name}</h3>
           </div>
         </div>
-        <p class="mt-4 whitespace-pre-line text-sm leading-relaxed text-brand-100">{m.bio}</p>
+        <p class="mt-4 whitespace-pre-line text-sm leading-relaxed text-brand-100">
+          {memberBio(m.name, $locale)}
+        </p>
         {#if m.link}
           <span
             class="mt-3 inline-block text-xs font-semibold text-reef-300 group-hover:text-reef-200"

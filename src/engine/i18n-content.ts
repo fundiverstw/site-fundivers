@@ -35,6 +35,10 @@ import { marineLifeJa } from '$content/marine-life.ja'
 import { marineLifeZhTW } from '$content/marine-life.zh-TW'
 import type { MarineLifeText } from '$content/marine-life'
 
+import { TEAM_TEXT_EN, type MemberText } from '$content/team'
+import { teamJa } from '$content/team.ja'
+import { teamZhTW } from '$content/team.zh-TW'
+
 // The long editorial guides — the biggest translated payload — resolve in their
 // own module ($engine/i18n-guides), imported only by the two detail pages that
 // render them. Keeping them out of here is what stops the Sites / Courses / Map
@@ -89,4 +93,18 @@ const MARINE_TEXT: Record<Exclude<Locale, 'en'>, MarineLifeText> = {
 export function marineLabel(name: string, l: Locale): string {
   if (l === 'en') return name
   return MARINE_TEXT[l][name as keyof MarineLifeText] ?? name
+}
+
+// ── Team ────────────────────────────────────────────────────────────────────
+
+const TEAM_TEXT: Record<Locale, Record<string, MemberText>> = {
+  en: TEAM_TEXT_EN,
+  ja: teamJa,
+  'zh-TW': teamZhTW,
+}
+
+/** A team member's bio in the current language, keyed by name (falls back to
+ *  English). */
+export function memberBio(name: string, l: Locale): string {
+  return TEAM_TEXT[l][name]?.bio ?? TEAM_TEXT_EN[name]?.bio ?? ''
 }

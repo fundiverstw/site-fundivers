@@ -12,6 +12,10 @@ import { MARINE_LIFE } from './marine-life'
 import { marineLifeJa } from './marine-life.ja'
 import { marineLifeZhTW } from './marine-life.zh-TW'
 
+import { TEAM_TEXT_EN } from './team'
+import { teamJa } from './team.ja'
+import { teamZhTW } from './team.zh-TW'
+
 import { DIVE_SITE_GUIDES } from './dive-site-guides'
 import { diveSiteGuidesJa } from './dive-site-guides.ja'
 import { diveSiteGuidesZhTW } from './dive-site-guides.zh-TW'
@@ -74,6 +78,7 @@ const domains = {
   'dive-sites': { en: DIVE_SITES_TEXT_EN, ja: diveSitesJa, 'zh-TW': diveSitesZhTW },
   courses: { en: COURSES_TEXT_EN, ja: coursesJa, 'zh-TW': coursesZhTW },
   'marine-life': { en: marineEn, ja: marineLifeJa, 'zh-TW': marineLifeZhTW },
+  team: { en: TEAM_TEXT_EN, ja: teamJa, 'zh-TW': teamZhTW },
   'dive-site-guides': { en: diveGuidesEn, ja: diveSiteGuidesJa, 'zh-TW': diveSiteGuidesZhTW },
   'course-guides': { en: courseGuidesEn, ja: courseGuidesJa, 'zh-TW': courseGuidesZhTW },
 } as const
