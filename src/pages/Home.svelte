@@ -14,6 +14,16 @@
   let loading = $state(true)
   let selected = $state<ModalEvent | null>(null)
 
+  // The third card in each hero column sits just below the fold on desktop, so
+  // show a scroll hint until the reader moves off the top of the page.
+  let atTop = $state(true)
+  $effect(() => {
+    const onScroll = () => (atTop = window.scrollY < 24)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  })
+
   function open(ev: UpcomingEvent) {
     selected = {
       id: ev.id,
@@ -160,6 +170,25 @@
     {@render strip('▹', 'text-reef-400', $t.home.upcomingCourses, courses, false)}
   </div>
 </section>
+
+<!-- Scroll hint: on desktop the third card in each column peeks below the fold,
+     so a gentle bouncing chevron nudges the reader onward. It fades away the
+     moment they leave the top of the page, and never shows on a phone (where the
+     stacked layout already scrolls). Decorative — pointer-events stay off. -->
+<div
+  aria-hidden="true"
+  class={`pointer-events-none fixed inset-x-0 bottom-5 z-30 hidden justify-center transition-opacity duration-500 lg:flex ${atTop ? 'opacity-100' : 'opacity-0'}`}
+>
+  <svg
+    class="h-7 w-7 animate-bounce text-reef-300 drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    stroke-width="2"
+  >
+    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+  </svg>
+</div>
 
 <!-- Explore our Services -->
 <section class="mx-auto max-w-[1600px] px-4 py-12 sm:px-6 sm:py-16">
