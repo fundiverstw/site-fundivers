@@ -11,7 +11,12 @@
   const price = (amount: number) => twd(amount) ?? ''
 </script>
 
-<PageHeader title={$t.services.title} subtitle={$t.services.subtitle} />
+<PageHeader
+  title={$t.services.title}
+  subtitle={$t.services.subtitle}
+  logo="/imgs/fundive-logo-dark.svg"
+  logoAlt="FunDive"
+/>
 
 <div class="mx-auto max-w-5xl px-4 pb-20 sm:px-6">
   <!-- What FunDive is, and the choice a shop has -->
