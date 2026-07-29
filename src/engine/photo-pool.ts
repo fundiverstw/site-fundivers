@@ -3,14 +3,21 @@
 //
 //   photos/dive-sites/<dive-site-id>/   one or more photos of that dive site
 //   photos/general/                     fallback dive shots (unmatched / trips)
-//   photos/courses/                     course-class photos
+//   photos/courses/<course-route-id>/   photos of that specific course type
+//
+// Course photos are grouped by course: `photos/courses/<id>/` (the id is
+// courseId(slug) from content/courses.ts) holds shots of that course, so a
+// course's detail page draws from its own folder. Any loose photo left directly
+// under photos/courses/ joins a shared course pool used as the fallback when a
+// course's own folder is empty (and for the mixed calendar, which isn't tied to
+// one course).
 //
 // Drop more photos into any folder and they're picked up automatically (the
 // glob runs at build time — no manifest to edit, no duplicated files). Used two
 // ways: `siteImage(id)` gives a dive site its cover (Sites / Travel / detail
 // pages); `eventImage(ev)` gives an event card a photo — a dive matches its site
 // by title keyword and gets a random photo (repeats minimised on screen);
-// courses draw from the course folder.
+// courses draw from the course pool.
 
 import { EVENT_TITLE_MATCHERS } from '$content/dive-sites'
 import type { ResponsiveImage } from './responsive-image'
@@ -28,18 +35,28 @@ const files = import.meta.glob(
 
 const sitePools: Record<string, ResponsiveImage[]> = {}
 const generalPool: ResponsiveImage[] = []
-const coursePool: ResponsiveImage[] = []
+// Per-course pools keyed by course route id (the folder name under courses/),
+// plus every course photo in one pool for the fallback / mixed-calendar case.
+const coursePools: Record<string, ResponsiveImage[]> = {}
+const coursePoolAll: ResponsiveImage[] = []
 
 for (const [path, image] of Object.entries(files)) {
   if (path.includes('/general/')) generalPool.push(image)
-  else if (path.includes('/courses/')) coursePool.push(image)
-  else {
+  else if (path.includes('/courses/')) {
+    coursePoolAll.push(image)
+    // A photo inside courses/<id>/ also joins that course's own pool; one left
+    // loose directly under courses/ has no subfolder and stays fallback-only.
+    const m = path.match(/\/courses\/([^/]+)\//)
+    if (m) (coursePools[m[1]] ??= []).push(image)
+  } else {
     const m = path.match(/\/dive-sites\/([^/]+)\//)
     if (m) (sitePools[m[1]] ??= []).push(image)
   }
 }
-// Stable order so a site's "cover" (first photo) doesn't change between builds.
+// Stable order so a "cover" (first photo) doesn't change between builds.
 for (const k of Object.keys(sitePools)) sitePools[k].sort((a, b) => a.src.localeCompare(b.src))
+for (const k of Object.keys(coursePools)) coursePools[k].sort((a, b) => a.src.localeCompare(b.src))
+coursePoolAll.sort((a, b) => a.src.localeCompare(b.src))
 
 /** A dive site's cover photo (first in its folder), or null if it has none. */
 export function siteImage(siteId: string): ResponsiveImage | null {
@@ -89,7 +106,9 @@ export function eventImage(ev: {
 
   let pool: ResponsiveImage[]
   if (ev.type === 'course') {
-    pool = coursePool.length ? coursePool : generalPool
+    // The calendar mixes every course, so it draws from all course photos (not
+    // one course's folder), falling back to general shots if there are none.
+    pool = coursePoolAll.length ? coursePoolAll : generalPool
   } else {
     const site = siteIdForTitle(ev.title)
     const sitePool = (site && sitePools[site]) || []
@@ -103,14 +122,18 @@ export function eventImage(ev: {
   return image
 }
 
-/** A course-class photo for a course that hasn't pinned its own (keyed +
- *  memoized so it stays stable across re-renders). Falls back to the general
- *  pool if the course folder is empty. Used to fill the staggered detail page. */
-export function coursePoolImage(seed: string): ResponsiveImage | null {
-  const key = `course-pool:${seed}`
+/** A photo for a course that hasn't pinned its own (keyed + memoized so it stays
+ *  stable across re-renders). Prefers the course's own folder
+ *  (photos/courses/<courseId>/); falls back to the shared course pool, then the
+ *  general pool, when that folder is empty. Used to fill the staggered detail
+ *  page. `seed` keeps repeat calls for the same course distinct. */
+export function coursePoolImage(courseId: string, seed: string): ResponsiveImage | null {
+  const key = `course-pool:${courseId}:${seed}`
   const cached = assigned.get(key)
   if (cached) return cached
-  const image = pick(coursePool.length ? coursePool : generalPool)
+  const own = coursePools[courseId] ?? []
+  const pool = own.length ? own : coursePoolAll.length ? coursePoolAll : generalPool
+  const image = pick(pool)
   if (image) assigned.set(key, image)
   return image
 }

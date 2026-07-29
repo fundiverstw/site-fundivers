@@ -28,9 +28,9 @@
     if (course.images) return course.images
     return [
       course.image,
-      coursePoolImage(`${id}-2`) ?? course.image,
-      coursePoolImage(`${id}-3`) ?? course.image,
-      coursePoolImage(`${id}-4`) ?? course.image,
+      coursePoolImage(id, '2') ?? course.image,
+      coursePoolImage(id, '3') ?? course.image,
+      coursePoolImage(id, '4') ?? course.image,
     ]
   })
 
