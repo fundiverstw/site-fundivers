@@ -43,7 +43,7 @@ export const TEAM: Member[] = [
   {
     name: 'Eric Odle',
     role: 'divemaster',
-    monkey: true,
+    image: mediaIdLocal('fabio'),
     bio: `Hi, I’m Eric, and I like to dive,
 Mess with computers, and keep things alive.
 I like learning new stuff and having some fun,
