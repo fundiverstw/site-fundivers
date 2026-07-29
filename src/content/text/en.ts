@@ -294,7 +294,7 @@ export const en = {
     openSourceAria: 'FunDive: our open-source dive-shop software on GitHub',
     fundiveAlt: 'FunDive dive shop management software',
   },
-  services: {
+  fundive: {
     title: 'Managed FunDive for dive shops',
     subtitle: 'We build it. You own it.',
     intro: [
@@ -311,7 +311,6 @@ export const en = {
     monthlyTitle: 'Managed service',
     monthlyBlurb: 'A flat monthly fee for ongoing maintenance, updates and technical support.',
     perMonth: '/month',
-    fromLabel: 'From',
     plainPricing: ['No complicated pricing.', 'No hidden fees.', 'No long-term commitment.'],
     guarantees: ['Cancel anytime', 'Restart anytime', 'No cancellation fees', 'No obligation'],
     guaranteeNote:
@@ -388,47 +387,9 @@ export const en = {
     ],
     leavingSlogans: ['No proprietary platform.', 'No forced migration.', 'No vendor lock-in.'],
 
-    websitesTitle: 'Full-service dive shop websites',
-    websites: [
-      'Already have a website that needs improving? We also build and maintain websites for dive shops that want a better presence online.',
-      'A dive shop website is often the first impression a customer has, before they book a course, a trip, or a set of gear. We build fast, modern, search-engine-friendly sites designed to bring you more divers.',
-    ],
-    websiteServiceTitle: 'Website development',
-    websiteService: [
-      'Design built around search engines',
-      'Working with your team on structure, content and branding',
-      'Modern layouts that work on any screen',
-      'Cloudflare hosting',
-      'Fast, secure, low-maintenance deployments',
-      'Ongoing improvements and updates',
-    ],
-    websiteServiceNote:
-      'We build them on the same principles as FunDive: reliable infrastructure, modern technology, and full ownership for you.',
-
-    websitePricingTitle: 'Website pricing',
-    websiteSetupTitle: 'Website setup',
-    websiteSetupIncludes: [
-      'Planning and design, together with you',
-      'Development and deployment',
-      'Cloud infrastructure setup',
-      'Domain and SSL certificate',
-      'A structure search engines understand',
-    ],
-    websiteMaintenanceTitle: 'Website maintenance',
-    websiteMaintenanceIncludes: [
-      'Content updates',
-      'Technical maintenance',
-      'Security updates',
-      'Infrastructure management',
-      'Ongoing improvements',
-      'Support requests',
-    ],
-    websitePricingNote:
-      'A website needs more back-and-forth and more work specific to your shop, so website projects are priced separately from running FunDive.',
-
-    closingTitle: 'One technology partner for your dive shop',
+    closingTitle: 'Software you actually own',
     closingBlurb:
-      'Whether you need a dive shop management system, a website that brings in divers, or someone to keep the lights on, we help you build digital infrastructure you actually own.',
+      'Whether your shop runs FunDive itself or has us manage it, you keep full ownership of your software, your data, and the infrastructure it runs on.',
     closing: [
       'Open-source software',
       'Infrastructure owned by you',
@@ -440,6 +401,88 @@ export const en = {
     ctaBlurb: 'Tell us about your shop, and we will work out together what you actually need.',
     emailUs: 'Email us',
   },
+
+  // The dive-shop website service, its own offering separate from running FunDive.
+  websites: {
+    title: 'Full-service dive shop websites',
+    subtitle: 'Fast, modern sites that bring you more divers.',
+    intro: [
+      'Already have a website that needs improving? We also build and maintain websites for dive shops that want a better presence online.',
+      'A dive shop website is often the first impression a customer has, before they book a course, a trip, or a set of gear. We build fast, modern, search-engine-friendly sites designed to bring you more divers.',
+    ],
+    serviceTitle: 'Website development',
+    service: [
+      'Design built around search engines',
+      'Working with your team on structure, content and branding',
+      'Modern layouts that work on any screen',
+      'Cloudflare hosting',
+      'Fast, secure, low-maintenance deployments',
+      'Ongoing improvements and updates',
+    ],
+    serviceNote:
+      'We build them on the same principles as FunDive: reliable infrastructure, modern technology, and full ownership for you.',
+    pricingTitle: 'Website pricing',
+    fromLabel: 'From',
+    perMonth: '/month',
+    setupTitle: 'Website setup',
+    setupIncludes: [
+      'Planning and design, together with you',
+      'Development and deployment',
+      'Cloud infrastructure setup',
+      'Domain and SSL certificate',
+      'A structure search engines understand',
+    ],
+    maintenanceTitle: 'Website maintenance',
+    maintenanceIncludes: [
+      'Content updates',
+      'Technical maintenance',
+      'Security updates',
+      'Infrastructure management',
+      'Ongoing improvements',
+      'Support requests',
+    ],
+    pricingNote:
+      'A website needs more back-and-forth and more work specific to your shop, so website projects are priced separately from running FunDive.',
+    slogan: 'We build it. You own it.',
+    ctaTitle: 'Talk to us',
+    ctaBlurb: 'Tell us about your shop and the site you want, and we will map it out together.',
+    emailUs: 'Email us',
+  },
+
+  // The /services hub: one card per offering, linking to each service's page.
+  services: {
+    title: 'Our Services',
+    subtitle: 'Diving, gear, tours, and the software behind the scenes.',
+    gearTitle: 'Gear Sales, Service & Rental',
+    gearDesc: 'Buy, rent, or have us service your scuba and freediving gear.',
+    cyclingTitle: 'Taipei Cycling Tours',
+    cyclingDesc: 'Six hours of fun, sun, exercise, and history on two wheels through Taipei.',
+    fundiveTitle: 'FunDive for dive shops',
+    fundiveDesc: 'Open-source dive-shop management software. We build it, you own it.',
+    websitesTitle: 'Website Development',
+    websitesDesc: 'Fast, modern, search-friendly websites built for dive shops.',
+    learnMore: 'Learn more',
+  },
+
+  cycling: {
+    title: 'Taipei Cycling Tours',
+    subtitle: '6 hours of fun, sun, exercise, and history.',
+    intro: [
+      'See Taipei the way it is meant to be seen — from the saddle. Our guided tour rolls through the city over a full six hours, mixing easy riding with the stories behind the streets.',
+      'It is a relaxed day out: good company, fresh air, a bit of a workout, and a real feel for the city and its history along the way.',
+    ],
+    highlightsTitle: 'What the day is made of',
+    highlights: [
+      { label: 'Fun', text: 'A laid-back ride with a friendly guide and good company.' },
+      { label: 'Sun', text: 'A full day outdoors, taking in the city in the open air.' },
+      { label: 'Exercise', text: 'Six gentle hours on two wheels — moving, not racing.' },
+      { label: 'History', text: 'The stories behind Taipei’s streets, temples, and landmarks.' },
+    ],
+    ctaTitle: 'Ready to ride?',
+    ctaText: 'Email us to book your Taipei cycling tour, or to ask about dates and group sizes.',
+    emailUs: 'Email us',
+  },
+
   notFound: {
     code: '404',
     title: 'Page not found',

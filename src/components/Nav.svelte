@@ -14,7 +14,6 @@
   ])
   let rightLinks = $derived([
     { href: '/travel', label: $t.nav.travel },
-    { href: '/gear', label: $t.nav.gear },
     { href: '/services', label: $t.nav.services },
     { href: '/team', label: $t.nav.team },
   ])
@@ -32,7 +31,7 @@
   }
 
   function linkClass(href: string): string {
-    // Nine links have to fit beside the logo. They grow with the window rather
+    // Eight links have to fit beside the logo. They grow with the window rather
     // than overflowing it: at 1280 the whole bar, globe included, must be on
     // screen. See the 'the whole navigation fits' test in e2e/navigation.spec.ts.
     const base =
@@ -80,7 +79,7 @@
 <header class="bg-transparent">
   <div class="mx-auto max-w-[1600px] px-4 sm:px-6">
     <!-- Desktop: logo at the far left, links + globe to its right.
-         Shown from xl (1280px), not md. Nine links plus the logo simply do not
+         Shown from xl (1280px), not md. Eight links plus the logo simply do not
          fit below that: the bar used to run off the side of the page and give
          every tablet a horizontal scrollbar. Narrower screens get the menu
          button below, which is built to fit. -->

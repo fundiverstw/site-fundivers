@@ -13,7 +13,7 @@ export const zhTW: Dict = {
     calendar: '行事曆',
     team: '團隊',
     gear: '裝備',
-    services: '技術服務',
+    services: '服務',
     radio: '廣播節目',
     menu: '切換選單',
     language: '語言',
@@ -285,7 +285,7 @@ export const zhTW: Dict = {
     openSourceAria: 'FunDive：我們的開源潛店管理軟體（GitHub）',
     fundiveAlt: 'FunDive 潛店管理軟體',
   },
-  services: {
+  fundive: {
     title: '為潛水店打造的 FunDive 託管服務',
     subtitle: '我們負責建置，您擁有一切。',
     intro: [
@@ -302,7 +302,6 @@ export const zhTW: Dict = {
     monthlyTitle: '託管服務',
     monthlyBlurb: '固定月費，包含持續的維護、更新與技術支援。',
     perMonth: '／月',
-    fromLabel: '起',
     plainPricing: ['沒有複雜的計價。', '沒有隱藏費用。', '沒有長期綁約。'],
     guarantees: ['隨時取消', '隨時重啟', '無取消費用', '無任何義務'],
     guaranteeNote: '您繼續使用這項服務，是因為它值得，而不是因為被綁住。',
@@ -370,13 +369,25 @@ export const zhTW: Dict = {
     ],
     leavingSlogans: ['沒有專有平台。', '沒有被迫遷移。', '沒有廠商綁定。'],
 
-    websitesTitle: '潛水店網站全套服務',
-    websites: [
+    closingTitle: '真正屬於您的軟體',
+    closingBlurb:
+      '無論貴店自行運作 FunDive，或交由我們託管，軟體、資料，以及運行它的基礎設施，所有權都完全屬於您。',
+    closing: ['開源軟體', '基礎設施屬於您', '由潛水人親手正確建置', '長期的支援'],
+    slogan: '我們負責建置，您擁有一切。',
+    ctaTitle: '與我們聊聊',
+    ctaBlurb: '告訴我們貴店的情況，我們一起釐清您真正需要什麼。',
+    emailUs: '寄信給我們',
+  },
+
+  websites: {
+    title: '潛水店網站全套服務',
+    subtitle: '快速、現代的網站，為您帶來更多潛水人。',
+    intro: [
       '已經有網站但想要更好？我們也為潛水店建置與維護網站，提升線上能見度。',
       '在顧客報名課程、行程或購買裝備之前，潛水店的網站往往是他們的第一印象。我們打造快速、現代、對搜尋引擎友善的網站，為您帶來更多潛水人。',
     ],
-    websiteServiceTitle: '網站開發',
-    websiteService: [
+    serviceTitle: '網站開發',
+    service: [
       '以搜尋引擎為核心的設計',
       '與您的團隊共同規劃結構、內容與品牌',
       '適應各種螢幕的現代版面',
@@ -384,20 +395,21 @@ export const zhTW: Dict = {
       '快速、安全、低維護的部署',
       '持續的改進與更新',
     ],
-    websiteServiceNote:
+    serviceNote:
       '我們以與 FunDive 相同的原則打造：可靠的基礎設施、現代的技術，以及完全屬於您的所有權。',
-
-    websitePricingTitle: '網站價格',
-    websiteSetupTitle: '網站建置',
-    websiteSetupIncludes: [
+    pricingTitle: '網站價格',
+    fromLabel: '起',
+    perMonth: '／月',
+    setupTitle: '網站建置',
+    setupIncludes: [
       '與您一同規劃與設計',
       '開發與部署',
       '雲端基礎設施建置',
       '網域與 SSL 憑證',
       '搜尋引擎理解得了的網站結構',
     ],
-    websiteMaintenanceTitle: '網站維護',
-    websiteMaintenanceIncludes: [
+    maintenanceTitle: '網站維護',
+    maintenanceIncludes: [
       '內容更新',
       '技術維護',
       '安全性更新',
@@ -405,18 +417,47 @@ export const zhTW: Dict = {
       '持續改進',
       '支援需求',
     ],
-    websitePricingNote:
+    pricingNote:
       '網站需要更多往返討論、更多針對貴店的客製工作，因此網站專案與 FunDive 託管分開計價。',
-
-    closingTitle: '潛水店的單一技術夥伴',
-    closingBlurb:
-      '無論您需要的是潛水店管理系統、能帶來客人的網站，還是有人幫您把系統顧好，我們都能協助您打造真正屬於自己的數位基礎設施。',
-    closing: ['開源軟體', '基礎設施屬於您', '由潛水人親手正確建置', '長期的支援'],
     slogan: '我們負責建置，您擁有一切。',
     ctaTitle: '與我們聊聊',
-    ctaBlurb: '告訴我們貴店的情況，我們一起釐清您真正需要什麼。',
+    ctaBlurb: '告訴我們貴店的情況與想要的網站，我們一起把它規劃出來。',
     emailUs: '寄信給我們',
   },
+
+  services: {
+    title: '我們的服務',
+    subtitle: '潛水、器材、旅遊，以及背後支撐這一切的軟體。',
+    gearTitle: '器材銷售、保養與租借',
+    gearDesc: '選購、租借，或交由我們保養您的水肺與自由潛水器材。',
+    cyclingTitle: '台北單車導覽',
+    cyclingDesc: '騎上單車，展開 6 小時的歡樂、陽光、運動與歷史，穿梭台北街頭。',
+    fundiveTitle: '給潛水店的 FunDive',
+    fundiveDesc: '開源的潛水店管理軟體。我們負責建置，您完全擁有。',
+    websitesTitle: '網站開發',
+    websitesDesc: '為潛水店打造的快速、現代、對搜尋引擎友善的網站。',
+    learnMore: '了解更多',
+  },
+
+  cycling: {
+    title: '台北單車導覽',
+    subtitle: '6 小時的歡樂、陽光、運動與歷史。',
+    intro: [
+      '台北，就該從單車座墊上細細品味。專人導覽帶您用整整六個小時騎行城市，一邊輕鬆踩踏，一邊聆聽街道背後的故事。',
+      '這是悠閒的一天：好夥伴、新鮮空氣、適度的運動，還有一路上對這座城市與歷史的真切感受。',
+    ],
+    highlightsTitle: '這一天的內容',
+    highlights: [
+      { label: '歡樂', text: '親切的導覽與好夥伴相伴，輕鬆愜意的騎行。' },
+      { label: '陽光', text: '一整天在戶外，在開闊的空氣中盡情感受城市。' },
+      { label: '運動', text: '騎著單車的悠閒六小時——是移動，不是競速。' },
+      { label: '歷史', text: '台北街道、廟宇與地標背後的故事。' },
+    ],
+    ctaTitle: '準備出發了嗎？',
+    ctaText: '來信即可預約台北單車導覽，或詢問可預約日期與團體人數。',
+    emailUs: '來信洽詢',
+  },
+
   notFound: {
     code: '404',
     title: '找不到頁面',

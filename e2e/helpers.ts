@@ -10,6 +10,9 @@ export const ROUTES = [
   '/travel',
   '/gear',
   '/services',
+  '/fundive',
+  '/websites',
+  '/cycling',
   '/calendar',
   '/team',
 ] as const
