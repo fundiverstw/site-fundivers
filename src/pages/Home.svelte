@@ -41,14 +41,10 @@
     return [...feat, ...upcoming.filter((e) => !ids.has(e.id)).slice(0, 3 - feat.length)]
   })
   let featuredIds = $derived(new Set(featured.map((e) => e.id)))
-  // Trips (multi-day / away outings) get their own column, so they come out of
-  // the plain-dive column — a dive is either a local fun dive or a trip, never
-  // both here.
+  // "Trip" isn't its own event kind — it's a dive flagged is_trip (a multi-day /
+  // away outing). Local fun dives and trips share this one Dives column.
   let dives = $derived(
-    upcoming.filter((e) => e.type === 'dive' && !e.isTrip && !featuredIds.has(e.id)).slice(0, 3),
-  )
-  let trips = $derived(
-    upcoming.filter((e) => e.type === 'dive' && e.isTrip && !featuredIds.has(e.id)).slice(0, 3),
+    upcoming.filter((e) => e.type === 'dive' && !featuredIds.has(e.id)).slice(0, 3),
   )
   let courses = $derived(
     upcoming.filter((e) => e.type === 'course' && !featuredIds.has(e.id)).slice(0, 3),
@@ -90,17 +86,16 @@
   ]
 </script>
 
-<!-- A compact image card. Square from `sm` up (where the cards sit three-across),
-     so the photo's subject stays centred instead of being cropped to a letterbox
-     the way a fill-the-column card was. On a phone it is one-per-row at 16/10.
-     From `lg` up it is sized by its row's height (h-full, width follows the
-     square) so four columns of them fit the viewport without a scroll. -->
+<!-- An event card that fills its column's full width, so the photo is as large as
+     the layout allows. Slightly oblong (4/3) from `sm` up rather than a letterbox
+     or a square, so the subject reads big without being cropped tight. On a phone
+     it is one-per-row at 16/10. -->
 {#snippet heroCard(ev: UpcomingEvent, big: boolean)}
   {@const price = twd(ev.startingAt)}
   <button
     type="button"
     onclick={() => open(ev)}
-    class={`group relative block aspect-[16/10] w-full overflow-hidden rounded-3xl border border-white/15 text-left transition-all duration-300 hover:-translate-y-0.5 sm:aspect-square lg:h-full lg:w-auto ${big ? 'hover:border-mauve/60 hover:shadow-[0_0_26px_-6px_rgba(203,166,247,0.7)]' : 'hover:border-reef-400/60 hover:shadow-[0_0_26px_-6px_rgba(44,208,197,0.65)]'}`}
+    class={`group relative block aspect-[16/10] w-full overflow-hidden rounded-3xl border border-white/15 text-left transition-all duration-300 hover:-translate-y-0.5 sm:aspect-[4/3] ${big ? 'hover:border-mauve/60 hover:shadow-[0_0_26px_-6px_rgba(203,166,247,0.7)]' : 'hover:border-reef-400/60 hover:shadow-[0_0_26px_-6px_rgba(44,208,197,0.65)]'}`}
   >
     <CoverPhoto src={ev.image} />
     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
@@ -124,69 +119,45 @@
   </button>
 {/snippet}
 
-<!-- One category as a column: a titled header over up to three square cards.
-     `big` gives the featured column its mauve accent; `moreHref` is the optional
-     "view all" link (featured has none — it is a hand-picked mix, not a page). -->
+<!-- One category as a column: a titled header over up to three cards.
+     `big` gives the featured column its mauve accent. -->
 {#snippet strip(
   icon: string,
   iconClass: string,
   title: string,
   items: UpcomingEvent[],
-  moreHref: string,
   big: boolean,
 )}
-  <div class="flex min-h-0 flex-col">
-    <div class="mb-2 flex items-center justify-between">
-      <h2 class="flex items-center gap-2.5 text-xl font-bold text-white">
-        <!-- The section marker. Kept in the accent colour and given its own gap
-             so it reads as a heading bullet, not as the tail of the previous
-             column's teal "View all →" arrow sitting just across the gutter. -->
-        <span class="mono text-lg {iconClass}">{icon}</span>{title}
-      </h2>
-      {#if moreHref}
-        <a href={moreHref} class="mono text-sm font-semibold text-brand-200 hover:text-reef-200"
-          >{$t.common.viewAll} →</a
-        >
-      {/if}
-    </div>
-    <!-- A grid one-per-row → three-across on a phone/tablet; on desktop three
-         fixed rows, since each category is now its own column. Fixed rows, not
-         flex-fill, so a card is the same square whether its column lists three
-         events or one — a shorter column just leaves its lower rows empty
-         rather than blowing its cards up to fill the height. -->
-    <div
-      class="grid min-h-0 grid-cols-1 gap-3 sm:grid-cols-3 lg:grid-cols-1 lg:grid-rows-3 lg:flex-1"
-    >
+  <div class="flex flex-col">
+    <h2 class="mb-2 flex items-center gap-2.5 text-xl font-bold text-white">
+      <span class="mono text-lg {iconClass}">{icon}</span>{title}
+    </h2>
+    <!-- One-per-row on a phone, three-across on a tablet, and a single stacked
+         column on desktop, where each category is its own column. -->
+    <div class="grid grid-cols-1 gap-3 sm:grid-cols-3 lg:grid-cols-1">
       {#if loading}
         {#each Array(3) as _, i (i)}<div
-            class="aspect-[16/10] animate-pulse rounded-3xl bg-white/10 sm:aspect-square lg:mx-auto lg:h-full lg:min-h-0 lg:w-auto"
+            class="aspect-[16/10] animate-pulse rounded-3xl bg-white/10 sm:aspect-[4/3]"
           ></div>{/each}
       {:else if items.length === 0}
         <p class="text-sm text-brand-200 sm:col-span-3">{$t.common.nothingScheduled}</p>
       {:else}
         {#each items as ev (ev.id)}
-          <div class="contents lg:flex lg:min-h-0 lg:items-center lg:justify-center">
-            {@render heroCard(ev, big)}
-          </div>
+          {@render heroCard(ev, big)}
         {/each}
       {/if}
     </div>
   </div>
 {/snippet}
 
-<!-- Hero: four uniform columns — featured, then the soonest dives, courses and
-     trips. Every card is the same square, so no photo is stretched into a
-     letterbox. On desktop the four columns share one viewport-height budget so
-     all of it lands above the fold; the cards shrink to fit rather than pushing
-     a scroll. On a phone the columns fall back to a natural, scrolling stack. -->
+<!-- Hero: three columns — featured, then the soonest dives and courses — spanning
+     the full desktop width so each event photo is as large as the layout allows.
+     On a phone the columns fall back to a natural, scrolling stack. -->
 <section class="mx-auto max-w-[1600px] px-4 py-4 sm:px-6">
-  <div
-    class="flex flex-col gap-4 lg:mx-auto lg:grid lg:max-w-7xl lg:grid-cols-4 lg:gap-x-8 lg:gap-y-4 lg:h-[calc(100vh-12.5rem)]"
-  >
-    {@render strip('★', 'text-mauve', $t.home.featured, featured, '', true)}
-    {@render strip('▹', 'text-reef-400', $t.home.upcomingDives, dives, '/calendar', false)}
-    {@render strip('▹', 'text-reef-400', $t.home.upcomingCourses, courses, '/courses', false)}
-    {@render strip('▹', 'text-sky-300', $t.home.upcomingTrips, trips, '/travel', false)}
+  <div class="flex flex-col gap-6 lg:grid lg:grid-cols-3 lg:gap-x-8 lg:gap-y-4">
+    {@render strip('★', 'text-mauve', $t.home.featured, featured, true)}
+    {@render strip('▹', 'text-reef-400', $t.home.upcomingDives, dives, false)}
+    {@render strip('▹', 'text-reef-400', $t.home.upcomingCourses, courses, false)}
   </div>
 </section>
 
