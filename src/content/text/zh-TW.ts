@@ -222,7 +222,7 @@ export const zhTW: Dict = {
   },
   calendar: {
     title: '行事曆',
-    subtitle: '潛水與課程行程一覽。點選任一活動查看詳情並預約名額。',
+    subtitle: '潛水、課程與探險行程一覽。點選任一活動查看詳情並預約名額。',
     all: '全部',
     dives: '潛水',
     courses: '課程',
@@ -232,6 +232,7 @@ export const zhTW: Dict = {
     loadError: '無法載入行事曆',
     full: '此活動已額滿，請加入候補名單。',
     toggleDives: '切換潛水顯示',
+    toggleAdventures: '切換探險顯示',
     filterCourses: '篩選課程',
     prevMonth: '上個月',
     nextMonth: '下個月',

@@ -225,7 +225,8 @@ export const ja: Dict = {
   },
   calendar: {
     title: 'カレンダー',
-    subtitle: 'ダイビングとコースの予定一覧。イベントをタップすると詳細と予約ができます。',
+    subtitle:
+      'ダイビング・コース・アドベンチャーの予定一覧。イベントをタップすると詳細と予約ができます。',
     all: 'すべて',
     dives: 'ダイブ',
     courses: 'コース',
@@ -235,6 +236,7 @@ export const ja: Dict = {
     loadError: 'カレンダーを読み込めませんでした',
     full: 'このイベントは満席です、キャンセル待ちにご登録ください。',
     toggleDives: 'ダイブの表示切替',
+    toggleAdventures: 'アドベンチャーの表示切替',
     filterCourses: 'コースで絞り込み',
     prevMonth: '前の月',
     nextMonth: '次の月',

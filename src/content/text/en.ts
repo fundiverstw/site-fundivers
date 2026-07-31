@@ -231,7 +231,7 @@ export const en = {
   calendar: {
     title: 'Calendar',
     subtitle:
-      'Dives and courses on the schedule. Tap any event for details and to reserve your spot.',
+      'Dives, courses, and adventures on the schedule. Tap any event for details and to reserve your spot.',
     all: 'All',
     dives: 'Dives',
     courses: 'Courses',
@@ -241,6 +241,7 @@ export const en = {
     loadError: 'Couldn’t load the calendar',
     full: 'This event is full, join the waitlist.',
     toggleDives: 'Toggle dives',
+    toggleAdventures: 'Toggle adventures',
     filterCourses: 'Filter courses',
     prevMonth: 'Previous month',
     nextMonth: 'Next month',

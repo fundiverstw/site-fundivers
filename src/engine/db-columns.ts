@@ -18,6 +18,11 @@ export const EVENT_DIVE_COLS =
 export const EVENT_COURSE_COLS =
   'id, admin_title, display_title, calendar_title, start_time, price, course_days, fully_booked, capacity'
 
+/** Columns the month calendar needs for an adventure (dated like a dive, without
+ *  the dive-only is_trip / is_boat_dive flags). */
+export const EVENT_ADVENTURE_COLS =
+  'id, admin_title, display_title, calendar_title, start_date, start_time, end_date, featured, fully_booked, capacity, price'
+
 /** Columns the homepage's "upcoming" cards need for a dive. */
 export const EVENT_UPCOMING_DIVE_COLS =
   'id, display_title, admin_title, start_date, end_date, start_time, price, fully_booked, featured, notes, is_trip'

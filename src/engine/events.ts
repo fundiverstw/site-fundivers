@@ -5,6 +5,7 @@ import {
   EVENT_UPCOMING_DIVE_COLS,
   EVENT_UPCOMING_COURSE_COLS,
   EVENT_UPCOMING_ADVENTURE_COLS,
+  EVENT_ADVENTURE_COLS,
   EVENT_DETAIL_COLS,
   EVENT_TRIP_TITLE_COLS,
   PRICE_COLS,
@@ -248,7 +249,7 @@ export async function fetchUpcomingTripTitles(): Promise<string[]> {
 
 export type CalEvent = {
   id: string
-  type: 'dive' | 'course'
+  type: 'dive' | 'course' | 'adventure'
   title: string
   calendar_title: string | null
   course_category: string | null
@@ -343,6 +344,19 @@ type CourseRow2 = {
   fully_booked: boolean | null
   capacity: number | null
 }
+type AdventureRow2 = {
+  id: string
+  admin_title: string | null
+  display_title: string | null
+  calendar_title: string | null
+  start_date: string | null
+  start_time: string | null
+  end_date: string | null
+  featured: boolean | null
+  fully_booked: boolean | null
+  capacity: number | null
+  price: string | null
+}
 
 function diveToCalEvent(d: DiveRow2, prices: Map<string, number | null>): CalEvent | null {
   const start = toIso(d.start_date, d.start_time)
@@ -362,6 +376,27 @@ function diveToCalEvent(d: DiveRow2, prices: Map<string, number | null>): CalEve
     dive_outing: d.is_trip || d.is_boat_dive ? 'trip' : null,
     fully_booked: d.fully_booked ?? false,
     capacity: d.capacity ?? null,
+  }
+}
+
+function adventureToCalEvent(a: AdventureRow2, prices: Map<string, number | null>): CalEvent | null {
+  const start = toIso(a.start_date, a.start_time)
+  if (!start) return null
+  return {
+    id: a.id,
+    type: 'adventure',
+    title: a.display_title || a.admin_title || 'Adventure',
+    calendar_title: a.calendar_title ?? null,
+    course_category: null,
+    start_time: start,
+    end_time: toIso(a.end_date, a.start_time),
+    start_time_hhmm: toHhmm(a.start_time),
+    featured: a.featured ?? false,
+    price: a.price ? (prices.get(a.price) ?? null) : null,
+    currency: 'TWD',
+    dive_outing: null,
+    fully_booked: a.fully_booked ?? false,
+    capacity: a.capacity ?? null,
   }
 }
 
@@ -398,7 +433,7 @@ function courseToCalEvents(c: CourseRow2, prices: Map<string, number | null>): C
  * the month boundary render continuously.
  */
 export async function fetchEventsInRange(fromDate: string, toDate: string): Promise<CalEvent[]> {
-  const [divesResp, coursesResp] = await Promise.all([
+  const [divesResp, coursesResp, adventuresResp] = await Promise.all([
     supabase
       .from('events')
       .select(EVENT_DIVE_COLS)
@@ -414,16 +449,31 @@ export async function fetchEventsInRange(fromDate: string, toDate: string): Prom
       .eq('kind', 'course')
       .is('cancelled_at', null)
       .overlaps('course_days', datesInRange(fromDate, toDate)),
+    supabase
+      .from('events')
+      .select(EVENT_ADVENTURE_COLS)
+      .eq('kind', 'adventure')
+      .is('cancelled_at', null)
+      .eq('is_private', false)
+      .gte('start_date', fromDate)
+      .lte('start_date', toDate)
+      .order('start_date'),
   ])
 
   const dives = (divesResp.data ?? []) as DiveRow2[]
   const courses = (coursesResp.data ?? []) as CourseRow2[]
+  const adventures = (adventuresResp.data ?? []) as AdventureRow2[]
 
-  const prices = await fetchPrices([...dives.map((d) => d.price), ...courses.map((c) => c.price)])
+  const prices = await fetchPrices([
+    ...dives.map((d) => d.price),
+    ...courses.map((c) => c.price),
+    ...adventures.map((a) => a.price),
+  ])
 
   return [
     ...dives.map((d) => diveToCalEvent(d, prices)).filter((x): x is CalEvent => !!x),
     ...courses.flatMap((c) => courseToCalEvents(c, prices)),
+    ...adventures.map((a) => adventureToCalEvent(a, prices)).filter((x): x is CalEvent => !!x),
   ].sort((a, b) => a.start_time.localeCompare(b.start_time))
 }
 

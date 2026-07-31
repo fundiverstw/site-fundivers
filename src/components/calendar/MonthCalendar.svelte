@@ -47,6 +47,10 @@
   const DIVE_TRIP_BAR = 'bg-yellow-400 text-blue-950'
   const DIVE_TRIP_BAR_HOVER = 'bg-yellow-300 text-blue-950'
   const DIVE_TRIP_DOT = 'bg-yellow-400'
+  // Adventures (YouBike tours, hikes) — pink, distinct from every dive/course hue.
+  const ADVENTURE_BAR = 'bg-pink-500 text-white'
+  const ADVENTURE_BAR_HOVER = 'bg-pink-400 text-white'
+  const ADVENTURE_DOT = 'bg-pink-500'
   const COURSE_BAR: Record<CourseColor, string> = {
     ow: 'bg-blue-600 text-white',
     aow: 'bg-orange-500 text-white',
@@ -68,6 +72,7 @@
   let TYPE_LABELS = $derived<Record<CalEvent['type'], string>>({
     dive: $t.common.dive,
     course: $t.common.course,
+    adventure: $t.common.adventure,
   })
 
   function eventBarClass(ev: CalEvent, hovered: boolean): string {
@@ -75,11 +80,13 @@
       if (diveIsTripOrBoat(ev)) return hovered ? DIVE_TRIP_BAR_HOVER : DIVE_TRIP_BAR
       return hovered ? DIVE_LOCAL_BAR_HOVER : DIVE_LOCAL_BAR
     }
+    if (ev.type === 'adventure') return hovered ? ADVENTURE_BAR_HOVER : ADVENTURE_BAR
     const key = courseColor(ev.title)
     return hovered ? COURSE_BAR_HOVER[key] : COURSE_BAR[key]
   }
 
   let diveShown = $state(true)
+  let advShown = $state(true)
   let hiddenCourses = $state<Set<string>>(new Set())
   let hoveredEventId = $state<string | null>(null)
   let legendOpen = $state(false)
@@ -111,7 +118,11 @@
 
   let filteredEvents = $derived(
     events.filter((e) =>
-      e.type === 'dive' ? diveShown : !hiddenCourses.has(e.course_category ?? e.title),
+      e.type === 'dive'
+        ? diveShown
+        : e.type === 'adventure'
+          ? advShown
+          : !hiddenCourses.has(e.course_category ?? e.title),
     ),
   )
   let ranges = $derived(assignTracks(filteredEvents))
@@ -205,6 +216,21 @@
         <span class={`flex-1 ${DIVE_TRIP_DOT}`}></span>
       </span>
       {TYPE_LABELS.dive}
+    </button>
+
+    <button
+      type="button"
+      onclick={() => (advShown = !advShown)}
+      aria-pressed={advShown}
+      aria-label={$t.calendar.toggleAdventures}
+      class={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 transition-colors ${
+        advShown
+          ? 'border-white bg-white text-blue-900 hover:bg-white/85'
+          : 'border-white/30 bg-white/10 font-medium text-white/70 line-through hover:border-white/60 hover:text-white'
+      }`}
+    >
+      <span class={`h-2 w-2 rounded-full ${ADVENTURE_DOT}`} aria-hidden="true"></span>
+      {TYPE_LABELS.adventure}
     </button>
 
     <div class="relative">
