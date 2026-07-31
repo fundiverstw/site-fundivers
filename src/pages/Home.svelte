@@ -43,22 +43,42 @@
       .finally(() => (loading = false))
   })
 
+  // The homepage hero is a 2×2 board of four quadrants, four events each:
+  // Featured · Dives · Courses · Adventures. Every event shows in exactly one
+  // quadrant — featured wins first, then a kind claims the rest.
+
   // Featured: real featured first, padded with the soonest upcoming events.
   let featured = $derived.by(() => {
     const feat = upcoming.filter((e) => e.featured)
-    if (feat.length >= 3) return feat.slice(0, 3)
+    if (feat.length >= 4) return feat.slice(0, 4)
     const ids = new Set(feat.map((e) => e.id))
-    return [...feat, ...upcoming.filter((e) => !ids.has(e.id)).slice(0, 3 - feat.length)]
+    return [...feat, ...upcoming.filter((e) => !ids.has(e.id)).slice(0, 4 - feat.length)]
   })
   let featuredIds = $derived(new Set(featured.map((e) => e.id)))
-  // "Trip" isn't its own event kind — it's a dive flagged is_trip (a multi-day /
-  // away outing). Local fun dives and trips share this one Dives column.
+  // The Dives row holds every dive — local fun dives and multi-day dive trips
+  // alike (is_trip is just a flag on a dive, not its own row). Adventures is a
+  // first-class event kind (kind='adventure' — the recurring YouBike tours),
+  // unrelated to dive trips, so a dive trip like Malapascua never lands there.
+  // Dives/Courses stay clear of the Featured spotlight so nothing double-shows.
   let dives = $derived(
-    upcoming.filter((e) => e.type === 'dive' && !featuredIds.has(e.id)).slice(0, 3),
+    upcoming.filter((e) => e.type === 'dive' && !featuredIds.has(e.id)).slice(0, 4),
   )
   let courses = $derived(
-    upcoming.filter((e) => e.type === 'course' && !featuredIds.has(e.id)).slice(0, 3),
+    upcoming.filter((e) => e.type === 'course' && !featuredIds.has(e.id)).slice(0, 4),
   )
+  let adventures = $derived(upcoming.filter((e) => e.type === 'adventure').slice(0, 4))
+
+  // Each quadrant wears its own colour — a strongly tinted, semi-transparent
+  // panel with a bright matching border and a header (glyph + title) in the same
+  // hue — so Featured / Dives / Courses / Adventures read apart at a glance
+  // against the blue page. Written as full literal class strings (not built up
+  // from the key) so Tailwind's scanner keeps them in the build.
+  const QUAD_STYLE = {
+    mauve: { panel: 'border-mauve/60 bg-mauve/20', text: 'text-mauve' },
+    reef: { panel: 'border-reef-400/60 bg-reef-400/20', text: 'text-reef-300' },
+    green: { panel: 'border-green/60 bg-green/20', text: 'text-green' },
+    peach: { panel: 'border-peach/60 bg-peach/20', text: 'text-peach' },
+  } as const
 
   // Structural data only (links + images); titles/descriptions come from i18n
   // ($t.home.services), aligned by index.
@@ -96,91 +116,122 @@
   ]
 </script>
 
-<!-- An event card that fills its column's full width, so the photo is as large as
-     the layout allows. Slightly oblong (4/3) from `sm` up rather than a letterbox
-     or a square, so the subject reads big without being cropped tight. On a phone
-     it is one-per-row at 16/10. -->
-{#snippet heroCard(ev: UpcomingEvent, big: boolean)}
+<!-- One event as a compact tile inside a category row. On a phone it keeps a
+     16/10 aspect so it has height in the natural stack; from `lg` up it drops the
+     aspect and fills its grid cell (`h-full`) so a row packs four tiles into
+     whatever height the viewport-filling board hands it. `accent` tints the hover
+     glow to match the row's colour. -->
+{#snippet quadCard(ev: UpcomingEvent, accent: 'mauve' | 'reef' | 'green' | 'peach')}
   {@const price = twd(ev.startingAt)}
   <button
     type="button"
     onclick={() => open(ev)}
-    class={`group relative block aspect-[16/10] w-full overflow-hidden rounded-3xl border border-white/15 text-left transition-all duration-300 hover:-translate-y-0.5 sm:aspect-[4/3] ${big ? 'hover:border-mauve/60 hover:shadow-[0_0_26px_-6px_rgba(203,166,247,0.7)]' : 'hover:border-reef-400/60 hover:shadow-[0_0_26px_-6px_rgba(44,208,197,0.65)]'}`}
+    class={`group relative block aspect-[16/10] w-full overflow-hidden rounded-xl border border-white/15 text-left transition-all duration-300 hover:-translate-y-0.5 lg:aspect-auto lg:h-full ${
+      accent === 'mauve'
+        ? 'hover:border-mauve/60 hover:shadow-[0_0_20px_-6px_rgba(203,166,247,0.7)]'
+        : accent === 'peach'
+          ? 'hover:border-peach/60 hover:shadow-[0_0_20px_-6px_rgba(250,179,135,0.7)]'
+          : accent === 'green'
+            ? 'hover:border-green/60 hover:shadow-[0_0_20px_-6px_rgba(166,227,161,0.65)]'
+            : 'hover:border-reef-400/60 hover:shadow-[0_0_20px_-6px_rgba(44,208,197,0.65)]'
+    }`}
   >
     <CoverPhoto src={ev.image} />
-    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
-    <div class={`absolute inset-x-0 bottom-0 ${big ? 'px-6 pb-6 pt-5' : 'px-5 pb-5 pt-4'}`}>
+    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent"></div>
+    <div class="absolute inset-x-0 bottom-0 px-2.5 pb-2 pt-4">
       {#if ev.fullyBooked}
         <span
-          class="rounded bg-amber-400/25 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-amber-200"
+          class="rounded bg-amber-400/25 px-1 py-0.5 text-[8px] font-bold uppercase tracking-wide text-amber-200"
           >{$t.common.waitlist}</span
         >
       {/if}
-      <h3
-        class={`line-clamp-2 font-bold leading-tight text-white ${big ? 'text-base lg:text-lg' : 'text-xs lg:text-sm'}`}
-      >
+      <h3 class="line-clamp-1 text-xs font-bold leading-tight text-white lg:text-sm">
         {ev.title}
       </h3>
-      <p class="mono truncate text-[11px] text-sky-300">
+      <p class="mono truncate text-[10px] text-sky-300">
         {formatSpan(ev.startDate, ev.endDate, ev.time)}
       </p>
-      {#if price}<p class="mono text-xs font-bold text-peach">{$t.common.from} {price}</p>{/if}
+      {#if price}<p class="mono text-[11px] font-bold text-peach">
+          {$t.common.from} {price}
+        </p>{/if}
     </div>
   </button>
 {/snippet}
 
-<!-- One category as a column: a titled header over up to three cards.
-     `big` gives the featured column its mauve accent. -->
-{#snippet strip(
+<!-- One quadrant of the board: a titled header over a 2×2 grid of four tiles,
+     wrapped in a semi-transparent panel tinted with the category's colour (mauve ·
+     reef · green · peach) so the four quadrants read apart at a glance. Flex-col
+     with a `flex-1` tile grid so, on desktop, the tiles absorb the leftover height
+     and the whole board fills the screen without a scroll. -->
+{#snippet quadrant(
   icon: string,
-  iconClass: string,
   title: string,
   items: UpcomingEvent[],
-  big: boolean,
+  accent: 'mauve' | 'reef' | 'green' | 'peach',
 )}
-  <div class="flex flex-col">
-    <h2 class="mb-2 flex items-center gap-2.5 text-xl font-bold text-white">
-      <span class="mono text-lg {iconClass}">{icon}</span>{title}
+  <section
+    class={`flex min-h-0 flex-col rounded-2xl border px-2 py-1.5 lg:flex-1 ${QUAD_STYLE[accent].panel}`}
+  >
+    <h2
+      class={`mb-1 flex items-center gap-2 px-0.5 text-sm font-bold lg:text-base ${QUAD_STYLE[accent].text}`}
+    >
+      <span class="mono">{icon}</span>{title}
     </h2>
-    <!-- One-per-row on a phone, three-across on a tablet, and a single stacked
-         column on desktop, where each category is its own column. -->
-    <div class="grid grid-cols-1 gap-3 sm:grid-cols-3 lg:grid-cols-1">
+    <div class="grid grid-cols-2 gap-2 lg:min-h-0 lg:flex-1 lg:grid-rows-2">
       {#if loading}
-        {#each Array(3) as _, i (i)}<div
-            class="aspect-[16/10] animate-pulse rounded-3xl bg-white/10 sm:aspect-[4/3]"
+        {#each Array(4) as _, i (i)}<div
+            class="aspect-[16/10] animate-pulse rounded-xl bg-white/10 lg:aspect-auto lg:h-full"
           ></div>{/each}
       {:else if items.length === 0}
-        <p class="text-sm text-brand-200 sm:col-span-3">{$t.common.nothingScheduled}</p>
+        <p class="col-span-2 self-center text-xs text-brand-200">
+          {$t.common.nothingScheduled}
+        </p>
       {:else}
         {#each items as ev (ev.id)}
-          {@render heroCard(ev, big)}
+          {@render quadCard(ev, accent)}
         {/each}
       {/if}
     </div>
-  </div>
+  </section>
 {/snippet}
 
-<!-- Hero: three columns — featured, then the soonest dives and courses — spanning
-     the full desktop width so each event photo is as large as the layout allows.
-     On a phone the columns fall back to a natural, scrolling stack. -->
-<section class="mx-auto max-w-[1600px] px-4 py-4 sm:px-6">
-  <div class="flex flex-col gap-6 lg:grid lg:grid-cols-3 lg:gap-x-8 lg:gap-y-4">
-    {@render strip('★', 'text-mauve', $t.home.featured, featured, true)}
-    {@render strip('▹', 'text-reef-400', $t.home.upcomingDives, dives, false)}
-    {@render strip('▹', 'text-reef-400', $t.home.upcomingCourses, courses, false)}
+<!-- Hero: catch-phrase over a 2×2 board of four colour-coded quadrants (Featured ·
+     Dives · Courses · Adventures), each holding four events. From `lg` up the
+     whole hero is sized to the viewport minus the nav (`overflow-hidden`, a fixed
+     height, flex children that shrink) so all sixteen events sit on the first
+     screen with no scroll. On a phone the quadrants fall back to a natural,
+     scrolling stack. -->
+<section
+  class="mx-auto flex max-w-[1600px] flex-col px-4 py-2 sm:px-6 lg:h-[calc(100svh-6rem)] lg:overflow-hidden lg:py-2 xl:h-[calc(100svh-8rem)]"
+>
+  <div class="shrink-0 pb-4 text-center">
+    <h1
+      class="text-2xl font-black tracking-tight text-white drop-shadow-[0_1px_6px_rgba(0,0,0,0.5)] sm:text-3xl xl:text-4xl"
+    >
+      {$t.home.catchphrase}
+    </h1>
+  </div>
+
+  <div
+    class="flex flex-col gap-2.5 lg:grid lg:min-h-0 lg:flex-1 lg:grid-cols-2 lg:grid-rows-2 lg:gap-2.5"
+  >
+    {@render quadrant('★', $t.home.featured, featured, 'mauve')}
+    {@render quadrant('▹', $t.home.upcomingDives, dives, 'reef')}
+    {@render quadrant('◈', $t.home.upcomingCourses, courses, 'green')}
+    {@render quadrant('✦', $t.home.adventures, adventures, 'peach')}
   </div>
 </section>
 
-<!-- Scroll hint: on desktop the third card in each column peeks below the fold,
-     so a gentle bouncing chevron nudges the reader onward. It fades away the
-     moment they leave the top of the page, and never shows on a phone (where the
-     stacked layout already scrolls). Decorative — pointer-events stay off. -->
+<!-- Scroll hint: on desktop the board fills the screen and the rest of the page
+     sits below the fold, so a gentle bouncing chevron nudges the reader onward.
+     It fades the moment they leave the top of the page, and never shows on a
+     phone (where the stacked layout already scrolls). Decorative. -->
 <div
   aria-hidden="true"
   class={`pointer-events-none fixed inset-x-0 bottom-5 z-30 hidden justify-center transition-opacity duration-500 lg:flex ${atTop ? 'opacity-100' : 'opacity-0'}`}
 >
   <svg
-    class="h-7 w-7 animate-bounce text-reef-300 drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]"
+    class="h-14 w-14 animate-bounce text-reef-300 drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]"
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"

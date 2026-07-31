@@ -80,14 +80,17 @@ export const zhTW: Dict = {
     featured: '精選',
     dive: '潛水',
     course: '課程',
+    adventure: '探險',
     loadingDetails: '載入詳情中…',
     pendingImage: '照片即將上架',
   },
   home: {
+    catchphrase: '台北首選・英語服務的潛水中心！',
     featured: '精選',
     upcomingDives: '潛水',
     upcomingCourses: '課程',
     upcomingTrips: '旅遊',
+    adventures: '探險',
     exploreServices: '探索我們的服務',
     exploreServicesIntro:
       '了解讓 Fun Divers TW 成為潛水愛好者首選的獨特之處。憑藉豐富的經驗與對顧客滿意度的堅持，我們提供出色的導潛行程、便捷的預約服務，以及全系列 PADI 休閒潛水課程。',

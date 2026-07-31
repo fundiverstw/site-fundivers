@@ -84,14 +84,17 @@ export const en = {
     featured: 'Featured',
     dive: 'Dive',
     course: 'Course',
+    adventure: 'Adventure',
     loadingDetails: 'Loading details…',
     pendingImage: 'Image coming soon',
   },
   home: {
+    catchphrase: 'Taipei’s best English-speaking dive shop!',
     featured: 'Featured',
     upcomingDives: 'Dives',
     upcomingCourses: 'Courses',
     upcomingTrips: 'Trips',
+    adventures: 'Adventures',
     exploreServices: 'Explore our Services',
     exploreServicesIntro:
       'Discover the unique and valuable aspects that make Fun Divers TW the top choice for diving enthusiasts. With our extensive experience and dedication to customer satisfaction, we provide exceptional guided trips and convenient booking services as well as all PADI Recreational Dive Courses.',

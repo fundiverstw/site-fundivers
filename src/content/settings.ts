@@ -7,8 +7,9 @@ const APP_URL = import.meta.env.VITE_APP_URL || 'https://app.fundiverstw.com'
 export const bookUrl = `${APP_URL}/calendar`
 
 /** Deep-link to the app's registration form pre-filled with a specific event.
- *  Mirrors app-fundivers' /register/:type/:id route (type = 'dive' | 'course'). */
-export function registerUrl(type: 'dive' | 'course', id: string): string {
+ *  Mirrors app-fundivers' /register/:type/:id route (type = the event `kind`:
+ *  'dive' | 'course' | 'adventure'). */
+export function registerUrl(type: 'dive' | 'course' | 'adventure', id: string): string {
   return `${APP_URL}/register/${type}/${id}`
 }
 

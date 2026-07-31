@@ -81,14 +81,17 @@ export const ja: Dict = {
     featured: 'おすすめ',
     dive: 'ダイブ',
     course: 'コース',
+    adventure: 'アドベンチャー',
     loadingDetails: '詳細を読み込み中…',
     pendingImage: '写真は近日公開',
   },
   home: {
+    catchphrase: '台北No.1、英語対応のダイブショップ！',
     featured: 'おすすめ',
     upcomingDives: 'ダイビング',
     upcomingCourses: 'コース',
     upcomingTrips: 'ツアー',
+    adventures: 'アドベンチャー',
     exploreServices: 'サービス一覧',
     exploreServicesIntro:
       'Fun Divers TW がダイビング愛好家に選ばれる理由をご紹介します。豊富な経験とお客様満足への徹底したこだわりで、質の高いガイドツアーと便利な予約サービス、そして PADI レクリエーショナル・ダイビングコースの全種類をご提供します。',

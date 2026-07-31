@@ -11,10 +11,12 @@
   const TYPE_DOT: Record<ModalEvent['type'], string> = {
     dive: 'bg-emerald-600',
     course: 'bg-sky-500',
+    adventure: 'bg-orange-500',
   }
   let TYPE_LABELS = $derived<Record<ModalEvent['type'], string>>({
     dive: $t.common.dive,
     course: $t.common.course,
+    adventure: $t.common.adventure,
   })
 
   let details = $state<EventDetails | null>(null)

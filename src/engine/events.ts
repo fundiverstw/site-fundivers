@@ -4,6 +4,7 @@ import {
   EVENT_COURSE_COLS,
   EVENT_UPCOMING_DIVE_COLS,
   EVENT_UPCOMING_COURSE_COLS,
+  EVENT_UPCOMING_ADVENTURE_COLS,
   EVENT_DETAIL_COLS,
   EVENT_TRIP_TITLE_COLS,
   PRICE_COLS,
@@ -11,6 +12,7 @@ import {
 } from './db-columns'
 import { type DiveOuting } from './event-colors'
 import { eventImage } from './photo-pool'
+import { mediaIdLocal } from './images'
 import type { ResponsiveImage } from './responsive-image'
 
 // Public, read-only view of the shared event catalog. The app consolidated the
@@ -22,7 +24,7 @@ import type { ResponsiveImage } from './responsive-image'
 
 export type UpcomingEvent = {
   id: string
-  type: 'dive' | 'course'
+  type: 'dive' | 'course' | 'adventure' // 'adventure' = a non-diving outing (kind='adventure'), e.g. the Taipei YouBike tours
   isTrip: boolean // a dive flagged is_trip — a multi-day / away outing, not a local fun dive
   title: string
   category: string | null // admin_title short code (e.g. 'OW', 'AOW') — course-page matching
@@ -61,6 +63,19 @@ type CourseRow = {
   schedule: string | null
 }
 
+type AdventureRow = {
+  id: string
+  display_title: string | null
+  admin_title: string | null
+  start_date: string | null
+  end_date: string | null
+  start_time: string | null
+  price: string | null
+  fully_booked: boolean | null
+  featured: boolean | null
+  notes: string | null
+}
+
 type PriceRow = { id: string; starting_at: number | null }
 
 /** Today in the shop's timezone (Asia/Taipei), as 'YYYY-MM-DD'. */
@@ -93,7 +108,7 @@ async function fetchPrices(ids: Array<string | null>): Promise<Map<string, numbe
 export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> {
   const today = todayKey()
 
-  const [divesResp, coursesResp] = await Promise.all([
+  const [divesResp, coursesResp, adventuresResp] = await Promise.all([
     supabase
       .from('events')
       .select(EVENT_UPCOMING_DIVE_COLS)
@@ -107,12 +122,27 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
       .select(EVENT_UPCOMING_COURSE_COLS)
       .eq('kind', 'course')
       .is('cancelled_at', null),
+    // Adventures (kind='adventure') are dated like dives — one row per occurrence,
+    // so a recurring outing like the weekly YouBike tour is several future rows.
+    supabase
+      .from('events')
+      .select(EVENT_UPCOMING_ADVENTURE_COLS)
+      .eq('kind', 'adventure')
+      .is('cancelled_at', null)
+      .eq('is_private', false)
+      .gte('start_date', today)
+      .order('start_date'),
   ])
 
   const dives = (divesResp.data ?? []) as DiveRow[]
   const courses = (coursesResp.data ?? []) as CourseRow[]
+  const adventures = (adventuresResp.data ?? []) as AdventureRow[]
 
-  const prices = await fetchPrices([...dives.map((d) => d.price), ...courses.map((c) => c.price)])
+  const prices = await fetchPrices([
+    ...dives.map((d) => d.price),
+    ...courses.map((c) => c.price),
+    ...adventures.map((a) => a.price),
+  ])
 
   const events: UpcomingEvent[] = []
 
@@ -161,6 +191,28 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
         type: 'course',
         title: c.display_title || c.admin_title || '',
       }),
+    })
+  }
+
+  for (const a of adventures) {
+    if (!a.start_date) continue
+    events.push({
+      id: a.id,
+      type: 'adventure',
+      isTrip: false,
+      title: a.display_title || a.admin_title || 'Adventure',
+      category: a.admin_title,
+      startDate: a.start_date,
+      endDate: a.end_date,
+      time: toHhmm(a.start_time),
+      startingAt: a.price ? (prices.get(a.price) ?? null) : null,
+      fullyBooked: a.fully_booked ?? false,
+      featured: a.featured ?? false,
+      description: a.notes && a.notes.trim() ? a.notes.trim() : null,
+      // Adventures carry no featured_image in the DB and there's no per-adventure
+      // photo pool; every adventure today is the Taipei YouBike tour, so use its
+      // bundled cover. Revisit if a second adventure type appears.
+      image: mediaIdLocal('youbike'),
     })
   }
 
@@ -387,7 +439,7 @@ export async function fetchEventsInRange(fromDate: string, toDate: string): Prom
 // (CalEvent) and the homepage (UpcomingEvent) map into this.
 export type ModalEvent = {
   id: string
-  type: 'dive' | 'course'
+  type: 'dive' | 'course' | 'adventure'
   title: string
   spanLabel: string
   price: number | null
@@ -435,7 +487,7 @@ async function certName(id: string | null | undefined): Promise<string | null> {
 
 /** Descriptive copy for a single event, or null when it has none. */
 export async function fetchEventDetails(
-  ev: Pick<CalEvent, 'id' | 'type'>,
+  ev: { id: string; type: 'dive' | 'course' | 'adventure' },
 ): Promise<EventDetails | null> {
   const { data } = await supabase
     .from('events')

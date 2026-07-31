@@ -26,6 +26,12 @@ export const EVENT_UPCOMING_DIVE_COLS =
 export const EVENT_UPCOMING_COURSE_COLS =
   'id, display_title, admin_title, start_time, price, course_days, fully_booked, schedule'
 
+/** Columns the homepage's "upcoming" cards need for an adventure (the recurring
+ *  non-diving outings, e.g. the Taipei YouBike tours). Same date/price shape as a
+ *  dive; adventures don't use the is_trip flag. */
+export const EVENT_UPCOMING_ADVENTURE_COLS =
+  'id, display_title, admin_title, start_date, end_date, start_time, price, fully_booked, featured, notes'
+
 /** Columns the event modal fetches when you open an event. */
 export const EVENT_DETAIL_COLS = 'notes, included, schedule, prereqs, req_dives, prereq_cert_id'
 
