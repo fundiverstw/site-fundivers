@@ -89,7 +89,7 @@ export const en = {
     pendingImage: 'Image coming soon',
   },
   home: {
-    catchphrase: 'Taipei’s best English-speaking dive shop!',
+    catchphrase: 'Taiwan’s Best English-Speaking Dive Shop',
     featured: 'Featured',
     upcomingDives: 'Dives',
     upcomingCourses: 'Courses',

@@ -85,7 +85,7 @@ export const zhTW: Dict = {
     pendingImage: '照片即將上架',
   },
   home: {
-    catchphrase: '台北首選・英語服務的潛水中心！',
+    catchphrase: '台灣首選・英語服務的潛水中心',
     featured: '精選',
     upcomingDives: '潛水',
     upcomingCourses: '課程',

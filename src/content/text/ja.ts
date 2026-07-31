@@ -86,7 +86,7 @@ export const ja: Dict = {
     pendingImage: '写真は近日公開',
   },
   home: {
-    catchphrase: '台北No.1、英語対応のダイブショップ！',
+    catchphrase: '台湾No.1、英語対応のダイブショップ',
     featured: 'おすすめ',
     upcomingDives: 'ダイビング',
     upcomingCourses: 'コース',
