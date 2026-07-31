@@ -24,8 +24,14 @@ import type { ResponsiveImage } from './responsive-image'
 
 // Only the card-pool folders — the gallery and media folders live alongside
 // these under photos/ but are catalogued elsewhere, so they are not scanned in.
+// The extensions are spelled as case-insensitive character classes ([jJ][pP][gG]
+// …) on purpose: a camera or phone that writes `.JPG` (or a stray `.Jpeg`) must
+// still be picked up. A plain `{jpg,…}` is case-sensitive, so an uppercase file
+// silently vanishes from the pool with no error — a dive site just quietly shows
+// fewer photos. (HEIC is deliberately not listed: sharp can't decode it on every
+// machine, so those files are converted to .jpg at rest instead.)
 const files = import.meta.glob(
-  '../content/photos/{dive-sites,courses,general}/**/*.{webp,avif,jpg,jpeg,png}',
+  '../content/photos/{dive-sites,courses,general}/**/*.{[wW][eE][bB][pP],[aA][vV][iI][fF],[jJ][pP][gG],[jJ][pP][eE][gG],[pP][nN][gG]}',
   {
     eager: true,
     query: '?responsive',
