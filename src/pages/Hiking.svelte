@@ -45,7 +45,9 @@
                 🥾
               </div>
             {/if}
-            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"
+            ></div>
             <div class="absolute inset-x-0 bottom-0 p-5">
               <h3 class="text-xl font-bold text-white">{hike.name}</h3>
               <p class="mono mt-0.5 text-xs text-reef-200">{hike.location}</p>

@@ -34,7 +34,9 @@
   const localSites = [...DIVE_SITES].filter((s) => !s.international).sort(byName)
   const intlSites = [...DIVE_SITES].filter((s) => s.international).sort(byName)
 
-  let totalDives = $derived(days.reduce((n, d) => n + d.entries.reduce((m, e) => m + e.dives, 0), 0))
+  let totalDives = $derived(
+    days.reduce((n, d) => n + d.entries.reduce((m, e) => m + e.dives, 0), 0),
+  )
   let totalSites = $derived(days.reduce((n, d) => n + d.entries.length, 0))
 
   function dayLabel(i: number): string {

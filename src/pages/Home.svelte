@@ -139,11 +139,7 @@
      aspect and fills its grid cell (`h-full`) so a row packs four tiles into
      whatever height the viewport-filling board hands it. `accent` tints the hover
      glow to match the row's colour. -->
-{#snippet quadCard(
-  ev: UpcomingEvent,
-  accent: 'mauve' | 'reef' | 'green' | 'peach',
-  place: string,
-)}
+{#snippet quadCard(ev: UpcomingEvent, accent: 'mauve' | 'reef' | 'green' | 'peach', place: string)}
   {@const price = twd(ev.startingAt)}
   <button
     type="button"
@@ -174,7 +170,8 @@
         {formatSpan(ev.startDate, ev.endDate, ev.time)}
       </p>
       {#if price}<p class="mono text-[11px] font-bold text-peach">
-          {$t.common.from} {price}
+          {$t.common.from}
+          {price}
         </p>{/if}
     </div>
   </button>

@@ -211,7 +211,10 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
       description: a.notes && a.notes.trim() ? a.notes.trim() : null,
       // Adventures carry no featured_image in the DB; adventureImage() maps the
       // event to the right bundled cover (a hike's photo, the YouBike tour, …).
-      image: adventureImage({ title: a.display_title || a.admin_title || '', category: a.admin_title }),
+      image: adventureImage({
+        title: a.display_title || a.admin_title || '',
+        category: a.admin_title,
+      }),
     })
   }
 
@@ -379,7 +382,10 @@ function diveToCalEvent(d: DiveRow2, prices: Map<string, number | null>): CalEve
   }
 }
 
-function adventureToCalEvent(a: AdventureRow2, prices: Map<string, number | null>): CalEvent | null {
+function adventureToCalEvent(
+  a: AdventureRow2,
+  prices: Map<string, number | null>,
+): CalEvent | null {
   const start = toIso(a.start_date, a.start_time)
   if (!start) return null
   return {
@@ -534,9 +540,10 @@ async function certName(id: string | null | undefined): Promise<string | null> {
 }
 
 /** Descriptive copy for a single event, or null when it has none. */
-export async function fetchEventDetails(
-  ev: { id: string; type: 'dive' | 'course' | 'adventure' },
-): Promise<EventDetails | null> {
+export async function fetchEventDetails(ev: {
+  id: string
+  type: 'dive' | 'course' | 'adventure'
+}): Promise<EventDetails | null> {
   const { data } = await supabase
     .from('events')
     .select(EVENT_DETAIL_COLS)
