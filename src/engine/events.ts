@@ -11,8 +11,7 @@ import {
   CERT_LEVEL_COLS,
 } from './db-columns'
 import { type DiveOuting } from './event-colors'
-import { eventImage } from './photo-pool'
-import { mediaIdLocal } from './images'
+import { eventImage, adventureImage } from './photo-pool'
 import type { ResponsiveImage } from './responsive-image'
 
 // Public, read-only view of the shared event catalog. The app consolidated the
@@ -209,10 +208,9 @@ export async function fetchUpcomingEvents(limit = 60): Promise<UpcomingEvent[]> 
       fullyBooked: a.fully_booked ?? false,
       featured: a.featured ?? false,
       description: a.notes && a.notes.trim() ? a.notes.trim() : null,
-      // Adventures carry no featured_image in the DB and there's no per-adventure
-      // photo pool; every adventure today is the Taipei YouBike tour, so use its
-      // bundled cover. Revisit if a second adventure type appears.
-      image: mediaIdLocal('youbike'),
+      // Adventures carry no featured_image in the DB; adventureImage() maps the
+      // event to the right bundled cover (a hike's photo, the YouBike tour, …).
+      image: adventureImage({ title: a.display_title || a.admin_title || '', category: a.admin_title }),
     })
   }
 

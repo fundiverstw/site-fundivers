@@ -460,6 +460,8 @@ export const en = {
     gearDesc: 'Buy, rent, or have us service your scuba and freediving gear.',
     cyclingTitle: 'Taipei Cycling Tours',
     cyclingDesc: 'Six hours of fun, sun, exercise, and history on two wheels through Taipei.',
+    hikingTitle: 'Taipei Hiking Tours',
+    hikingDesc: 'Guided walks up Taipei’s hills to forest trails and unbeatable skyline views.',
     fundiveTitle: 'FunDive for dive shops',
     fundiveDesc: 'Open-source dive-shop management software. We build it, you own it.',
     websitesTitle: 'Website Development',
@@ -483,6 +485,19 @@ export const en = {
     ],
     ctaTitle: 'Ready to ride?',
     ctaText: 'Email us to book your Taipei cycling tour, or to ask about dates and group sizes.',
+    emailUs: 'Email us',
+  },
+
+  hiking: {
+    title: 'Taipei Hiking Tours',
+    subtitle: 'Guided walks to Taipei’s best views and trails.',
+    intro: [
+      'Get out of the city and up into the hills with us. Taipei is ringed by green, and a short climb is often all it takes to swap the streets for birdsong, forest, and a skyline view you won’t forget.',
+      'Our guided hikes suit every comfort level — an easy morning out with good company, fresh air, and the stories of the trail along the way.',
+    ],
+    hikesTitle: 'Where we hike',
+    ctaTitle: 'Ready to hit the trail?',
+    ctaText: 'Email us to book a guided hike, or to ask about dates and group sizes.',
     emailUs: 'Email us',
   },
 

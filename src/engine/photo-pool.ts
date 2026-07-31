@@ -1,9 +1,10 @@
 // Picks which photo each card on the site shows. The photos themselves live in
-// src/content/photos/, in three folders:
+// src/content/photos/, in these folders:
 //
 //   photos/dive-sites/<dive-site-id>/   one or more photos of that dive site
 //   photos/general/                     fallback dive shots (unmatched / trips)
 //   photos/courses/<course-route-id>/   photos of that specific course type
+//   photos/hikes/<hike-id>/             photos of that hike (see content/hikes.ts)
 //
 // Course photos are grouped by course: `photos/courses/<id>/` (the id is
 // courseId(slug) from content/courses.ts) holds shots of that course, so a
@@ -20,6 +21,8 @@
 // courses draw from the course pool.
 
 import { EVENT_TITLE_MATCHERS } from '$content/dive-sites'
+import { HIKES } from '$content/hikes'
+import { mediaIdLocal } from './images'
 import type { ResponsiveImage } from './responsive-image'
 
 // Only the card-pool folders — the gallery and media folders live alongside
@@ -31,7 +34,7 @@ import type { ResponsiveImage } from './responsive-image'
 // fewer photos. (HEIC is deliberately not listed: sharp can't decode it on every
 // machine, so those files are converted to .jpg at rest instead.)
 const files = import.meta.glob(
-  '../content/photos/{dive-sites,courses,general}/**/*.{[wW][eE][bB][pP],[aA][vV][iI][fF],[jJ][pP][gG],[jJ][pP][eE][gG],[pP][nN][gG]}',
+  '../content/photos/{dive-sites,courses,general,hikes}/**/*.{[wW][eE][bB][pP],[aA][vV][iI][fF],[jJ][pP][gG],[jJ][pP][eE][gG],[pP][nN][gG]}',
   {
     eager: true,
     query: '?responsive',
@@ -45,6 +48,8 @@ const generalPool: ResponsiveImage[] = []
 // plus every course photo in one pool for the fallback / mixed-calendar case.
 const coursePools: Record<string, ResponsiveImage[]> = {}
 const coursePoolAll: ResponsiveImage[] = []
+// Per-hike pools keyed by hike id (the folder name under hikes/).
+const hikePools: Record<string, ResponsiveImage[]> = {}
 
 for (const [path, image] of Object.entries(files)) {
   if (path.includes('/general/')) generalPool.push(image)
@@ -54,6 +59,9 @@ for (const [path, image] of Object.entries(files)) {
     // loose directly under courses/ has no subfolder and stays fallback-only.
     const m = path.match(/\/courses\/([^/]+)\//)
     if (m) (coursePools[m[1]] ??= []).push(image)
+  } else if (path.includes('/hikes/')) {
+    const m = path.match(/\/hikes\/([^/]+)\//)
+    if (m) (hikePools[m[1]] ??= []).push(image)
   } else {
     const m = path.match(/\/dive-sites\/([^/]+)\//)
     if (m) (sitePools[m[1]] ??= []).push(image)
@@ -62,12 +70,44 @@ for (const [path, image] of Object.entries(files)) {
 // Stable order so a "cover" (first photo) doesn't change between builds.
 for (const k of Object.keys(sitePools)) sitePools[k].sort((a, b) => a.src.localeCompare(b.src))
 for (const k of Object.keys(coursePools)) coursePools[k].sort((a, b) => a.src.localeCompare(b.src))
+for (const k of Object.keys(hikePools)) hikePools[k].sort((a, b) => a.src.localeCompare(b.src))
 coursePoolAll.sort((a, b) => a.src.localeCompare(b.src))
 
 /** A dive site's cover photo (first in its folder), or null if it has none. */
 export function siteImage(siteId: string): ResponsiveImage | null {
   const pool = sitePools[siteId]
   return pool && pool.length ? pool[0] : null
+}
+
+/** A hike's cover photo (first in its folder), or null if it has none. */
+export function hikeImage(hikeId: string): ResponsiveImage | null {
+  const pool = hikePools[hikeId]
+  return pool && pool.length ? pool[0] : null
+}
+
+/** The cover photo for an adventure event (kind='adventure' — e.g. the YouBike
+ *  tours or a guided hike). Matches the event to a hike by its admin_title slug
+ *  (`eventSlug`) or its name in the title → that hike's photo; otherwise the
+ *  cycling cover for bike tours; otherwise a general dive shot so no card is
+ *  ever blank. */
+export function adventureImage(ev: {
+  title: string
+  category: string | null
+}): ResponsiveImage | null {
+  const slug = (ev.category ?? '').toLowerCase()
+  const title = ev.title.toLowerCase()
+  const hike = HIKES.find(
+    (h) => h.eventSlug.toLowerCase() === slug || title.includes(h.name.toLowerCase()),
+  )
+  if (hike) {
+    const img = hikeImage(hike.id)
+    if (img) return img
+  }
+  if (/youbike|bike|cycl/.test(title) || /youbike|bike|cycl/.test(slug)) {
+    const cover = mediaIdLocal('youbike')
+    if (cover) return cover
+  }
+  return generalPool.length ? generalPool[0] : null
 }
 
 /** The dive site a calendar-event title refers to, or null if none matches.

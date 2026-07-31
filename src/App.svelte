@@ -27,6 +27,7 @@
     '/fundive': () => import('$pages/FunDive.svelte'),
     '/websites': () => import('$pages/Websites.svelte'),
     '/cycling': () => import('$pages/Cycling.svelte'),
+    '/hiking': () => import('$pages/Hiking.svelte'),
     '/calendar': () => import('$pages/Calendar.svelte'),
     '/team': () => import('$pages/Team.svelte'),
     ':site': () => import('$pages/DiveSiteDetail.svelte'),

@@ -3,6 +3,7 @@
   import PageHeader from '$components/PageHeader.svelte'
   import Photo from '$components/Photo.svelte'
   import { mediaIdLocal } from '$engine/images'
+  import { hikeImage } from '$engine/photo-pool'
   import type { ResponsiveImage } from '$engine/responsive-image'
 
   // The hub: one card per offering. Links + imagery are structural; the titles
@@ -29,6 +30,12 @@
       title: $t.services.cyclingTitle,
       desc: $t.services.cyclingDesc,
       image: mediaIdLocal('youbike'),
+    },
+    {
+      href: '/hiking',
+      title: $t.services.hikingTitle,
+      desc: $t.services.hikingDesc,
+      image: hikeImage('elephant-mountain'),
     },
     {
       href: '/fundive',

@@ -435,6 +435,8 @@ export const zhTW: Dict = {
     gearDesc: '選購、租借，或交由我們保養您的水肺與自由潛水器材。',
     cyclingTitle: '台北單車導覽',
     cyclingDesc: '騎上單車，展開 6 小時的歡樂、陽光、運動與歷史，穿梭台北街頭。',
+    hikingTitle: '台北健行導覽',
+    hikingDesc: '由嚮導帶路登上台北群山，走訪森林步道與無敵的城市天際線美景。',
     fundiveTitle: '給潛水店的 FunDive',
     fundiveDesc: '開源的潛水店管理軟體。我們負責建置，您完全擁有。',
     websitesTitle: '網站開發',
@@ -458,6 +460,19 @@ export const zhTW: Dict = {
     ],
     ctaTitle: '準備出發了嗎？',
     ctaText: '來信即可預約台北單車導覽，或詢問可預約日期與團體人數。',
+    emailUs: '來信洽詢',
+  },
+
+  hiking: {
+    title: '台北健行導覽',
+    subtitle: '由嚮導帶路，走訪台北最美的觀景點與步道。',
+    intro: [
+      '跟著我們走出城市、走進山林。台北四面環山，往往只需短短一段登山路，就能將街道換成鳥鳴、森林，以及令人難忘的城市天際線。',
+      '我們的嚮導健行適合各種體能程度——輕鬆的一個上午，有好夥伴、新鮮空氣，以及沿途的步道故事。',
+    ],
+    hikesTitle: '我們的健行路線',
+    ctaTitle: '準備好出發了嗎？',
+    ctaText: '來信即可預約嚮導健行，或詢問可預約日期與團體人數。',
     emailUs: '來信洽詢',
   },
 
