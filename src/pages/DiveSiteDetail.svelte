@@ -1,6 +1,6 @@
 <script lang="ts">
   import { SIZES } from '$engine/responsive-image'
-  import { path } from '$engine/router'
+  import { path, scrollToId } from '$engine/router'
   import { diveSiteById } from '$content/dive-sites'
   import { marineSlug } from '$content/marine-life'
   import { FILLED_SECTIONS } from '$content/photo-gallery'
@@ -10,6 +10,7 @@
   import { siteText, regionLabel, marineLabel } from '$engine/i18n-content'
   import { diveGuide } from '$engine/i18n-guides'
   import CallToAction from '$components/CallToAction.svelte'
+  import GetInTouch from '$components/GetInTouch.svelte'
   import CoverPhoto from '$components/CoverPhoto.svelte'
   import DiveDescent from '$components/DiveDescent.svelte'
 
@@ -21,6 +22,9 @@
   // The site's name and tagline in the current language (English is the
   // identifier; siteText resolves the display text).
   let siteName = $derived(site ? siteText(site.id, $locale).name : '')
+
+  // Opens the shared GetInTouch form below when "Get in touch" is clicked.
+  let contactActive = $state<'try-dive' | 'course' | null>(null)
 
   // This page is entirely static. It used to also fetch travel_destinations and
   // match this site by name, to let the booking app override the tagline and the
@@ -250,7 +254,13 @@
         text={$t.siteDetail.ctaText}
         calendarLabel={$t.siteDetail.seeCalendar}
         contactLabel={$t.siteDetail.contact}
+        onContact={() => {
+          contactActive = 'try-dive'
+          scrollToId('get-in-touch')
+        }}
       />
+
+      <GetInTouch bind:active={contactActive} />
     </article>
   </DiveDescent>
 {/if}

@@ -1,7 +1,7 @@
 <script lang="ts">
   import Photo from '$components/Photo.svelte'
   import { SIZES, type ResponsiveImage } from '$engine/responsive-image'
-  import { path } from '$engine/router'
+  import { path, scrollToId } from '$engine/router'
   import { courseByRouteId, courseId, coursePath, COURSES, type CourseCard } from '$content/courses'
   import { sessionMatchesCourse, type BlockKey, type CourseGuide } from '$content/course-guides'
   import { coursePoolImage } from '$engine/photo-pool'
@@ -12,6 +12,7 @@
   import { courseText } from '$engine/i18n-content'
   import { courseGuide } from '$engine/i18n-guides'
   import CallToAction from '$components/CallToAction.svelte'
+  import GetInTouch from '$components/GetInTouch.svelte'
 
   // Route param: /courses/<id>.
   let id = $derived($path.replace(/^\/courses\//, '').replace(/\/+$/, ''))
@@ -20,6 +21,9 @@
   // The course's title in the current language (the English title stays the
   // identifier; courseText resolves the display text).
   let courseTitle = $derived(course ? courseText(course, $locale).title : '')
+
+  // Opens the shared GetInTouch form below when "Get in touch" is clicked.
+  let contactActive = $state<'try-dive' | 'course' | null>(null)
 
   // Four images staggered down the page. A course can pin its own set;
   // otherwise we use its cover plus three stable picks from the course photo pool.
@@ -414,6 +418,12 @@
       text={$t.courseDetail.ctaText}
       calendarLabel={$t.siteDetail.seeCalendar}
       contactLabel={$t.courseDetail.contact}
+      onContact={() => {
+        contactActive = 'course'
+        scrollToId('get-in-touch')
+      }}
     />
+
+    <GetInTouch bind:active={contactActive} />
   </article>
 {/if}

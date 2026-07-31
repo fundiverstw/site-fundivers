@@ -16,7 +16,10 @@
 
   type RequestType = 'try-dive' | 'course'
 
-  let active = $state<RequestType | null>(null)
+  // `active` is bindable so a parent can open the form directly — e.g. the
+  // "Get in touch" button on a course / dive-site page — not only the tiles
+  // below. Left unbound (as on the homepage) it behaves as before.
+  let { active = $bindable(null) }: { active?: RequestType | null } = $props()
   let sent = $state(false)
   let name = $state('')
   let email = $state('')

@@ -1,12 +1,23 @@
 <script lang="ts">
   // The teal "Ready to dive?" panel at the foot of the dive-site and course
   // detail pages. Same panel, different words — so the words are props.
+  //
+  // "Get in touch" opens the shared GetInTouch email form (via `onContact`)
+  // rather than a bare link. It used to point at `#contact`, which only scrolled
+  // to the footer sitting right under this panel, so the click looked dead.
   let {
     title,
     text,
     calendarLabel,
     contactLabel,
-  }: { title: string; text: string; calendarLabel: string; contactLabel: string } = $props()
+    onContact,
+  }: {
+    title: string
+    text: string
+    calendarLabel: string
+    contactLabel: string
+    onContact: () => void
+  } = $props()
 </script>
 
 <div
@@ -23,11 +34,12 @@
     >
       {calendarLabel}
     </a>
-    <a
-      href="#contact"
+    <button
+      type="button"
+      onclick={onContact}
       class="rounded-full border border-white/40 px-5 py-2 text-sm font-bold text-white transition-colors hover:bg-white/15"
     >
       {contactLabel}
-    </a>
+    </button>
   </div>
 </div>
