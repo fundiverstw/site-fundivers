@@ -502,6 +502,45 @@ export const en = {
     emailUs: 'Email us',
   },
 
+  octopus: {
+    prompt: 'Don’t see what you want?',
+    cta: 'Build your own trip!',
+    dismiss: 'Dismiss',
+  },
+
+  buildTrip: {
+    title: 'Build Your Own Trip',
+    subtitle:
+      'Don’t see the trip you’re after? Design your own dive itinerary from any of our sites and we’ll help make it happen.',
+    intro:
+      'Add dive sites into a day-by-day plan, set how many dives at each, then send it over. We’ll come back with dates, logistics and a price.',
+    sitesTitle: 'Pick from our dive sites',
+    taiwan: 'Taiwan',
+    international: 'International',
+    add: 'Add',
+    yourTrip: 'Your itinerary',
+    day: 'Day {n}',
+    addDay: 'Add a day',
+    removeDay: 'Remove day',
+    activeDayHint: 'sites you add land here',
+    emptyDay: 'No sites yet — add some from the list.',
+    emptyTrip: 'Your itinerary is empty. Add a dive site from the list to start planning.',
+    moveUp: 'Move up',
+    moveDown: 'Move down',
+    remove: 'Remove',
+    yourDetails: 'Your details (optional)',
+    name: 'Name',
+    email: 'Email',
+    dates: 'Preferred dates',
+    groupSize: 'Group size',
+    notes: 'Anything else we should know?',
+    send: 'Send my trip request',
+    needSites: 'Add at least one dive site first.',
+    unitDays: 'days',
+    unitDives: 'dives',
+    unitSites: 'sites',
+  },
+
   notFound: {
     code: '404',
     title: 'Page not found',

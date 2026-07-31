@@ -508,6 +508,45 @@ export const ja: Dict = {
     emailUs: 'メールで問い合わせる',
   },
 
+  octopus: {
+    prompt: 'お探しのツアーが見つかりませんか？',
+    cta: '自分だけのツアーを作ろう！',
+    dismiss: '閉じる',
+  },
+
+  buildTrip: {
+    title: '自分だけのツアーを作る',
+    subtitle:
+      'お探しのツアーがない？ 私たちの全ダイブスポットから、自分だけのダイブ日程を組み立ててください。実現をお手伝いします。',
+    intro:
+      'ダイブスポットを日ごとのプランに追加し、各スポットの本数を決めて送信してください。日程・移動・料金をご返信します。',
+    sitesTitle: 'ダイブスポットから選ぶ',
+    taiwan: '台湾',
+    international: '海外',
+    add: '追加',
+    yourTrip: 'あなたの日程',
+    day: '{n}日目',
+    addDay: '日を追加',
+    removeDay: 'この日を削除',
+    activeDayHint: '追加したスポットはこの日に入ります',
+    emptyDay: 'まだスポットがありません。リストから追加してください。',
+    emptyTrip: '日程はまだ空です。リストからダイブスポットを追加して計画を始めましょう。',
+    moveUp: '上へ',
+    moveDown: '下へ',
+    remove: '削除',
+    yourDetails: 'ご連絡先（任意）',
+    name: 'お名前',
+    email: 'メール',
+    dates: 'ご希望の日程',
+    groupSize: '人数',
+    notes: 'その他ご要望など',
+    send: 'ツアー希望を送信',
+    needSites: 'まずダイブスポットを1つ以上追加してください。',
+    unitDays: '日',
+    unitDives: 'ダイブ',
+    unitSites: 'スポット',
+  },
+
   notFound: {
     code: '404',
     title: 'ページが見つかりません',

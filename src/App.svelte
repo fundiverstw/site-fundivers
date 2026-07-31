@@ -28,6 +28,7 @@
     '/websites': () => import('$pages/Websites.svelte'),
     '/cycling': () => import('$pages/Cycling.svelte'),
     '/hiking': () => import('$pages/Hiking.svelte'),
+    '/build-trip': () => import('$pages/BuildTrip.svelte'),
     '/calendar': () => import('$pages/Calendar.svelte'),
     '/team': () => import('$pages/Team.svelte'),
     ':site': () => import('$pages/DiveSiteDetail.svelte'),

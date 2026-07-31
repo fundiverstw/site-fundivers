@@ -4,6 +4,7 @@
   import MenuIcon from './MenuIcon.svelte'
   import GlobeIcon from './GlobeIcon.svelte'
   import RadioPlayer from './RadioPlayer.svelte'
+  import OctopusPeek from './OctopusPeek.svelte'
 
   let leftLinks = $derived([
     { href: '/courses', label: $t.nav.courses },
@@ -76,8 +77,10 @@
 
 <svelte:window onclick={onWindowClick} />
 
-<header class="bg-transparent">
-  <div class="mx-auto max-w-[1600px] px-4 sm:px-6">
+<header class="relative z-30 bg-transparent">
+  <div class="relative mx-auto max-w-[1600px] px-4 sm:px-6">
+    <!-- Cute octopus that peeks out from behind the logo now and then -->
+    <OctopusPeek />
     <!-- Desktop: logo at the far left, links + globe to its right.
          Shown from xl (1280px), not md. Eight links plus the logo simply do not
          fit below that: the bar used to run off the side of the page and give

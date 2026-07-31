@@ -4,7 +4,6 @@
   import { fetchUpcomingTripTitles } from '$engine/events'
   import { siteImage, fallbackImage } from '$engine/photo-pool'
   import { DIVE_SITES } from '$content/dive-sites'
-  import { CONTACT } from '$content/settings'
   import { t } from '$engine/i18n'
   import PageHeader from '$components/PageHeader.svelte'
   import CoverPhoto from '$components/CoverPhoto.svelte'
@@ -181,7 +180,7 @@
         {$t.travel.seeCalendar}
       </a>
       <a
-        href={`mailto:${CONTACT.email}`}
+        href="/build-trip"
         class="rounded-full border border-white/30 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/10"
       >
         {$t.travel.planCustom}
