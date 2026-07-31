@@ -43,17 +43,14 @@
       .finally(() => (loading = false))
   })
 
-  // The homepage hero is a 2×2 board of four quadrants, four events each:
-  // Featured · Dives · Courses · Adventures. Every event shows in exactly one
-  // quadrant — featured wins first, then a kind claims the rest.
+  // The homepage hero is a 2×2 board of four quadrants holding up to four events
+  // each: Featured · Dives · Courses · Adventures. Every event shows in exactly
+  // one quadrant — featured wins first, then a kind claims the rest.
 
-  // Featured: real featured first, padded with the soonest upcoming events.
-  let featured = $derived.by(() => {
-    const feat = upcoming.filter((e) => e.featured)
-    if (feat.length >= 4) return feat.slice(0, 4)
-    const ids = new Set(feat.map((e) => e.id))
-    return [...feat, ...upcoming.filter((e) => !ids.has(e.id)).slice(0, 4 - feat.length)]
-  })
+  // Featured: only events actually flagged `featured` in the app — no padding, so
+  // the quadrant reflects the real featured set (often just one). The adaptive
+  // tile layout sizes it: a lone featured event fills the whole quadrant.
+  let featured = $derived(upcoming.filter((e) => e.featured).slice(0, 4))
   let featuredIds = $derived(new Set(featured.map((e) => e.id)))
   // The Dives row holds every dive — local fun dives and multi-day dive trips
   // alike (is_trip is just a flag on a dive, not its own row). Adventures is a
@@ -79,6 +76,27 @@
     green: { panel: 'border-green/60 bg-green/20', text: 'text-green' },
     peach: { panel: 'border-peach/60 bg-peach/20', text: 'text-peach' },
   } as const
+
+  // A quadrant's tiles reflow to how many events it has, so it never shows an
+  // awkward empty cell: 1 fills the quadrant, 2 sit side by side, 3 go two-up
+  // with the third centred below, 4 is the full 2×2. This only applies on the
+  // fixed-height desktop board (lg+); phones keep a simple two-column grid.
+  // Literal class strings so Tailwind's scanner keeps every variant.
+  function quadGridClass(n: number): string {
+    if (n <= 1) return 'grid grid-cols-1 gap-2 lg:min-h-0 lg:flex-1 lg:grid-cols-1 lg:grid-rows-1'
+    if (n === 2) return 'grid grid-cols-2 gap-2 lg:min-h-0 lg:flex-1 lg:grid-cols-2 lg:grid-rows-1'
+    if (n === 3) return 'grid grid-cols-2 gap-2 lg:min-h-0 lg:flex-1 lg:grid-cols-4 lg:grid-rows-2'
+    return 'grid grid-cols-2 gap-2 lg:min-h-0 lg:flex-1 lg:grid-cols-2 lg:grid-rows-2'
+  }
+  // Only the 3-event case needs explicit placement: on a 4-column desktop grid
+  // each tile spans two columns, and the lone third one starts at column 2 so it
+  // sits centred beneath the top pair. Other counts auto-flow correctly.
+  function quadTileClass(n: number, i: number): string {
+    if (n !== 3) return ''
+    if (i === 0) return 'lg:col-start-1 lg:col-span-2 lg:row-start-1'
+    if (i === 1) return 'lg:col-start-3 lg:col-span-2 lg:row-start-1'
+    return 'lg:col-start-2 lg:col-span-2 lg:row-start-2'
+  }
 
   // Structural data only (links + images); titles/descriptions come from i18n
   // ($t.home.services), aligned by index.
@@ -121,12 +139,16 @@
      aspect and fills its grid cell (`h-full`) so a row packs four tiles into
      whatever height the viewport-filling board hands it. `accent` tints the hover
      glow to match the row's colour. -->
-{#snippet quadCard(ev: UpcomingEvent, accent: 'mauve' | 'reef' | 'green' | 'peach')}
+{#snippet quadCard(
+  ev: UpcomingEvent,
+  accent: 'mauve' | 'reef' | 'green' | 'peach',
+  place: string,
+)}
   {@const price = twd(ev.startingAt)}
   <button
     type="button"
     onclick={() => open(ev)}
-    class={`group relative block aspect-[16/10] w-full overflow-hidden rounded-xl border border-white/15 text-left transition-all duration-300 hover:-translate-y-0.5 lg:aspect-auto lg:h-full ${
+    class={`group relative block aspect-[16/10] w-full overflow-hidden rounded-xl border border-white/15 text-left transition-all duration-300 hover:-translate-y-0.5 lg:aspect-auto lg:h-full ${place} ${
       accent === 'mauve'
         ? 'hover:border-mauve/60 hover:shadow-[0_0_20px_-6px_rgba(203,166,247,0.7)]'
         : accent === 'peach'
@@ -177,18 +199,18 @@
     >
       <span class="mono">{icon}</span>{title}
     </h2>
-    <div class="grid grid-cols-2 gap-2 lg:min-h-0 lg:flex-1 lg:grid-rows-2">
+    <div class={quadGridClass(loading ? 4 : items.length)}>
       {#if loading}
         {#each Array(4) as _, i (i)}<div
             class="aspect-[16/10] animate-pulse rounded-xl bg-white/10 lg:aspect-auto lg:h-full"
           ></div>{/each}
       {:else if items.length === 0}
-        <p class="col-span-2 self-center text-xs text-brand-200">
+        <p class="self-center text-xs text-brand-200">
           {$t.common.nothingScheduled}
         </p>
       {:else}
-        {#each items as ev (ev.id)}
-          {@render quadCard(ev, accent)}
+        {#each items as ev, i (ev.id)}
+          {@render quadCard(ev, accent, quadTileClass(items.length, i))}
         {/each}
       {/if}
     </div>
