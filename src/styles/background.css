@@ -2,12 +2,11 @@
    The deep-sea background behind every page, plus a few site-wide basics
    (scrollbar, text selection, no margin on the body).
 
-   The backdrop is entirely static: a deep-sea gradient with soft neon corner
-   glows, overlaid with a faint equilateral-triangle lattice (three families of
-   thin lines at 0deg / 60deg / 120deg) that reads as a mathematical low-poly
-   mesh. It is a plain painted background — no animation, no per-frame work — so
-   it costs nothing to scroll over. (It replaced the old animated SVG caustics,
-   which recomputed full-screen fractal noise every frame and hurt performance.)
+   The backdrop is a single photograph — a diver silhouetted in deep ocean
+   water — sized to cover the viewport and pinned in place while the page scrolls
+   over it. A dark blue overlay is painted on top so the light body text and the
+   frosted-glass panels keep their contrast wherever the photo happens to be
+   bright. It replaced the earlier painted gradient + fractal-noise caustics.
    ───────────────────────────────────────────────────────────────────────── */
 
 *,
@@ -26,30 +25,24 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: var(--color-brand-50);
-  /* Riced ocean base: a sunlit-twilight sea (brighter than midnight so the site
-     reads open and airy, not gloomy) with soft neon spotlights bleeding in from
-     the corners and a shaft of daylight refracting down from the surface — the
-     tell-tale "unixporn wallpaper" glow.
-
-     Over it, two frozen water-caustic textures: full-screen fractalNoise, run
-     through a tint + gamma so only the bright crests survive as sparse, wavy
-     light veins (teal fine ribbons, a broader mauve layer at a different seed
-     and scale so the two interfere and never look tiled). They are static SVGs
-     baked into the CSS as data URIs, so the noise is rasterised exactly once at
-     decode time — no per-frame recompute, unlike the old animated caustics —
-     and stitchTiles='stitch' with an integer tile makes the 2000px tile seam-
-     less. Irregular and ocean-like, but effectively free to paint.
-
-     Fixed so the whole backdrop stays put while the page scrolls over it. */
-  background-color: #0d1c38;
+  /* The diver photo, covered and centred (the diver sits mid-frame, so a centre
+     crop keeps them in view on any aspect ratio), under a deep-blue overlay that
+     darkens the photo just enough for the light text and glass panels to hold
+     contrast. Layers paint top-to-bottom: overlay first, photo beneath, and a
+     solid ocean colour as the final fallback while the image loads. Fixed so the
+     backdrop stays put while the page scrolls over it. */
+  background-color: #0a1424;
   background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2000' height='2000'%3E%3Cfilter id='a' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.004 0.012' numOctaves='3' seed='9' stitchTiles='stitch' result='n'/%3E%3CfeColorMatrix in='n' type='matrix' values='0 0 0 0 0.647 0 0 0 0 0.953 0 0 0 0 0.918 0.34 0.34 0.34 0 0' result='c'/%3E%3CfeComponentTransfer in='c'%3E%3CfeFuncA type='gamma' amplitude='2.2' exponent='5'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='2000' height='2000' filter='url(%23a)'/%3E%3C/svg%3E"),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2000' height='2000'%3E%3Cfilter id='b' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.006 0.009' numOctaves='2' seed='23' stitchTiles='stitch' result='n'/%3E%3CfeColorMatrix in='n' type='matrix' values='0 0 0 0 0.796 0 0 0 0 0.651 0 0 0 0 0.969 0.30 0.30 0.30 0 0' result='c'/%3E%3CfeComponentTransfer in='c'%3E%3CfeFuncA type='gamma' amplitude='1.6' exponent='6'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='2000' height='2000' filter='url(%23b)'/%3E%3C/svg%3E"),
-    radial-gradient(120% 90% at 12% -10%, rgba(203, 166, 247, 0.28) 0%, transparent 55%),
-    radial-gradient(120% 90% at 92% 8%, rgba(44, 208, 197, 0.26) 0%, transparent 55%),
-    radial-gradient(100% 70% at 50% -15%, rgba(137, 220, 235, 0.22) 0%, transparent 60%),
-    radial-gradient(140% 120% at 50% 120%, rgba(36, 116, 235, 0.34) 0%, transparent 60%),
-    linear-gradient(180deg, #13294b 0%, #0f1f3d 45%, #0b1730 100%);
+    linear-gradient(
+      180deg,
+      rgba(9, 18, 34, 0.62) 0%,
+      rgba(9, 18, 34, 0.4) 42%,
+      rgba(9, 18, 34, 0.68) 100%
+    ),
+    url('/imgs/diver-bg.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
   background-attachment: fixed;
 }
 
