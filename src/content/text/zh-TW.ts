@@ -488,7 +488,7 @@ export const zhTW: Dict = {
     subtitle: '沒看到想要的行程？從我們所有的潛點中，設計你自己的潛水行程，我們協助你實現。',
     intro: '將潛點加入每日行程、設定每處的潛水次數，再送出給我們。我們會回覆日期、交通安排與報價。',
     sitesTitle: '從我們的潛點中挑選',
-    taiwan: '台灣',
+    taiwan: '南台灣',
     international: '國際',
     add: '加入',
     yourTrip: '你的行程',

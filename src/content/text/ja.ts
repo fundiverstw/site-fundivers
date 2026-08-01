@@ -521,7 +521,7 @@ export const ja: Dict = {
     intro:
       'ダイブスポットを日ごとのプランに追加し、各スポットの本数を決めて送信してください。日程・移動・料金をご返信します。',
     sitesTitle: 'ダイブスポットから選ぶ',
-    taiwan: '台湾',
+    taiwan: '台湾南部',
     international: '海外',
     add: '追加',
     yourTrip: 'あなたの日程',

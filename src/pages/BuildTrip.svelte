@@ -28,10 +28,15 @@
   let notes = $state('')
   let error = $state('')
 
-  // Two groups: Taiwan (local) and International (trip destinations), each A→Z.
+  // Two groups: South Taiwan and International (trip destinations), each A→Z. The
+  // northern day-diving sites (Keelung, Long Dong, Yilan) aren't trip options, so
+  // the Taiwan side is limited to the southern regions we run trips to.
+  const SOUTH_REGIONS = new Set(['kenting', 'xiaoliuqiu', 'greenisland', 'lanyu', 'penghu'])
   const byName = (a: { id: string }, b: { id: string }) =>
     siteText(a.id, 'en').name.localeCompare(siteText(b.id, 'en').name)
-  const localSites = [...DIVE_SITES].filter((s) => !s.international).sort(byName)
+  const localSites = [...DIVE_SITES]
+    .filter((s) => !s.international && SOUTH_REGIONS.has(s.region))
+    .sort(byName)
   const intlSites = [...DIVE_SITES].filter((s) => s.international).sort(byName)
 
   let totalDives = $derived(

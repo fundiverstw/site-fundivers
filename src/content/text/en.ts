@@ -515,7 +515,7 @@ export const en = {
     intro:
       'Add dive sites into a day-by-day plan, set how many dives at each, then send it over. We’ll come back with dates, logistics and a price.',
     sitesTitle: 'Pick from our dive sites',
-    taiwan: 'Taiwan',
+    taiwan: 'South Taiwan',
     international: 'International',
     add: 'Add',
     yourTrip: 'Your itinerary',
