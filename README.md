@@ -56,6 +56,7 @@ npm run dev            # http://localhost:5173
 | `npm run lint`         | ESLint (`lint:fix` to autofix)                                   |
 | `npm run format`       | Prettier (`format:check` to verify only)                         |
 | `npm run test:unit`    | Vitest — pure functions + content integrity                      |
+| `npm run test:coverage`| `test:unit` with a coverage report, against a threshold ratchet   |
 | `npm run test:e2e`     | Playwright — the built site in a real browser                    |
 | `npm run test:contract`| Vitest — the site's real queries against the live Supabase        |
 | `npm run build`        | Type-check then build `dist/`                                    |
@@ -69,6 +70,26 @@ A migration in `app-fundivers` that renames a column would therefore pass CI and
 calendar — so `.github/workflows/contract.yml` runs the site's real queries against the
 live database once a day (`npm run test:contract`). Every query's column list comes from
 `src/engine/db-columns.ts`, which is what that test asserts.
+
+The three suites divide the work rather than overlap it, and the split is worth knowing
+before adding a test:
+
+- **Unit** (`src/**/*.test.ts`) — anything that can be decided without a browser: the
+  mapping and filtering in `src/engine/`, the shape and completeness of `src/content/`.
+  The modules that read Supabase are tested against a fake client
+  (`src/engine/__fixtures__/fake-supabase.ts`) that applies the query filters for real, so
+  a test cannot pass by getting rows the query would never have returned.
+- **Browser** (`e2e/`) — anything that needs a page: navigation, the language switcher, the
+  radio player, and which image files a real browser actually downloads. These answer every
+  Supabase call from fixtures, so they never touch the network.
+- **Contract** (`contract/`) — the only thing that talks to the real database, and the only
+  thing that can tell you the schema still matches.
+
+`npm run test:coverage` reports on `src/engine/` and `src/content/` and fails below a
+threshold set just under where the suite currently sits. It is a ratchet against new
+untested modules, not a number to optimise. Four modules are deliberately near zero there
+— `i18n.ts`, `radio.ts`, `supabase.ts` and the navigation half of `router.ts` — because
+they are browser and network glue that the other two suites cover properly.
 
 ## Environment
 

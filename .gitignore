@@ -12,6 +12,9 @@ playwright-report
 test-results
 blob-report
 
+# Vitest coverage report (npm run test:coverage)
+coverage
+
 # All env files (dev + mode-specific like .env.production) hold secrets — never commit
 .env.*
 !.env.example

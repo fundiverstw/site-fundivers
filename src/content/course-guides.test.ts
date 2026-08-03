@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { COURSE_GUIDES } from './course-guides'
+import { COURSE_GUIDES, sessionMatchesCourse } from './course-guides'
 import { COURSES, courseId } from './courses'
 
 // CourseDetail.svelte looks a guide up with COURSE_GUIDES[courseId(course.slug)].
@@ -75,6 +75,61 @@ describe('course guides', () => {
   it('never suggest the course you are already reading', () => {
     for (const [key, g] of entries) {
       expect(g.next, `${key} suggests itself`).not.toContain(key)
+    }
+  })
+})
+
+// The join between a course page and the calendar: an upcoming course event
+// carries an admin_title short code ('OW', 'aow'), and this decides which
+// course page should list it as a session. Getting it wrong shows a course page
+// with no upcoming dates while the dates sit right there in the calendar —
+// which looks like "nothing scheduled" rather than like a bug.
+describe('sessionMatchesCourse', () => {
+  const guide = COURSE_GUIDES[Object.keys(COURSE_GUIDES)[0]]
+
+  it('matches a category listed in the guide', () => {
+    for (const code of guide.matchCodes) {
+      expect(sessionMatchesCourse(guide, code)).toBe(true)
+    }
+  })
+
+  it('ignores case, because the codes are typed by hand in the booking app', () => {
+    for (const code of guide.matchCodes) {
+      expect(sessionMatchesCourse(guide, code.toUpperCase())).toBe(true)
+    }
+  })
+
+  it('ignores surrounding whitespace', () => {
+    expect(sessionMatchesCourse(guide, `  ${guide.matchCodes[0]}  `)).toBe(true)
+  })
+
+  it('does not match a category the guide never claims', () => {
+    expect(sessionMatchesCourse(guide, 'not-a-real-code')).toBe(false)
+  })
+
+  it('returns false when there is no guide', () => {
+    expect(sessionMatchesCourse(undefined, 'ow')).toBe(false)
+  })
+
+  it('returns false for an event with no category', () => {
+    expect(sessionMatchesCourse(guide, null)).toBe(false)
+  })
+
+  it('returns false for an empty category rather than matching everything', () => {
+    expect(sessionMatchesCourse(guide, '')).toBe(false)
+    expect(sessionMatchesCourse(guide, '   ')).toBe(false)
+  })
+
+  it('claims every match code for exactly one course', () => {
+    // Two guides claiming the same code would list the same calendar session on
+    // two different course pages.
+    const seen = new Map<string, string>()
+    for (const [key, g] of entries) {
+      for (const code of g.matchCodes) {
+        const already = seen.get(code)
+        expect(already, `'${code}' is claimed by both ${already} and ${key}`).toBeUndefined()
+        seen.set(code, key)
+      }
     }
   })
 })
