@@ -5,6 +5,7 @@
   import { twd } from '$engine/format'
   import { t } from '$engine/i18n'
   import PageHeader from '$components/PageHeader.svelte'
+  import fundiveLogoUrl from '$assets/fundive-logo-dark.svg'
 
   // Prices come from content/services.ts, never from the language files — a price
   // typed into three translations is three prices waiting to disagree.
@@ -14,7 +15,7 @@
 <PageHeader
   title={$t.fundive.title}
   subtitle={$t.fundive.subtitle}
-  logo="/imgs/fundive-logo-dark.svg"
+  logo={fundiveLogoUrl}
   logoAlt="FunDive"
 />
 

@@ -23,7 +23,8 @@
       "$styles/*": ["./src/styles/*"],
       "$engine/*": ["./src/engine/*"],
       "$components/*": ["./src/components/*"],
-      "$pages/*": ["./src/pages/*"]
+      "$pages/*": ["./src/pages/*"],
+      "$assets/*": ["./src/assets/*"]
     }
   },
   "include": [

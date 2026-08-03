@@ -5,6 +5,7 @@
   import { mediaIdLocal } from '$engine/images'
   import { hikeImage } from '$engine/photo-pool'
   import type { ResponsiveImage } from '$engine/responsive-image'
+  import fundiveLogoUrl from '$assets/fundive-logo-dark.svg'
 
   // The hub: one card per offering. Links + imagery are structural; the titles
   // and blurbs come from i18n ($t.services). Physical services (gear, tours)
@@ -41,7 +42,7 @@
       href: '/fundive',
       title: $t.services.fundiveTitle,
       desc: $t.services.fundiveDesc,
-      logo: '/imgs/fundive-logo-dark.svg',
+      logo: fundiveLogoUrl,
     },
     {
       href: '/websites',

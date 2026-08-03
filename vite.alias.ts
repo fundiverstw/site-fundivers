@@ -8,6 +8,12 @@ import { fileURLToPath } from 'node:url'
 //   $engine     the machinery — router, database, drawing (rarely touched)
 //   $components reusable pieces of UI
 //   $pages      one file per page of the site
+//   $assets     branding files (logos) that the build fingerprints
+//
+// $assets is small and exists for one reason: a file imported from here goes
+// through the bundler, which renames it with a hash of its contents, which is
+// what lets it be cached forever. A file in public/ keeps its name across
+// builds and so can never be, because a stale copy would never be replaced.
 //
 // Shared by vite.config.ts (the site) and vitest.config.ts (the tests) so the
 // two cannot drift apart. The same list must also be mirrored in the "paths"
@@ -20,4 +26,5 @@ export const alias = {
   $engine: p('./src/engine'),
   $components: p('./src/components'),
   $pages: p('./src/pages'),
+  $assets: p('./src/assets'),
 }

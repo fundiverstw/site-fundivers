@@ -2,6 +2,8 @@
   import { CONTACT } from '$content/settings'
   import { t } from '$engine/i18n'
   import SocialIcons from './SocialIcons.svelte'
+  import logoUrl from '$assets/fd_logo.webp'
+  import fundiveLogoUrl from '$assets/fundive-logo-dark.svg'
 
   const year = new Date().getFullYear()
 </script>
@@ -10,7 +12,7 @@
   <div class="mx-auto grid max-w-[1600px] gap-8 px-4 py-12 sm:px-6 md:grid-cols-3">
     <div>
       <div class="flex items-center gap-2">
-        <img src="/imgs/fd_logo.webp" alt="FunDivers TW" class="h-10 w-auto" />
+        <img src={logoUrl} alt="FunDivers TW" class="h-10 w-auto" />
         <span class="text-lg font-bold text-white">FunDivers TW</span>
       </div>
       <p class="mt-3 max-w-xs text-sm text-brand-200">{$t.footer.blurb}</p>
@@ -42,7 +44,7 @@
         aria-label={$t.footer.openSourceAria}
       >
         <img
-          src="/imgs/fundive-logo-dark.svg"
+          src={fundiveLogoUrl}
           alt={$t.footer.fundiveAlt}
           class="h-20 w-auto max-w-full opacity-90 transition-opacity group-hover:opacity-100 sm:h-28"
         />

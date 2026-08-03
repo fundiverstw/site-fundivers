@@ -52,6 +52,15 @@ export const SIZES = {
   gallery: '(min-width: 64rem) 22rem, (min-width: 40rem) 34vw, 70vw',
   /** Something spanning the full column width of a page (detail-page heroes). */
   hero: '(min-width: 64rem) 60rem, 96vw',
-  /** The lightbox: as large as the viewport allows, so ask for the big copy. */
+  /**
+   * The lightbox: as large as the viewport allows, so ask for the big copy.
+   *
+   * "The big copy" is 960px wide — see WIDTHS in vite.images.ts for why the
+   * ladder stops there. On a large desktop screen the lightbox therefore paints
+   * a 960px photo scaled up, which is softer than the picture deserves. That is
+   * the accepted cost of keeping the edge cache warm; if the gallery ever
+   * becomes the reason people visit, add a width back for this case alone
+   * rather than for every photo on the site.
+   */
   full: '100vw',
 } as const

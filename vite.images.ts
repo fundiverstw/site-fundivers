@@ -8,13 +8,13 @@ import type { Plugin } from 'vite'
 // Turns `import photo from './x.avif?responsive'` into a set of sized copies
 // plus the `srcset` that lets the browser pick one.
 //
-// Why this exists: every photo on the site was harvested from the old Wix site
-// at roughly 1200px wide, and every photo was sent at that width to everybody.
-// A phone showing a card three-across in a grid paints it about 120px wide and
-// then throws away 90% of the pixels it just paid for over a mobile connection.
-// The pictures are the whole weight of this site — 15.7 MB across 124 files, an
-// order of magnitude more than all the JavaScript — so this is *the* thing that
-// makes the site slow away from a desk.
+// Why this exists: the sources are camera originals — 349 files, 569 MB, about
+// 1.6 MB and 4000px wide apiece — and without this every visitor would be sent
+// them whole. A phone showing a card three-across in a grid paints it about
+// 120px wide and then throws away almost every pixel it just paid for over a
+// mobile connection. The pictures are the whole weight of this site, orders of
+// magnitude more than all the JavaScript, so this is *the* thing that makes the
+// site slow away from a desk.
 //
 // The module it returns looks like this, and is what CoverPhoto expects:
 //
@@ -34,7 +34,18 @@ import type { Plugin } from 'vite'
 // (~120px), a one-across card (~360px), and a full-bleed hero (~390px), each
 // times a device pixel ratio of 2 or 3. Nothing is generated above the source's
 // own width — upscaling invents detail and costs bytes to store the invention.
-const WIDTHS = [384, 480, 640, 768, 960, 1216]
+//
+// 960 is the ceiling, and the reason is cache behaviour rather than bytes on
+// the wire. A 1216 tier used to exist; it was 41 MB of the 139 MB build, and
+// only the lightbox and a retina desktop hero ever asked for it. Those bytes
+// are not the problem by themselves — the problem is that every extra width
+// multiplies the number of distinct URLs (six widths over ~350 photos is ~1,900
+// files), and a site this quiet cannot keep that many objects resident in
+// Cloudflare's edge cache. A cold object costs ~340 ms to first byte against
+// ~55 ms for a warm one, measured, and that miss penalty is the entire reason
+// photos feel slow. Fewer widths means each surviving URL is asked for more
+// often and stays warm, which is worth more than the sharpness it costs.
+const WIDTHS = [384, 480, 640, 768, 960]
 
 // AVIF everywhere. It beats WebP by a wide margin on these underwater photos,
 // and every browser we serve has taken it since Safari 16.4 (2023).

@@ -11,14 +11,21 @@ import { visit } from './helpers'
 // emitted attributes catches that, so this looks at them.
 
 /** Pages with photos on them, and the width each one's photos should stay under. */
+//
+// 960 is the top of the ladder (WIDTHS in vite.images.ts), and these pages do
+// reach it: a card declares 92vw on a phone, which on the Pixel 7 this suite
+// drives — 412px wide at a device pixel ratio of 2.625 — asks for ~995px and
+// takes the largest copy there is. So the limit is tight rather than generous;
+// anything above it means a copy was served that the ladder should not contain.
 const PAGES = [
-  { route: '/', limit: 1216 },
-  { route: '/courses', limit: 1216 },
-  { route: '/team', limit: 1216 },
+  { route: '/', limit: 960 },
+  { route: '/courses', limit: 960 },
+  { route: '/team', limit: 960 },
   // The gallery grid is capped harder than the layout would imply — see the
-  // `gallery` entry in src/engine/responsive-image.ts for why. A thumbnail
-  // reaching for the 1216 copy means that cap has been undone.
-  { route: '/photos', limit: 960 },
+  // `gallery` entry in src/engine/responsive-image.ts for why. 70vw on the same
+  // phone asks for ~757px and takes the 768 copy; on desktop the 22rem column
+  // takes 384. A thumbnail above 768 means that cap has been undone.
+  { route: '/photos', limit: 768 },
 ]
 
 for (const { route, limit } of PAGES) {
@@ -26,7 +33,12 @@ for (const { route, limit } of PAGES) {
     await visit(page, route)
     await page.waitForLoadState('networkidle')
 
-    const photos = page.locator('img[src*="/assets/"]')
+    // `.avif` matters as much as `/assets/`: the bundler fingerprints the logos
+    // into /assets/ too, and a logo is a single flat image with no srcset by
+    // design. Matching on the directory alone swept them in and failed every
+    // page for the one image on it that is not a photograph. Everything the
+    // sized-photo pipeline emits is AVIF; nothing else on the site is.
+    const photos = page.locator('img[src*="/assets/"][src$=".avif"]')
     const count = await photos.count()
     expect(count, `no bundled photos found on ${route} — has the page changed?`).toBeGreaterThan(0)
 
@@ -97,6 +109,16 @@ test('the lightbox shows the full-size photo, not the thumbnail', async ({ page 
   const shown = overlay.locator('img').first()
   await expect(shown).toBeVisible()
   expect(await shown.getAttribute('sizes')).toBe('100vw')
-  // And it must offer the large copies, or "full size" means nothing.
-  expect(await shown.getAttribute('srcset')).toContain('1216w')
+
+  // And it must offer something bigger than the grid's own cap, or "full size"
+  // means nothing. Phrased against that cap rather than against a literal width
+  // on purpose: the top of the ladder has moved once already (there used to be
+  // a 1216 copy, dropped to keep the edge cache warm) and a test naming the
+  // largest width fails on the next such change without anything being wrong.
+  const srcset = await shown.getAttribute('srcset')
+  const widths = [...srcset!.matchAll(/ (\d+)w/g)].map((m) => Number(m[1]))
+  expect(
+    Math.max(...widths),
+    `lightbox offers nothing above the grid cap: ${srcset}`,
+  ).toBeGreaterThan(768)
 })

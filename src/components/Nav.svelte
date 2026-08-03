@@ -5,6 +5,7 @@
   import GlobeIcon from './GlobeIcon.svelte'
   import RadioPlayer from './RadioPlayer.svelte'
   import OctopusPeek from './OctopusPeek.svelte'
+  import logoUrl from '$assets/fd_logo.webp'
 
   let leftLinks = $derived([
     { href: '/courses', label: $t.nav.courses },
@@ -93,7 +94,7 @@
                fetched at high priority. width/height are the file's own, to
                reserve the space before it arrives; the classes size it. -->
           <img
-            src="/imgs/fd_logo.webp"
+            src={logoUrl}
             alt="FunDivers TW"
             width="634"
             height="320"
@@ -116,7 +117,7 @@
     <div class="flex items-center justify-between py-3 xl:hidden">
       <a href="/" aria-label="FunDivers TW home" class="group block">
         <img
-          src="/imgs/fd_logo.webp"
+          src={logoUrl}
           alt="FunDivers TW"
           width="634"
           height="320"
