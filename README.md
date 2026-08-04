@@ -29,7 +29,7 @@ come from (`$content/dive-sites`, `$engine/router`), so you never count `../../`
 
 | Folder | Holds | Edited |
 | ------ | ----- | ------ |
-| `src/content/` | The words, facts, links and photos. Text is per-language in `content/text/`. | Constantly |
+| `src/content/` | The words, facts, links and photos. Text is per-language in `content/text/`; news posts are a folder each in `content/news/`. | Constantly |
 | `src/styles/`  | `theme.css` (colours, fonts), `components.css` (`.glass`, `.waybar`), `background.css` | Sometimes |
 | `src/pages/`   | One component per route | Sometimes |
 | `src/components/` | Shared UI | Sometimes |
@@ -112,6 +112,7 @@ This site never authenticates anyone — all booking/login happens in `app-fundi
 | Courses  | Static PADI catalog + live upcoming course sessions       |
 | Photos   | Self-hosted gallery discovered from `src/content/photos/gallery/`; one section per creature in `src/content/marine-life.ts`, captions in each folder's `photos.yaml` |
 | Team     | Placeholder roster (swap in real names/photos)            |
+| News     | One folder per post in `src/content/news/`, named `YYYY-MM-DD-slug` — the folder name *is* the date and the route. Up to three photos per post, discovered by glob. Translations in `news.ja.ts`/`news.zh-TW.ts` are deliberately optional and fall back to English |
 
 Live data access lives in `src/engine/events.ts`; the static dive-site catalog is
 `src/content/dive-sites.ts`.

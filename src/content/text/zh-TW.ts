@@ -11,6 +11,7 @@ export const zhTW: Dict = {
     photos: '相片',
     travel: '旅遊',
     calendar: '行事曆',
+    news: '最新消息',
     gear: '裝備',
     services: '服務',
     radio: '廣播節目',
@@ -276,6 +277,19 @@ export const zhTW: Dict = {
     diveWithUs: '與我們一起潛水',
     diveWithUsText: '對課程或行程有任何疑問？我們很樂意協助。',
     roles: { idc: 'IDC 資深教練', instructor: '教練', divemaster: '潛水長' },
+  },
+  news: {
+    title: '最新消息',
+    subtitle: '研討會、志工活動、社區推廣與教育推廣 — FunDivers 團隊的近期動態。',
+    none: '目前還沒有消息，敬請期待。',
+    notFound: '找不到這篇文章。',
+    backToAll: '所有消息',
+    kinds: {
+      conference: '研討會',
+      volunteering: '志工活動',
+      outreach: '社區推廣',
+      education: '教育推廣',
+    },
   },
   footer: {
     blurb: '導潛行程、PADI 課程，以及台灣與更遠方最棒的潛點。',

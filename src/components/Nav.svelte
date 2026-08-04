@@ -19,6 +19,7 @@
   let rightLinks = $derived([
     { href: '/travel', label: $t.nav.travel },
     { href: '/services', label: $t.nav.services },
+    { href: '/news', label: $t.nav.news },
   ])
   let allLinks = $derived([...leftLinks, ...rightLinks])
 
@@ -34,7 +35,7 @@
   }
 
   function linkClass(href: string): string {
-    // Seven links have to fit beside the logo. They grow with the window rather
+    // Eight links have to fit beside the logo. They grow with the window rather
     // than overflowing it: at 1280 the whole bar, globe included, must be on
     // screen. See the 'the whole navigation fits' test in e2e/navigation.spec.ts.
     const base =

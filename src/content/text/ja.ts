@@ -11,6 +11,7 @@ export const ja: Dict = {
     photos: 'フォト',
     travel: 'ツアー',
     calendar: 'カレンダー',
+    news: 'ニュース',
     gear: 'ギア',
     services: 'サービス',
     radio: 'ラジオ番組',
@@ -283,6 +284,20 @@ export const ja: Dict = {
       idc: 'IDC スタッフインストラクター',
       instructor: 'インストラクター',
       divemaster: 'ダイブマスター',
+    },
+  },
+  news: {
+    title: 'ニュース',
+    subtitle:
+      'カンファレンス、ボランティア活動、地域交流、そして教育 — FunDivers チームの活動をご紹介します。',
+    none: 'まだニュースはありません。またご覧ください。',
+    notFound: 'その記事は見つかりませんでした。',
+    backToAll: 'ニュース一覧',
+    kinds: {
+      conference: 'カンファレンス',
+      volunteering: 'ボランティア',
+      outreach: '地域交流',
+      education: '教育',
     },
   },
   footer: {

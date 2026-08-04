@@ -15,6 +15,7 @@ export const ROUTES = [
   '/cycling',
   '/calendar',
   '/team',
+  '/news',
 ] as const
 
 /** The tables the site reads. Anything not listed answers with an empty list. */

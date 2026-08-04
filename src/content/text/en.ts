@@ -15,6 +15,7 @@ export const en = {
     photos: 'Photos',
     travel: 'Travel',
     calendar: 'Calendar',
+    news: 'News',
     gear: 'Gear',
     services: 'Services',
     radio: 'Radio show',
@@ -285,6 +286,21 @@ export const en = {
     diveWithUs: 'Dive with us',
     diveWithUsText: 'Questions about a course or trip? We’re happy to help.',
     roles: { idc: 'IDC Staff Instructor', instructor: 'Instructor', divemaster: 'Divemaster' },
+  },
+  news: {
+    title: 'News',
+    subtitle:
+      'Conferences, volunteer days, outreach and teaching — what the FunDivers team has been up to.',
+    none: 'No news yet. Check back soon.',
+    notFound: 'That story couldn’t be found.',
+    backToAll: 'All news',
+    // The chip on each card. Keys must match NEWS_KINDS in content/news.ts.
+    kinds: {
+      conference: 'Conference',
+      volunteering: 'Volunteering',
+      outreach: 'Outreach',
+      education: 'Education',
+    },
   },
   footer: {
     blurb: 'Guided dive trips, PADI courses, and the best dive sites across Taiwan and beyond.',

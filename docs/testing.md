@@ -108,6 +108,8 @@ These run in about a second and never open a browser. They test two things.
 - every photo folder is named after a real dive site
 - every gallery folder shows up as a section on the Photos page, so a folder of photos is never silently left off
 - every course guide is keyed to a course that exists, and every "next course" link resolves
+- every news folder is named `YYYY-MM-DD-slug` with a real date, holds at most three photos,
+  and never captions a photo that is not there — see [Adding a news post](adding-news.md)
 - the three language files hold **exactly** the same words, and none of them is blank
 - every translation keeps the `{team}`, `{email}`, `{n}` holes the English has — drop one
   and the sentence still reads fine with the link or the number missing from it
@@ -151,6 +153,8 @@ it. They take about twelve seconds and they test what a visitor would notice:
 - the map zooms into a region — by mouse and by keyboard — and back out again
 - the footer sign-off still links to the Team page, in all three languages — that link is
   the only way in, so losing it hides a whole page without breaking anything
+- a news card opens its story, a pasted `/news/<slug>` works on a cold load, and an
+  untranslated story still reads in Japanese and Chinese rather than coming out blank
 
 They run twice: once at desktop size, once at phone size. A few only make sense at one
 size — the desktop-nav layout checks assume the wide top bar — so those are tagged

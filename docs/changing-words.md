@@ -136,6 +136,7 @@ the translations, keyed by the same id:
 | The paragraphs on a course page | `src/content/course-guides.ts` | `course-guides.zh-TW.ts`, `course-guides.ja.ts` |
 | A dive-site's name, one-line summary, and its region label | `src/content/dive-sites.ts` | `dive-sites.zh-TW.ts`, `dive-sites.ja.ts` |
 | A course's title and one-line summary | `src/content/courses.ts` | `courses.zh-TW.ts`, `courses.ja.ts` |
+| A news post's headline, summary and write-up | `src/content/news/<folder>/article.ts` | `news.zh-TW.ts`, `news.ja.ts` — **allowed to be incomplete**, see [Adding a news post](adding-news.md) |
 | The creature names on the Photos page and the dive-site chips | `src/content/marine-life.ts` | `marine-life.zh-TW.ts`, `marine-life.ja.ts` |
 
 In `dive-site-guides.ts`, each dive site is a block that starts with its id:
@@ -158,6 +159,10 @@ middle by typing `\n\n`:
 ```ts
 overview: 'The first paragraph.\n\nThe second paragraph.',
 ```
+
+**News is the exception.** A news post goes up in English the day it is written, and its
+translations catch up later — a story is worth reading while it is still news. Every other
+row in that table has to be translated before it ships.
 
 When you change or add one of these, do the same in the `.zh-TW` and `.ja` file — the same
 id, the same fields. The block there looks the same, just in the other language and without

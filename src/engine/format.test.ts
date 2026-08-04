@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { formatEventSpan, formatSpan, twd } from './format'
+import { formatEventSpan, formatSpan, formatNewsDate, twd } from './format'
 
 // These functions decide what a visitor reads on a calendar card, so the tests
 // assert the exact string. Dates are given without a timezone so they are read
@@ -89,5 +89,38 @@ describe('twd', () => {
 
   it('renders a free event as NT$0 rather than hiding it', () => {
     expect(twd(0)).toBe('NT$0')
+  })
+})
+
+describe('formatNewsDate', () => {
+  // A news date is written by Intl, so these assert the shape rather than an
+  // exact string — the exact wording belongs to the platform's locale data and
+  // changing with it is correct, not a regression.
+
+  it('writes an English date in full', () => {
+    expect(formatNewsDate('2026-06-14', 'en')).toMatch(/June/)
+    expect(formatNewsDate('2026-06-14', 'en')).toMatch(/2026/)
+    expect(formatNewsDate('2026-06-14', 'en')).toMatch(/14/)
+  })
+
+  it('writes a Japanese date the Japanese way', () => {
+    expect(formatNewsDate('2026-06-14', 'ja')).toBe('2026年6月14日')
+  })
+
+  it('writes a Chinese date the Chinese way', () => {
+    expect(formatNewsDate('2026-06-14', 'zh-TW')).toBe('2026年6月14日')
+  })
+
+  // The bug this rules out: parsing 'YYYY-MM-DD' without a zone gives local
+  // midnight, and formatting that in UTC lands on the previous day for anyone
+  // east of Greenwich — which is everyone reading this site. A post dated the
+  // 1st would read as the 31st.
+  it('keeps the day it was given, whatever the machine timezone', () => {
+    expect(formatNewsDate('2026-01-01', 'ja')).toBe('2026年1月1日')
+    expect(formatNewsDate('2026-12-31', 'ja')).toBe('2026年12月31日')
+  })
+
+  it('hands back an unparseable date rather than showing "Invalid Date"', () => {
+    expect(formatNewsDate('not-a-date', 'en')).toBe('not-a-date')
   })
 })

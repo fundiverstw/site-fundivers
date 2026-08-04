@@ -47,19 +47,26 @@ let leftLinks = $derived([
 ])
 ```
 
-Seven links fit beside the logo, and that is close to the limit — a browser test
-(`the whole navigation fits`) fails if the bar runs off a 1280px screen. So several
-pages are deliberately reached from somewhere else instead:
+Eight links fit beside the logo, and that is the limit — a browser test (`the whole
+navigation fits`) fails if the bar runs off a 1280px screen. **Adding a ninth means
+taking one out.** So several pages are deliberately reached from somewhere else instead:
 
 | Page | Reached from |
 | --- | --- |
 | **Team** | The sign-off at the bottom of every page — "Proudly created by the FunDivers **Team** in Taipei, Taiwan", in `src/components/Footer.svelte` |
 | Gear, Cycling, Hiking, FunDive, Websites | The cards on the Services page (`src/pages/Services.svelte`); Gear also from the Home page |
+| A single news story | Its card on the News page (`/news/<slug>`) |
 
 **If you remove a link, check what else pointed at that page first.** The Team page has
 exactly one link into it; delete the footer sign-off and the page is still there, still
 builds, still passes the type checker, and no visitor will ever find it. `e2e/footer.spec.ts`
 exists to catch precisely that.
+
+The keys in `App.svelte` starting with a `:` — `:site`, `:course`, `:news`, and `:missing`
+for the 404 — are the detail pages. They cannot be written as plain paths because one
+component serves every address underneath a prefix: `/news/reef-cleanup` and
+`/news/padi-conference` are both `:news`, which reads the slug back off the address and
+looks the story up.
 
 ---
 

@@ -31,8 +31,10 @@
     '/build-trip': () => import('$pages/BuildTrip.svelte'),
     '/calendar': () => import('$pages/Calendar.svelte'),
     '/team': () => import('$pages/Team.svelte'),
+    '/news': () => import('$pages/News.svelte'),
     ':site': () => import('$pages/DiveSiteDetail.svelte'),
     ':course': () => import('$pages/CourseDetail.svelte'),
+    ':news': () => import('$pages/NewsArticle.svelte'),
     ':missing': () => import('$pages/NotFound.svelte'),
   }
 
@@ -43,6 +45,7 @@
     const p = href.split(/[#?]/)[0]
     if (p.startsWith('/sites/') && p.length > '/sites/'.length) return ':site'
     if (p.startsWith('/courses/') && p.length > '/courses/'.length) return ':course'
+    if (p.startsWith('/news/') && p.length > '/news/'.length) return ':news'
     return PAGES[p] ? p : ':missing'
   }
 

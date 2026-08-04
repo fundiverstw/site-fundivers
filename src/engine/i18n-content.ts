@@ -39,6 +39,10 @@ import { TEAM_TEXT_EN, type MemberText } from '$content/team'
 import { teamJa } from '$content/team.ja'
 import { teamZhTW } from '$content/team.zh-TW'
 
+import { NEWS_TEXT_EN, type NewsText } from '$content/news'
+import { newsJa } from '$content/news.ja'
+import { newsZhTW } from '$content/news.zh-TW'
+
 // The long editorial guides — the biggest translated payload — resolve in their
 // own module ($engine/i18n-guides), imported only by the two detail pages that
 // render them. Keeping them out of here is what stops the Sites / Courses / Map
@@ -107,4 +111,28 @@ const TEAM_TEXT: Record<Locale, Record<string, MemberText>> = {
  *  English). */
 export function memberBio(name: string, l: Locale): string {
   return TEAM_TEXT[l][name]?.bio ?? TEAM_TEXT_EN[name]?.bio ?? ''
+}
+
+// ── News ────────────────────────────────────────────────────────────────────
+
+const NEWS_TEXT: Record<Locale, Record<string, NewsText>> = {
+  en: NEWS_TEXT_EN,
+  ja: newsJa,
+  'zh-TW': newsZhTW,
+}
+
+/** A news article's title, summary and body in the current language.
+ *
+ *  Unlike every other overlay here, this one is *expected* to have holes: a
+ *  post goes up in English and is translated afterwards, so an untranslated
+ *  article falls back to English on purpose rather than as a failure. The
+ *  fallback is per-article, not per-field — a half-written entry would mix two
+ *  languages inside one story, and news.test.ts fails on one instead. */
+export function newsText(slug: string, l: Locale): NewsText {
+  return NEWS_TEXT[l][slug] ?? NEWS_TEXT_EN[slug] ?? { title: slug, summary: '', body: '' }
+}
+
+/** Slugs with no translation yet, for the reminder the test prints. */
+export function untranslatedNews(l: Exclude<Locale, 'en'>): string[] {
+  return Object.keys(NEWS_TEXT_EN).filter((slug) => !NEWS_TEXT[l][slug])
 }

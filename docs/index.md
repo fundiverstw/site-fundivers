@@ -56,6 +56,7 @@ folder". `$engine/router` means "the router, in the engine folder".
 | What we charge for FunDive and for websites | `src/content/services.ts` |
 | The words on the Services page | `src/content/text/en.ts`, under `services:` |
 | The long write-up for one course | `src/content/course-guides.ts` |
+| Add a news post — a conference, a volunteer day, an outreach event | Make a folder in `src/content/news/` — see [Adding a news post](adding-news.md) |
 | A photo on the Photos gallery page | Drop a file in `src/content/photos/gallery/` — see [Adding photos](adding-photos.md) |
 | The photo on a dive-site or event card | Drop a file in `src/content/photos/` — see [Adding photos](adding-photos.md) |
 | A colour, a font, or how round the corners are | `src/styles/theme.css` — see [Changing how it looks](changing-look.md) |
@@ -141,6 +142,7 @@ More detail in [How we check the site still works](testing.md) and
 - [Changing how it looks](changing-look.md) — colours, fonts, spacing
 - [Adding a dive site](adding-a-dive-site.md) — the full four steps
 - [Adding photos](adding-photos.md) — gallery photos and card photos
+- [Adding a news post](adding-news.md) — conferences, volunteer days, outreach
 - [How we check the site still works](testing.md) — the linter and the tests
 - [Commits and pull requests](commits-and-pull-requests.md) — how to share your work with the others
 - [Publishing your changes](publishing.md) — getting it onto the real website

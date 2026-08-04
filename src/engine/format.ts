@@ -41,6 +41,33 @@ export function formatSpan(startKey: string, endKey: string | null, time: string
   return `${head}${timeSuffix} → ${MONTHS[end.getMonth()]} ${end.getDate()}`
 }
 
+/**
+ * A news article's date, written the way each language writes dates.
+ *
+ * '2026-06-14' → '14 June 2026' · '2026年6月14日' · '2026年6月14日'
+ *
+ * The other date helpers here spell the months out in English by hand, because
+ * they render inside a calendar grid where every cell has to be the same width
+ * and the English abbreviations are what the layout was measured against. A
+ * news date sits in a sentence of running text instead, so it should follow the
+ * reader's language — and `Intl` already knows how, for free, in the browser.
+ *
+ * The site's locale codes are BCP 47 tags already, so they pass straight
+ * through. Parsed as UTC and formatted in UTC: these are plain calendar days
+ * with no time in them, and reading one as local midnight would show the
+ * previous day to anybody west of Taiwan.
+ */
+export function formatNewsDate(dateKey: string, locale: string): string {
+  const date = new Date(`${dateKey}T00:00:00Z`)
+  if (Number.isNaN(date.getTime())) return dateKey
+  return new Intl.DateTimeFormat(locale, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    timeZone: 'UTC',
+  }).format(date)
+}
+
 /** TWD price, e.g. 15400 → 'NT$15,400'. */
 export function twd(amount: number | null): string | null {
   if (amount == null) return null
