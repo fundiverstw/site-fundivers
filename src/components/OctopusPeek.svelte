@@ -44,9 +44,18 @@
   const SLIDE_MS = 4000
   /** After the page settles, before he first appears. */
   const FIRST_MS = 1000
-  /** Between appearances. Comfortably longer than a full run of pitches, so
-   *  there is real quiet in between rather than a near-continuous loop. */
-  const REPEAT_MS = 60000
+  /**
+   * How long he stays hidden, measured from the moment he ducks back — not
+   * from page load.
+   *
+   * That distinction is the whole reason this is a timeout rather than an
+   * interval. A repeating timer would fire on its own schedule regardless of
+   * where he was in his run, and since a full run (four pitches at SLIDE_MS
+   * each) lasts longer than this gap, it would restart him at the first pitch
+   * before he ever reached the last one — an endless loop of the opening two,
+   * and he would never go away at all.
+   */
+  const REST_MS = 10000
 
   let peeking = $state(false)
   let dismissed = $state(false)
@@ -103,7 +112,7 @@
 
   let slideTimer: ReturnType<typeof setInterval> | undefined
   let firstTimer: ReturnType<typeof setTimeout> | undefined
-  let loopTimer: ReturnType<typeof setInterval> | undefined
+  let restTimer: ReturnType<typeof setTimeout> | undefined
 
   function stopSlides(): void {
     clearInterval(slideTimer)
@@ -134,14 +143,18 @@
 
     const show = () => {
       if (dismissed) return
+      clearTimeout(restTimer)
       slide = 0
       peeking = true
       stopSlides()
       slideTimer = setInterval(() => {
-        // Past the last pitch: duck back behind the logo until next time.
+        // Past the last pitch: duck back behind the logo, then queue the next
+        // appearance from here, so the gap is a real rest rather than whatever
+        // is left of a fixed cycle.
         if (slide + 1 >= pitches.length) {
           peeking = false
           stopSlides()
+          restTimer = setTimeout(show, REST_MS)
         } else {
           slide += 1
         }
@@ -149,10 +162,9 @@
     }
 
     firstTimer = setTimeout(show, FIRST_MS)
-    loopTimer = setInterval(show, REPEAT_MS)
     return () => {
       clearTimeout(firstTimer)
-      clearInterval(loopTimer)
+      clearTimeout(restTimer)
       stopSlides()
     }
   })
@@ -161,7 +173,7 @@
     peeking = false
     dismissed = true
     stopSlides()
-    clearInterval(loopTimer)
+    clearTimeout(restTimer)
     try {
       sessionStorage.setItem('octopus-dismissed', '1')
     } catch {

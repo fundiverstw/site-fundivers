@@ -22,7 +22,7 @@ export default defineConfig({
 
     // Ask every page for less motion. Without it the octopus beside the logo
     // waits a second, slides out from behind the logo, works through four
-    // pitches four seconds apart and then hides for a minute — so a test that
+    // pitches four seconds apart and then hides for ten — so a test that
     // waits on the mascot's bubble is racing that cycle. With reduced motion he
     // simply sits there holding the first pitch (see OctopusPeek.svelte).
     // e2e/octopus.spec.ts turns this back off for the tests that are *about*

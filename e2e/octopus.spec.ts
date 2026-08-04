@@ -60,7 +60,10 @@ function db(): Record<string, Row[]> {
 test.describe('the rotation', () => {
   test.use({ contextOptions: { reducedMotion: 'no-preference' } })
 
-  test('works through every pitch in order, then ducks back', async ({ page }) => {
+  // A full run plus the rest afterwards is longer than the default per-test
+  // budget, and this is the one test that has to sit through both.
+  test('works through every pitch in order, ducks back, and returns', async ({ page }) => {
+    test.setTimeout(60_000)
     await visit(page, '/', db())
 
     await expectPitch(page, '/build-trip')
@@ -68,8 +71,14 @@ test.describe('the rotation', () => {
     await expectPitch(page, '/calendar')
     await expectPitch(page, '/fundive')
 
-    // …and then he leaves, rather than looping straight round again.
+    // …then he leaves, rather than looping straight round again…
     await expect(bubble(page)).toHaveCount(0, { timeout: 8000 })
+
+    // …and comes back on his own, at the first pitch. The rest is scheduled
+    // when he hides, so this also rules out the arrangement that looks
+    // identical until you watch it twice: a fixed repeating timer, which would
+    // restart him mid-run and never let him get this far.
+    await expectPitch(page, '/build-trip', 15_000)
   })
 
   test('names the real featured event', async ({ page }) => {
