@@ -62,6 +62,7 @@ folder". `$engine/router` means "the router, in the engine folder".
 | The frosted-glass panel look | `src/styles/components.css` |
 | The underwater background | `src/styles/background.css` |
 | The layout of one particular page | That page's file in `src/pages/` |
+| Which links are in the navigation bar | `src/components/Nav.svelte` — but read [How it works](how-it-works.md#a-page-existing-is-not-the-same-as-a-page-being-reachable) first: the bar is nearly full, and some pages (Team) are reached from the footer instead |
 
 ### Things you **cannot** change here
 

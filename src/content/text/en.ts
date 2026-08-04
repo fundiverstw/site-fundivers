@@ -15,7 +15,6 @@ export const en = {
     photos: 'Photos',
     travel: 'Travel',
     calendar: 'Calendar',
-    team: 'Team',
     gear: 'Gear',
     services: 'Services',
     radio: 'Radio show',
@@ -292,7 +291,9 @@ export const en = {
     contact: 'Contact',
     follow: 'Follow',
     rights: 'Fun Divers Taiwan. All rights reserved.',
-    proudly: 'Proudly created with 🤿 ❤️ in Taipei',
+    // {team} is replaced by a link to /team — the only route into that page.
+    proudly: 'Proudly created by the FunDivers {team} in Taipei, Taiwan',
+    team: 'Team',
     openSource: 'Open source',
     openSourceBlurb: 'We proudly develop FunDive, our open-source dive-shop management software.',
     openSourceAria: 'FunDive: our open-source dive-shop software on GitHub',

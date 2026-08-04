@@ -48,6 +48,29 @@ describe.each(Object.entries(locales))('%s', (name, dict) => {
   })
 })
 
+// A few strings are split on a `{placeholder}` and rebuilt around something the
+// component supplies — a link, an address, a day number. Drop the placeholder
+// in one language and `split` returns a single piece: the sentence still reads
+// fine, and the thing that was meant to sit inside it is gone. For
+// footer.proudly that thing is the only link to the team page, so the page
+// becomes unreachable in Japanese while the English site looks correct.
+const PLACEHOLDER = /\{[a-zA-Z]+\}/g
+
+describe.each(Object.entries(locales))('%s placeholders', (name, dict) => {
+  it('match the English ones, in every string that has any', () => {
+    const enLeaves = new Map(leaves(en))
+    for (const [path, value] of leaves(dict)) {
+      const expected = String(enLeaves.get(path)).match(PLACEHOLDER) ?? []
+      if (expected.length === 0) continue
+      const actual = String(value).match(PLACEHOLDER) ?? []
+      expect(
+        [...actual].sort(),
+        `${name}: ${path} does not fill in ${expected.join(', ')}`,
+      ).toEqual([...expected].sort())
+    }
+  })
+})
+
 describe('en', () => {
   it('leaves no word blank', () => {
     for (const [path, value] of leaves(en)) {

@@ -19,7 +19,7 @@ Say the navigation bar says **Gear** and you want it to say **Shop**.
 Open `src/content/text/en.ts` and find the line:
 
 ```ts
-nav: { courses: 'Courses', sites: 'Sites', map: 'Map', photos: 'Photos', travel: 'Travel', calendar: 'Calendar', team: 'Team', gear: 'Gear', services: 'Services', radio: 'Radio show' },
+nav: { courses: 'Courses', sites: 'Sites', map: 'Map', photos: 'Photos', travel: 'Travel', calendar: 'Calendar', gear: 'Gear', services: 'Services', radio: 'Radio show' },
 ```
 
 Change only the part inside the quotes:
@@ -44,6 +44,43 @@ tagline: 'It’s great',
 ```
 
 The rest of the site already uses `’`.
+
+---
+
+## Text with a `{word}` in curly brackets
+
+A few sentences have something in curly brackets:
+
+```ts
+proudly: 'Proudly created by the FunDivers {team} in Taipei, Taiwan',
+day: 'Day {n}',
+sent: 'If it didn’t, email {email} directly.',
+```
+
+That is a **hole the code fills in**. `{team}` becomes a link to the Team page, `{n}`
+becomes the day number, `{email}` becomes the shop's address as a clickable link. They
+are not words a visitor ever reads.
+
+**You may move a `{word}` anywhere in the sentence, and you must keep it.** Moving it is
+the point — Japanese and Chinese put the team in a different place than English does:
+
+```ts
+// en.ts
+proudly: 'Proudly created by the FunDivers {team} in Taipei, Taiwan',
+// ja.ts
+proudly: '台湾・台北で FunDivers {team} が心を込めて制作',
+// zh-TW.ts
+proudly: '由 FunDivers {team}在台灣台北用心打造',
+```
+
+Delete one by accident and the sentence still reads perfectly — with the link silently
+gone. For `{team}` that would leave the Team page with **no way to reach it**, in that
+language only. `npm run test:unit` checks every translation keeps the same holes as the
+English, so this cannot reach a visitor, but it is worth knowing why the test shouts at
+you.
+
+Also do not translate the word *inside* the brackets. `{team}` is a name the code looks
+for; `{團隊}` is just text.
 
 ---
 

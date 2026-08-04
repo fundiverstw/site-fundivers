@@ -32,6 +32,35 @@ Two things follow from that, and both are already handled:
 
 If you add a page, add it to that list in `App.svelte`. Nothing else changes.
 
+### A page existing is not the same as a page being reachable
+
+`App.svelte` decides which addresses **work**. It does not put a link to any of them
+anywhere. Adding a page there and stopping means a page only somebody who types the
+address can ever see.
+
+The navigation bar is a separate list, at the top of `src/components/Nav.svelte`:
+
+```ts
+let leftLinks = $derived([
+  { href: '/courses', label: $t.nav.courses },
+  …
+])
+```
+
+Seven links fit beside the logo, and that is close to the limit — a browser test
+(`the whole navigation fits`) fails if the bar runs off a 1280px screen. So several
+pages are deliberately reached from somewhere else instead:
+
+| Page | Reached from |
+| --- | --- |
+| **Team** | The sign-off at the bottom of every page — "Proudly created by the FunDivers **Team** in Taipei, Taiwan", in `src/components/Footer.svelte` |
+| Gear, Cycling, Hiking, FunDive, Websites | The cards on the Services page (`src/pages/Services.svelte`); Gear also from the Home page |
+
+**If you remove a link, check what else pointed at that page first.** The Team page has
+exactly one link into it; delete the footer sign-off and the page is still there, still
+builds, still passes the type checker, and no visitor will ever find it. `e2e/footer.spec.ts`
+exists to catch precisely that.
+
 ---
 
 ## The database that does not belong to this site

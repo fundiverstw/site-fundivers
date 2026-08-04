@@ -25,7 +25,7 @@ Here is every one, sorted by how much you should care.
 | --- | --- |
 | **`index.html`** | The one page the browser downloads. It is nearly empty on purpose — it has an empty `<div id="app">`, and the JavaScript fills it in. Its `<title>` and description are what Google shows. |
 | **`wrangler.toml`** | Tells Cloudflare how to serve the site: hand out the files in `dist/`, and answer an unknown address with the main page. Eight lines. |
-| **`public/_headers`** | How long the browser may keep each kind of file. Files under `/assets/` have a content hash in their name, so they are cached for a year; files you replace by name, like the logo, are re-checked hourly. Cloudflare reads it; it never appears on the site. |
+| **`public/_headers`** | How long the browser may keep each kind of file. Files under `/assets/` have a content hash in their name — a new version gets a new name — so they are kept for a year. The logos and the photos live there too, because they are imported by the code rather than dropped in `public/`. What is left in `/imgs/` is the background photo, kept for a week — so **replacing it means giving it a new name** (`diver-bg-2.jpg`) and editing `background.css` and `index.html` to match. Overwriting it under the same name leaves visitors looking at the old one for up to a week. Cloudflare reads this file; it never appears on the site. |
 | **`.env`** | Passwords and addresses, kept out of git. **Never commit this.** It probably is not there when you first clone the project. |
 | **`.env.example`** | A copy of `.env` with the real values removed, so you can see which ones you need. Copy it to `.env` and fill it in. |
 | **`package.json`** | Which borrowed code the project needs, and every `npm run …` command. If you want to know what `npm run verify` actually does, read it here. |
@@ -42,7 +42,7 @@ You will open these roughly never. Each one is commented at the top.
 | **`vite.config.ts`** | Vite | How the site is built. |
 | **`vite.alias.ts`** | Vite + Vitest | The folder shortcuts, so `$content/dive-sites` means `src/content/dive-sites`. |
 | **`vite.yaml.ts`** | Vite + Vitest | Lets a `.yaml` file be imported like code. It is what turns each gallery's `photos.yaml` into captions while the site builds, so no YAML reader is sent to the browser. |
-| **`vite.images.ts`** | Vite + Vitest | Re-saves every photo at six widths while the site builds, so a phone downloads a small copy and a laptop a large one. See [Adding photos](adding-photos.md). |
+| **`vite.images.ts`** | Vite + Vitest | Re-saves every photo at five widths (384 to 960) while the site builds, so a phone downloads a small copy and a laptop a large one. See [Adding photos](adding-photos.md). |
 | **`svelte.config.js`** | Svelte | Two lines. Leave it. |
 | **`tsconfig.json`** | TypeScript | How strict the type checking is. It also repeats the folder shortcuts — **if you add one, add it in both places.** |
 | **`eslint.config.js`** | ESLint | Which mistakes the linter complains about. Two rules are off, each with a comment saying why. |

@@ -6,6 +6,13 @@
   import fundiveLogoUrl from '$assets/fundive-logo-dark.svg'
 
   const year = new Date().getFullYear()
+
+  // The sign-off carries the only link to the team page, so the word has to sit
+  // inside the sentence rather than beside it. Each language places {team}
+  // where its own grammar wants it — hence a split rather than three fragments
+  // glued in a fixed order. text.test.ts checks no translation drops the
+  // placeholder, which would quietly leave the page unreachable.
+  let proudly = $derived($t.footer.proudly.split('{team}'))
 </script>
 
 <footer id="contact" class="border-t border-white/10 text-brand-100">
@@ -65,7 +72,13 @@
       class="mx-auto flex max-w-[1600px] flex-col gap-1 px-4 py-4 text-xs text-brand-300 sm:flex-row sm:items-center sm:justify-between sm:px-6"
     >
       <span>© {year} {$t.footer.rights}</span>
-      <span>{$t.footer.proudly}</span>
+      <span
+        >{proudly[0]}<a
+          href="/team"
+          class="font-semibold text-reef-300 underline decoration-reef-400/50 underline-offset-2 transition-colors hover:text-reef-200 hover:decoration-reef-300"
+          >{$t.footer.team}</a
+        >{proudly[1] ?? ''}</span
+      >
     </div>
   </div>
 </footer>

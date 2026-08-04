@@ -257,7 +257,9 @@
         {/each}
       </g>
 
-      <!-- Region pins (overview only) -->
+      <!-- Region pins (overview only). Same red as the site markers you reach
+           by clicking one (#dc2626, brightening to #ef4444) so a dot means
+           "diving here" at both zoom levels instead of changing meaning. -->
       {#if !selected}
         {#each REGION_ORDER as id (id)}
           {@const cx = projectX(REGIONS[id].center[0])}
@@ -268,7 +270,7 @@
             aria-label={mapRegionText(id, $locale).name}
             onclick={() => pick(id)}
             onkeydown={(e) => regionKeyDown(e, id)}
-            class="cursor-pointer text-emerald-500 outline-none transition-colors hover:text-emerald-600 focus:text-emerald-700"
+            class="cursor-pointer text-red-600 outline-none transition-colors hover:text-red-500 focus:text-red-500"
           >
             <circle {cx} {cy} r="11" fill="transparent" />
             <circle {cx} {cy} r="4.5" fill="currentColor" stroke="white" stroke-width="1.5" />

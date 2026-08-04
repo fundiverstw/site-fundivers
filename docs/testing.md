@@ -109,6 +109,8 @@ These run in about a second and never open a browser. They test two things.
 - every gallery folder shows up as a section on the Photos page, so a folder of photos is never silently left off
 - every course guide is keyed to a course that exists, and every "next course" link resolves
 - the three language files hold **exactly** the same words, and none of them is blank
+- every translation keeps the `{team}`, `{email}`, `{n}` holes the English has — drop one
+  and the sentence still reads fine with the link or the number missing from it
 
 They also cover the two piles of geometry nobody wants to debug by eye: the month grid's
 bar stacking (`calendar-layout.ts`) and the map's label placement (`map-layout.ts`).
@@ -147,6 +149,8 @@ it. They take about twelve seconds and they test what a visitor would notice:
 - the contact form refuses an incomplete enquiry and confirms a complete one
 - the photo viewer opens, steps with the arrow keys, wraps around, and closes
 - the map zooms into a region — by mouse and by keyboard — and back out again
+- the footer sign-off still links to the Team page, in all three languages — that link is
+  the only way in, so losing it hides a whole page without breaking anything
 
 They run twice: once at desktop size, once at phone size. A few only make sense at one
 size — the desktop-nav layout checks assume the wide top bar — so those are tagged

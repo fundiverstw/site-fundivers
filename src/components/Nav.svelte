@@ -14,10 +14,11 @@
     { href: '/map', label: $t.nav.map },
     { href: '/photos', label: $t.nav.photos },
   ])
+  // /team is deliberately absent: it is reached from the footer sign-off
+  // ("created by the FunDivers Team"), not from the bar. See Footer.svelte.
   let rightLinks = $derived([
     { href: '/travel', label: $t.nav.travel },
     { href: '/services', label: $t.nav.services },
-    { href: '/team', label: $t.nav.team },
   ])
   let allLinks = $derived([...leftLinks, ...rightLinks])
 
@@ -33,7 +34,7 @@
   }
 
   function linkClass(href: string): string {
-    // Eight links have to fit beside the logo. They grow with the window rather
+    // Seven links have to fit beside the logo. They grow with the window rather
     // than overflowing it: at 1280 the whole bar, globe included, must be on
     // screen. See the 'the whole navigation fits' test in e2e/navigation.spec.ts.
     const base =
