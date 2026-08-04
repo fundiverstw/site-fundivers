@@ -46,7 +46,7 @@ folder". `$engine/router` means "the router, in the engine folder".
 | I want to change… | Open this file |
 | --- | --- |
 | The shop's phone number, email, or address | `src/content/settings.ts` |
-| The yellow promo banner by the octopus | `src/content/settings.ts` |
+| What the octopus by the logo says | `src/content/text/en.ts`, under `octopus:` — one entry per pitch. He works through them four seconds apart; the "coming up next" one names whatever event is flagged **featured** in the booking app, so its wording is here but its content is not |
 | Instagram / Facebook / LINE links | `src/content/settings.ts` |
 | Any word or sentence on a page | `src/content/text/en.ts` — see [Changing words](changing-words.md) |
 | The Chinese or Japanese translation | `src/content/text/zh-TW.ts` or `ja.ts` |

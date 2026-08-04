@@ -155,6 +155,13 @@ it. They take about twelve seconds and they test what a visitor would notice:
   the only way in, so losing it hides a whole page without breaking anything
 - a news card opens its story, a pasted `/news/<slug>` works on a cold load, and an
   untranslated story still reads in Japanese and Chinese rather than coming out blank
+- the octopus by the logo works through his four pitches in order and then goes away,
+  names the real featured event, and stands aside when the phone menu is open
+
+The whole suite asks the browser for reduced motion, which is why the octopus sits
+still in most tests — `e2e/octopus.spec.ts` turns that off for the few tests that are
+about his rotation. Anything animated is worth checking for the same trap: a test that
+looks like it is waiting for an element may really be racing an animation.
 
 They run twice: once at desktop size, once at phone size. A few only make sense at one
 size — the desktop-nav layout checks assume the wide top bar — so those are tagged

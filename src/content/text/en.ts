@@ -520,9 +520,13 @@ export const en = {
   },
 
   octopus: {
-    prompt: 'Don’t see what you want?',
-    cta: 'Build your own trip!',
     dismiss: 'Dismiss',
+    // What he works through, in this order, four seconds apart. The event line
+    // is skipped when nothing is flagged featured — see OctopusPeek.svelte.
+    trip: { prompt: 'Don’t see what you want?', cta: 'Build your own trip!' },
+    news: { prompt: 'We’ve been out and about.', cta: 'See what we’ve been up to' },
+    event: { prompt: 'Coming up next:' },
+    fundive: { prompt: 'We build dive-shop software, in the open.', cta: 'Meet FunDive' },
   },
 
   buildTrip: {

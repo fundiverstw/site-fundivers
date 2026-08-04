@@ -492,9 +492,11 @@ export const zhTW: Dict = {
   },
 
   octopus: {
-    prompt: '找不到想要的行程？',
-    cta: '打造專屬行程！',
     dismiss: '關閉',
+    trip: { prompt: '找不到想要的行程？', cta: '打造專屬行程！' },
+    news: { prompt: '我們最近很忙。', cta: '看看我們的近況' },
+    event: { prompt: '即將登場：' },
+    fundive: { prompt: '我們開發開源的潛店管理軟體。', cta: '認識 FunDive' },
   },
 
   buildTrip: {

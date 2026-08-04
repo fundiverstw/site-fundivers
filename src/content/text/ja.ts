@@ -524,9 +524,11 @@ export const ja: Dict = {
   },
 
   octopus: {
-    prompt: 'お探しのツアーが見つかりませんか？',
-    cta: '自分だけのツアーを作ろう！',
     dismiss: '閉じる',
+    trip: { prompt: 'お探しのツアーが見つかりませんか？', cta: '自分だけのツアーを作ろう！' },
+    news: { prompt: 'いろいろ活動しています。', cta: '最近の活動を見る' },
+    event: { prompt: '次回の開催:' },
+    fundive: { prompt: 'ダイビングショップ向けのソフトを開発しています。', cta: 'FunDive を見る' },
   },
 
   buildTrip: {

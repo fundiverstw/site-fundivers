@@ -21,9 +21,12 @@ export default defineConfig({
     trace: 'on-first-retry',
 
     // Ask every page for less motion. Without it the octopus beside the logo
-    // stays hidden for 12 seconds, slides out, wiggles, and hides again for up
-    // to 90 — so a test that waits on the mascot's banner is racing that cycle.
-    // With reduced motion it simply sits there in view.
+    // waits a second, slides out from behind the logo, works through four
+    // pitches four seconds apart and then hides for a minute — so a test that
+    // waits on the mascot's bubble is racing that cycle. With reduced motion he
+    // simply sits there holding the first pitch (see OctopusPeek.svelte).
+    // e2e/octopus.spec.ts turns this back off for the tests that are *about*
+    // the rotation.
     //
     // It goes under `contextOptions`, not straight into `use`. `reducedMotion`
     // is a browser-context option, not one of the test options, so a top-level
