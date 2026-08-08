@@ -1,7 +1,7 @@
 // Editorial guides for the /courses/<id> detail pages. These are original
 // descriptions of the standard PADI curricula (not PADI's own copy), plus quick
 // facts and the DB category codes (matchCodes) used to surface this course's
-// upcoming sessions. Keyed by the course route id (courses.ts courseId()).
+// upcoming sessions. Keyed by the course id (courses.ts `CourseCard.id`).
 export type CoursePhase = { name: string; text: string }
 
 // The content blocks the detail page can lay out. The intro always leads
@@ -632,7 +632,48 @@ export const COURSE_GUIDES: Record<string, CourseGuide> = {
       ['materials', 'equipment', 'notes'],
     ],
     matchCodes: [],
-    next: ['padi-deep-diver-specialty', 'padi-advanced-course'],
+    next: ['padi-wreck-specialty', 'padi-advanced-course'],
+  },
+  'padi-wreck-specialty': {
+    intro:
+      'Shipwrecks are the most compelling dive sites there are — a piece of history that the fish have moved into. This course teaches you to dive them properly: research one on the surface, survey and map it underwater, and get in and out on a plan rather than on curiosity.',
+    overview:
+      'A wreck is not simply scenery. It is an unfamiliar structure, usually deeper than a reef, with lines and nets to snag you, silt that turns clear water opaque in seconds, and torn metal exactly where you would like to put a hand. Diving one well starts before you get wet, with what the vessel was, how it came to be lying the way it does, and what the current does around it. Underwater you learn to swim a wreck methodically instead of wandering it, to record what you see, and to draw a map good enough that a diver who has never been there could follow it. You will also look at limited penetration — the reel, the light and the rules it depends on, and the far more important question of when to stay outside. Taiwan has no shortage of wrecks to practise on.',
+    topicsTitle: "Across the four wreck dives you'll practice:",
+    youWillLearn: [
+      'Researching a wreck before the dive: its history, how it lies, and what the conditions do to it.',
+      'Surveying and mapping a wreck so the drawing is usable by someone who has never seen it.',
+      'Navigating around a wreck without losing your exit or your buddy.',
+      'Avoiding the hazards the structure brings with it — entanglement, sharp metal and silt-out.',
+      'The reels, lines and lighting that limited penetration depends on, and its limits.',
+    ],
+    prerequisites: 'PADI Adventure Diver (Advanced Open Water recommended)',
+    prereqList: [
+      '15 years old.',
+      'Certified as a PADI Adventure Diver or higher — Advanced Open Water recommended.',
+    ],
+    minAge: '15+',
+    duration: '2 days (4 dives)',
+    depth: null,
+    certifies: 'PADI Wreck Diver',
+    timeFrame: 'The Wreck Specialty includes 4 dives, so it is usually done over 2 days.',
+    materials: ['PADI E-learning'],
+    equipmentText:
+      'Equipment is not included in the course, but we provide rental gear as needed. A primary dive light and a reel are used throughout and can be rented from Fun Divers.',
+    notes: [
+      'Dates and schedule may vary depending on conditions and chosen specialties.',
+      'Return transport is included.',
+      'For private 1-on-1 service, a surcharge may apply.',
+      'Wreck dives are run mainly off Badouzi and Longdong, where the sea state decides the day.',
+    ],
+    subsections: [
+      [],
+      ['overview'],
+      ['topics', 'prerequisites', 'timeFrame'],
+      ['materials', 'equipment', 'notes'],
+    ],
+    matchCodes: [],
+    next: ['padi-search-recovery-specialty', 'padi-deep-diver-specialty'],
   },
   'padi-drift-diver-specialty': {
     intro:

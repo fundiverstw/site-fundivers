@@ -1,41 +1,34 @@
 import { describe, it, expect } from 'vitest'
-import { COURSES, courseId, coursePath, courseByRouteId } from './courses'
-
-describe('courseId', () => {
-  it('leaves a plain slug alone', () => {
-    expect(courseId('padi-open-water-course')).toBe('padi-open-water-course')
-  })
-
-  // The slugs come from the old website and some are percent-encoded, e.g.
-  // 'padi-search-%26-recovery-specialty'. Those must not leak into our own URLs.
-  it('collapses percent-encoding into hyphens', () => {
-    expect(courseId('padi-search-%26-recovery-specialty')).toBe('padi-search-recovery-specialty')
-  })
-
-  it('never produces a leading, trailing, or doubled hyphen', () => {
-    for (const c of COURSES) {
-      expect(courseId(c.slug)).not.toMatch(/^-|-$|--/)
-    }
-  })
-})
+import { COURSES, coursePath, courseByRouteId } from './courses'
 
 describe('the course catalog', () => {
   it('is not empty', () => {
     expect(COURSES.length).toBeGreaterThan(0)
   })
 
-  it('gives every course a title, a slug and a photo', () => {
+  it('gives every course a title, an id and a photo', () => {
     for (const c of COURSES) {
       expect(c.title.trim()).not.toBe('')
-      expect(c.slug.trim()).not.toBe('')
-      expect(c.image).toBeTruthy()
+      expect(c.id.trim()).not.toBe('')
+      expect(c.image, `${c.id} has no cover photo`).toBeTruthy()
       expect(c.desc.trim()).not.toBe('')
     }
   })
 
-  it('produces a distinct route id for every course', () => {
-    const routeIds = COURSES.map((c) => courseId(c.slug))
-    expect(routeIds).toHaveLength(new Set(routeIds).size)
+  it('gives every course a distinct id', () => {
+    const ids = COURSES.map((c) => c.id)
+    expect(ids).toHaveLength(new Set(ids).size)
+  })
+
+  // The id goes straight into a URL, a filesystem folder name
+  // (photos/courses/<id>/) and an object key. Anything outside this alphabet
+  // would need escaping in at least one of those places.
+  it('keeps every id url-safe and tidy', () => {
+    for (const c of COURSES) {
+      expect(c.id, `${c.title} has an id that is not plain lowercase-and-hyphens`).toMatch(
+        /^[a-z0-9]+(-[a-z0-9]+)*$/,
+      )
+    }
   })
 
   // Every card on /courses links to /courses/<id>. If that id does not resolve

@@ -2,7 +2,7 @@
   import Photo from '$components/Photo.svelte'
   import { SIZES, type ResponsiveImage } from '$engine/responsive-image'
   import { path, scrollToId } from '$engine/router'
-  import { courseByRouteId, courseId, coursePath, COURSES, type CourseCard } from '$content/courses'
+  import { courseByRouteId, coursePath, COURSES, type CourseCard } from '$content/courses'
   import { sessionMatchesCourse, type BlockKey, type CourseGuide } from '$content/course-guides'
   import { coursePoolImage } from '$engine/photo-pool'
   import { fetchUpcomingEvents, type UpcomingEvent } from '$engine/events'
@@ -17,7 +17,7 @@
   // Route param: /courses/<id>.
   let id = $derived($path.replace(/^\/courses\//, '').replace(/\/+$/, ''))
   let course = $derived(courseByRouteId(id))
-  let guide = $derived(course ? courseGuide(courseId(course.slug), $locale) : null)
+  let guide = $derived(course ? courseGuide(course.id, $locale) : null)
   // The course's title in the current language (the English title stays the
   // identifier; courseText resolves the display text).
   let courseTitle = $derived(course ? courseText(course, $locale).title : '')
@@ -114,7 +114,7 @@
     const add = (c: CourseCard | undefined) => {
       if (c && c !== course && !chosen.includes(c)) chosen.push(c)
     }
-    for (const nid of guide?.next ?? []) add(COURSES.find((c) => courseId(c.slug) === nid))
+    for (const nid of guide?.next ?? []) add(COURSES.find((c) => c.id === nid))
     for (const c of COURSES) {
       if (chosen.length >= 2) break
       add(c)
@@ -372,7 +372,9 @@
               </p>
             </div>
             <div class="flex shrink-0 items-center gap-3">
-              {#if price}<span class="text-sm font-semibold text-white">from {price}</span>{/if}
+              {#if price}<span class="text-sm font-semibold text-white"
+                  >{$t.common.fromPrice.replace('{price}', price)}</span
+                >{/if}
               <a
                 href={ev.fullyBooked ? '#contact' : registerUrl('course', ev.id)}
                 target={ev.fullyBooked ? undefined : '_blank'}

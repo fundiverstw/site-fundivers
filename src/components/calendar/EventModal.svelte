@@ -76,7 +76,12 @@
       <div class="space-y-1 text-sm font-medium text-blue-900">
         <p>{event.spanLabel}</p>
         {#if event.price != null}
-          <p>💰 {$t.common.from} {event.currency} {event.price.toLocaleString('en-US')}</p>
+          <p>
+            💰 {$t.common.fromPrice.replace(
+              '{price}',
+              `${event.currency} ${event.price.toLocaleString('en-US')}`,
+            )}
+          </p>
         {/if}
         {#if event.fullyBooked}
           <p class="font-semibold text-amber-700">{$t.calendar.full}</p>

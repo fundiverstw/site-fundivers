@@ -8,7 +8,7 @@ import {
   memberBio,
 } from './i18n-content'
 import { DIVE_SITES, DIVE_SITES_TEXT_EN, MAP_REGION_TEXT, REGION_META } from '$content/dive-sites'
-import { COURSES, COURSES_TEXT_EN, courseId } from '$content/courses'
+import { COURSES, COURSES_TEXT_EN } from '$content/courses'
 import { TEAM, TEAM_TEXT_EN } from '$content/team'
 import { MARINE_LIFE } from '$content/marine-life'
 import type { Locale } from './i18n'
@@ -91,19 +91,19 @@ describe('courseText', () => {
     for (const l of LOCALES) {
       for (const course of COURSES) {
         const text = courseText(course, l)
-        expect(text.title, `${course.slug} in ${l}`).toBeTruthy()
-        expect(text.desc, `${course.slug} in ${l}`).toBeTruthy()
+        expect(text.title, `${course.id} in ${l}`).toBeTruthy()
+        expect(text.desc, `${course.id} in ${l}`).toBeTruthy()
       }
     }
   })
 
-  it('keys the lookup by course id, not by slug', () => {
+  it('keys the lookup by the course id', () => {
     const course = COURSES[0]
-    expect(courseText(course, 'en')).toEqual(COURSES_TEXT_EN[courseId(course.slug)])
+    expect(courseText(course, 'en')).toEqual(COURSES_TEXT_EN[course.id])
   })
 
   it("falls back to the card's own English when the id is unknown", () => {
-    const invented = { slug: 'not-a-course', title: 'Invented', desc: 'Nothing here' }
+    const invented = { id: 'not-a-course', title: 'Invented', desc: 'Nothing here' }
     expect(courseText(invented as (typeof COURSES)[number], 'ja')).toEqual({
       title: 'Invented',
       desc: 'Nothing here',

@@ -1,23 +1,23 @@
 import { describe, it, expect } from 'vitest'
 import { COURSE_GUIDES, sessionMatchesCourse } from './course-guides'
-import { COURSES, courseId } from './courses'
+import { COURSES } from './courses'
 
-// CourseDetail.svelte looks a guide up with COURSE_GUIDES[courseId(course.slug)].
+// CourseDetail.svelte looks a guide up with COURSE_GUIDES[course.id].
 // Misspell a key and the page renders with the photo, the title, and none of the
 // text you wrote — no error, anywhere. Same trap as dive-site-guides.ts.
 
-const routeIds = COURSES.map((c) => courseId(c.slug))
+const courseIds = COURSES.map((c) => c.id)
 const entries = Object.entries(COURSE_GUIDES)
 
 describe('course guides', () => {
   it('are all keyed by a course that exists', () => {
     for (const [key] of entries) {
-      expect(routeIds, `no course has the route id '${key}'`).toContain(key)
+      expect(courseIds, `no course has the id '${key}'`).toContain(key)
     }
   })
 
   it('cover every course', () => {
-    const missing = routeIds.filter((id) => !(id in COURSE_GUIDES))
+    const missing = courseIds.filter((id) => !(id in COURSE_GUIDES))
     expect(missing, 'these courses would render an empty detail page').toEqual([])
   })
 
@@ -67,7 +67,7 @@ describe('course guides', () => {
   it('suggest next courses that exist', () => {
     for (const [key, g] of entries) {
       for (const next of g.next) {
-        expect(routeIds, `${key}.next points at '${next}', which is not a course`).toContain(next)
+        expect(courseIds, `${key}.next points at '${next}', which is not a course`).toContain(next)
       }
     }
   })

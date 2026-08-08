@@ -19,7 +19,7 @@ Say the navigation bar says **Gear** and you want it to say **Shop**.
 Open `src/content/text/en.ts` and find the line:
 
 ```ts
-nav: { courses: 'Courses', sites: 'Sites', map: 'Map', photos: 'Photos', travel: 'Travel', calendar: 'Calendar', gear: 'Gear', services: 'Services', radio: 'Radio show' },
+nav: { courses: 'Courses', sites: 'Sites', map: 'Map', photos: 'Photos', travel: 'Travel', calendar: 'Calendar', news: 'News', gear: 'Gear', services: 'Services', radio: 'Radio show' },
 ```
 
 Change only the part inside the quotes:
@@ -55,11 +55,12 @@ A few sentences have something in curly brackets:
 proudly: 'Proudly created by the FunDivers {team} in Taipei, Taiwan',
 day: 'Day {n}',
 sent: 'If it didn’t, email {email} directly.',
+fromPrice: 'From {price}',
 ```
 
 That is a **hole the code fills in**. `{team}` becomes a link to the Team page, `{n}`
-becomes the day number, `{email}` becomes the shop's address as a clickable link. They
-are not words a visitor ever reads.
+becomes the day number, `{email}` becomes the shop's address as a clickable link,
+`{price}` becomes the formatted amount. They are not words a visitor ever reads.
 
 **You may move a `{word}` anywhere in the sentence, and you must keep it.** Moving it is
 the point — Japanese and Chinese put the team in a different place than English does:
@@ -72,6 +73,11 @@ proudly: '台湾・台北で FunDivers {team} が心を込めて制作',
 // zh-TW.ts
 proudly: '由 FunDivers {team}在台灣台北用心打造',
 ```
+
+`{price}` is the clearest case of why the hole exists at all: English says "From NT$8,000"
+and puts the amount last, while Japanese and Chinese say "NT$8,000〜" and "NT$8,000起" and
+put it first. A plain word like `From` could not be translated correctly, because there is
+no one place to print it.
 
 Delete one by accident and the sentence still reads perfectly — with the link silently
 gone. For `{team}` that would leave the Team page with **no way to reach it**, in that

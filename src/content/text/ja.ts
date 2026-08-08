@@ -76,7 +76,7 @@ export const ja: Dict = {
     waitlist: 'キャンセル待ち',
     viewAll: 'すべて見る',
     contactUs: 'お問い合わせ',
-    from: '〜',
+    fromPrice: '{price}〜',
     nothingScheduled: '現在予定はありません。',
     featured: 'おすすめ',
     dive: 'ダイブ',

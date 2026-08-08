@@ -170,8 +170,7 @@
         {formatSpan(ev.startDate, ev.endDate, ev.time)}
       </p>
       {#if price}<p class="mono text-[11px] font-bold text-peach">
-          {$t.common.from}
-          {price}
+          {$t.common.fromPrice.replace('{price}', price)}
         </p>{/if}
     </div>
   </button>

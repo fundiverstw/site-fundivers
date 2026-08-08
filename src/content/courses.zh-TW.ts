@@ -1,8 +1,8 @@
 import type { CourseText } from './courses'
 
-// 繁體中文（台灣）— course card title + description, keyed by course route id
-// (courseId(slug)). Merged over the English by $engine/i18n-content. Same keys
-// as COURSES_TEXT_EN — a parity test enforces it.
+// 繁體中文（台灣）— course card title + description, keyed by course id. Merged
+// over the English by $engine/i18n-content. Same keys as COURSES_TEXT_EN — a
+// parity test enforces it.
 
 export const coursesZhTW: Record<string, CourseText> = {
   'padi-open-water-course': {
@@ -56,6 +56,10 @@ export const coursesZhTW: Record<string, CourseText> = {
   'padi-search-recovery-specialty': {
     title: 'PADI 搜索與尋回專長',
     desc: '搜索與尋回技巧，運用搜索路徑與浮力起吊，找回失落的物品。',
+  },
+  'padi-wreck-specialty': {
+    title: 'PADI 沉船專長',
+    desc: '安全探索沉船與水下構造物，學會勘查沉船、繪製地圖，並依計畫下潛。',
   },
   'padi-drift-diver-specialty': {
     title: 'PADI 放流潛水專長',

@@ -79,7 +79,11 @@ export const en = {
     waitlist: 'Waitlist',
     viewAll: 'View all',
     contactUs: 'Contact us',
-    from: 'From',
+    // "From NT$15,400" — a whole phrase rather than a loose word, because the
+    // price does not go in the same place in every language. English puts it
+    // after, Japanese and Chinese put it before, so the {price} hole is what
+    // makes the ordering translatable at all.
+    fromPrice: 'From {price}',
     nothingScheduled: 'Nothing scheduled yet.',
     featured: 'Featured',
     dive: 'Dive',

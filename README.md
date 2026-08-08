@@ -109,7 +109,7 @@ This site never authenticates anyone — all booking/login happens in `app-fundi
 | -------- | --------------------------------------------------------- |
 | Calendar | Month grid (ported from app-fundivers) — `EO_dives` + `EO_courses`, priced via `EO_prices`, dive trip/local color from `eo_dive_destinations`/`TravelDestinations` |
 | Sites    | Static catalog in `src/content/dive-sites.ts`, grouped Domestic / International off each site's `international` flag (the shared `dive_sites` table was dropped upstream) |
-| Courses  | Static PADI catalog + live upcoming course sessions       |
+| Courses  | Static PADI catalog in `src/content/courses.ts` (cards) + `course-guides.ts` (write-ups), keyed by `CourseCard.id` — that id is the `/courses/<id>` URL, the guide key, the overlay key and the `photos/courses/<id>/` folder name. Live upcoming sessions joined on the guide's `matchCodes` |
 | Photos   | Self-hosted gallery discovered from `src/content/photos/gallery/`; one section per creature in `src/content/marine-life.ts`, captions in each folder's `photos.yaml` |
 | Team     | Placeholder roster (swap in real names/photos)            |
 | News     | One folder per post in `src/content/news/`, named `YYYY-MM-DD-slug` — the folder name *is* the date and the route. Up to three photos per post, discovered by glob. Translations in `news.ja.ts`/`news.zh-TW.ts` are deliberately optional and fall back to English |

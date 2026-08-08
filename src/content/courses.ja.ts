@@ -1,8 +1,8 @@
 import type { CourseText } from './courses'
 
-// 日本語（ja）— course card title + description, keyed by course route id
-// (courseId(slug)). Merged over the English by $engine/i18n-content. Same keys
-// as COURSES_TEXT_EN — a parity test enforces it.
+// 日本語（ja）— course card title + description, keyed by course id. Merged over
+// the English by $engine/i18n-content. Same keys as COURSES_TEXT_EN — a parity
+// test enforces it.
 
 export const coursesJa: Record<string, CourseText> = {
   'padi-open-water-course': {
@@ -56,6 +56,10 @@ export const coursesJa: Record<string, CourseText> = {
   'padi-search-recovery-specialty': {
     title: 'PADIサーチ＆リカバリー・スペシャルティ',
     desc: 'サーチ＆リカバリーのスキル、探索パターンやリフト法で、失くした物を見つけて回収します。',
+  },
+  'padi-wreck-specialty': {
+    title: 'PADIレック・スペシャルティ',
+    desc: '沈船や水中構造物を安全に探検。レックをサーベイし、地図を描き、計画を立てて潜ります。',
   },
   'padi-drift-diver-specialty': {
     title: 'PADIドリフト・ダイバー・スペシャルティ',

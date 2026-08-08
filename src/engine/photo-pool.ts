@@ -7,7 +7,7 @@
 //   photos/hikes/<hike-id>/             photos of that hike (see content/hikes.ts)
 //
 // Course photos are grouped by course: `photos/courses/<id>/` (the id is
-// courseId(slug) from content/courses.ts) holds shots of that course, so a
+// the `id` from content/courses.ts) holds shots of that course, so a
 // course's detail page draws from its own folder. Any loose photo left directly
 // under photos/courses/ joins a shared course pool used as the fallback when a
 // course's own folder is empty (and for the mixed calendar, which isn't tied to

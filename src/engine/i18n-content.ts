@@ -27,7 +27,7 @@ import {
 import { diveSitesJa } from '$content/dive-sites.ja'
 import { diveSitesZhTW } from '$content/dive-sites.zh-TW'
 
-import { COURSES_TEXT_EN, courseId, type CourseText, type CourseCard } from '$content/courses'
+import { COURSES_TEXT_EN, type CourseText, type CourseCard } from '$content/courses'
 import { coursesJa } from '$content/courses.ja'
 import { coursesZhTW } from '$content/courses.zh-TW'
 
@@ -81,8 +81,7 @@ const COURSES_TEXT: Record<Locale, Record<string, CourseText>> = {
 
 /** A course card's localized title + description (falls back to its English). */
 export function courseText(course: CourseCard, l: Locale): CourseText {
-  const id = courseId(course.slug)
-  return COURSES_TEXT[l][id] ?? { title: course.title, desc: course.desc }
+  return COURSES_TEXT[l][course.id] ?? { title: course.title, desc: course.desc }
 }
 
 // ── Marine life ─────────────────────────────────────────────────────────────

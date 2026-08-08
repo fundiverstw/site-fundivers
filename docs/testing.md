@@ -108,11 +108,16 @@ These run in about a second and never open a browser. They test two things.
 - every photo folder is named after a real dive site
 - every gallery folder shows up as a section on the Photos page, so a folder of photos is never silently left off
 - every course guide is keyed to a course that exists, and every "next course" link resolves
+- every course has a cover photo that actually resolves, and an id safe to put in a URL and
+  a folder name — see [Adding a course](adding-a-course.md)
 - every news folder is named `YYYY-MM-DD-slug` with a real date, holds at most three photos,
   and never captions a photo that is not there — see [Adding a news post](adding-news.md)
 - the three language files hold **exactly** the same words, and none of them is blank
-- every translation keeps the `{team}`, `{email}`, `{n}` holes the English has — drop one
-  and the sentence still reads fine with the link or the number missing from it
+- every translation keeps the `{team}`, `{email}`, `{n}`, `{price}` holes the English has —
+  drop one and the sentence still reads fine with the link or the number missing from it
+- a translated guide never restates the English's structural fields (a course's `next` and
+  `matchCodes`, a dive site's `marineLife`) — overwriting those breaks the links and the
+  calendar join on that language's pages only, while the page still looks right
 
 They also cover the two piles of geometry nobody wants to debug by eye: the month grid's
 bar stacking (`calendar-layout.ts`) and the map's label placement (`map-layout.ts`).

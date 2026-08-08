@@ -35,14 +35,16 @@ describe('diveGuide', () => {
   })
 
   it('keeps the English structural fields when overlaying a translation', () => {
-    // Whatever the English guide has that the overlay does not mention must
-    // still be there afterwards — that is the entire point of the spread.
+    // The structural fields must come through the merge as the *same objects*
+    // the English holds, not merely present. Asserting presence would pass no
+    // matter what the overlays contain: the merge is `{...base, ...overlay}`,
+    // so every English key is defined afterwards by construction. Identity is
+    // what actually catches an overlay that restated marineLife and quietly
+    // broke the gallery links on the Japanese page.
     for (const l of TRANSLATED) {
       for (const [id, base] of Object.entries(DIVE_SITE_GUIDES)) {
         const merged = diveGuide(id, l)!
-        for (const key of Object.keys(base) as Array<keyof typeof base>) {
-          expect(merged[key], `${id}.${String(key)} in ${l}`).toBeDefined()
-        }
+        expect(merged.marineLife, `${id}.marineLife in ${l}`).toBe(base.marineLife)
       }
     }
   })
@@ -81,13 +83,19 @@ describe('courseGuide', () => {
     for (const l of LOCALES) expect(courseGuide('not-a-course', l)).toBeNull()
   })
 
+  // Same trap as diveGuide above: presence is guaranteed by the spread, so this
+  // compares the structural fields by identity instead. `next` and `matchCodes`
+  // are the course graph and the calendar join — a translation that restated
+  // either would send a Japanese reader to the Not Found page, or hide a course's
+  // real dates, with the page otherwise looking correct.
   it('keeps the English structural fields when overlaying a translation', () => {
     for (const l of TRANSLATED) {
       for (const [id, base] of Object.entries(COURSE_GUIDES)) {
         const merged = courseGuide(id, l)!
-        for (const key of Object.keys(base) as Array<keyof typeof base>) {
-          expect(merged[key], `${id}.${String(key)} in ${l}`).toBeDefined()
-        }
+        expect(merged.next, `${id}.next in ${l}`).toBe(base.next)
+        expect(merged.matchCodes, `${id}.matchCodes in ${l}`).toBe(base.matchCodes)
+        expect(merged.subsections, `${id}.subsections in ${l}`).toBe(base.subsections)
+        expect(merged.depth, `${id}.depth in ${l}`).toBe(base.depth)
       }
     }
   })

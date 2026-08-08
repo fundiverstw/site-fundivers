@@ -53,6 +53,7 @@ folder". `$engine/router` means "the router, in the engine folder".
 | The list of dive sites | `src/content/dive-sites.ts` |
 | The long write-up for one dive site | `src/content/dive-site-guides.ts` |
 | The list of courses | `src/content/courses.ts` |
+| Add a whole new course | Six files, all keyed by the same id — see [Adding a course](adding-a-course.md) |
 | What we charge for FunDive and for websites | `src/content/services.ts` |
 | The words on the Services page | `src/content/text/en.ts`, under `services:` |
 | The long write-up for one course | `src/content/course-guides.ts` |
@@ -141,6 +142,7 @@ More detail in [How we check the site still works](testing.md) and
 - [Changing words](changing-words.md) — text on any page, in any language
 - [Changing how it looks](changing-look.md) — colours, fonts, spacing
 - [Adding a dive site](adding-a-dive-site.md) — the full four steps
+- [Adding a course](adding-a-course.md) — the card, the write-up and the four translations
 - [Adding photos](adding-photos.md) — gallery photos and card photos
 - [Adding a news post](adding-news.md) — conferences, volunteer days, outreach
 - [How we check the site still works](testing.md) — the linter and the tests

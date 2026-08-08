@@ -75,7 +75,7 @@ export const zhTW: Dict = {
     waitlist: '候補',
     viewAll: '查看全部',
     contactUs: '聯絡我們',
-    from: '起',
+    fromPrice: '{price}起',
     nothingScheduled: '目前尚未安排。',
     featured: '精選',
     dive: '潛水',

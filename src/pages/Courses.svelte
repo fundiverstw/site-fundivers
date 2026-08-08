@@ -76,7 +76,9 @@
               <p class="text-sm text-brand-200">{formatSpan(ev.startDate, ev.endDate, ev.time)}</p>
             </div>
             <div class="flex shrink-0 items-center gap-3">
-              {#if price}<span class="text-sm font-semibold text-white">from {price}</span>{/if}
+              {#if price}<span class="text-sm font-semibold text-white"
+                  >{$t.common.fromPrice.replace('{price}', price)}</span
+                >{/if}
               <a
                 href={registerUrl('course', ev.id)}
                 target="_blank"
