@@ -1,52 +1,51 @@
 // The reader-facing text that lives in the content *data* files — dive-site
 // names and taglines, region labels, course titles, marine-life labels, and the
-// long editorial guides — resolved to the current language.
+// long write-ups — resolved to the current language.
 //
 // Those files keep their English as the canonical value, because it is also an
 // identifier (the calendar matches a trip against a site's English name; a
-// creature's English name makes its gallery slug). Translations sit beside each
-// file in per-locale overlays keyed by the same id — dive-sites.ja.ts,
-// course-guides.zh-TW.ts, and so on. This module is the one place that stitches
-// canonical + overlay together for a given locale; a parity test
-// (content/text/content.test.ts) keeps every overlay complete.
+// creature's English name makes its gallery slug). The translations sit in the
+// same file as the English they translate — inside each dive site's and course's
+// folder, under a `ja:` / `'zh-TW':` key — and the folder barrels collect them
+// into the per-locale maps this module reads. This is the one place that
+// stitches canonical + overlay together for a given locale; a parity test
+// (content/i18n-content.test.ts) keeps every overlay complete.
 //
 // Pages read these with the current `$locale`, e.g.
 //   {siteText(site.id, $locale).name}
-//   {@const g = diveGuide(site.id, $locale)}
+//   {@const g = siteDetails(site.id, $locale)}
 // so the page re-renders when the language switches.
 import type { Locale } from './i18n'
 
 import {
   DIVE_SITES_TEXT_EN,
+  diveSitesJa,
+  diveSitesZhTW,
   type DiveSitesText,
   type SiteText,
   type MapRegionText,
   type Region,
   type TaiwanRegion,
 } from '$content/dive-sites'
-import { diveSitesJa } from '$content/dive-sites.ja'
-import { diveSitesZhTW } from '$content/dive-sites.zh-TW'
 
-import { COURSES_TEXT_EN, type CourseText, type CourseCard } from '$content/courses'
-import { coursesJa } from '$content/courses.ja'
-import { coursesZhTW } from '$content/courses.zh-TW'
+import {
+  COURSES_TEXT_EN,
+  coursesJa,
+  coursesZhTW,
+  type CourseText,
+  type CourseCard,
+} from '$content/courses'
 
-import { marineLifeJa } from '$content/marine-life.ja'
-import { marineLifeZhTW } from '$content/marine-life.zh-TW'
-import type { MarineLifeText } from '$content/marine-life'
+import { marineLifeJa, marineLifeZhTW, type MarineLifeText } from '$content/marine-life'
 
-import { TEAM_TEXT_EN, type MemberText } from '$content/team'
-import { teamJa } from '$content/team.ja'
-import { teamZhTW } from '$content/team.zh-TW'
+import { TEAM_TEXT_EN, teamJa, teamZhTW, type MemberText } from '$content/team'
 
-import { NEWS_TEXT_EN, type NewsText } from '$content/news'
-import { newsJa } from '$content/news.ja'
-import { newsZhTW } from '$content/news.zh-TW'
+import { NEWS_TEXT_EN, newsJa, newsZhTW, type NewsText } from '$content/news'
 
-// The long editorial guides — the biggest translated payload — resolve in their
-// own module ($engine/i18n-guides), imported only by the two detail pages that
+// The long write-ups — the biggest translated payload — resolve in their
+// own module ($engine/i18n-details), imported only by the two detail pages that
 // render them. Keeping them out of here is what stops the Sites / Courses / Map
-// list pages from shipping every guide in three languages just to show a name.
+// list pages from shipping every write-up in three languages just to show a name.
 
 // ── Dive sites, regions, the map ────────────────────────────────────────────
 

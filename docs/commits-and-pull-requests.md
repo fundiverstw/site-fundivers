@@ -68,7 +68,7 @@ Requested by the shop after the June trip. Coordinates are from the boat's
 GPS rather than Google Maps, which puts the pin on the beach rather than the
 entry point.
 
-The guide has no "How to get there" section yet — the shop is checking
+The write-up has no "How to get there" section yet — the shop is checking
 whether the coast road is open.
 ```
 
@@ -93,7 +93,7 @@ against.
 
 | Not this | This |
 | --- | --- |
-| `Update dive-sites.ts` | `Add Turtle Cove dive site` |
+| `Update site.ts` | `Add Turtle Cove dive site` |
 | `fixed bug` | `Fix the Bat Cave photo not loading` |
 | `changes` | `Translate the Gear page into Japanese` |
 | `Add international: true to palau` | `Group Palau under International on the Sites page` |
@@ -146,7 +146,7 @@ Or push, then open github.com/fundiverstw/site-fundivers and click the button it
 
 ```markdown
 ## What
-Adds Turtle Cove to the dive-site list, with a guide and one photo.
+Adds Turtle Cove to the dive-site list, with a write-up and one photo.
 
 ## Why
 The shop started running trips there in June and it isn't on the site.

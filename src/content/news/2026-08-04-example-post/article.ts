@@ -1,4 +1,4 @@
-import type { NewsArticleFile } from '$content/news'
+import type { NewsArticleFile } from '../index'
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  THIS IS A PLACEHOLDER. DELETE THIS WHOLE FOLDER once you write a real post.

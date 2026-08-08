@@ -1,17 +1,15 @@
-// Picks which photo each card on the site shows. The photos themselves live in
-// src/content/photos/, in these folders:
+// Picks which photo each card on the site shows. The photos live with the thing
+// they are photos of:
 //
-//   photos/dive-sites/<dive-site-id>/   one or more photos of that dive site
-//   photos/general/                     fallback dive shots (unmatched / trips)
-//   photos/courses/<course-route-id>/   photos of that specific course type
-//   photos/hikes/<hike-id>/             photos of that hike (see content/hikes.ts)
+//   content/dive-sites/<site-id>/photos/   one or more photos of that dive site
+//   content/courses/<course-id>/photos/    photos of that specific course type
+//   content/photos/hikes/<hike-id>/        photos of that hike (see content/hikes.ts)
+//   content/photos/general/                fallback dive shots (unmatched / trips)
 //
-// Course photos are grouped by course: `photos/courses/<id>/` (the id is
-// the `id` from content/courses.ts) holds shots of that course, so a
-// course's detail page draws from its own folder. Any loose photo left directly
-// under photos/courses/ joins a shared course pool used as the fallback when a
-// course's own folder is empty (and for the mixed calendar, which isn't tied to
-// one course).
+// So a dive site's folder holds its row, its write-up and its pictures, and
+// deleting the folder deletes all three. Every course photo also joins one shared
+// pool, used when a course has no folder of its own and for the mixed calendar,
+// which is not tied to a single course.
 //
 // Drop more photos into any folder and they're picked up automatically (the
 // glob runs at build time — no manifest to edit, no duplicated files). Used two
@@ -25,27 +23,34 @@ import { HIKES } from '$content/hikes'
 import { mediaIdLocal } from './images'
 import type { ResponsiveImage } from './responsive-image'
 
-// Only the card-pool folders — the gallery and media folders live alongside
-// these under photos/ but are catalogued elsewhere, so they are not scanned in.
+// Only the card-pool folders. The gallery and media folders under content/photos/
+// are catalogued elsewhere, so they are not scanned in; nor are the `.ts` files
+// sitting beside the photos in a site or course folder.
 // The extensions are spelled as case-insensitive character classes ([jJ][pP][gG]
 // …) on purpose: a camera or phone that writes `.JPG` (or a stray `.Jpeg`) must
 // still be picked up. A plain `{jpg,…}` is case-sensitive, so an uppercase file
 // silently vanishes from the pool with no error — a dive site just quietly shows
 // fewer photos. (HEIC is deliberately not listed: sharp can't decode it on every
 // machine, so those files are converted to .jpg at rest instead.)
-const files = import.meta.glob(
-  '../content/photos/{dive-sites,courses,general,hikes}/**/*.{[wW][eE][bB][pP],[aA][vV][iI][fF],[jJ][pP][gG],[jJ][pP][eE][gG],[pP][nN][gG]}',
-  {
-    eager: true,
-    query: '?responsive',
-    import: 'default',
-  },
-) as Record<string, ResponsiveImage>
+// Two globs rather than one, and the extension list is spelled out in both:
+// Vite reads these patterns statically at build time, so neither the pattern nor
+// the extensions can be lifted into a constant. A pattern built from a variable
+// silently matches nothing.
+const files = {
+  ...(import.meta.glob(
+    '../content/{dive-sites,courses}/*/photos/**/*.{[wW][eE][bB][pP],[aA][vV][iI][fF],[jJ][pP][gG],[jJ][pP][eE][gG],[pP][nN][gG]}',
+    { eager: true, query: '?responsive', import: 'default' },
+  ) as Record<string, ResponsiveImage>),
+  ...(import.meta.glob(
+    '../content/photos/{general,hikes}/**/*.{[wW][eE][bB][pP],[aA][vV][iI][fF],[jJ][pP][gG],[jJ][pP][eE][gG],[pP][nN][gG]}',
+    { eager: true, query: '?responsive', import: 'default' },
+  ) as Record<string, ResponsiveImage>),
+}
 
 const sitePools: Record<string, ResponsiveImage[]> = {}
 const generalPool: ResponsiveImage[] = []
-// Per-course pools keyed by course route id (the folder name under courses/),
-// plus every course photo in one pool for the fallback / mixed-calendar case.
+// Per-course pools keyed by course id (the folder the photos sit in), plus every
+// course photo in one pool for the fallback / mixed-calendar case.
 const coursePools: Record<string, ResponsiveImage[]> = {}
 const coursePoolAll: ResponsiveImage[] = []
 // Per-hike pools keyed by hike id (the folder name under hikes/).
@@ -55,15 +60,13 @@ for (const [path, image] of Object.entries(files)) {
   if (path.includes('/general/')) generalPool.push(image)
   else if (path.includes('/courses/')) {
     coursePoolAll.push(image)
-    // A photo inside courses/<id>/ also joins that course's own pool; one left
-    // loose directly under courses/ has no subfolder and stays fallback-only.
-    const m = path.match(/\/courses\/([^/]+)\//)
+    const m = path.match(/\/courses\/([^/]+)\/photos\//)
     if (m) (coursePools[m[1]] ??= []).push(image)
   } else if (path.includes('/hikes/')) {
     const m = path.match(/\/hikes\/([^/]+)\//)
     if (m) (hikePools[m[1]] ??= []).push(image)
   } else {
-    const m = path.match(/\/dive-sites\/([^/]+)\//)
+    const m = path.match(/\/dive-sites\/([^/]+)\/photos\//)
     if (m) (sitePools[m[1]] ??= []).push(image)
   }
 }

@@ -132,55 +132,64 @@ where you want it to appear:
 
 ## The long write-ups
 
-Some text is too long to live in the dictionary, so it sits in its own file. Each of
-these files keeps the **English** and has a `.zh-TW` and a `.ja` sibling beside it holding
-the translations, keyed by the same id:
+Some text is too long to live in the dictionary, so it sits with the thing it describes.
+**Its translations sit in the same file, right below the English** — one file to open, one
+file to review.
 
-| Text | English file | Translations |
-| --- | --- | --- |
-| The paragraphs on a dive-site page (*Below the Surface*, *Above the Surface*, *How to Get There*) | `src/content/dive-site-guides.ts` | `dive-site-guides.zh-TW.ts`, `dive-site-guides.ja.ts` |
-| The paragraphs on a course page | `src/content/course-guides.ts` | `course-guides.zh-TW.ts`, `course-guides.ja.ts` |
-| A dive-site's name, one-line summary, and its region label | `src/content/dive-sites.ts` | `dive-sites.zh-TW.ts`, `dive-sites.ja.ts` |
-| A course's title and one-line summary | `src/content/courses.ts` | `courses.zh-TW.ts`, `courses.ja.ts` |
-| A news post's headline, summary and write-up | `src/content/news/<folder>/article.ts` | `news.zh-TW.ts`, `news.ja.ts` — **allowed to be incomplete**, see [Adding a news post](adding-news.md) |
-| The creature names on the Photos page and the dive-site chips | `src/content/marine-life.ts` | `marine-life.zh-TW.ts`, `marine-life.ja.ts` |
+| Text | Where |
+| --- | --- |
+| A dive site's name and one-line summary | `src/content/dive-sites/<id>/site.ts` |
+| The paragraphs on a dive-site page (*Below the Surface*, *Above the Surface*, *How to Get There*) | `src/content/dive-sites/<id>/details.ts` |
+| A course's title and one-line summary | `src/content/courses/<id>/card.ts` |
+| The paragraphs on a course page | `src/content/courses/<id>/details.ts` |
+| A news post's headline, summary and write-up | `src/content/news/<folder>/article.ts` — **allowed to be incomplete**, see [Adding a news post](adding-news.md) |
+| A team member's bio | `src/content/team.ts` |
+| The creature names on the Photos page and the dive-site chips | `src/content/marine-life.ts` |
+| A region's label and the map blurb | `src/content/dive-sites/regions.ts` |
 
-In `dive-site-guides.ts`, each dive site is a block that starts with its id:
+The English comes first, then a `ja` block and a `'zh-TW'` block holding the same fields:
 
 ```ts
-'bat-cave': {
+export const details: DiveSiteDetailsFile = {
   overview: 'Bat Cave is an excellent site suitable for all experience levels…',
   belowSurface: 'Schools of fusiliers and glassfish…',
   aboveSurface: 'The cave is home to a colony of bats…',
-  gettingThere: 'Drive north from Keelung…',
-  requirements: 'Open Water certification.',
-  depthRange: '5–18 m',
+  marineLife: ['Moray eels', 'Nudibranchs'],
   …
-},
+  ja: {
+    overview: 'バットケーブは、どの経験レベルの方にも適した…',
+    belowSurface: 'タカサゴやスカシテンジクダイの群れが…',
+    …
+  },
+  'zh-TW': {
+    …
+  },
+}
 ```
 
-Edit any of the sentences. To start a new paragraph inside one, put a blank line in the
-middle by typing `\n\n`:
+To start a new paragraph inside a sentence, put a blank line in the middle by typing
+`\n\n`:
 
 ```ts
 overview: 'The first paragraph.\n\nThe second paragraph.',
 ```
 
-**News is the exception.** A news post goes up in English the day it is written, and its
-translations catch up later — a story is worth reading while it is still news. Every other
+**Change one language, change all three.** `npm run check` and the tests stop you if a
+translation is missing a field, has a list of a different length, or leaves one blank — so
+a half-translated page never ships. If you don't have a translation yet, put the English
+text in the other two blocks for now.
+
+**News is the exception.** A news post goes up in English the day it is written and its
+translations catch up later; a story is worth reading while it is still news. Every other
 row in that table has to be translated before it ships.
 
-When you change or add one of these, do the same in the `.zh-TW` and `.ja` file — the same
-id, the same fields. The block there looks the same, just in the other language and without
-the `marineLife` line (that stays English, because it's what links each creature to its
-photos). As with the dictionary, `npm run check` and the tests stop you if a translation is
-missing a site, a field, or leaves one blank — so a half-translated page never ships. If
-you don't have a translation yet, put the English text in the other two files for now.
-
-> **The English name stays put — even in the translations.** A dive site keeps its English
-> `name` in `dive-sites.ts` because the calendar finds a trip by matching that name. The
-> `.zh-TW`/`.ja` files only change what a *reader* sees. Same for a creature's English name
-> and a course's English title.
+> **Some fields are not text, and do not get translated.** A dive site keeps its English
+> `name` because the calendar finds a trip by matching it. A `details.ts`'s `marineLife` list
+> stays English because each creature's name is what links it to its photos. A course's
+> `next` and `matchCodes` are ids, not words. None of these may appear in a `ja` or
+> `'zh-TW'` block — the types refuse them, and a test checks they came through the merge
+> untouched. Copying them in would break a link or a lookup on that language's pages only,
+> while the page still looked perfectly fine.
 
 ---
 

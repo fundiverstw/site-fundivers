@@ -88,6 +88,17 @@ database, with a read-only key, and shows them:
 Everything else — dive sites, course descriptions, photos, the words on every page — is
 **static content bundled into this project**, in `src/content/`.
 
+Inside `content`, anything with a page of its own is a folder named after its address —
+`dive-sites/bat-cave/`, `courses/padi-efr-course/`, `news/2026-06-14-womens-dive-day/` —
+holding that thing's data, its write-up, its photos and all three languages. A barrel
+(`index.ts`) globs the folders into the list the pages import. Two consequences worth
+knowing: the folder name is the id, so it cannot fall out of step with itself, and there
+is no catalogue file to edit when you add or remove one.
+
+The write-ups live in a second barrel (`details.ts`) rather than the same one, so the list
+pages — which show only names and photos — do not download every write-up in three
+languages to render a grid.
+
 Two consequences worth remembering:
 
 1. **You cannot fix a price by editing this repository.** Fix it in the booking app.
@@ -114,7 +125,7 @@ Roughly in order of how likely you are to need it.
 | `radio.ts` | Whether the shop's live radio stream is on air, for the nav's radio player. |
 | `i18n.ts` | Remembers which language the visitor picked. The words themselves are in `content/text/`. |
 | `format.ts` | Turns `2026-07-14T09:00` into `Jul 14, 9:00 am`. |
-| `photo-pool.ts` | Decides which photo each card gets. Reads `content/photos/`. |
+| `photo-pool.ts` | Decides which photo each card gets. Reads the `photos/` folder inside each dive site and course, plus the shared `content/photos/general` and `hikes`. |
 | `images.ts` | Resolves the old website's photo ids to bundled photos in `content/photos/media/`. |
 | `event-colors.ts` | Which colour a calendar entry gets (blue for Open Water, and so on). |
 | `calendar-layout.ts` | The maths that stops overlapping trips from covering each other on the month grid. |

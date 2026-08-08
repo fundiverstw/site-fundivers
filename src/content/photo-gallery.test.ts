@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { GALLERY, ALL_PHOTOS, ORPHAN_FOLDERS, FILLED_SECTIONS, SHOWCASE } from './photo-gallery'
 import { MARINE_LIFE, marineSlug } from './marine-life'
-import { DIVE_SITE_GUIDES } from './dive-site-guides'
+import { DIVE_SITE_DETAILS } from './dive-sites/details'
 
 // The gallery is discovered by a build-time glob over
 // src/content/photos/gallery/<slug>/, so a listed-but-missing file cannot
@@ -30,7 +30,7 @@ describe('dive-site guides', () => {
     // own wording ("Wrasse" instead of "Wrasses") would link to a section that
     // does not exist, and the visitor would land nowhere.
     const known = new Set<string>(MARINE_LIFE)
-    for (const [id, guide] of Object.entries(DIVE_SITE_GUIDES)) {
+    for (const [id, guide] of Object.entries(DIVE_SITE_DETAILS)) {
       for (const creature of guide.marineLife ?? []) {
         expect(
           known.has(creature),
@@ -41,7 +41,7 @@ describe('dive-site guides', () => {
   })
 
   it('never lists the same creature twice on one site', () => {
-    for (const [id, guide] of Object.entries(DIVE_SITE_GUIDES)) {
+    for (const [id, guide] of Object.entries(DIVE_SITE_DETAILS)) {
       const list = guide.marineLife ?? []
       expect(new Set(list).size, `'${id}' repeats a creature`).toBe(list.length)
     }

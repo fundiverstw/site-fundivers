@@ -39,6 +39,18 @@ You can tell which folder a piece of code came from just by reading the import l
 the top of a file. `$content/dive-sites` means "the dive-site list, in the content
 folder". `$engine/router` means "the router, in the engine folder".
 
+Inside `content`, **anything with a page of its own is a folder named after its address**:
+
+```
+src/content/dive-sites/bat-cave/     → fundiverstw.com/sites/bat-cave
+src/content/courses/padi-efr-course/ → fundiverstw.com/courses/padi-efr-course
+src/content/news/2026-06-14-womens-dive-day/ → fundiverstw.com/news/womens-dive-day
+```
+
+Each folder holds everything about that one thing: its facts, its write-up, its photos,
+and all three languages. So "change the Bat Cave page" is one folder to open, and
+"remove Bat Cave" is one folder to delete.
+
 ---
 
 ## "I want to change ___". Where do I go?
@@ -50,16 +62,17 @@ folder". `$engine/router` means "the router, in the engine folder".
 | Instagram / Facebook / LINE links | `src/content/settings.ts` |
 | Any word or sentence on a page | `src/content/text/en.ts` — see [Changing words](changing-words.md) |
 | The Chinese or Japanese translation | `src/content/text/zh-TW.ts` or `ja.ts` |
-| The list of dive sites | `src/content/dive-sites.ts` |
-| The long write-up for one dive site | `src/content/dive-site-guides.ts` |
-| The list of courses | `src/content/courses.ts` |
-| Add a whole new course | Six files, all keyed by the same id — see [Adding a course](adding-a-course.md) |
+| One dive site — its name, coordinates, region | `src/content/dive-sites/<id>/site.ts` |
+| The long write-up for one dive site | `src/content/dive-sites/<id>/details.ts` |
+| Add a whole new dive site | Copy a folder in `src/content/dive-sites/` — see [Adding a dive site](adding-a-dive-site.md) |
+| One course's card — title, blurb, cover | `src/content/courses/<id>/card.ts` |
+| Add a whole new course | Copy a folder in `src/content/courses/` — see [Adding a course](adding-a-course.md) |
 | What we charge for FunDive and for websites | `src/content/services.ts` |
 | The words on the Services page | `src/content/text/en.ts`, under `services:` |
-| The long write-up for one course | `src/content/course-guides.ts` |
+| The long write-up for one course | `src/content/courses/<id>/details.ts` |
 | Add a news post — a conference, a volunteer day, an outreach event | Make a folder in `src/content/news/` — see [Adding a news post](adding-news.md) |
 | A photo on the Photos gallery page | Drop a file in `src/content/photos/gallery/` — see [Adding photos](adding-photos.md) |
-| The photo on a dive-site or event card | Drop a file in `src/content/photos/` — see [Adding photos](adding-photos.md) |
+| The photo on a dive-site or course card | Drop a file in that site's or course's `photos/` folder — see [Adding photos](adding-photos.md) |
 | A colour, a font, or how round the corners are | `src/styles/theme.css` — see [Changing how it looks](changing-look.md) |
 | The frosted-glass panel look | `src/styles/components.css` |
 | The underwater background | `src/styles/background.css` |

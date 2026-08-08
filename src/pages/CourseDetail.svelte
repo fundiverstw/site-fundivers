@@ -3,21 +3,21 @@
   import { SIZES, type ResponsiveImage } from '$engine/responsive-image'
   import { path, scrollToId } from '$engine/router'
   import { courseByRouteId, coursePath, COURSES, type CourseCard } from '$content/courses'
-  import { sessionMatchesCourse, type BlockKey, type CourseGuide } from '$content/course-guides'
+  import { sessionMatchesCourse, type BlockKey, type CourseDetails } from '$content/courses/details'
   import { coursePoolImage } from '$engine/photo-pool'
   import { fetchUpcomingEvents, type UpcomingEvent } from '$engine/events'
   import { formatSpan, twd } from '$engine/format'
   import { registerUrl } from '$content/settings'
   import { t, locale } from '$engine/i18n'
   import { courseText } from '$engine/i18n-content'
-  import { courseGuide } from '$engine/i18n-guides'
+  import { courseDetails } from '$engine/i18n-details'
   import CallToAction from '$components/CallToAction.svelte'
   import GetInTouch from '$components/GetInTouch.svelte'
 
   // Route param: /courses/<id>.
   let id = $derived($path.replace(/^\/courses\//, '').replace(/\/+$/, ''))
   let course = $derived(courseByRouteId(id))
-  let guide = $derived(course ? courseGuide(course.id, $locale) : null)
+  let details = $derived(course ? courseDetails(course.id, $locale) : null)
   // The course's title in the current language (the English title stays the
   // identifier; courseText resolves the display text).
   let courseTitle = $derived(course ? courseText(course, $locale).title : '')
@@ -38,37 +38,37 @@
     ]
   })
 
-  let hasTimeframe = $derived(!!(guide?.timeFrame || guide?.phases?.length))
-  let hasPrereq = $derived(!!(guide?.prereqList?.length || guide?.prerequisites))
+  let hasTimeframe = $derived(!!(details?.timeFrame || details?.phases?.length))
+  let hasPrereq = $derived(!!(details?.prereqList?.length || details?.prerequisites))
 
   // Does a content block have anything to show for this course?
   function blockHasData(k: BlockKey): boolean {
     switch (k) {
       case 'overview':
-        return !!guide?.overview
+        return !!details?.overview
       case 'topics':
-        return !!guide?.youWillLearn?.length
+        return !!details?.youWillLearn?.length
       case 'reasons':
-        return !!guide?.reasons?.length
+        return !!details?.reasons?.length
       case 'prerequisites':
         return hasPrereq
       case 'timeFrame':
         return hasTimeframe
       case 'covers':
-        return !!(guide?.covers?.length || guide?.coversLead)
+        return !!(details?.covers?.length || details?.coversLead)
       case 'materials':
-        return !!guide?.materials?.length
+        return !!details?.materials?.length
       case 'equipment':
-        return !!(guide?.equipment?.length || guide?.equipmentText)
+        return !!(details?.equipment?.length || details?.equipmentText)
       case 'notes':
-        return !!guide?.notes?.length
+        return !!details?.notes?.length
     }
   }
 
-  // Default grouping for guides that don't lay their blocks out explicitly: the
+  // Default grouping for courses that don't lay their blocks out explicitly: the
   // title/intro alone, then overview + prerequisites, then the time frame (or
   // "what you'll learn" if the course has none), then materials/equipment/notes.
-  function defaultLayout(g: CourseGuide): BlockKey[][] {
+  function defaultLayout(g: CourseDetails): BlockKey[][] {
     return [
       [],
       ['overview', 'prerequisites'],
@@ -81,8 +81,8 @@
   // always renders (even when empty); later empty subsections are dropped, and
   // blocks with no data are removed throughout.
   let subsections = $derived.by((): BlockKey[][] => {
-    if (!guide) return [[]]
-    const groups = guide.subsections ?? defaultLayout(guide)
+    if (!details) return [[]]
+    const groups = details.subsections ?? defaultLayout(details)
     const filtered = groups.map((keys) => keys.filter(blockHasData))
     return [filtered[0] ?? [], ...filtered.slice(1).filter((g) => g.length > 0)]
   })
@@ -90,7 +90,7 @@
   // Live upcoming sessions for THIS course, matched by category code.
   let sessions = $state<UpcomingEvent[]>([])
   $effect(() => {
-    const g = guide
+    const g = details
     if (!g) return void (sessions = [])
     fetchUpcomingEvents()
       .then(
@@ -106,7 +106,7 @@
     if (course) document.title = `${courseTitle} · FunDivers TW`
   })
 
-  // "Where to next" — the guide's picks first, then filled to two with other
+  // "Where to next" — the details's picks first, then filled to two with other
   // courses so every page always suggests two places to go next.
   let nextCourses = $derived.by((): CourseCard[] => {
     if (!course) return []
@@ -114,7 +114,7 @@
     const add = (c: CourseCard | undefined) => {
       if (c && c !== course && !chosen.includes(c)) chosen.push(c)
     }
-    for (const nid of guide?.next ?? []) add(COURSES.find((c) => c.id === nid))
+    for (const nid of details?.next ?? []) add(COURSES.find((c) => c.id === nid))
     for (const c of COURSES) {
       if (chosen.length >= 2) break
       add(c)
@@ -155,23 +155,23 @@
 {#snippet prereqBlock()}
   <h3 class="text-xl font-bold text-white">{$t.courseDetail.prerequisites}</h3>
   <div class="glass mt-3 rounded-2xl p-5">
-    {#if guide?.prereqLead}
-      <p class="leading-relaxed text-brand-100">{guide.prereqLead}</p>
+    {#if details?.prereqLead}
+      <p class="leading-relaxed text-brand-100">{details.prereqLead}</p>
     {/if}
-    {#if guide?.prereqList?.length}
-      <ul class="space-y-2 {guide?.prereqLead ? 'mt-3' : ''}">
-        {#each guide.prereqList as item}
+    {#if details?.prereqList?.length}
+      <ul class="space-y-2 {details?.prereqLead ? 'mt-3' : ''}">
+        {#each details.prereqList as item}
           <li class="flex gap-2 text-brand-100">
             <span class="mt-0.5 text-reef-300" aria-hidden="true">✓</span>
             <span>{item}</span>
           </li>
         {/each}
       </ul>
-    {:else if guide?.prerequisites && !guide?.prereqLead}
-      <p class="leading-relaxed text-brand-100">{guide.prerequisites}</p>
+    {:else if details?.prerequisites && !details?.prereqLead}
+      <p class="leading-relaxed text-brand-100">{details.prerequisites}</p>
     {/if}
-    {#if guide?.prereqNote}
-      <p class="mt-3 leading-relaxed text-brand-100">{guide.prereqNote}</p>
+    {#if details?.prereqNote}
+      <p class="mt-3 leading-relaxed text-brand-100">{details.prereqNote}</p>
     {/if}
   </div>
 {/snippet}
@@ -196,16 +196,16 @@
     <div>
       <h2 class="text-xl font-bold text-white">{$t.courseDetail.overview}</h2>
       <div class="glass mt-3 rounded-2xl p-5">
-        <p class="leading-relaxed text-brand-100">{guide?.overview}</p>
+        <p class="leading-relaxed text-brand-100">{details?.overview}</p>
       </div>
     </div>
   {:else if key === 'topics'}
     <div>
       <h2 class="text-xl font-bold text-white">
-        {guide?.topicsTitle ?? $t.courseDetail.youWillLearn}
+        {details?.topicsTitle ?? $t.courseDetail.youWillLearn}
       </h2>
       <ul class="glass mt-3 space-y-2 rounded-2xl p-5">
-        {#each guide?.youWillLearn ?? [] as item}
+        {#each details?.youWillLearn ?? [] as item}
           <li class="flex gap-2 text-brand-100">
             <span class="mt-0.5 text-reef-300" aria-hidden="true">✓</span>
             <span>{item}</span>
@@ -215,11 +215,11 @@
     </div>
   {:else if key === 'reasons'}
     <div>
-      {#if guide?.reasonsTitle}
-        <h2 class="text-xl font-bold text-white">{guide.reasonsTitle}</h2>
+      {#if details?.reasonsTitle}
+        <h2 class="text-xl font-bold text-white">{details.reasonsTitle}</h2>
       {/if}
       <ol class="glass mt-3 space-y-2 rounded-2xl p-5">
-        {#each guide?.reasons ?? [] as reason, i}
+        {#each details?.reasons ?? [] as reason, i}
           <li class="flex gap-2 text-brand-100">
             <span class="mt-0.5 font-semibold tabular-nums text-reef-300">{i + 1}.</span>
             <span>{reason}</span>
@@ -231,15 +231,15 @@
     <div>{@render prereqBlock()}</div>
   {:else if key === 'timeFrame'}
     <div>
-      {#if guide?.timeFrame}
+      {#if details?.timeFrame}
         <h2 class="text-xl font-bold text-white">{$t.courseDetail.timeFrame}</h2>
         <div class="glass mt-3 rounded-2xl p-5">
-          <p class="leading-relaxed text-brand-100">{guide.timeFrame}</p>
+          <p class="leading-relaxed text-brand-100">{details.timeFrame}</p>
         </div>
       {/if}
-      {#if guide?.phases?.length}
-        <ol class="space-y-3 {guide?.timeFrame ? 'mt-4' : ''}">
-          {#each guide.phases as ph}
+      {#if details?.phases?.length}
+        <ol class="space-y-3 {details?.timeFrame ? 'mt-4' : ''}">
+          {#each details.phases as ph}
             <li class="glass rounded-xl p-4">
               <p class="font-semibold text-white">{ph.name}</p>
               <p class="mt-1 text-sm leading-relaxed text-brand-100">{ph.text}</p>
@@ -250,14 +250,14 @@
     </div>
   {:else if key === 'covers'}
     <div>
-      {#if guide?.coversLead}
+      {#if details?.coversLead}
         <div class="glass rounded-2xl p-5">
-          <p class="leading-relaxed text-brand-100">{guide.coversLead}</p>
+          <p class="leading-relaxed text-brand-100">{details.coversLead}</p>
         </div>
       {/if}
-      {#if guide?.covers?.length}
-        <ol class="space-y-3 {guide?.coversLead ? 'mt-4' : ''}">
-          {#each guide.covers as ph}
+      {#if details?.covers?.length}
+        <ol class="space-y-3 {details?.coversLead ? 'mt-4' : ''}">
+          {#each details.covers as ph}
             <li class="glass rounded-xl p-4">
               <p class="font-semibold text-white">{ph.name}</p>
               <p class="mt-1 text-sm leading-relaxed text-brand-100">{ph.text}</p>
@@ -265,19 +265,19 @@
           {/each}
         </ol>
       {/if}
-      {#if guide?.coversNote}
+      {#if details?.coversNote}
         <div class="glass mt-4 rounded-2xl p-5">
-          <p class="leading-relaxed text-brand-100">{guide.coversNote}</p>
+          <p class="leading-relaxed text-brand-100">{details.coversNote}</p>
         </div>
       {/if}
     </div>
   {:else if key === 'materials'}
-    {#if guide?.materialsRecommended?.length}
+    {#if details?.materialsRecommended?.length}
       <div>
         <h3 class="text-xl font-bold text-white">{$t.courseDetail.materials}</h3>
         <div class="glass mt-3 rounded-2xl p-5">
           <ul class="space-y-2">
-            {#each guide?.materials ?? [] as it}
+            {#each details?.materials ?? [] as it}
               <li class="flex gap-2 text-brand-100">
                 <span class="mt-0.5 text-reef-300" aria-hidden="true">•</span>
                 <span>{it}</span>
@@ -288,7 +288,7 @@
             {$t.courseDetail.recommended}
           </p>
           <ul class="mt-2 space-y-2">
-            {#each guide.materialsRecommended as it}
+            {#each details.materialsRecommended as it}
               <li class="flex gap-2 text-brand-100">
                 <span class="mt-0.5 text-reef-300" aria-hidden="true">•</span>
                 <span>{it}</span>
@@ -298,21 +298,21 @@
         </div>
       </div>
     {:else}
-      <div>{@render bulletList($t.courseDetail.materials, guide?.materials ?? [])}</div>
+      <div>{@render bulletList($t.courseDetail.materials, details?.materials ?? [])}</div>
     {/if}
   {:else if key === 'equipment'}
-    {#if guide?.equipmentText}
+    {#if details?.equipmentText}
       <div>
         <h3 class="text-xl font-bold text-white">{$t.courseDetail.equipment}</h3>
         <div class="glass mt-3 rounded-2xl p-5">
-          <p class="leading-relaxed text-brand-100">{guide.equipmentText}</p>
+          <p class="leading-relaxed text-brand-100">{details.equipmentText}</p>
         </div>
       </div>
     {:else}
-      <div>{@render bulletList($t.courseDetail.equipment, guide?.equipment ?? [])}</div>
+      <div>{@render bulletList($t.courseDetail.equipment, details?.equipment ?? [])}</div>
     {/if}
   {:else if key === 'notes'}
-    <div>{@render bulletList($t.courseDetail.notes, guide?.notes ?? [])}</div>
+    <div>{@render bulletList($t.courseDetail.notes, details?.notes ?? [])}</div>
   {/if}
 {/snippet}
 
@@ -341,7 +341,7 @@
             <h1 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">{courseTitle}</h1>
             <div class="glass mt-4 rounded-2xl p-5">
               <p class="text-base leading-relaxed text-brand-100 sm:text-lg">
-                {guide?.intro ?? courseText(course, $locale).desc}
+                {details?.intro ?? courseText(course, $locale).desc}
               </p>
             </div>
           {/if}

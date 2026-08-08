@@ -1,36 +1,23 @@
 import { describe, it, expect } from 'vitest'
 
-import { DIVE_SITES_TEXT_EN } from './dive-sites'
-import { diveSitesJa } from './dive-sites.ja'
-import { diveSitesZhTW } from './dive-sites.zh-TW'
+import { DIVE_SITES_TEXT_EN, diveSitesJa, diveSitesZhTW } from './dive-sites'
+import { DIVE_SITE_DETAILS, diveSiteDetailsJa, diveSiteDetailsZhTW } from './dive-sites/details'
+import { COURSES_TEXT_EN, coursesJa, coursesZhTW } from './courses'
+import { COURSE_DETAILS, courseDetailsJa, courseDetailsZhTW } from './courses/details'
+import { MARINE_LIFE, marineLifeJa, marineLifeZhTW } from './marine-life'
+import { TEAM_TEXT_EN, teamJa, teamZhTW } from './team'
 
-import { COURSES_TEXT_EN } from './courses'
-import { coursesJa } from './courses.ja'
-import { coursesZhTW } from './courses.zh-TW'
-
-import { MARINE_LIFE } from './marine-life'
-import { marineLifeJa } from './marine-life.ja'
-import { marineLifeZhTW } from './marine-life.zh-TW'
-
-import { TEAM_TEXT_EN } from './team'
-import { teamJa } from './team.ja'
-import { teamZhTW } from './team.zh-TW'
-
-import { DIVE_SITE_GUIDES } from './dive-site-guides'
-import { diveSiteGuidesJa } from './dive-site-guides.ja'
-import { diveSiteGuidesZhTW } from './dive-site-guides.zh-TW'
-
-import { COURSE_GUIDES } from './course-guides'
-import { courseGuidesJa } from './course-guides.ja'
-import { courseGuidesZhTW } from './course-guides.zh-TW'
-
-// The content data files keep their English as the canonical value and carry
-// translations in per-locale overlays (see $engine/i18n-content). TypeScript
-// checks the *shape* of each overlay, but not that every id is present, every
-// field filled, or an array the same length. These tests do — the same guard
-// text.test.ts gives the UI dictionary, extended to the content overlays. A new
-// dive site, course or creature with no translation fails here rather than
-// silently rendering English on the Japanese page.
+// Each content entity keeps its English as the canonical value and carries its
+// translations beside it, in the same file. TypeScript checks the *shape* of a
+// translation, but not that every id is present, every field filled, or an array
+// the same length. These tests do — the same guard text.test.ts gives the UI
+// dictionary, extended to the content. A new dive site, course or creature with
+// no translation fails here rather than silently rendering English on the
+// Japanese page.
+//
+// The barrels these read from (./dive-sites, ./courses, …) are what turn the
+// per-entity files into one map per locale, so this measures the assembled
+// result — which is what the pages actually see.
 
 type Node = Record<string, unknown>
 
@@ -59,13 +46,13 @@ function leaves(value: unknown, prefix = ''): Array<[string, unknown]> {
 const omit = <T extends object>(o: T, keys: string[]): Partial<T> =>
   Object.fromEntries(Object.entries(o).filter(([k]) => !keys.includes(k))) as Partial<T>
 
-/** The translatable shape of the guide maps: each entry minus its structural,
- *  non-translated fields — the same fields the overlays are expected to carry. */
-const diveGuidesEn = Object.fromEntries(
-  Object.entries(DIVE_SITE_GUIDES).map(([id, g]) => [id, omit(g, ['marineLife'])]),
+/** The translatable shape of the details maps: each entry minus its structural,
+ *  non-translated fields — the same fields a translation is expected to carry. */
+const diveDetailsEn = Object.fromEntries(
+  Object.entries(DIVE_SITE_DETAILS).map(([id, g]) => [id, omit(g, ['marineLife'])]),
 )
-const courseGuidesEn = Object.fromEntries(
-  Object.entries(COURSE_GUIDES).map(([id, g]) => [
+const courseDetailsEn = Object.fromEntries(
+  Object.entries(COURSE_DETAILS).map(([id, g]) => [
     id,
     omit(g, ['subsections', 'matchCodes', 'next', 'depth']),
   ]),
@@ -79,8 +66,8 @@ const domains = {
   courses: { en: COURSES_TEXT_EN, ja: coursesJa, 'zh-TW': coursesZhTW },
   'marine-life': { en: marineEn, ja: marineLifeJa, 'zh-TW': marineLifeZhTW },
   team: { en: TEAM_TEXT_EN, ja: teamJa, 'zh-TW': teamZhTW },
-  'dive-site-guides': { en: diveGuidesEn, ja: diveSiteGuidesJa, 'zh-TW': diveSiteGuidesZhTW },
-  'course-guides': { en: courseGuidesEn, ja: courseGuidesJa, 'zh-TW': courseGuidesZhTW },
+  'dive-site-details': { en: diveDetailsEn, ja: diveSiteDetailsJa, 'zh-TW': diveSiteDetailsZhTW },
+  'course-details': { en: courseDetailsEn, ja: courseDetailsJa, 'zh-TW': courseDetailsZhTW },
 } as const
 
 describe.each(Object.entries(domains))('%s overlays', (domain, set) => {

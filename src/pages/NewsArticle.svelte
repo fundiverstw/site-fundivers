@@ -25,7 +25,7 @@
     3: 'sm:grid-cols-3',
   }
 
-  // Blank line between paragraphs, the same convention as the dive-site guides.
+  // Blank line between paragraphs, the same convention as the dive-site write-ups.
   let paragraphs = $derived((text?.body ?? '').split('\n\n').filter((p) => p.trim()))
 
   $effect(() => {

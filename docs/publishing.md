@@ -92,7 +92,7 @@ git push
 If you want to throw away a change and start over, before committing:
 
 ```bash
-git restore src/content/dive-sites.ts    # one file
+git restore src/content/dive-sites/bat-cave/site.ts   # one file
 git restore .                            # everything
 ```
 

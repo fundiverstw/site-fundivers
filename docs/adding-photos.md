@@ -2,30 +2,45 @@
 
 [← Back to start](index.md)
 
-Every photo on the site lives in **one place**: `src/content/photos/`, in a subfolder
-that says what the photo is *for*. The site scans these folders when it builds, so in
-almost every case you just drop the file in the right folder and it appears — no list of
-filenames to keep in sync.
+A photo lives **with the thing it is a photo of**. Pictures of Bat Cave sit in
+Bat Cave's folder; pictures of the Open Water course sit in the Open Water
+course's folder. The site scans these folders when it builds, so in almost every
+case you drop the file in and it appears — no list of filenames to keep in sync.
 
 | The photo is… | It goes in | Do you edit any code? |
 | --- | --- | --- |
-| on a **card** — a dive site, a course, a calendar trip | `src/content/photos/{dive-sites,courses,general}/` | **No.** Just drop the file in. |
-| in the **Photos gallery** page | `src/content/photos/gallery/<creature>/` | **No.** The section already exists. |
+| of a **dive site** | `src/content/dive-sites/<site-id>/photos/` | **No.** Just drop the file in. |
+| of a **course** | `src/content/courses/<course-id>/photos/` | **No.** |
+| of a **news event** | `src/content/news/<folder>/` | Only to caption it — see [Adding a news post](adding-news.md). |
+| for the **Photos gallery** page | `src/content/photos/gallery/<creature>/` | **No.** The section already exists. |
+| a **calendar trip** with no site of its own | `src/content/photos/general/` | **No.** |
 | a **course cover** or **team/home** photo from the old site | `src/content/photos/media/` | Only to point a page at a different file. |
 
 ```
-src/content/photos/
+src/content/
   dive-sites/
-    bat-cave/          ← photos of Bat Cave (folder = the site's id)
-    turtle-island/
-  courses/             ← photos of classes
-  general/             ← anything; used when nothing better fits
-  gallery/
-    nudibranchs/       ← the Photos-page gallery, one folder per creature
-      photos.yaml      ← what each picture is (optional, see below)
-    reef/
-  media/               ← old-site photos referenced by id (courses, team, home)
+    bat-cave/
+      site.ts
+      details.ts
+      photos/          ← photos of Bat Cave
+  courses/
+    padi-open-water-course/
+      card.ts
+      details.ts
+      photos/          ← photos of that class
+  photos/
+    general/           ← anything; used when nothing better fits
+    hikes/
+    gallery/
+      nudibranchs/     ← the Photos-page gallery, one folder per creature
+        photos.yaml    ← what each picture is (optional, see below)
+      reef/
+    media/             ← old-site photos referenced by id (covers, team, home)
 ```
+
+The four folders left under `photos/` are the ones that belong to no single dive
+site or course: the shared fallbacks, the gallery, and the old-site covers that
+several pages point at by name.
 
 ---
 
@@ -33,8 +48,8 @@ src/content/photos/
 
 Put a picture in the right folder and it appears. There is no list to update.
 
-- To give a **dive site** its cover photo, make a folder named exactly the site's `id`
-  and put a photo in it. The first photo alphabetically becomes the cover.
+- To give a **dive site** its cover photo, put a photo in `photos/` inside that site's
+  folder. The first one alphabetically becomes the cover.
 - A trip on the calendar with no matching site photo falls back to `general/`, so it
   never shows an empty box.
 
@@ -42,7 +57,7 @@ Put a picture in the right folder and it appears. There is no list to update.
 
 ## Gallery photos — just drop the file in
 
-The Photos page already has a section for **every creature a dive-site guide can
+The Photos page already has a section for **every creature a dive site’s `details.ts` can
 mention** — about sixty of them. Most say *"Photos coming soon"*, because there are no
 pictures in them yet. Your job is to fill them.
 
@@ -60,7 +75,7 @@ because the section is already there waiting.
 
 The full list of creatures, and the exact folder name each one wants, is
 `src/content/marine-life.ts`. Adding a *new* creature to that list is the one thing that
-does touch code, and it has to come first: a dive-site guide may only use wording that
+does touch code, and it has to come first: a `details.ts` may only use wording that
 appears there, and a test fails the build if it doesn't. That is what keeps every chip on
 a dive-site page clickable.
 
@@ -136,7 +151,7 @@ works from, not the thing that gets sent.
 don't leave a copy behind:
 
 ```bash
-git mv src/content/photos/general/shark.webp src/content/photos/dive-sites/bat-cave/
+git mv src/content/photos/general/shark.webp src/content/dive-sites/bat-cave/photos/
 ```
 
 Two copies means two downloads for every visitor and twice the storage, forever. Git
@@ -148,17 +163,21 @@ keeps the old copy even after you delete it.
 
 These are the pictures from the shop's old website. They live in
 `src/content/photos/media/` under long machine-generated names, and pages refer to them
-by that name (its **id**), not by a folder scan. In `src/content/courses.ts`:
+by that name (its **id**), not by a folder scan. In a course's `card.ts`:
 
 ```ts
-image: img('b37fef_9c73f7e0bb244570a119812991ef0ab9~mv2.jpg'),
+image: mediaIdLocal('b37fef_9c73f7e0bb244570a119812991ef0ab9~mv2.jpg'),
 ```
 
-`img(…)` looks the id up among the files in `media/` and returns the bundled photo. The
-simplest way to change one is to **replace the file in `media/`, keeping its filename** —
-the same `img('…')` call then resolves to your new picture. (If you add a new file, its
-name minus the extension, with every non-letter/number turned into `_`, must match the id
-you pass to `img('…')`.)
+`mediaIdLocal(…)` looks the id up among the files in `media/` and returns the bundled
+photo. The simplest way to change one is to **replace the file in `media/`, keeping its
+filename** — the same call then resolves to your new picture.
+
+If you add a new file, its name minus the extension, with every non-letter/number turned
+into `_`, must match what you pass in. So `wreck-specialty.webp` can never be found by
+`mediaIdLocal('wreck-specialty')`: the hyphen becomes an underscore in the lookup. Name
+the file `wreck_specialty.webp` and ask for `wreck_specialty`. There is no error when this
+is wrong — the card just shows the "image coming soon" placeholder.
 
 ---
 
@@ -170,7 +189,7 @@ npm run dev
 
 Look at the page. A photo that doesn't appear almost always means one of:
 
-- the folder name doesn't exactly match the dive site's `id` (check hyphens);
+- the photos went next to `site.ts` instead of inside that site's `photos/` folder;
 - a gallery folder name doesn't match the creature's slug in `src/content/marine-life.ts`
   (`moray_eels`, not `moray-eels` or `Moray eels`);
 - a caption doesn't show because its key isn't the filename exactly;

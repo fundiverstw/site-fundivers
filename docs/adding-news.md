@@ -141,18 +141,25 @@ Open <http://localhost:5173/news>. The new post is at the top if it is the most 
 the site that does not wait for its translations — news is worth reading while it is news.
 
 Japanese and Chinese readers see the English text until a translation exists. To add one,
-put an entry in `src/content/news.ja.ts` or `src/content/news.zh-TW.ts`, keyed by the
-slug — the part of the folder name after the date:
+put a `ja` or `'zh-TW'` block in the post's own `article.ts`, below the English:
 
 ```ts
-export const newsJa: Record<string, NewsText> = {
-  'reef-cleanup': {
+export const article: NewsArticleFile = {
+  kind: 'volunteering',
+  title: 'Reef cleanup at Long Dong',
+  summary: 'Eleven of us, four hours, and 90 kg of ghost net off the reef.',
+  body: `We met at the harbour at seven…`,
+
+  ja: {
     title: '龍洞でのリーフクリーンアップ',
     summary: '11 人、4 時間、そしてリーフから 90 キロのゴーストネット。',
     body: `朝七時に漁港に集合しました。…`,
   },
 }
 ```
+
+Both blocks are optional, and they are the only optional translations on the site —
+everything else fails the build until all three languages are written.
 
 Every time you run `npm run test:unit` it prints which posts are still waiting:
 
@@ -161,12 +168,14 @@ Every time you run `npm run test:unit` it prints which posts are still waiting:
     · reef-cleanup
 ```
 
-Two things *are* enforced, because both mean writing that never reaches a reader:
+One thing *is* enforced, because it means writing that never reaches a reader:
 
-- **A slug that matches no post.** Usually a typo, or a folder that has been renamed.
-- **A half-filled entry.** All three of `title`, `summary` and `body`, or none. The
+- **A half-filled block.** All three of `title`, `summary` and `body`, or none. The
   fallback to English is per-post, not per-field — otherwise one story would come out
   half in Japanese and half in English.
+
+(A translation keyed to the wrong post is no longer possible: it lives inside the post it
+belongs to.)
 
 ---
 

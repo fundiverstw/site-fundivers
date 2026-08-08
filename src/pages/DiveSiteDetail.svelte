@@ -8,7 +8,7 @@
   import { mapsUrl } from '$engine/links'
   import { t, locale } from '$engine/i18n'
   import { siteText, regionLabel, marineLabel } from '$engine/i18n-content'
-  import { diveGuide } from '$engine/i18n-guides'
+  import { siteDetails } from '$engine/i18n-details'
   import CallToAction from '$components/CallToAction.svelte'
   import GetInTouch from '$components/GetInTouch.svelte'
   import CoverPhoto from '$components/CoverPhoto.svelte'
@@ -18,7 +18,7 @@
   // /sites/<something> path, so we resolve the id from the current path.
   let id = $derived($path.replace(/^\/sites\//, '').replace(/\/+$/, ''))
   let site = $derived(diveSiteById(id))
-  let guide = $derived(site ? diveGuide(site.id, $locale) : null)
+  let details = $derived(site ? siteDetails(site.id, $locale) : null)
   // The site's name and tagline in the current language (English is the
   // identifier; siteText resolves the display text).
   let siteName = $derived(site ? siteText(site.id, $locale).name : '')
@@ -46,19 +46,21 @@
   let facts = $derived.by(() => {
     const rows: Array<{ label: string; value: string }> = []
     if (site?.dive_type) rows.push({ label: $t.siteDetail.diveType, value: site.dive_type })
-    if (guide?.depthRange) rows.push({ label: $t.siteDetail.depth, value: guide.depthRange })
-    if (guide?.difficulty) rows.push({ label: $t.siteDetail.difficulty, value: guide.difficulty })
-    if (guide?.bestSeason) rows.push({ label: $t.siteDetail.season, value: guide.bestSeason })
-    if (guide?.waterTemp) rows.push({ label: $t.siteDetail.waterTemp, value: guide.waterTemp })
-    if (guide?.visibility) rows.push({ label: $t.siteDetail.visibility, value: guide.visibility })
+    if (details?.depthRange) rows.push({ label: $t.siteDetail.depth, value: details.depthRange })
+    if (details?.difficulty)
+      rows.push({ label: $t.siteDetail.difficulty, value: details.difficulty })
+    if (details?.bestSeason) rows.push({ label: $t.siteDetail.season, value: details.bestSeason })
+    if (details?.waterTemp) rows.push({ label: $t.siteDetail.waterTemp, value: details.waterTemp })
+    if (details?.visibility)
+      rows.push({ label: $t.siteDetail.visibility, value: details.visibility })
     rows.push({ label: $t.siteDetail.region, value: regionName })
     return rows
   })
 
   const paras = (text: string | undefined | null) => (text ?? '').split('\n\n').filter(Boolean)
-  let paragraphs = $derived(paras(guide?.overview))
+  let paragraphs = $derived(paras(details?.overview))
 
-  let requirements = $derived(guide?.requirements ?? null)
+  let requirements = $derived(details?.requirements ?? null)
 </script>
 
 {#if !site}
@@ -124,10 +126,10 @@
             </div>
           {/if}
 
-          {#if guide?.highlights?.length}
+          {#if details?.highlights?.length}
             <h2 class="mt-8 text-xl font-bold text-white">{$t.siteDetail.highlights}</h2>
             <ul class="mt-3 space-y-2">
-              {#each guide.highlights as h}
+              {#each details.highlights as h}
                 <li class="flex gap-2 text-brand-100">
                   <span class="mt-1 text-reef-300" aria-hidden="true">◆</span>
                   <span>{h}</span>
@@ -136,10 +138,10 @@
             </ul>
           {/if}
 
-          {#if guide?.aboveSurface}
+          {#if details?.aboveSurface}
             <h2 class="mt-8 text-xl font-bold text-white">{$t.siteDetail.aboveSurface}</h2>
             <div class="mt-3 space-y-3 text-brand-100">
-              {#each paras(guide.aboveSurface) as p}
+              {#each paras(details.aboveSurface) as p}
                 <p class="leading-relaxed">{p}</p>
               {/each}
             </div>
@@ -148,19 +150,19 @@
           <!-- Below the Surface: the shop's prose where we have it, otherwise the
              marine-life chips stand on their own under their old heading. The
              marker sets where the descent's water surface line sits. -->
-          {#if guide?.belowSurface || guide?.marineLife?.length}
+          {#if details?.belowSurface || details?.marineLife?.length}
             <div data-surface aria-hidden="true" class="h-20"></div>
             <h2 class="text-xl font-bold text-white">
-              {guide?.belowSurface ? $t.siteDetail.belowSurface : $t.siteDetail.marineLife}
+              {details?.belowSurface ? $t.siteDetail.belowSurface : $t.siteDetail.marineLife}
             </h2>
-            {#if guide?.belowSurface}
+            {#if details?.belowSurface}
               <div class="mt-3 space-y-3 text-brand-100">
-                {#each paras(guide.belowSurface) as p}
+                {#each paras(details.belowSurface) as p}
                   <p class="leading-relaxed">{p}</p>
                 {/each}
               </div>
             {/if}
-            {#if guide?.marineLife?.length}
+            {#if details?.marineLife?.length}
               <!-- What you can expect to see here. The wording comes from the
                  fixed vocabulary in content/marine-life.ts, so a chip's slug
                  always matches a gallery section.
@@ -172,7 +174,7 @@
                  keep. Today that is most of them. Add photos to a folder and
                  its chips light up across every site that names it. -->
               <div class="mt-4 flex flex-wrap gap-2">
-                {#each guide.marineLife as m}
+                {#each details.marineLife as m}
                   {@const slug = marineSlug(m)}
                   {#if FILLED_SECTIONS.has(slug)}
                     <a
@@ -193,10 +195,10 @@
             {/if}
           {/if}
 
-          {#if guide?.gettingThere}
+          {#if details?.gettingThere}
             <h2 class="mt-8 text-xl font-bold text-white">{$t.siteDetail.gettingThere}</h2>
             <div class="mt-3 space-y-3 text-brand-100">
-              {#each paras(guide.gettingThere) as p}
+              {#each paras(details.gettingThere) as p}
                 <p class="leading-relaxed">{p}</p>
               {/each}
             </div>
