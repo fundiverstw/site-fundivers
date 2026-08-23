@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { DECK, shuffled, type QuizCard } from './quiz'
+import { DECK, shuffled, nameParts, type QuizCard } from './quiz'
 import { GALLERY } from '$content/photo-gallery'
 import { MARINE_LIFE, MARINE_TAXA } from '$content/marine-life'
 
@@ -55,6 +55,57 @@ describe('DECK', () => {
     for (const [label, photo] of withOwnSpecies) {
       const card = DECK.find((c) => c.image.src === photo.image.src)
       expect(card?.species, `${label}`).toBe(photo.meta.species)
+    }
+  })
+})
+
+describe('nameParts', () => {
+  /** The name as it renders: italic parts wrapped, so a test reads like the card. */
+  const render = (species: string) =>
+    nameParts(species)
+      .map((p) => (p.italic ? `*${p.text}*` : p.text))
+      .join(' ')
+
+  it('leaves sp. and spp. upright beside the italic genus', () => {
+    // They are abbreviations standing in for a name, not Latin words, so they
+    // are not italicized however the name around them is set.
+    expect(render('Cypraea sp.')).toBe('*Cypraea* sp.')
+    expect(render('Pterois spp.')).toBe('*Pterois* spp.')
+  })
+
+  it('italicizes a whole name that has no abbreviation in it', () => {
+    expect(render('Rhincodon typus')).toBe('*Rhincodon typus*')
+    expect(render('Muraenidae')).toBe('*Muraenidae*')
+  })
+
+  it('keeps a list of names together, punctuation and all', () => {
+    expect(render('Mobula birostris, M. alfredi')).toBe('*Mobula birostris, M. alfredi*')
+    expect(render('Hippocampus bargibanti, H. denise')).toBe('*Hippocampus bargibanti, H. denise*')
+  })
+
+  it('knows the other abbreviations that turn up in a caption', () => {
+    expect(render('Chromodoris cf. magnifica')).toBe('*Chromodoris* cf. *magnifica*')
+    expect(render('Sepia sp. 3')).toBe('*Sepia* sp. *3*')
+  })
+
+  it('only matches a whole abbreviation, never the start of a name', () => {
+    // 'Sphyraena' begins with the letters of no abbreviation, but 'Spirobranchus'
+    // begins with 'sp' — a prefix test would set it upright and be wrong.
+    expect(render('Spirobranchus giganteus')).toBe('*Spirobranchus giganteus*')
+  })
+
+  it('gives an empty name no parts to render', () => {
+    expect(nameParts('')).toEqual([])
+    expect(nameParts('   ')).toEqual([])
+  })
+
+  it('rejoins to the name it was given', () => {
+    for (const card of DECK) {
+      expect(
+        nameParts(card.species)
+          .map((p) => p.text)
+          .join(' '),
+      ).toBe(card.species)
     }
   })
 })

@@ -27,7 +27,9 @@ test.describe('the marine-life quiz', () => {
     // the shuffle deals.
     const answer = card.locator('p').first()
     await expect(answer).not.toBeEmpty()
-    await expect(card.locator('p.italic')).toBeVisible()
+    // The scientific name italicizes the Latin and nothing else, so the italics
+    // are an <em> inside the line rather than the line itself — see nameParts.
+    await expect(card.locator('p.mono em').first()).toBeVisible()
   })
 
   test('deals the next card face down', async ({ page }) => {

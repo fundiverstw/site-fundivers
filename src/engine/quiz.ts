@@ -39,6 +39,38 @@ export type QuizCard = {
   species: string
 }
 
+/** A stretch of a scientific name, and whether it is set in italics. */
+export type NamePart = { text: string; italic: boolean }
+
+// The abbreviations that stand in for a name rather than being one. They are
+// not Latin words, so they are not italicized however the name around them is
+// set: `Cypraea sp.`, `Pterois spp.` — genus in italics, the abbreviation not.
+// Compared lowercased, and only as a whole word, so a species epithet that
+// merely starts with these letters is untouched.
+const ABBREVIATIONS = new Set(['sp.', 'spp.', 'cf.', 'aff.', 'var.', 'ssp.', 'subsp.', 'nr.'])
+
+/**
+ * A scientific name split into the parts to italicize and the parts to leave
+ * upright, in order. Rejoin with a single space to get the name back.
+ *
+ * Callers render it rather than the raw string: `<em>` per italic part, plain
+ * text otherwise. Adjacent parts of the same kind are merged, so the common
+ * case — a name with no abbreviation in it — is one part and one `<em>`.
+ */
+export function nameParts(species: string): NamePart[] {
+  const parts: NamePart[] = []
+  for (const word of species.split(/\s+/).filter(Boolean)) {
+    // Trailing punctuation (the comma in 'Mobula birostris, M. alfredi') is not
+    // part of the word being tested, but travels with it.
+    const bare = word.replace(/[,;]+$/, '')
+    const italic = !ABBREVIATIONS.has(bare.toLowerCase())
+    const last = parts[parts.length - 1]
+    if (last && last.italic === italic) last.text += ` ${word}`
+    else parts.push({ text: word, italic })
+  }
+  return parts
+}
+
 /** Every card there is, in gallery order. Shuffle it before showing it. */
 export const DECK: QuizCard[] = GALLERY.flatMap((section) =>
   section.photos.map((photo) => ({

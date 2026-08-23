@@ -1,7 +1,7 @@
 <script lang="ts">
   import { t, locale } from '$engine/i18n'
   import { marineLabel } from '$engine/i18n-content'
-  import { DECK, shuffled, type QuizCard } from '$engine/quiz'
+  import { DECK, shuffled, nameParts, type QuizCard } from '$engine/quiz'
   import { SIZES } from '$engine/responsive-image'
   import Photo from '$components/Photo.svelte'
   import PageHeader from '$components/PageHeader.svelte'
@@ -94,7 +94,15 @@
         {#if revealed}
           <p class="text-2xl font-bold text-white sm:text-3xl">{commonName}</p>
           {#if card.species}
-            <p class="mono mt-1 text-base italic text-reef-300 sm:text-lg">{card.species}</p>
+            <!-- Italics are the genus and the species, and only those: `sp.` and
+                 `spp.` stand in for a name instead of being one, so they are set
+                 upright next to it. See nameParts. -->
+            <p class="mono mt-1 text-base text-reef-300 sm:text-lg">
+              {#each nameParts(card.species) as part, n (n)}
+                {@const text = n > 0 ? ` ${part.text}` : part.text}
+                {#if part.italic}<em>{text}</em>{:else}{text}{/if}
+              {/each}
+            </p>
           {/if}
           {#if card.commonName}
             <p class="mt-2 text-sm text-brand-100">
