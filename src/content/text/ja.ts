@@ -274,6 +274,22 @@ export const ja: Dict = {
     prev: '前へ',
     next: '次へ',
   },
+  quiz: {
+    title: 'この生き物はなに？',
+    subtitle:
+      '写真を見て、答えを予想して、答え合わせ。ギャラリーの写真をシャッフルしてお届けします。いくつ名前が分かりますか。',
+    linkFromPhotos: '腕試しをする →',
+    tapToReveal: '答えが浮かんだら写真をタップ',
+    reveal: '答えを見る',
+    hideAgain: '隠す',
+    next: '次の写真',
+    prev: '前の写真',
+    shuffle: 'シャッフルする',
+    progress: '{total} 枚中 {n} 枚目',
+    seeInGallery: 'この仲間をもっと見る →',
+    empty: 'まだクイズに使える写真がありません。',
+    backToPhotos: 'ギャラリーに戻る',
+  },
   team: {
     title: 'Fun Divers チーム',
     subtitle: '献身。専門性。情熱。',

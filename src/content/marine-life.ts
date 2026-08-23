@@ -227,6 +227,87 @@ export const marineLifeZhTW: MarineLifeText = {
   'Whip corals': '鞭珊瑚',
 }
 
+// The scientific name behind each entry, for the /quiz flashcards (and anything
+// else that wants to put a name to a picture).
+//
+// The granularity is whatever is honest for the group the chip names, so these
+// are not all the same rank: a family where the common name is a family
+// ("Moray eels" is all of Muraenidae), a genus where it is a genus ("Lionfish"
+// is Pterois), a species where the common name means exactly one animal
+// ("Whale sharks"), and an order or clade where the group is broader than a
+// family ("Nudibranchs"). Claiming a species for a whole family would be worse
+// than useless on a card that teaches people names.
+//
+// Two entries are deliberately blank: "Reef fish" and "Pelagic fish" are not
+// taxa at all, they are where an animal lives. A blank means "no scientific
+// name to show", and the card falls back to the common name alone rather than
+// inventing one. A photo may still name its own species in photos.yaml, which
+// is sharper than anything here and wins — see engine/quiz.ts.
+export const MARINE_TAXA: Record<MarineLife, string> = {
+  Nudibranchs: 'Nudibranchia',
+  Cowries: 'Cypraeidae',
+  'Moray eels': 'Muraenidae',
+  Scorpionfish: 'Scorpaenidae',
+  Lionfish: 'Pterois spp.',
+  Frogfish: 'Antennariidae',
+  Seahorses: 'Hippocampus spp.',
+  'Pygmy seahorses': 'Hippocampus bargibanti, H. denise',
+  Octopus: 'Octopodidae',
+  Cuttlefish: 'Sepiidae',
+  Squid: 'Teuthida',
+  Clownfish: 'Amphiprion spp.',
+  Anthias: 'Anthiadinae',
+  Damselfish: 'Pomacentridae',
+  Butterflyfish: 'Chaetodontidae',
+  Angelfish: 'Pomacanthidae',
+  Wrasses: 'Labridae',
+  'Napoleon wrasse': 'Cheilinus undulatus',
+  Parrotfish: 'Scaridae',
+  Surgeonfish: 'Acanthuridae',
+  Trumpetfish: 'Aulostomus chinensis',
+  Pufferfish: 'Tetraodontidae',
+  Boxfish: 'Ostraciidae',
+  'Flying gurnards': 'Dactylopteridae',
+  Groupers: 'Epinephelinae',
+  Snappers: 'Lutjanidae',
+  Grunts: 'Haemulidae',
+  Sweetlips: 'Plectorhinchus spp.',
+  Fusiliers: 'Caesionidae',
+  Sardines: 'Clupeidae',
+  'Reef fish': '',
+  Barracuda: 'Sphyraena spp.',
+  Trevally: 'Caranx spp.',
+  Jacks: 'Carangidae',
+  Amberjacks: 'Seriola spp.',
+  Tuna: 'Scombridae',
+  'Pelagic fish': '',
+  'Reef sharks': 'Carcharhinidae',
+  'Whale sharks': 'Rhincodon typus',
+  'Hammerhead sharks': 'Sphyrna spp.',
+  'Thresher sharks': 'Alopias spp.',
+  'Tiger sharks': 'Galeocerdo cuvier',
+  'Manta rays': 'Mobula birostris, M. alfredi',
+  'Eagle rays': 'Myliobatidae',
+  'Devil rays': 'Mobula spp.',
+  Stingrays: 'Dasyatidae',
+  Rays: 'Batoidea',
+  'Sea turtles': 'Cheloniidae',
+  Dolphins: 'Delphinidae',
+  'Sea snakes': 'Hydrophiinae',
+  'Shrimp and crabs': 'Decapoda',
+  'Harlequin shrimp': 'Hymenocera picta',
+  'Mantis shrimp': 'Stomatopoda',
+  'Xenograpsus vent crabs': 'Xenograpsus testudinatus',
+  'Sea urchins': 'Echinoidea',
+  'Hard corals': 'Scleractinia',
+  'Soft corals': 'Alcyonacea',
+  'Leather corals': 'Sarcophyton spp.',
+  'Black coral': 'Antipatharia',
+  'Sun coral': 'Tubastraea spp.',
+  'Sea fans': 'Gorgonacea',
+  'Whip corals': 'Ellisella spp.',
+}
+
 /**
  * The anchor a chip links to, and the gallery folder that fills it.
  *

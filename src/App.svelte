@@ -21,6 +21,7 @@
     '/sites': () => import('$pages/Sites.svelte'),
     '/map': () => import('$pages/Map.svelte'),
     '/photos': () => import('$pages/Photos.svelte'),
+    '/quiz': () => import('$pages/Quiz.svelte'),
     '/travel': () => import('$pages/Travel.svelte'),
     '/gear': () => import('$pages/Gear.svelte'),
     '/services': () => import('$pages/Services.svelte'),

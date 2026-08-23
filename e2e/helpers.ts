@@ -7,6 +7,7 @@ export const ROUTES = [
   '/sites',
   '/map',
   '/photos',
+  '/quiz',
   '/travel',
   '/gear',
   '/services',

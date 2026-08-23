@@ -283,6 +283,22 @@ export const en = {
     prev: 'Previous',
     next: 'Next',
   },
+  quiz: {
+    title: 'Name that critter',
+    subtitle:
+      'A photo, a guess, an answer. Every picture in our gallery, shuffled — see how many you can name before we tell you.',
+    linkFromPhotos: 'Test yourself →',
+    tapToReveal: 'Tap the photo when you have a guess',
+    reveal: 'Show me',
+    hideAgain: 'Hide',
+    next: 'Next photo',
+    prev: 'Previous',
+    shuffle: 'Shuffle the deck',
+    progress: '{n} of {total}',
+    seeInGallery: 'See more of these →',
+    empty: 'There are no gallery photos to quiz on yet.',
+    backToPhotos: 'Back to the gallery',
+  },
   team: {
     title: 'Fun Divers Team',
     subtitle: 'Dedication. Expertise. Passion.',

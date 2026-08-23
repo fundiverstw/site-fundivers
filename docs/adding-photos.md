@@ -72,6 +72,8 @@ Each section is a folder named after the creature, lowercased with underscores:
 | Shrimp and crabs | `gallery/shrimp_and_crabs/` | `/photos#shrimp_and_crabs` |
 
 Make the folder, drop photos in, and the section stops saying "coming soon" by itself.
+Every photo you add here also becomes a flashcard on **/quiz**, answered with the
+creature's name and the scientific name in `src/content/marine-life.ts`.
 **There is no code to edit** — not even for a creature nobody has photographed yet,
 because the section is already there waiting.
 
@@ -106,6 +108,10 @@ giant-moray-longdong.webp:
   photographer: Ming
   notes: 'Free-swimming at dusk, which this species rarely does in daylight.'
 ```
+
+`species` and `commonName` do double duty: they are also the answer on that photo's
+/quiz flashcard, and they beat the folder's own name — a photo captioned
+*Cypraea sp.* is quizzed as that rather than as the whole cowrie family.
 
 Every field is optional — leave out what you don't know and that row just doesn't show.
 The whole file is optional too; without it the photos still appear, just with no caption.

@@ -97,6 +97,20 @@
 <PageHeader title={$t.photos.title} subtitle={$t.photos.subtitle} />
 
 <section class="mx-auto max-w-[1600px] px-4 pb-12 sm:px-6">
+  <!-- The way to /quiz. It lives here rather than in the nav because it is the
+       same photos: someone browsing the gallery is already looking at the deck,
+       and the nav has no room for a ninth link. -->
+  <a
+    href="/quiz"
+    class="glass mb-6 flex items-center justify-between gap-4 rounded-2xl px-5 py-4 text-white transition-colors"
+  >
+    <span>
+      <span class="block font-bold">{$t.quiz.title}</span>
+      <span class="mt-0.5 block text-sm text-brand-100">{$t.quiz.tapToReveal}</span>
+    </span>
+    <span class="mono shrink-0 text-sm font-semibold text-reef-300">{$t.quiz.linkFromPhotos}</span>
+  </a>
+
   <!-- Shortcuts to every group, so the whole gallery is one click away rather
        than a scroll through sixty headings. Same order as the sections below:
        the showcase first, then alphabetical. Groups with no photos yet are here
