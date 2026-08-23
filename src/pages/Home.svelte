@@ -5,8 +5,8 @@
   import { formatSpan, twd } from '$engine/format'
   import GetInTouch from '$components/GetInTouch.svelte'
   import EventModal from '$components/calendar/EventModal.svelte'
-  import { mediaIdLocal } from '$engine/images'
-  import { siteImage } from '$engine/photo-pool'
+  import { siteImage, courseImage } from '$engine/photo-pool'
+  import { galleryCover } from '$content/photo-gallery'
   import { t } from '$engine/i18n'
   import CoverPhoto from '$components/CoverPhoto.svelte'
 
@@ -100,37 +100,37 @@
 
   // Structural data only (links + images); titles/descriptions come from i18n
   // ($t.home.services), aligned by index.
+  // Each tile shows a photo of the thing it links to, taken from that thing's
+  // own folder — the course's photos, the dive site's photos — so a tile cannot
+  // end up advertising a picture nobody kept.
   const serviceLinks = [
-    { href: '/courses', image: mediaIdLocal('b37fef_2ea720f3f0c94fb8bc703856514b0a6c~mv2.jpg') },
-    { href: '/sites', image: mediaIdLocal('b37fef_7621a533ac1946a8b342bc5085cb1d28~mv2.jpg') },
-    { href: '/gear', image: mediaIdLocal('b37fef_58237e6a633f472b8d419bd830abb854~mv2.jpg') },
+    { href: '/courses', image: courseImage('padi-open-water-course') },
+    { href: '/sites', image: siteImage('bat-cave') },
+    { href: '/gear', image: courseImage('padi-equipment-specialist') },
     {
       href: 'https://site-fundiverstw.fundiverstw.workers.dev/travel#international',
-      image: mediaIdLocal('b37fef_80f90894e75f47f8809d14663dd8e8bd~mv2.jpg'),
+      image: siteImage('malapascua'),
     },
     { href: '/travel', image: siteImage('penghu') },
     {
       href: 'https://site-fundiverstw.fundiverstw.workers.dev/courses/padi-efr-course',
-      image: mediaIdLocal('b37fef_49df7d482eb44585a605a489e2b1d653~mv2.jpg'),
+      image: courseImage('padi-efr-course'),
     },
   ]
 
-  // Decorative photography for the "Diving in Taiwan" section. These are dive
-  // shots already bundled on disk but not shown anywhere else on the site (past
-  // events / marine life), so the section gets some colour without repeating the
-  // service or event cards. Divers-in-the-blue up top; reef critters below.
-  const diveScenes = [
-    mediaIdLocal('b37fef_62e3ef3bf39c43189066945900e212ec~mv2.jpg'), // diver on the wall
-    mediaIdLocal('b37fef_336fa72d68ae4cd19dcf205ba6cc555a~mv2.jpg'), // divers in the blue
-    mediaIdLocal('b37fef_544484389a4b4ce4a8ceed361a49989b~mv2.jpg'), // diver + fish school
-  ]
+  // Decorative photography for the "Diving in Taiwan" section: the covers of
+  // three Taiwanese dive sites up top, then a row of creatures straight from the
+  // Photos-page gallery. Both are named rather than picked at random, so the
+  // section looks the same on every visit — and both go null on their own if a
+  // folder is ever emptied, which the template already handles.
+  const diveScenes = [siteImage('82-5'), siteImage('secret-garden'), siteImage('turtle-island')]
   const marineLife = [
-    mediaIdLocal('9f20fa_d7e84b19892441b18febc6c321746bde~mv2.jpg'), // octopus
-    mediaIdLocal('b37fef_6194a1794e5540239e0327d2e92cfa3d~mv2.jpg'), // boxfish
-    mediaIdLocal('b37fef_7b0eff53c74d41ed80dc27ea77462778~mv2.jpg'), // tube anemone
-    mediaIdLocal('b37fef_bf3a6e799829427fb4f2b57eb9346869~mv2.jpg'), // moray eel
-    mediaIdLocal('b37fef_ce80a7ab6e3f468e870a2321b382cd57~mv2.jpg'), // pufferfish
-    mediaIdLocal('b37fef_7635de3c5357483999a169b65282ebe4~mv2.jpg'), // leaf scorpionfish
+    galleryCover('octopus'),
+    galleryCover('boxfish'),
+    galleryCover('nudibranchs'),
+    galleryCover('moray_eels'),
+    galleryCover('pufferfish'),
+    galleryCover('scorpionfish'),
   ]
 </script>
 

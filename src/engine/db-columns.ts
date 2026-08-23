@@ -51,7 +51,7 @@ export const CERT_LEVEL_COLS = 'name'
 
 /** Everything the Travel page shows. */
 export const DESTINATION_COLS =
-  'id, admin_title, slug, tagline, country, international, divetype, diver_requirements, location_picture, background_picture, sort_order'
+  'id, admin_title, slug, tagline, country, international, divetype, diver_requirements, sort_order'
 
 /** Columns the site filters, sorts or matches on. A column can exist and still
  *  stop being queryable — dropped from the anon role's grant, say. */

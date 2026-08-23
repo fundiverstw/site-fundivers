@@ -37,13 +37,11 @@ carefully now rather than tidying it later.
 ## Step 1. `card.ts` — the tile on /courses
 
 ```ts
-import { mediaIdLocal } from '$engine/images'
 import type { CourseCardFile } from '../types'
 
 export const card: CourseCardFile = {
   order: 140,
   title: 'PADI Wreck Specialty',
-  image: mediaIdLocal('wreck_specialty'),
   desc: 'Explore sunken ships and structures safely, survey a wreck, map it, and dive it with a plan.',
   ja: {
     title: 'PADIレック・スペシャルティ',
@@ -67,15 +65,23 @@ a test says so, and names both.
 
 ### The cover photo
 
-`mediaIdLocal('…')` looks up a file in `src/content/photos/media/` **by its
-filename**, minus the extension, with every character that is not a letter or a
-number turned into `_`. So a file called `wreck-specialty.webp` can never be
-found by `mediaIdLocal('wreck-specialty')` — the hyphen becomes an underscore in
-the lookup and matches nothing. Name the file with underscores.
+There isn't one in `card.ts`. The cover is **the first photo in the course's own
+`photos/` folder**, alphabetically — the same folder the detail page staggers its
+pictures from — so a course with photos has a cover and there is nothing to keep
+in step. Name the file you want on the tile so it sorts first (`…_0.jpg`).
 
-Get this wrong and there is no error. The card just renders the "image coming
-soon" placeholder — which is why the tests check that every course resolves a
-photo, and name the course that doesn't.
+An empty `photos/` folder means no cover, and no error either: the card renders
+the "image coming soon" placeholder. That is why the tests check that every
+course resolves a photo, and name the course that doesn't.
+
+To put a *different* picture on the tile than the one the folder would choose,
+pin it — import the file and set `image`:
+
+```ts
+import cover from './photos/wreck_specialty.jpg?responsive'
+// …
+  image: cover,
+```
 
 ---
 
@@ -144,7 +150,7 @@ What each failure means:
 | It says | You forgot |
 | --- | --- |
 | `these courses would render an empty detail page` | `details.ts` |
-| `padi-… has no cover photo` | The filename/`mediaIdLocal()` mismatch above |
+| `padi-… has no cover photo` | No pictures in that course's `photos/` folder |
 | `course-details/ja does not match the English shape` | A field in the `ja:` block, and it names which |
 | `two courses claim order 140` | Step 1 — pick a free number |
 | `…next points at '…', which is not a course` | A typo in `next` |

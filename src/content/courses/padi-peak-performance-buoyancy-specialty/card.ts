@@ -1,10 +1,8 @@
-import { mediaIdLocal } from '$engine/images'
 import type { CourseCardFile } from '../types'
 
 export const card: CourseCardFile = {
   order: 160,
   title: 'PADI Peak Performance Buoyancy',
-  image: mediaIdLocal('b37fef_7b7bc72b68544b72b206b7da80db3eb9~mv2.jpg'),
   desc: 'Master your buoyancy for effortless, graceful, air-saving diving.',
   ja: {
     title: 'PADIピーク・パフォーマンス・ボイヤンシー',

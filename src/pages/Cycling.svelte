@@ -4,9 +4,8 @@
   import { t } from '$engine/i18n'
   import PageHeader from '$components/PageHeader.svelte'
   import Photo from '$components/Photo.svelte'
-  import { mediaIdLocal } from '$engine/images'
+  import hero from '$content/photos/cycling/youbike.jpg?responsive'
 
-  const hero = mediaIdLocal('youbike')
   // Icons are structural; the label + text come from i18n ($t.cycling.highlights),
   // aligned by index: fun · sun · exercise · history.
   const icons = ['🎉', '☀️', '🚲', '🏛️']
@@ -15,16 +14,14 @@
 <PageHeader title={$t.cycling.title} subtitle={$t.cycling.subtitle} />
 
 <div class="mx-auto max-w-5xl px-4 pb-20 sm:px-6">
-  {#if hero}
-    <figure class="aspect-[16/9] overflow-hidden rounded-3xl border border-white/10 shadow-sm">
-      <Photo
-        image={hero}
-        alt=""
-        sizes="(min-width: 1024px) 64rem, 100vw"
-        class="h-full w-full object-cover"
-      />
-    </figure>
-  {/if}
+  <figure class="aspect-[16/9] overflow-hidden rounded-3xl border border-white/10 shadow-sm">
+    <Photo
+      image={hero}
+      alt=""
+      sizes="(min-width: 1024px) 64rem, 100vw"
+      class="h-full w-full object-cover"
+    />
+  </figure>
 
   <section class="glass mt-8 rounded-3xl p-6 sm:p-8">
     <div class="space-y-4 text-brand-100">

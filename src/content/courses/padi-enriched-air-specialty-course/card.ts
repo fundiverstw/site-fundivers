@@ -1,10 +1,8 @@
-import { mediaIdLocal } from '$engine/images'
 import type { CourseCardFile } from '../types'
 
 export const card: CourseCardFile = {
   order: 100,
   title: 'PADI Enriched Air (Nitrox)',
-  image: mediaIdLocal('b37fef_6bb10d67326442318a8a597b14c807c5~mv2.jpg'),
   desc: 'Dive longer with Nitrox, safely use enriched air and extend your no-stop times.',
   ja: {
     title: 'PADIエンリッチド・エア（ナイトロックス）',

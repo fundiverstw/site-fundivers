@@ -3,6 +3,7 @@
   import { scrollToId, hashId } from '$engine/router'
   import { fetchUpcomingTripTitles } from '$engine/events'
   import { siteImage, fallbackImage } from '$engine/photo-pool'
+  import type { ResponsiveImage } from '$engine/responsive-image'
   import { DIVE_SITES } from '$content/dive-sites'
   import { t } from '$engine/i18n'
   import PageHeader from '$components/PageHeader.svelte'
@@ -43,7 +44,13 @@
     { title: 'Orchid Island', siteId: 'orchid-island', match: /orchid\s*island|lanyu/i },
   ]
 
-  type Card = Destination & { href: string | null; internal: boolean }
+  // The photo is the page's to choose, not the row's — a dive site's cover where
+  // the destination is one of ours, a general shot otherwise.
+  type Card = Destination & {
+    image: ResponsiveImage | null
+    href: string | null
+    internal: boolean
+  }
 
   // Around Taiwan: trip spots that have an upcoming trip on the books; if none
   // are currently scheduled, fall back to all trip spots so the section is never
@@ -63,7 +70,8 @@
 
   // An international destination that we also have as a dive site (e.g.
   // Malapascua) links to its /sites page and uses its pool photo; the rest keep
-  // their outbound fundiverstw.com links, with a fallback photo so none are bare.
+  // their outbound fundiverstw.com links, and take a general dive shot so none
+  // are bare — the row itself carries no photo we can read (see engine/destinations).
   const siteByName = new Map(DIVE_SITES.map((s) => [s.name.toLowerCase(), s]))
   let international = $derived<Card[]>(
     all
@@ -74,7 +82,7 @@
           return { ...d, image: siteImage(site.id), href: `/sites/${site.id}`, internal: true }
         return {
           ...d,
-          image: d.image ?? fallbackImage(d.id),
+          image: fallbackImage(d.id),
           href: d.slug ? `https://www.fundiverstw.com${d.slug}` : null,
           internal: false,
         }

@@ -1,10 +1,8 @@
-import { mediaIdLocal } from '$engine/images'
 import type { CourseCardFile } from '../types'
 
 export const card: CourseCardFile = {
   order: 150,
   title: 'PADI Drift Diver Specialty',
-  image: mediaIdLocal('b37fef_24b9e725e16b437e901ad76152f12c2c~mv2.jpg'),
   desc: 'Go with the flow, effortless diving in currents with the right technique and awareness.',
   ja: {
     title: 'PADIドリフト・ダイバー・スペシャルティ',

@@ -1,4 +1,4 @@
-import { mediaIdLocal } from '$engine/images'
+import fabio from './photos/team/fabio.jpg?responsive'
 import type { ResponsiveImage } from '$engine/responsive-image'
 
 // The people on the /team page.
@@ -33,7 +33,7 @@ export const TEAM: Member[] = [
   {
     name: 'Dennis Wong',
     role: 'idc',
-    image: mediaIdLocal('b37fef_594f84e342954c95b442c5b67f5fb454~mv2.jpg'),
+    monkey: true,
     bio: 'Dennis Wong has been scuba diving since 1998. Upon seeing fish big or small in large schools swimming in unison, he wanted to share this mesmerizing underwater world with everyone. He decided to become a PADI Instructor in 2013, and is now IDC Staff since 2018. PADI has awarded him Elite Instructor status for his vigilance and attention to detail from 2020-2023.',
     ja: {
       bio: 'Dennis Wong は1998年からスキューバダイビングを続けています。大小さまざまな魚が群れをなして一斉に泳ぐ姿を見て、この魅惑的な水中世界を多くの人と分かち合いたいと思うようになりました。2013年にPADIインストラクターになることを決意し、2018年からはIDCスタッフを務めています。その細やかな注意力と入念さが評価され、2020〜2023年にはPADIエリート・インストラクターに認定されました。',
@@ -45,7 +45,7 @@ export const TEAM: Member[] = [
   {
     name: 'Billy Evalt',
     role: 'instructor',
-    image: mediaIdLocal('b37fef_e2a651d4c1144d2286c2dbd0b9dc8018~mv2.jpg'),
+    monkey: true,
     bio: 'Billy is a PADI dive instructor from Seattle, Washington. He has been diving since 2008 and has been an instructor since 2012. He first started diving in Vietnam after a friend recommended it and once underwater, he was hooked! He has been diving in many countries, including: Thailand, Turkey, Italy and New Zealand. He became a dive instructor because he loves watching the students’ eyes light up, as his did, when the underwater world is revealed to them. He believes the more divers we have in the world, the better our chances of making a positive change for our oceans!',
     link: 'https://www.thecookiejartaipei.com/',
     ja: {
@@ -58,7 +58,7 @@ export const TEAM: Member[] = [
   {
     name: 'Mike Lee 李邁先',
     role: 'idc',
-    image: mediaIdLocal('b37fef_37847cf1b32a413990cb7b558835954f~mv2.jpg'),
+    monkey: true,
     bio: 'Mike is a PADI scuba instructor from Taiwan. He’s been teaching diving since 2017. Ever since his first dive, he’s been captivated by the peaceful and mysterious world beneath the surface. That passion led him to share the beauty of the ocean with others. He focuses on safety, patience, and building confidence underwater. He takes pride in creating a relaxed and supportive learning environment. Come dive with Mike and the Fun Divers Taiwan team, let’s explore the blue together and make unforgettable underwater memories!',
     ja: {
       bio: 'Mike は台湾出身のPADIスキューバインストラクターです。2017年からダイビングを教えています。初めてのダイビング以来、水面下に広がる静かで神秘的な世界に魅了され続け、その情熱が海の美しさを人々と分かち合うことへとつながりました。安全、忍耐、そして水中での自信づくりを大切にし、リラックスできる温かな学びの場をつくることに誇りを持っています。ぜひMikeとFun Divers Taiwanのチームと一緒に潜って、青い海を探検し、忘れられない水中の思い出をつくりましょう！',
@@ -70,7 +70,7 @@ export const TEAM: Member[] = [
   {
     name: 'Eric Odle',
     role: 'divemaster',
-    image: mediaIdLocal('fabio'),
+    image: fabio,
     bio: `Hi, I’m Eric, and I like to dive,
 Mess with computers, and keep things alive.
 I like learning new stuff and having some fun,

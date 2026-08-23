@@ -5,6 +5,7 @@
 //   content/courses/<course-id>/photos/    photos of that specific course type
 //   content/photos/hikes/<hike-id>/        photos of that hike (see content/hikes.ts)
 //   content/photos/general/                fallback dive shots (unmatched / trips)
+//   content/photos/cycling/youbike.jpg     the one bike-tour photo, imported by name
 //
 // So a dive site's folder holds its row, its write-up and its pictures, and
 // deleting the folder deletes all three. Every course photo also joins one shared
@@ -13,18 +14,18 @@
 //
 // Drop more photos into any folder and they're picked up automatically (the
 // glob runs at build time — no manifest to edit, no duplicated files). Used two
-// ways: `siteImage(id)` gives a dive site its cover (Sites / Travel / detail
-// pages); `eventImage(ev)` gives an event card a photo — a dive matches its site
-// by title keyword and gets a random photo (repeats minimised on screen);
-// courses draw from the course pool.
+// ways: `siteImage(id)` / `courseImage(id)` give a dive site or a course its
+// cover (Sites / Courses / Travel / detail pages); `eventImage(ev)` gives an
+// event card a photo — a dive matches its site by title keyword and gets a
+// random photo (repeats minimised on screen); courses draw from the course pool.
 
 import { EVENT_TITLE_MATCHERS } from '$content/dive-sites'
 import { HIKES } from '$content/hikes'
-import { mediaIdLocal } from './images'
+import youbikeCover from '$content/photos/cycling/youbike.jpg?responsive'
 import type { ResponsiveImage } from './responsive-image'
 
-// Only the card-pool folders. The gallery and media folders under content/photos/
-// are catalogued elsewhere, so they are not scanned in; nor are the `.ts` files
+// Only the card-pool folders. The gallery under content/photos/ is catalogued
+// elsewhere, so it is not scanned in; nor are the `.ts` files
 // sitting beside the photos in a site or course folder.
 // The extensions are spelled as case-insensitive character classes ([jJ][pP][gG]
 // …) on purpose: a camera or phone that writes `.JPG` (or a stray `.Jpeg`) must
@@ -56,7 +57,12 @@ const coursePoolAll: ResponsiveImage[] = []
 // Per-hike pools keyed by hike id (the folder name under hikes/).
 const hikePools: Record<string, ResponsiveImage[]> = {}
 
-for (const [path, image] of Object.entries(files)) {
+// Sorted by the path on disk, so a pool is in the order the folder reads and the
+// first photo — the cover — is the first filename alphabetically. It has to be
+// the path and not `image.src`: a built photo's URL is a content hash with the
+// filename nowhere in it, so sorting on that would pick a cover nobody chose,
+// and a different one in `vite dev` than in the build.
+for (const [path, image] of Object.entries(files).sort(([a], [b]) => a.localeCompare(b))) {
   if (path.includes('/general/')) generalPool.push(image)
   else if (path.includes('/courses/')) {
     coursePoolAll.push(image)
@@ -70,15 +76,18 @@ for (const [path, image] of Object.entries(files)) {
     if (m) (sitePools[m[1]] ??= []).push(image)
   }
 }
-// Stable order so a "cover" (first photo) doesn't change between builds.
-for (const k of Object.keys(sitePools)) sitePools[k].sort((a, b) => a.src.localeCompare(b.src))
-for (const k of Object.keys(coursePools)) coursePools[k].sort((a, b) => a.src.localeCompare(b.src))
-for (const k of Object.keys(hikePools)) hikePools[k].sort((a, b) => a.src.localeCompare(b.src))
-coursePoolAll.sort((a, b) => a.src.localeCompare(b.src))
 
 /** A dive site's cover photo (first in its folder), or null if it has none. */
 export function siteImage(siteId: string): ResponsiveImage | null {
   const pool = sitePools[siteId]
+  return pool && pool.length ? pool[0] : null
+}
+
+/** A course's cover photo (first in its `photos/` folder), or null if it has
+ *  none. What the /courses tile and the top of the detail page show, unless the
+ *  course pins its own in `card.ts`. */
+export function courseImage(courseId: string): ResponsiveImage | null {
+  const pool = coursePools[courseId]
   return pool && pool.length ? pool[0] : null
 }
 
@@ -106,10 +115,7 @@ export function adventureImage(ev: {
     const img = hikeImage(hike.id)
     if (img) return img
   }
-  if (/youbike|bike|cycl/.test(title) || /youbike|bike|cycl/.test(slug)) {
-    const cover = mediaIdLocal('youbike')
-    if (cover) return cover
-  }
+  if (/youbike|bike|cycl/.test(title) || /youbike|bike|cycl/.test(slug)) return youbikeCover
   return generalPool.length ? generalPool[0] : null
 }
 

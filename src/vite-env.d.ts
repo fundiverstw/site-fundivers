@@ -23,3 +23,14 @@ declare module '*.yml' {
   const data: Record<string, unknown>
   export default data
 }
+
+// A photo imported directly rather than through one of the folder globs —
+// `import youbike from './youbike.jpg?responsive'`. The `?responsive` query is
+// answered by vite.images.ts with the sized copies plus their srcset, which is
+// what Photo/CoverPhoto take. Without this the type checker only knows the
+// unsuffixed image modules vite/client declares, and a direct import fails to
+// resolve.
+declare module '*?responsive' {
+  const image: import('./engine/responsive-image').ResponsiveImage
+  export default image
+}

@@ -9,6 +9,7 @@
 // `/courses` renders 21 tiles and must not download 3,000 lines of write-ups to
 // do it, so the write-ups live in ./details.ts, which only CourseDetail imports.
 
+import { courseImage } from '$engine/photo-pool'
 import type { CourseCard, CourseCardFile, CourseText } from './types'
 
 export type {
@@ -32,8 +33,14 @@ function folderOf(path: string): string {
   return path.split('/')[1]
 }
 
+// The cover comes off the disk like the rest of a course's photos: the first
+// picture in its own `photos/` folder. Only a course that wants a different one
+// says anything about it in card.ts, so a card and its folder cannot disagree.
 const loaded = Object.entries(cardFiles)
-  .map(([path, mod]) => ({ id: folderOf(path), ...mod.card }))
+  .map(([path, mod]) => {
+    const id = folderOf(path)
+    return { id, ...mod.card, image: mod.card.image ?? courseImage(id) }
+  })
   .sort((a, b) => a.order - b.order || a.id.localeCompare(b.id))
 
 // The translations and the ordering hint are stripped here: a page asking for

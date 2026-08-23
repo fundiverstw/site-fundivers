@@ -1,10 +1,8 @@
-import { mediaIdLocal } from '$engine/images'
 import type { CourseCardFile } from '../types'
 
 export const card: CourseCardFile = {
   order: 110,
   title: 'PADI Deep Diver Specialty',
-  image: mediaIdLocal('b37fef_6f2950e52002422bbd2486a8d3bb41bb~mv2_d_2000_1333_s_2.jpg'),
   desc: 'Extend your limits and learn to safely plan and enjoy dives down to 40m.',
   ja: {
     title: 'PADIディープ・ダイバー・スペシャルティ',

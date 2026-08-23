@@ -1,16 +1,8 @@
-import { mediaIdLocal } from '$engine/images'
 import type { CourseCardFile } from '../types'
 
 export const card: CourseCardFile = {
   order: 140,
-  // Cover photo: a shot of the Wan An Jian wreck, which is also in the
-  // dive-site pool under photos/dive-sites/wan-an-jian-navy-wreck/. Card
-  // covers are read from photos/media/ by filename, so it lives there too.
-  // Note the underscore: mediaIdLocal slugifies its argument by replacing
-  // every non-alphanumeric character with '_', so a media file named with a
-  // hyphen can never be looked up and the card silently loses its photo.
   title: 'PADI Wreck Specialty',
-  image: mediaIdLocal('wreck_specialty'),
   desc: 'Explore sunken ships and structures safely, survey a wreck, map it, and dive it with a plan.',
   ja: {
     title: 'PADIレック・スペシャルティ',

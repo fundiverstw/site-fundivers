@@ -30,8 +30,14 @@ export type CourseCard = {
   ]
 }
 
-/** What a course's `card.ts` exports. */
-export type CourseCardFile = Omit<CourseCard, 'id'> & {
+/** What a course's `card.ts` exports.
+ *
+ *  No photo: the cover is the first picture in the course's own `photos/`
+ *  folder, resolved in ./index.ts. A course that wants a different one pins
+ *  `image` (and, for the detail page, `images`) here — import the file directly,
+ *  `import cover from './photos/x.jpg?responsive'`. */
+export type CourseCardFile = Omit<CourseCard, 'id' | 'image'> & {
+  image?: ResponsiveImage | null
   // Where this card sits on the /courses grid. Folders come off the disk in
   // alphabetical order, which is not the order the shop wants to sell in, so
   // the sequence has to be stated. Spaced by ten to leave room to insert.

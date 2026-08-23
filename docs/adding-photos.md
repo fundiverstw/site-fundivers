@@ -14,7 +14,7 @@ case you drop the file in and it appears — no list of filenames to keep in syn
 | of a **news event** | `src/content/news/<folder>/` | Only to caption it — see [Adding a news post](adding-news.md). |
 | for the **Photos gallery** page | `src/content/photos/gallery/<creature>/` | **No.** The section already exists. |
 | a **calendar trip** with no site of its own | `src/content/photos/general/` | **No.** |
-| a **course cover** or **team/home** photo from the old site | `src/content/photos/media/` | Only to point a page at a different file. |
+| a **team headshot** | `src/content/photos/team/` | Yes — one line in `src/content/team.ts`. |
 
 ```
 src/content/
@@ -31,16 +31,17 @@ src/content/
   photos/
     general/           ← anything; used when nothing better fits
     hikes/
+    cycling/           ← the one bike-tour photo
+    team/              ← headshots
     gallery/
       nudibranchs/     ← the Photos-page gallery, one folder per creature
         photos.yaml    ← what each picture is (optional, see below)
       reef/
-    media/             ← old-site photos referenced by id (covers, team, home)
 ```
 
-The four folders left under `photos/` are the ones that belong to no single dive
-site or course: the shared fallbacks, the gallery, and the old-site covers that
-several pages point at by name.
+The folders left under `photos/` are the ones that belong to no single dive site
+or course: the shared fallbacks, the gallery, and the handful a page names
+directly.
 
 ---
 
@@ -48,8 +49,9 @@ several pages point at by name.
 
 Put a picture in the right folder and it appears. There is no list to update.
 
-- To give a **dive site** its cover photo, put a photo in `photos/` inside that site's
-  folder. The first one alphabetically becomes the cover.
+- To give a **dive site** or a **course** its cover photo, put a photo in `photos/`
+  inside that site's or course's folder. The first one alphabetically becomes the cover,
+  so name the one you want on the tile to sort first (`…_0.jpg`).
 - A trip on the calendar with no matching site photo falls back to `general/`, so it
   never shows an empty box.
 
@@ -159,25 +161,28 @@ keeps the old copy even after you delete it.
 
 ---
 
-## Course, team and home photos
+## The few photos a page names outright
 
-These are the pictures from the shop's old website. They live in
-`src/content/photos/media/` under long machine-generated names, and pages refer to them
-by that name (its **id**), not by a folder scan. In a course's `card.ts`:
+Almost everything is a folder scan. The exceptions are the one-off pictures that
+belong to a single page — a team headshot, the bike-tour hero — and those are
+imported by name, straight from the file:
 
 ```ts
-image: mediaIdLocal('b37fef_9c73f7e0bb244570a119812991ef0ab9~mv2.jpg'),
+import fabio from './photos/team/fabio.jpg?responsive'
 ```
 
-`mediaIdLocal(…)` looks the id up among the files in `media/` and returns the bundled
-photo. The simplest way to change one is to **replace the file in `media/`, keeping its
-filename** — the same call then resolves to your new picture.
+`?responsive` is what turns the file into the set of sized copies every `<img>` on
+the site expects; without it you get a bare URL and the page will not accept it.
+To change one of these pictures, either drop the new file in beside it and change
+the import, or replace the file keeping its name.
 
-If you add a new file, its name minus the extension, with every non-letter/number turned
-into `_`, must match what you pass in. So `wreck-specialty.webp` can never be found by
-`mediaIdLocal('wreck-specialty')`: the hyphen becomes an underscore in the lookup. Name
-the file `wreck_specialty.webp` and ask for `wreck_specialty`. There is no error when this
-is wrong — the card just shows the "image coming soon" placeholder.
+The home page's tiles and its reef row are **not** in this category: each one asks
+for the cover of the thing it links to (`courseImage('padi-open-water-course')`,
+`siteImage('palau')`, `galleryCover('octopus')`), so filling those folders is all
+it takes to change what the front page shows.
+
+Everything the shop's old Wix site used to supply is gone — there is no longer a
+`media/` folder or an id lookup. If you find `mediaIdLocal` anywhere, it is stale.
 
 ---
 

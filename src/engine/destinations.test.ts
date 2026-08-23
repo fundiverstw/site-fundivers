@@ -21,6 +21,7 @@ vi.mock('./supabase', async () => {
 })
 
 const { fetchDestinations } = await import('./destinations')
+const { DESTINATION_COLS } = await import('./db-columns')
 
 const row = (over: Record<string, unknown> = {}) => ({
   id: 'green-island',
@@ -31,8 +32,6 @@ const row = (over: Record<string, unknown> = {}) => ({
   international: false,
   divetype: 'Boat',
   diver_requirements: 'Open Water',
-  location_picture: null,
-  background_picture: null,
   sort_order: 1,
   ...over,
 })
@@ -56,8 +55,6 @@ describe('fetchDestinations', () => {
         international: false,
         diveType: 'Boat',
         requirements: 'Open Water',
-        image: null,
-        background: null,
       },
     ])
   })
@@ -111,12 +108,15 @@ describe('fetchDestinations', () => {
     await expect(fetchDestinations()).rejects.toMatchObject({ message: 'permission denied' })
   })
 
-  it('resolves a cover photo through the Wix media map, or leaves it null', async () => {
+  it("ignores the old site's picture columns, which it no longer selects", async () => {
+    // The rows still have them; nothing local resolves a wix: ref any more, so a
+    // destination must come back with no photo field for a page to trust.
     state.db = {
-      travel_destinations: [row({ location_picture: 'wix:image://v1/nope_missing~mv2.jpg/x.jpg' })],
+      travel_destinations: [row({ location_picture: 'wix:image://v1/anything~mv2.jpg/x.jpg' })],
     }
 
     const [dest] = await fetchDestinations()
-    expect(dest.image).toBeNull()
+    expect(dest).not.toHaveProperty('image')
+    expect(DESTINATION_COLS).not.toContain('picture')
   })
 })

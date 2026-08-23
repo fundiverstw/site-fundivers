@@ -2,8 +2,8 @@
   import { t } from '$engine/i18n'
   import PageHeader from '$components/PageHeader.svelte'
   import Photo from '$components/Photo.svelte'
-  import { mediaIdLocal } from '$engine/images'
-  import { hikeImage } from '$engine/photo-pool'
+  import { hikeImage, courseImage } from '$engine/photo-pool'
+  import youbike from '$content/photos/cycling/youbike.jpg?responsive'
   import type { ResponsiveImage } from '$engine/responsive-image'
   import fundiveLogoUrl from '$assets/fundive-logo-dark.svg'
 
@@ -24,13 +24,13 @@
       href: '/gear',
       title: $t.services.gearTitle,
       desc: $t.services.gearDesc,
-      image: mediaIdLocal('b37fef_58237e6a633f472b8d419bd830abb854~mv2.jpg'),
+      image: courseImage('padi-equipment-specialist'),
     },
     {
       href: '/cycling',
       title: $t.services.cyclingTitle,
       desc: $t.services.cyclingDesc,
-      image: mediaIdLocal('youbike'),
+      image: youbike,
     },
     {
       href: '/hiking',

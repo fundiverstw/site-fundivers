@@ -125,8 +125,7 @@ Roughly in order of how likely you are to need it.
 | `radio.ts` | Whether the shop's live radio stream is on air, for the nav's radio player. |
 | `i18n.ts` | Remembers which language the visitor picked. The words themselves are in `content/text/`. |
 | `format.ts` | Turns `2026-07-14T09:00` into `Jul 14, 9:00 am`. |
-| `photo-pool.ts` | Decides which photo each card gets. Reads the `photos/` folder inside each dive site and course, plus the shared `content/photos/general` and `hikes`. |
-| `images.ts` | Resolves the old website's photo ids to bundled photos in `content/photos/media/`. |
+| `photo-pool.ts` | Decides which photo each card gets — a dive site's or course's cover, and the pool an event card draws from. Reads the `photos/` folder inside each dive site and course, plus the shared `content/photos/general` and `hikes`. |
 | `event-colors.ts` | Which colour a calendar entry gets (blue for Open Water, and so on). |
 | `calendar-layout.ts` | The maths that stops overlapping trips from covering each other on the month grid. |
 | `map-layout.ts` | The maths that turns latitude and longitude into a position on the Taiwan map. |

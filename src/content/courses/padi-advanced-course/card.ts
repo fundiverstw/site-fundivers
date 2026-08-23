@@ -1,10 +1,8 @@
-import { mediaIdLocal } from '$engine/images'
 import type { CourseCardFile } from '../types'
 
 export const card: CourseCardFile = {
   order: 20,
   title: 'PADI Advanced Open Water',
-  image: mediaIdLocal('b37fef_357153d63c3245819d71d68d9d2f1790~mv2.jpg'),
   desc: 'Five adventure dives including deep and navigation. Build skills and confidence down to 30m.',
   ja: {
     title: 'PADIアドバンスド・オープン・ウォーター',

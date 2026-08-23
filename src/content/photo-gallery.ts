@@ -96,6 +96,14 @@ export const FILLED_SECTIONS: ReadonlySet<string> = new Set(
   GALLERY.filter((s) => s.photos.length).map((s) => s.key),
 )
 
+/** The first photo in a section, or null while that section is still empty.
+ *  For pages that want one representative creature shot (the home page's reef
+ *  row) rather than the whole gallery. */
+export function galleryCover(key: string): ResponsiveImage | null {
+  const photos = byFolder[key]
+  return photos && photos.length ? photos[0].image : null
+}
+
 /** Flat list of every photo, in section order — what the lightbox steps through.
  *  Empty sections contribute nothing, so an index here is always a real photo. */
 export const ALL_PHOTOS: Photo[] = GALLERY.flatMap((s) => s.photos)
