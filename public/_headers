@@ -9,14 +9,15 @@
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 
-# public/imgs holds one file: diver-bg.jpg, the backdrop behind every page. It
+# public/imgs holds one file: schooling-fish.avif, the backdrop behind every
+# page. It
 # lives here rather than in src/ because index.html preloads it by name, and a
 # name the build rewrites cannot be written into index.html by hand.
 #
 # A week, and no must-revalidate. This used to be an hour, which meant every
 # repeat visitor spent a round trip re-checking the backdrop before the page
 # could finish painting — for a file that changes about once a year. The
-# backdrop is not hashed, so replacing it is a rename (diver-bg-2.jpg) plus the
+# backdrop is not hashed, so replacing it is a rename (a new filename) plus the
 # matching edit to background.css and the preload in index.html; changing the
 # bytes under the same name would leave the old copy in caches for a week.
 #

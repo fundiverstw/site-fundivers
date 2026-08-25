@@ -2,7 +2,7 @@
    The deep-sea background behind every page, plus a few site-wide basics
    (scrollbar, text selection, no margin on the body).
 
-   The backdrop is a single photograph — a diver silhouetted in deep ocean
+   The backdrop is a single photograph — a school of fish drifting through blue
    water — sized to cover the viewport and pinned in place while the page scrolls
    over it. A dark blue overlay is painted on top so the light body text and the
    frosted-glass panels keep their contrast wherever the photo happens to be
@@ -25,11 +25,16 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: var(--color-brand-50);
-  /* The diver photo, covered and centred (the diver sits mid-frame, so a centre
-     crop keeps them in view on any aspect ratio), under a deep-blue overlay that
-     darkens the photo just enough for the light text and glass panels to hold
-     contrast. Layers paint top-to-bottom: overlay first, photo beneath, and a
-     solid ocean colour as the final fallback while the image loads. Fixed so the
+  /* The fish photo, covered and centred. It is nearly square (980 × 927) and a
+     screen is not, so a centre crop is what keeps the densest part of the school
+     on screen at any aspect ratio — and because the subject is a scatter rather
+     than one thing, there is nothing a crop can cut in half.
+
+     Under it, a deep-blue overlay that darkens the photo just enough for the
+     light text and glass panels to hold contrast. The photo is brightest at the
+     top, which is where the bar sits, so the top stop is the heaviest of the
+     three. Layers paint top-to-bottom: overlay first, photo beneath, and a solid
+     ocean colour as the final fallback while the image loads. Fixed so the
      backdrop stays put while the page scrolls over it. */
   background-color: #0a1424;
   background-image:
@@ -39,7 +44,7 @@ body {
       rgba(9, 18, 34, 0.4) 42%,
       rgba(9, 18, 34, 0.68) 100%
     ),
-    url('/imgs/diver-bg.jpg');
+    url('/imgs/schooling-fish.avif');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -58,6 +63,11 @@ body {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     background: color-mix(in oklab, #0d1a2e 92%, transparent);
+  }
+  /* Already near-opaque, so it loses nothing but the cost. */
+  .menu-panel {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
   .waybar,
   .module-active {
