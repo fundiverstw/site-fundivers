@@ -5,6 +5,8 @@
   import GlobeIcon from './GlobeIcon.svelte'
   import RadioPlayer from './RadioPlayer.svelte'
   import OctopusPeek from './OctopusPeek.svelte'
+  import SignInIcon from './SignInIcon.svelte'
+  import { signInUrl } from '$content/settings'
   import logoUrl from '$assets/fd_logo.webp'
 
   let leftLinks = $derived([
@@ -35,9 +37,10 @@
   }
 
   function linkClass(href: string): string {
-    // Eight links have to fit beside the logo. They grow with the window rather
-    // than overflowing it: at 1280 the whole bar, globe included, must be on
-    // screen. See the 'the whole navigation fits' test in e2e/navigation.spec.ts.
+    // Eight links have to fit beside the logo, along with the globe, the radio
+    // player and the sign-in link. They grow with the window rather than
+    // overflowing it: at 1280 the whole bar must be on screen. See the 'the
+    // whole navigation fits' test in e2e/navigation.spec.ts.
     const base =
       'module mono rounded-xl px-2.5 py-1.5 text-base font-semibold lg:text-lg xl:px-3 2xl:px-4 2xl:py-2 2xl:text-xl'
     return $path === href ? `${base} module-active` : `${base} text-brand-50`
@@ -78,6 +81,30 @@
   </div>
 {/snippet}
 
+{#snippet signIn()}
+  <!-- This site has no accounts of its own. "Sign in" is a plain link out to
+       the booking app, which owns login, bookings and everything behind it —
+       hence the external-link treatment (full URL, new tab).
+
+       The word beside the icon only appears from 2xl. Eight links plus the logo
+       already fill the bar at 1280, and "Sign in" is longer in Japanese than in
+       English — spelling it out at every width pushed the bar off the screen in
+       one language and not the other. Below 2xl the icon carries it, labelled
+       for screen readers and on hover. -->
+  <a
+    href={signInUrl}
+    target="_blank"
+    rel="noopener"
+    data-testid="sign-in"
+    aria-label={$t.nav.signIn}
+    title={$t.nav.signIn}
+    class="module mono flex shrink-0 items-center gap-1.5 rounded-xl px-2 py-2 text-reef-200 2xl:px-3 2xl:text-lg 2xl:font-semibold"
+  >
+    <SignInIcon size={24} />
+    <span class="hidden 2xl:inline">{$t.nav.signIn}</span>
+  </a>
+{/snippet}
+
 <svelte:window onclick={onWindowClick} />
 
 <header class="relative z-30 bg-transparent">
@@ -112,6 +139,8 @@
         <span class="mx-1 h-6 w-px bg-white/15"></span>
         {@render langSwitch()}
         <RadioPlayer />
+        <span class="mx-1 h-6 w-px bg-white/15"></span>
+        {@render signIn()}
       </nav>
     </div>
 
@@ -155,6 +184,17 @@
             {link.label}
           </a>
         {/each}
+        <span class="my-1 h-px bg-white/15"></span>
+        <a
+          href={signInUrl}
+          target="_blank"
+          rel="noopener"
+          data-testid="sign-in"
+          class="module mono flex items-center gap-2 rounded-xl px-3 py-3 text-base font-semibold text-reef-200"
+        >
+          <SignInIcon size={20} />
+          {$t.nav.signIn}
+        </a>
       </div>
     </div>
   {/if}

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { bookUrl, registerUrl, CONTACT, SOCIAL } from './settings'
+import { bookUrl, signInUrl, registerUrl, CONTACT, SOCIAL } from './settings'
 
 // Every outward-facing link on the site, in one file. None of these is checked
 // by anything else: they are strings that leave the site, so a typo does not
@@ -25,10 +25,19 @@ describe('booking links', () => {
     expect(new URL(registerUrl('dive', 'x')).origin).toBe(new URL(bookUrl).origin)
   })
 
+  it('points the nav sign-in at the app login page', () => {
+    // The nav's "Sign in" is the only way off this site into an account. If it
+    // lands anywhere but the app's own /login, a visitor who wants to see their
+    // bookings gets a 404 instead.
+    expect(new URL(signInUrl).pathname).toBe('/login')
+    expect(new URL(signInUrl).origin).toBe(new URL(bookUrl).origin)
+  })
+
   it('serves the booking app over https', () => {
     // These are pasted into a browser's address bar by a real visitor; an
     // http:// deep link is a redirect at best and a warning at worst.
     expect(new URL(bookUrl).protocol).toBe('https:')
+    expect(new URL(signInUrl).protocol).toBe('https:')
   })
 })
 

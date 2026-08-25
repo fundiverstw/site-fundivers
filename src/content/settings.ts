@@ -6,6 +6,11 @@ const APP_URL = import.meta.env.VITE_APP_URL || 'https://app.fundiverstw.com'
 /** Deep-link into the booking app's calendar, where booking happens. */
 export const bookUrl = `${APP_URL}/calendar`
 
+/** The booking app's sign-in page. Accounts live in the app, never here: this
+ *  site has no login of its own, so the nav's "Sign in" hands the visitor over
+ *  to app-fundivers' /login route. */
+export const signInUrl = `${APP_URL}/login`
+
 /** Deep-link to the app's registration form pre-filled with a specific event.
  *  Mirrors app-fundivers' /register/:type/:id route (type = the event `kind`:
  *  'dive' | 'course' | 'adventure'). */

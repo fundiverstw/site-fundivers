@@ -97,11 +97,12 @@ they are browser and network glue that the other two suites cover properly.
 | ------------------------ | ------------------------------------------------------------- |
 | `VITE_SUPABASE_URL`      | Shared Supabase project URL (same DB as `app-fundivers`)      |
 | `VITE_SUPABASE_ANON_KEY` | Public anon key — RLS limits it to read-only public catalog   |
-| `VITE_APP_URL`           | The booking app that "Book Now" / "Enroll" CTAs link to       |
+| `VITE_APP_URL`           | The booking app the "Book Now" / "Enroll" / "Sign in" links point at |
 
 The anon key is safe to ship to the browser: Row Level Security exposes only public
 catalog rows (`dive_sites`, `EO_dives`, `EO_courses`, `EO_prices`, `cert_levels`) to `anon`.
 This site never authenticates anyone — all booking/login happens in `app-fundivers`.
+The nav's "Sign in" is just a link out to that app's `/login`; there is no session here.
 
 ## Data sources
 

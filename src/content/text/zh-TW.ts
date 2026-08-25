@@ -14,6 +14,7 @@ export const zhTW: Dict = {
     news: '最新消息',
     gear: '裝備',
     services: '服務',
+    signIn: '登入',
     radio: '廣播節目',
     menu: '切換選單',
     language: '語言',

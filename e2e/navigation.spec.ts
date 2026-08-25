@@ -75,6 +75,30 @@ test('nothing covers the navigation links', { tag: '@desktop-only' }, async ({ p
   expect(covered, 'a nav link cannot be clicked').toEqual([])
 })
 
+// Accounts live in the booking app, not here. The bar's only job is to hand the
+// visitor over to it — in whichever layout is on screen, and without the site
+// pretending it can sign anyone in itself.
+test('the navigation offers a way in to the booking app', async ({ page, isMobile }) => {
+  await visit(page, '/')
+
+  if (isMobile) await page.locator('button[data-testid="menu-toggle"]:visible').click()
+
+  const signIn = page.locator('header [data-testid="sign-in"]:visible').first()
+  await expect(signIn).toBeVisible()
+
+  // Found by test id, not by its words: the label is translated. What matters
+  // is where it goes — the app's login page, on the app's own origin.
+  const href = await signIn.getAttribute('href')
+  const url = new URL(href!)
+  expect(url.pathname).toBe('/login')
+  expect(url.origin).not.toBe(new URL(page.url()).origin)
+
+  // It leaves the site, so it opens in its own tab and cannot reach back
+  // through window.opener.
+  await expect(signIn).toHaveAttribute('target', '_blank')
+  await expect(signIn).toHaveAttribute('rel', /noopener/)
+})
+
 // The desktop bar used to appear at 768px, where nine links and the logo do not
 // fit: the page scrolled sideways on every tablet and small laptop. It now
 // starts at 1280px, and below that the menu button takes over.
@@ -88,13 +112,25 @@ test('the whole navigation fits, at every width', { tag: '@desktop-only' }, asyn
     )
     expect(overflow, `the page scrolls sideways at ${width}px`).toBe(0)
 
-    // Above the breakpoint the language globe is the last thing in the bar. If
-    // it has run off the edge, so has everything after it.
-    const globe = page.locator('button[aria-label="Language"]:visible').first()
-    const box = await globe.boundingBox()
-    expect(box, `no visible language button at ${width}px`).not.toBeNull()
-    expect(box!.x + box!.width, `the bar runs off the screen at ${width}px`).toBeLessThanOrEqual(
-      width,
-    )
+    // The globe is in both layouts, so it is checked at every width. Below the
+    // breakpoint the sign-in link is inside the closed menu and has no box at
+    // all; above it, it is the last thing in the bar, so if it is on screen so
+    // is everything before it.
+    const ends = [['language button', page.locator('button[aria-label="Language"]:visible')]] as [
+      string,
+      ReturnType<typeof page.locator>,
+    ][]
+    if (width >= 1280) {
+      ends.push(['sign-in link', page.locator('header [data-testid="sign-in"]:visible')])
+    }
+
+    for (const [what, end] of ends) {
+      const box = await end.first().boundingBox()
+      expect(box, `no visible ${what} at ${width}px`).not.toBeNull()
+      expect(
+        box!.x + box!.width,
+        `the bar runs off the screen at ${width}px (${what})`,
+      ).toBeLessThanOrEqual(width)
+    }
   }
 })
