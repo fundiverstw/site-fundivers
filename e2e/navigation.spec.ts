@@ -99,6 +99,45 @@ test('the navigation offers a way in to the booking app', async ({ page, isMobil
   await expect(signIn).toHaveAttribute('rel', /noopener/)
 })
 
+// Nine links now, and the fit test above only ever sees English. A Japanese
+// label is half again as wide as its English twin — and CJK text may break
+// between any two characters, so the bar does not overflow when it runs out of
+// room: the links quietly wrap and the bar grows to two rows, which no
+// scroll-width check notices. 1280 is the tightest width and 1536 the next, the
+// two where the link padding and type size step up.
+test('the bar stays on one row, in every language', { tag: '@desktop-only' }, async ({ page }) => {
+  for (const locale of ['en', 'zh-TW', 'ja']) {
+    await page.addInitScript((l) => localStorage.setItem('locale', l), locale)
+
+    for (const width of [1280, 1536]) {
+      await page.setViewportSize({ width, height: 900 })
+      await visit(page, '/')
+
+      const rows = await page.evaluate(() => {
+        const bar = document.querySelector('header nav')!
+        const tops = new Set<number>()
+        for (const link of bar.querySelectorAll('a'))
+          tops.add(Math.round(link.getBoundingClientRect().top))
+        return { rows: tops.size, right: bar.getBoundingClientRect().right }
+      })
+
+      expect(rows.rows, `the ${locale} bar wrapped onto two rows at ${width}px`).toBe(1)
+
+      // And it stays inside the page's own margin, not just inside the window.
+      const gutter = await page.evaluate(
+        () =>
+          document
+            .querySelector('header nav')!
+            .parentElement!.parentElement!.getBoundingClientRect().right,
+      )
+      expect(
+        rows.right,
+        `the ${locale} bar spills into the page margin at ${width}px`,
+      ).toBeLessThanOrEqual(gutter)
+    }
+  }
+})
+
 // The desktop bar used to appear at 768px, where nine links and the logo do not
 // fit: the page scrolled sideways on every tablet and small laptop. It now
 // starts at 1280px, and below that the menu button takes over.

@@ -1,15 +1,16 @@
 import { test, expect } from '@playwright/test'
-import { visit, chooseLanguage } from './helpers'
+import { visit, chooseLanguage, clickNavLink } from './helpers'
 
-// The Team page used to have a link in the navigation bar. It does not any
-// more: the sign-off at the bottom of every page — "Proudly created by the
-// FunDivers Team in Taipei, Taiwan" — is now the only way to reach it.
+// The sign-off at the bottom of every page — "Proudly created by the FunDivers
+// Team in Taipei, Taiwan" — links the word "Team" to that page. The bar links
+// there too now, so this is no longer the only way in, but it is still the
+// fragile one and the one people actually click from the foot of a page.
 //
-// That makes a whole page depend on one word being a link. The sentence is
-// assembled by splitting a translated string on a `{team}` marker and putting
-// an anchor between the halves, so the ways it can break are quiet ones: the
-// marker goes missing and the sentence still reads correctly with no link in
-// it, or the anchor renders but the router refuses the click. Neither throws.
+// The sentence is assembled by splitting a translated string on a `{team}`
+// marker and putting an anchor between the halves, so the ways it can break are
+// quiet ones: the marker goes missing and the sentence still reads correctly
+// with no link in it, or the anchor renders but the router refuses the click.
+// Neither throws.
 
 const footerLink = (page: import('@playwright/test').Page) =>
   page.locator('footer').getByRole('link', { name: 'Team', exact: true })
@@ -61,10 +62,14 @@ for (const [language, word] of [
   })
 }
 
-// The nav is the other half of this change. A link left behind in the bar would
-// not fail anything above — both would simply work.
-test('the team link is gone from the navigation', async ({ page }) => {
+// The bar is the other half of this. The two routes in are independent — the
+// sign-off could keep working with the bar link dropped, and neither failure
+// shows up in the other's test.
+test('the navigation links to the team page too', async ({ page, isMobile }) => {
   await visit(page, '/')
 
-  await expect(page.locator('header').getByRole('link', { name: 'Team' })).toHaveCount(0)
+  await clickNavLink(page, 'Team', isMobile)
+
+  await expect(page).toHaveURL('/team')
+  await expect(page.getByRole('heading', { name: 'Fun Divers Team', level: 1 })).toBeVisible()
 })

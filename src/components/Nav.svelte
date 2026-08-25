@@ -16,12 +16,13 @@
     { href: '/map', label: $t.nav.map },
     { href: '/photos', label: $t.nav.photos },
   ])
-  // /team is deliberately absent: it is reached from the footer sign-off
-  // ("created by the FunDivers Team"), not from the bar. See Footer.svelte.
   let rightLinks = $derived([
     { href: '/travel', label: $t.nav.travel },
     { href: '/services', label: $t.nav.services },
     { href: '/news', label: $t.nav.news },
+    // Also reached from the footer sign-off ("created by the FunDivers Team"),
+    // which was the only way in before. See Footer.svelte.
+    { href: '/team', label: $t.nav.team },
   ])
   let allLinks = $derived([...leftLinks, ...rightLinks])
 
@@ -37,12 +38,18 @@
   }
 
   function linkClass(href: string): string {
-    // Eight links have to fit beside the logo, along with the globe, the radio
+    // Nine links have to fit beside the logo, along with the globe, the radio
     // player and the sign-in link. They grow with the window rather than
-    // overflowing it: at 1280 the whole bar must be on screen. See the 'the
-    // whole navigation fits' test in e2e/navigation.spec.ts.
+    // overflowing it: at 1280 the whole bar must be on screen.
+    //
+    // `whitespace-nowrap` is what keeps the failure honest. Japanese labels are
+    // half again as wide as their English twins, and CJK breaks between any two
+    // characters — so without it a bar that has run out of room does not
+    // overflow, it wraps into two rows and nothing notices. The tighter px-2
+    // (px-4 again at 2xl) is what buys the ninth link its space in Japanese.
+    // See both nav layout tests in e2e/navigation.spec.ts.
     const base =
-      'module mono rounded-xl px-2.5 py-1.5 text-base font-semibold lg:text-lg xl:px-3 2xl:px-4 2xl:py-2 2xl:text-xl'
+      'module mono whitespace-nowrap rounded-xl px-2 py-1.5 text-base font-semibold lg:text-lg 2xl:px-4 2xl:py-2 2xl:text-xl'
     return $path === href ? `${base} module-active` : `${base} text-brand-50`
   }
 </script>
@@ -86,7 +93,7 @@
        the booking app, which owns login, bookings and everything behind it —
        hence the external-link treatment (full URL, new tab).
 
-       The word beside the icon only appears from 2xl. Eight links plus the logo
+       The word beside the icon only appears from 2xl. The links plus the logo
        already fill the bar at 1280, and "Sign in" is longer in Japanese than in
        English — spelling it out at every width pushed the bar off the screen in
        one language and not the other. Below 2xl the icon carries it, labelled
@@ -112,7 +119,7 @@
     <!-- Cute octopus that peeks out from behind the logo now and then -->
     <OctopusPeek menuOpen={open} />
     <!-- Desktop: logo at the far left, links + globe to its right.
-         Shown from xl (1280px), not md. Eight links plus the logo simply do not
+         Shown from xl (1280px), not md. Nine links plus the logo simply do not
          fit below that: the bar used to run off the side of the page and give
          every tablet a horizontal scrollbar. Narrower screens get the menu
          button below, which is built to fit. -->

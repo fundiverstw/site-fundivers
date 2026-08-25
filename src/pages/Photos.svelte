@@ -99,7 +99,7 @@
 <section class="mx-auto max-w-[1600px] px-4 pb-12 sm:px-6">
   <!-- The way to /quiz. It lives here rather than in the nav because it is the
        same photos: someone browsing the gallery is already looking at the deck,
-       and the nav has no room for a ninth link. -->
+       and the bar has no room to spare. -->
   <a
     href="/quiz"
     class="glass mb-6 flex items-center justify-between gap-4 rounded-2xl px-5 py-4 text-white transition-colors"

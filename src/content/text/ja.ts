@@ -14,6 +14,7 @@ export const ja: Dict = {
     news: 'ニュース',
     gear: 'ギア',
     services: 'サービス',
+    team: 'チーム',
     signIn: 'ログイン',
     radio: 'ラジオ番組',
     menu: 'メニューの開閉',

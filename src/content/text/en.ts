@@ -18,6 +18,7 @@ export const en = {
     news: 'News',
     gear: 'Gear',
     services: 'Services',
+    team: 'Team',
     signIn: 'Sign in',
     radio: 'Radio show',
     menu: 'Toggle menu',
