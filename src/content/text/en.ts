@@ -189,17 +189,20 @@ export const en = {
     subtitle: 'Two instructors, a shop in Yonghe, and a lot of hours in the water.',
     originsTitle: 'Origins',
     originsDesc:
-      'How two instructors who could not stop talking about diving ended up with a shop in Yonghe.',
+      'From one instructor working out of his apartment in 2013 to two equal owners and a shop in Yonghe.',
     teamTitle: 'The Team',
     teamDesc:
       'The instructors and divemasters you will actually be in the water with — and why each of them dives.',
     storyTitle: 'How FunDivers came to be',
+    // The shop's own account, confirmed by the owners — dates, the order things
+    // happened in, and what each of them did before. Not filler: if you rewrite
+    // it, check the facts with Dennis and Billy rather than tidying the prose.
     storyParas: [
-      'FunDivers TW began the way most dive shops do: two instructors who could not stop talking about diving, and a list of friends that kept getting longer every time they came back from the coast.',
-      'Dennis Wong first breathed underwater in 1998. What caught him was the schooling fish — hundreds of them turning at once, as though something had told them all at the same moment — and he has been trying to show other people that ever since. He became a PADI Instructor in 2013 and has been IDC Staff since 2018, and PADI named him an Elite Instructor four years running, from 2020 to 2023, for exactly the kind of care that does not show up until something goes wrong and doesn’t.',
-      'Billy Evalt learned to dive in Vietnam in 2008, on a friend’s recommendation and against his own better judgement. He was hooked before the first dive was over. He has dived Thailand, Turkey, Italy and New Zealand since, became an instructor in 2012, and teaches for one reason: the moment a student’s eyes go wide underwater, the way his did.',
-      'The two met in Taipei and started running weekend trips out to the northeast coast — first for friends, then for friends of friends, then for enough people that it needed a name and a shop to keep the tanks in. FunDivers TW is what that turned into.',
-      'Today the shop teaches the full PADI range in three languages, guides Taiwan’s coast and islands year-round, runs group trips across Asia, and builds its own dive-shop software in the open. The list has grown. The reason has not: we still just want to take you down there and show you.',
+      'FunDivers TW started in about 2013, in Dennis Wong’s apartment. There was no shop yet — there were tanks, a phone, and a PADI Instructor certification he had earned that same year.',
+      'Dennis had taught before, though not diving. He spent seasons as a snowboarding and ski instructor in Niseko, in Hokkaido, and dabbled in event planning after that. Diving was the constant: he had been at it since 1998, caught from the start by the schooling fish — hundreds of them turning at once, as though something had told them all at the same moment — and in 2013 he decided to make it the job.',
+      'Billy Evalt arrived from a different direction entirely. He had been a linguist in the military, learned to dive in Vietnam in 2008 on a friend’s recommendation, and was hooked before the first dive was over; he qualified as an instructor in 2012. By the time he was in Taipei he was teaching English, had the certification sitting there, and wanted to branch out — so he got in touch with Dennis.',
+      'They ran it together from there. Around 2015 or 2016 they made it official: equal co-owners, on paper.',
+      'Today the shop teaches the full PADI range in three languages, guides Taiwan’s coast and islands year-round, runs group trips across Asia, and builds its own dive-shop software in the open. Dennis has been IDC Staff since 2018 and was named a PADI Elite Instructor four years running. The list has grown. The reason has not: we still just want to take you down there and show you.',
     ],
     staffTitle: 'The people you dive with',
     staffIntro:
