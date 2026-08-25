@@ -95,7 +95,7 @@ export const en = {
     pendingImage: 'Image coming soon',
   },
   home: {
-    catchphrase: 'Taiwan’s Best English-Speaking Dive Shop',
+    catchphrase: 'Breathe the Adventure. Explore with Confidence.',
     featured: 'Featured',
     upcomingDives: 'Dives',
     upcomingCourses: 'Courses',
