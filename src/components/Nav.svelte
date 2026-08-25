@@ -216,7 +216,12 @@
          which is not what a narrow screen wants; below xl the menu button takes
          over and shows every section expanded at once. -->
     <div class="hidden items-center justify-between gap-6 py-3 xl:flex">
-      <div class="shrink-0">
+      <!-- Logo and slogan are one lockup: the slogan is centred on the logo
+           rather than on the page, which is why they share a column. It is a
+           <p>, not a heading — it is the same words on every page, and a
+           heading that never changes tells a screen reader nothing about where
+           it is. The page's own <h1> lives in the page. -->
+      <div class="flex shrink-0 flex-col items-center">
         <a href="/" aria-label="FunDivers TW home" class="group block">
           <!-- The logo is the first thing on screen on most pages, so it is
                fetched at high priority. width/height are the file's own, to
@@ -227,9 +232,14 @@
             width="634"
             height="320"
             fetchpriority="high"
-            class="h-20 w-auto transition-all duration-300 group-hover:scale-105 group-hover:brightness-110 group-hover:drop-shadow-[0_0_18px_rgba(44,208,197,0.55)] lg:h-24"
+            class="h-16 w-auto transition-all duration-300 group-hover:scale-105 group-hover:brightness-110 group-hover:drop-shadow-[0_0_18px_rgba(44,208,197,0.55)] lg:h-20"
           />
         </a>
+        <p
+          class="slogan mt-1 max-w-[22rem] text-center text-sm leading-tight text-reef-100 drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)] lg:text-base"
+        >
+          {$t.nav.slogan}
+        </p>
       </div>
       <nav class="waybar relative flex items-center gap-1 rounded-2xl px-2 py-1.5 shadow-lg">
         {#each SECTIONS as s (s.id)}
@@ -245,16 +255,23 @@
 
     <!-- Mobile: logo left · globe + menu toggle right -->
     <div class="flex items-center justify-between py-3 xl:hidden">
-      <a href="/" aria-label="FunDivers TW home" class="group block">
-        <img
-          src={logoUrl}
-          alt="FunDivers TW"
-          width="634"
-          height="320"
-          fetchpriority="high"
-          class="h-16 w-auto transition-all duration-300 group-hover:scale-105 group-hover:brightness-110 group-hover:drop-shadow-[0_0_18px_rgba(44,208,197,0.55)]"
-        />
-      </a>
+      <div class="flex min-w-0 flex-col items-center">
+        <a href="/" aria-label="FunDivers TW home" class="group block">
+          <img
+            src={logoUrl}
+            alt="FunDivers TW"
+            width="634"
+            height="320"
+            fetchpriority="high"
+            class="h-14 w-auto transition-all duration-300 group-hover:scale-105 group-hover:brightness-110 group-hover:drop-shadow-[0_0_18px_rgba(44,208,197,0.55)]"
+          />
+        </a>
+        <p
+          class="slogan mt-0.5 text-center text-[11px] leading-tight text-reef-100 drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]"
+        >
+          {$t.nav.slogan}
+        </p>
+      </div>
       <div class="flex items-center gap-3">
         {@render langSwitch()}
         <RadioPlayer />

@@ -34,6 +34,8 @@ export const zhTW: Dict = {
     hiking: '健行導覽',
     websites: '網站服務',
 
+    // Sits under the logo, in every layout — see Nav.svelte.
+    slogan: '呼吸冒險，自信探索。',
     signIn: '登入',
     radio: '廣播節目',
     menu: '切換選單',
@@ -106,12 +108,30 @@ export const zhTW: Dict = {
     pendingImage: '照片即將上架',
   },
   home: {
-    catchphrase: '呼吸冒險，自信探索。',
-    featured: '精選',
-    upcomingDives: '潛水',
-    upcomingCourses: '課程',
-    upcomingTrips: '旅遊',
-    adventures: '探險',
+    startTitle: '開始潛水',
+    startText: '從沒在水下呼吸過？就從這裡開始 — 而且可以走得很遠。',
+    startLadder: [
+      { label: '開放水域', note: '你在水下的第一口呼吸' },
+      { label: '進階開放水域', note: '更深，也包括夜潛' },
+      { label: '救援潛水員', note: '當狀況真的發生時' },
+      { label: '潛水長', note: '帶團，並邁向專業' },
+    ],
+    seeLife: '你會看到什麼',
+    whereWeDive: '我們在哪裡潛水',
+    whoWeAre: '我們是誰',
+
+    comingTitle: '近期活動',
+    comingText: '已排定的休閒潛水、船潛行程與探險活動。課程請見課程頁面。',
+    seeCalendar: '完整行事曆 →',
+    communityTitle: '潛店動態',
+    noteSurfaceInterval: '我們最近去了哪裡',
+    noteRadio: '從潛店現場直播',
+    noteTestimonials: '潛水員自己的話',
+    noteReviews: '其他平台上的評價',
+
+    planTitle: '自己安排',
+    planText: '你可以在什麼時候、什麼地方和我們一起下水 — 以及都不合適時該怎麼辦。',
+
     taglineMain: '盡情探險',
     taglineSub: '安心潛水',
   },

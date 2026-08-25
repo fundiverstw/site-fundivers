@@ -47,6 +47,8 @@ export const en = {
     hiking: 'Hiking Tours',
     websites: 'Websites',
 
+    // Sits under the logo, in every layout — see Nav.svelte.
+    slogan: 'Breathe the Adventure. Explore with Confidence.',
     signIn: 'Sign in',
     radio: 'Radio show',
     menu: 'Toggle menu',
@@ -125,13 +127,46 @@ export const en = {
   // The landing page is the event board and nothing else. What used to sit
   // beneath it — the services tiles and the Diving-in-Taiwan essay — now lives
   // on About Us, under `about` below.
+  // The landing page is three bands, one per kind of visitor, sized 25 / 50 / 25
+  // of the screen so all three are there before anyone scrolls:
+  //
+  //   A  someone who has never dived      -> the course ladder, and where to look
+  //   B  a certified diver                -> what is actually on the schedule
+  //   C  a diver who plans their own      -> the calendar, the sites, the map
+  //
+  // The headings say what is in each band rather than who it is for. Nobody has
+  // to decide whether they count as "advanced" before they can read the page.
   home: {
-    catchphrase: 'Breathe the Adventure. Explore with Confidence.',
-    featured: 'Featured',
-    upcomingDives: 'Dives',
-    upcomingCourses: 'Courses',
-    upcomingTrips: 'Trips',
-    adventures: 'Adventures',
+    // ── A · Start diving ──
+    startTitle: 'Start diving',
+    startText: 'Never breathed underwater? This is where it starts — and how far it goes.',
+    // One per rung, in order, matched to the courses by position — see the
+    // LADDER list in Home.svelte. The note is what that rung is actually for.
+    startLadder: [
+      { label: 'Open Water', note: 'Your first breath underwater' },
+      { label: 'Advanced', note: 'Deeper, and after dark' },
+      { label: 'Rescue', note: 'When something goes wrong' },
+      { label: 'Divemaster', note: 'Guide, and turn pro' },
+    ],
+    seeLife: 'What you’ll see',
+    whereWeDive: 'Where we dive',
+    whoWeAre: 'Who we are',
+
+    // ── B · What's coming up ──
+    comingTitle: 'What’s coming up',
+    comingText:
+      'Fun dives, boat trips and adventures on the schedule. Courses have their own page.',
+    seeCalendar: 'Full calendar →',
+    communityTitle: 'From the shop',
+    noteSurfaceInterval: 'Where we’ve been lately',
+    noteRadio: 'Live from the shop',
+    noteTestimonials: 'In divers’ own words',
+    noteReviews: 'What people say elsewhere',
+
+    // ── C · Plan your own ──
+    planTitle: 'Plan your own',
+    planText: 'When and where you can dive with us — and what to do when none of it fits.',
+
     taglineMain: 'Breathe the Adventure',
     taglineSub: 'Explore with Confidence',
   },

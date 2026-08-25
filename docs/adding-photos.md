@@ -182,10 +182,12 @@ the site expects; without it you get a bare URL and the page will not accept it.
 To change one of these pictures, either drop the new file in beside it and change
 the import, or replace the file keeping its name.
 
-The home page's tiles and its reef row are **not** in this category: each one asks
+The About Us tiles and its reef row are **not** in this category: each one asks
 for the cover of the thing it links to (`courseImage('padi-open-water-course')`,
 `siteImage('palau')`, `galleryCover('octopus')`), so filling those folders is all
-it takes to change what the front page shows.
+it takes to change what that page shows. The landing page carries no photos of
+its own at all — every picture on it is an event's cover, which comes from the
+database and the dive-site folders.
 
 Everything the shop's old Wix site used to supply is gone — there is no longer a
 `media/` folder or an id lookup. If you find `mediaIdLocal` anywhere, it is stale.

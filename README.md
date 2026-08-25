@@ -113,6 +113,7 @@ The nav's "Sign in" is just a link out to that app's `/login`; there is no sessi
 
 | Page     | Source                                                    |
 | -------- | --------------------------------------------------------- |
+| Landing page | Three bands, one per kind of visitor and sized 25 / 50 / 25 of the screen: the course ladder for someone who has never dived, what is actually on the schedule for a certified diver, and the Go Diving links for someone planning their own. Band B reads the same `EO_dives` / `EO_courses` data as the calendar, minus courses |
 | Calendar | Month grid (ported from app-fundivers) — `EO_dives` + `EO_courses`, priced via `EO_prices`, dive trip/local color from `eo_dive_destinations`/`TravelDestinations` |
 | Sites    | One folder per site in `src/content/dive-sites/`, named by id — **and the id is the address**, at the root of the site (`/bat-cave`); the list page keeps `/sites` — `site.ts`, `details.ts`, `photos/`, all three languages in each file. Regions in `dive-sites/regions.ts`. Grouped Domestic / International off each site's `international` flag (the shared `dive_sites` table was dropped upstream) |
 | Courses  | One folder per course in `src/content/courses/`, named by id — `card.ts` (tile), `details.ts` (write-up), `photos/`. Both files carry all three languages. The folder name is the `/courses/<id>` URL. Live upcoming sessions joined on the details' `matchCodes` |

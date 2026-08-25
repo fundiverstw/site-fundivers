@@ -6,6 +6,7 @@
      .menu-panel  a floating menu that must stay readable over anything
      .glow-teal   a neon teal edge
      .mono        the terminal-style typeface   (dates, prices, labels)
+     .slogan      the script/serif line under the logo
      .waybar      the rounded pill bar used by the nav
 
    Spacing and layout are NOT here — those are written directly on each element
@@ -22,6 +23,16 @@
     backdrop-filter: blur(12px) saturate(1.2);
     -webkit-backdrop-filter: blur(12px) saturate(1.2);
   }
+  /* The slogan under the logo. Italic and loosely spaced because the display
+     stack may resolve to an old-style serif rather than a script face, and an
+     upright serif at this size next to the wordmark reads as a mistake rather
+     than a flourish. */
+  .slogan {
+    font-family: var(--font-display);
+    font-style: italic;
+    letter-spacing: 0.01em;
+  }
+
   /* A menu that floats over the page — the nav's section dropdowns and the
      language switcher.
 

@@ -34,6 +34,8 @@ export const ja: Dict = {
     hiking: 'ハイキングツアー',
     websites: 'ウェブサイト制作',
 
+    // Sits under the logo, in every layout — see Nav.svelte.
+    slogan: '冒険を呼吸する。自信をもって、探検へ。',
     signIn: 'ログイン',
     radio: 'ラジオ番組',
     menu: 'メニューの開閉',
@@ -107,12 +109,31 @@ export const ja: Dict = {
     pendingImage: '写真は近日公開',
   },
   home: {
-    catchphrase: '冒険を呼吸する。自信をもって、探検へ。',
-    featured: 'おすすめ',
-    upcomingDives: 'ダイビング',
-    upcomingCourses: 'コース',
-    upcomingTrips: 'ツアー',
-    adventures: 'アドベンチャー',
+    startTitle: 'ダイビングを始める',
+    startText: '水中で息をしたことがない方へ。ここが出発点で、行き先はずっと先まであります。',
+    startLadder: [
+      { label: 'オープンウォーター', note: '水中での最初のひと呼吸' },
+      { label: 'アドバンスド', note: 'より深く、そして夜も' },
+      { label: 'レスキュー', note: '何かが起きたときのために' },
+      { label: 'ダイブマスター', note: 'ガイドとして、プロへ' },
+    ],
+    seeLife: '何が見られるか',
+    whereWeDive: 'どこで潜るか',
+    whoWeAre: '私たちについて',
+
+    comingTitle: '近日開催',
+    comingText:
+      '予定されているファンダイブ、ボートトリップ、アドベンチャー。コースは専用ページにあります。',
+    seeCalendar: 'カレンダー全体 →',
+    communityTitle: 'ショップの近況',
+    noteSurfaceInterval: '最近行ってきた場所',
+    noteRadio: 'ショップからの生放送',
+    noteTestimonials: 'ダイバー自身の言葉で',
+    noteReviews: '他のサイトでの評判',
+
+    planTitle: '自分で組み立てる',
+    planText: 'いつ、どこで一緒に潜れるか — そしてどれも合わないときにどうするか。',
+
     taglineMain: '冒険を呼吸しよう',
     taglineSub: '自信を持って潜ろう',
   },

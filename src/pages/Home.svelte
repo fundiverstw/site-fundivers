@@ -1,17 +1,36 @@
 <script lang="ts">
   import { fetchUpcomingEvents, type UpcomingEvent, type ModalEvent } from '$engine/events'
   import { formatSpan, twd } from '$engine/format'
+  import { NEWS } from '$content/news'
+  import { newsText } from '$engine/i18n-content'
   import GetInTouch from '$components/GetInTouch.svelte'
   import EventModal from '$components/calendar/EventModal.svelte'
-  import { t } from '$engine/i18n'
+  import { t, locale } from '$engine/i18n'
   import CoverPhoto from '$components/CoverPhoto.svelte'
+
+  // The landing page is three bands, one per kind of visitor, and on a desktop
+  // all three are on the first screen — 25% / 50% / 25% of what is left under
+  // the nav and the catch-phrase:
+  //
+  //   A  someone who has never dived   the certification ladder, and three ways
+  //                                    to look around before committing
+  //   B  a certified diver             what is actually on the schedule, beside
+  //                                    what the shop has been up to
+  //   C  a diver who plans their own   the calendar, the sites, the map
+  //
+  // B is twice either of the others because it is the shop's main custom: the
+  // people who already dive and want to know where the boat is going.
+  //
+  // On a phone the proportions are dropped and the bands simply stack. Three
+  // bands of meaningful content cannot fit one small screen, and squeezing them
+  // would leave all three unreadable rather than one of them off-screen.
 
   let upcoming = $state<UpcomingEvent[]>([])
   let loading = $state(true)
   let selected = $state<ModalEvent | null>(null)
 
-  // The third card in each hero column sits just below the fold on desktop, so
-  // show a scroll hint until the reader moves off the top of the page.
+  // The last band sits just below the fold on a short screen, so show a scroll
+  // hint until the reader moves off the top of the page.
   let atTop = $state(true)
   $effect(() => {
     const onScroll = () => (atTop = window.scrollY < 24)
@@ -39,94 +58,80 @@
       .finally(() => (loading = false))
   })
 
-  // The homepage hero is a 2×2 board of four quadrants holding up to four events
-  // each: Featured · Dives · Courses · Adventures. Every event shows in exactly
-  // one quadrant — featured wins first, then a kind claims the rest.
-
-  // Featured: only events actually flagged `featured` in the app — no padding, so
-  // the quadrant reflects the real featured set (often just one). The adaptive
-  // tile layout sizes it: a lone featured event fills the whole quadrant.
-  let featured = $derived(upcoming.filter((e) => e.featured).slice(0, 4))
-  let featuredIds = $derived(new Set(featured.map((e) => e.id)))
-  // The Dives row holds every dive — local fun dives and multi-day dive trips
-  // alike (is_trip is just a flag on a dive, not its own row). Adventures is a
-  // first-class event kind (kind='adventure' — the recurring YouBike tours),
-  // unrelated to dive trips, so a dive trip like Malapascua never lands there.
-  // Dives/Courses stay clear of the Featured spotlight so nothing double-shows.
-  let dives = $derived(
-    upcoming.filter((e) => e.type === 'dive' && !featuredIds.has(e.id)).slice(0, 4),
+  // Band B is dives, trips and adventures — everything except courses, which
+  // belong to band A and have a page of their own. A multi-day dive trip is a
+  // dive with a flag on it, not its own kind, so it is already in here.
+  // Featured first, then whatever is soonest; six is what two rows hold.
+  let events = $derived(
+    upcoming
+      .filter((e) => e.type !== 'course')
+      .slice()
+      .sort((a, b) => Number(b.featured) - Number(a.featured))
+      .slice(0, 6),
   )
-  let courses = $derived(
-    upcoming.filter((e) => e.type === 'course' && !featuredIds.has(e.id)).slice(0, 4),
-  )
-  let adventures = $derived(upcoming.filter((e) => e.type === 'adventure').slice(0, 4))
 
-  // Each quadrant wears its own colour — a strongly tinted, semi-transparent
-  // panel with a bright matching border and a header (glyph + title) in the same
-  // hue — so Featured / Dives / Courses / Adventures read apart at a glance
-  // against the blue page. Written as full literal class strings (not built up
-  // from the key) so Tailwind's scanner keeps them in the build.
-  const QUAD_STYLE = {
-    mauve: { panel: 'border-mauve/60 bg-mauve/20', text: 'text-mauve' },
-    reef: { panel: 'border-reef-400/60 bg-reef-400/20', text: 'text-reef-300' },
-    green: { panel: 'border-green/60 bg-green/20', text: 'text-green' },
-    peach: { panel: 'border-peach/60 bg-peach/20', text: 'text-peach' },
-  } as const
+  // The rungs, in order. Structural only — the labels and the one-line notes are
+  // $t.home.startLadder, matched by position, so the ladder can be reworded or
+  // translated without touching this file.
+  const LADDER = [
+    { href: '/courses/padi-open-water-course' },
+    { href: '/courses/padi-advanced-course' },
+    { href: '/courses/padi-rescue-diver-course' },
+    { href: '/courses/padi-divemaster-course' },
+  ]
 
-  // A quadrant's tiles reflow to how many events it has, so it never shows an
-  // awkward empty cell: 1 fills the quadrant, 2 sit side by side, 3 go two-up
-  // with the third centred below, 4 is the full 2×2. This only applies on the
-  // fixed-height desktop board (lg+); phones keep a simple two-column grid.
-  // Literal class strings so Tailwind's scanner keeps every variant.
-  function quadGridClass(n: number): string {
-    if (n <= 1) return 'grid grid-cols-1 gap-2 lg:min-h-0 lg:flex-1 lg:grid-cols-1 lg:grid-rows-1'
-    if (n === 2) return 'grid grid-cols-2 gap-2 lg:min-h-0 lg:flex-1 lg:grid-cols-2 lg:grid-rows-1'
-    if (n === 3) return 'grid grid-cols-2 gap-2 lg:min-h-0 lg:flex-1 lg:grid-cols-4 lg:grid-rows-2'
-    return 'grid grid-cols-2 gap-2 lg:min-h-0 lg:flex-1 lg:grid-cols-2 lg:grid-rows-2'
-  }
-  // Only the 3-event case needs explicit placement: on a 4-column desktop grid
-  // each tile spans two columns, and the lone third one starts at column 2 so it
-  // sits centred beneath the top pair. Other counts auto-flow correctly.
-  function quadTileClass(n: number, i: number): string {
-    if (n !== 3) return ''
-    if (i === 0) return 'lg:col-start-1 lg:col-span-2 lg:row-start-1'
-    if (i === 1) return 'lg:col-start-3 lg:col-span-2 lg:row-start-1'
-    return 'lg:col-start-2 lg:col-span-2 lg:row-start-2'
-  }
+  // The rail beside band B. Community is the section aimed at people who
+  // already dive, so it sits with their events rather than in a band of its own.
+  let rail = $derived([
+    { href: '/surface-interval', label: $t.nav.news, note: $t.home.noteSurfaceInterval },
+    { href: '/radio', label: $t.nav.radio, note: $t.home.noteRadio },
+    { href: '/testimonials', label: $t.nav.testimonials, note: $t.home.noteTestimonials },
+    { href: '/reviews', label: $t.nav.reviews, note: $t.home.noteReviews },
+  ])
+
+  // Band C: the Go Diving section, which is what someone planning their own
+  // diving actually needs. Titles come from that section's own copy, so the
+  // band and the hub can never describe the same page differently.
+  let plan = $derived([
+    { href: '/calendar', label: $t.goDiving.calendarTitle, note: $t.goDiving.calendarDesc },
+    { href: '/sites', label: $t.goDiving.sitesTitle, note: $t.goDiving.sitesDesc },
+    { href: '/map', label: $t.goDiving.mapTitle, note: $t.goDiving.mapDesc },
+    { href: '/travel', label: $t.goDiving.travelTitle, note: $t.goDiving.travelDesc },
+    { href: '/build-trip', label: $t.goDiving.buildTripTitle, note: $t.goDiving.buildTripDesc },
+  ])
+
+  // The newest Surface Interval post's headline, shown on its rail row when
+  // there is one — a date-stamped line is a better reason to click than a
+  // category name. Falls back to the note when the feed is empty.
+  let latestPost = $derived(NEWS[0] ? newsText(NEWS[0].slug, $locale).title : null)
 </script>
 
-<!-- One event as a compact tile inside a category row. On a phone it keeps a
-     16/10 aspect so it has height in the natural stack; from `lg` up it drops the
-     aspect and fills its grid cell (`h-full`) so a row packs four tiles into
-     whatever height the viewport-filling board hands it. `accent` tints the hover
-     glow to match the row's colour. -->
-{#snippet quadCard(ev: UpcomingEvent, accent: 'mauve' | 'reef' | 'green' | 'peach', place: string)}
+<!-- One upcoming event. On a phone it keeps a 16/10 aspect so it has height in
+     the natural stack; from `lg` up it drops the aspect and fills its grid cell,
+     so two rows pack six tiles into whatever height the band was given. -->
+{#snippet eventTile(ev: UpcomingEvent)}
   {@const price = twd(ev.startingAt)}
   <button
     type="button"
     onclick={() => open(ev)}
-    class={`group relative block aspect-[16/10] w-full overflow-hidden rounded-xl border border-white/15 text-left transition-all duration-300 hover:-translate-y-0.5 lg:aspect-auto lg:h-full ${place} ${
-      accent === 'mauve'
-        ? 'hover:border-mauve/60 hover:shadow-[0_0_20px_-6px_rgba(203,166,247,0.7)]'
-        : accent === 'peach'
-          ? 'hover:border-peach/60 hover:shadow-[0_0_20px_-6px_rgba(250,179,135,0.7)]'
-          : accent === 'green'
-            ? 'hover:border-green/60 hover:shadow-[0_0_20px_-6px_rgba(166,227,161,0.65)]'
-            : 'hover:border-reef-400/60 hover:shadow-[0_0_20px_-6px_rgba(44,208,197,0.65)]'
-    }`}
+    class="group relative block aspect-[16/10] w-full overflow-hidden rounded-xl border border-white/15 text-left transition-all duration-300 hover:-translate-y-0.5 hover:border-reef-400/60 hover:shadow-[0_0_20px_-6px_rgba(44,208,197,0.65)] lg:aspect-auto lg:h-full"
   >
     <CoverPhoto src={ev.image} />
     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent"></div>
     <div class="absolute inset-x-0 bottom-0 px-2.5 pb-2 pt-4">
+      {#if ev.featured}
+        <span
+          class="mono rounded bg-mauve/25 px-1 py-0.5 text-[8px] font-bold uppercase tracking-wide text-mauve"
+          >{$t.common.featured}</span
+        >
+      {/if}
       {#if ev.fullyBooked}
         <span
           class="rounded bg-amber-400/25 px-1 py-0.5 text-[8px] font-bold uppercase tracking-wide text-amber-200"
           >{$t.common.waitlist}</span
         >
       {/if}
-      <h3 class="line-clamp-1 text-xs font-bold leading-tight text-white lg:text-sm">
-        {ev.title}
-      </h3>
+      <h3 class="line-clamp-1 text-xs font-bold leading-tight text-white lg:text-sm">{ev.title}</h3>
       <p class="mono truncate text-[10px] text-sky-300">
         {formatSpan(ev.startDate, ev.endDate, ev.time)}
       </p>
@@ -137,88 +142,186 @@
   </button>
 {/snippet}
 
-<!-- One quadrant of the board: a titled header over a 2×2 grid of four tiles,
-     wrapped in a semi-transparent panel tinted with the category's colour (mauve ·
-     reef · green · peach) so the four quadrants read apart at a glance. Flex-col
-     with a `flex-1` tile grid so, on desktop, the tiles absorb the leftover height
-     and the whole board fills the screen without a scroll. -->
-{#snippet quadrant(
-  icon: string,
-  title: string,
-  items: UpcomingEvent[],
-  accent: 'mauve' | 'reef' | 'green' | 'peach',
-)}
-  <section
-    class={`flex min-h-0 flex-col rounded-2xl border px-2 py-1.5 lg:flex-1 ${QUAD_STYLE[accent].panel}`}
-  >
-    <h2
-      class={`mb-1 flex items-center gap-2 px-0.5 text-sm font-bold lg:text-base ${QUAD_STYLE[accent].text}`}
-    >
-      <span class="mono">{icon}</span>{title}
-    </h2>
-    <div class={quadGridClass(loading ? 4 : items.length)}>
-      {#if loading}
-        {#each Array(4) as _, i (i)}<div
-            class="aspect-[16/10] animate-pulse rounded-xl bg-white/10 lg:aspect-auto lg:h-full"
-          ></div>{/each}
-      {:else if items.length === 0}
-        <p class="self-center text-xs text-brand-200">
-          {$t.common.nothingScheduled}
-        </p>
-      {:else}
-        {#each items as ev, i (ev.id)}
-          {@render quadCard(ev, accent, quadTileClass(items.length, i))}
-        {/each}
-      {/if}
-    </div>
-  </section>
-{/snippet}
-
-<!-- Hero: catch-phrase over a 2×2 board of four colour-coded quadrants (Featured ·
-     Dives · Courses · Adventures), each holding four events. From `lg` up the
-     whole hero is sized to the viewport minus the nav (`overflow-hidden`, a fixed
-     height, flex children that shrink) so all sixteen events sit on the first
-     screen with no scroll. On a phone the quadrants fall back to a natural,
-     scrolling stack. -->
 <section
-  class="mx-auto flex max-w-[1600px] flex-col px-4 py-2 sm:px-6 lg:h-[calc(100svh-6rem)] lg:overflow-hidden lg:py-2 xl:h-[calc(100svh-8rem)]"
+  class="mx-auto flex max-w-[1600px] flex-col px-4 py-2 sm:px-6 lg:h-[calc(100svh-6rem)] lg:overflow-hidden xl:h-[calc(100svh-8rem)]"
 >
-  <div class="shrink-0 pb-4 text-center">
-    <h1
-      class="text-2xl font-black tracking-tight text-white drop-shadow-[0_1px_6px_rgba(0,0,0,0.5)] sm:text-3xl xl:text-4xl"
-    >
-      {$t.home.catchphrase}
-    </h1>
-  </div>
+  <!-- The slogan is under the logo now, on every page, so printing it again
+       here would be the same words twice on one screen. The page still needs a
+       heading of its own, though: without one the document starts at <h2> and a
+       screen reader's outline has no root. So it is here and unseen — `sr-only`
+       clips it rather than hiding it, which keeps it in the accessibility tree
+       where display:none would not. -->
+  <h1 class="sr-only">FunDivers TW — {$t.nav.slogan}</h1>
 
-  <div
-    class="flex flex-col gap-2.5 lg:grid lg:min-h-0 lg:flex-1 lg:grid-cols-2 lg:grid-rows-2 lg:gap-2.5"
-  >
-    {@render quadrant('★', $t.home.featured, featured, 'mauve')}
-    {@render quadrant('▹', $t.home.upcomingDives, dives, 'reef')}
-    {@render quadrant('◈', $t.home.upcomingCourses, courses, 'green')}
-    {@render quadrant('✦', $t.home.adventures, adventures, 'peach')}
+  <!-- `flex-[1] / flex-[2] / flex-[1]` over a `min-h-0` column is what makes the
+       25 / 50 / 25 real: the three bands divide the leftover height between
+       them rather than each being told a percentage that stops adding up the
+       moment the nav or the catch-phrase changes size. -->
+  <div class="flex flex-col gap-2.5 lg:min-h-0 lg:flex-1">
+    <!-- ── A · Start diving ─────────────────────────────────────────────── -->
+    <!-- The heading blocks below are <div>, not <header>. A sectioning header
+         would be valid HTML and would gain almost nothing — the <h2> already
+         carries the structure — while quietly widening every `header …`
+         selector in the suite, which is how the browser tests find the site's
+         own header. One <header> per document is a rule worth keeping here. -->
+    <section
+      data-band="start"
+      class="flex min-h-0 flex-col rounded-2xl border border-green/60 bg-green/20 px-3 py-2 lg:flex-[1]"
+    >
+      <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+        <div>
+          <h2 class="text-sm font-bold text-green lg:text-base">{$t.home.startTitle}</h2>
+          <p class="text-xs text-brand-100">{$t.home.startText}</p>
+        </div>
+        <nav class="mono flex flex-wrap gap-x-4 gap-y-1 text-[11px] font-semibold text-green">
+          <a class="hover:text-white" href="/sealife">{$t.home.seeLife} →</a>
+          <a class="hover:text-white" href="/map">{$t.home.whereWeDive} →</a>
+          <a class="hover:text-white" href="/about">{$t.home.whoWeAre} →</a>
+        </nav>
+      </div>
+
+      <!-- The ladder. A real progression, so it is an ordered list with a rail
+           drawn behind the markers; the rail stops at the first and last marker
+           rather than running off both ends, which would imply rungs that are
+           not there. Decorative, hence aria-hidden — the order is already in
+           the <ol>. -->
+      <!-- `content-center` rather than a stretched row: the band is a quarter of
+           the screen and the ladder is three short lines, so stretching left the
+           rungs pinned to the top of a mostly empty box. -->
+      <ol class="relative mt-2 grid min-h-0 flex-1 grid-cols-2 content-center gap-2 sm:grid-cols-4">
+        <span
+          aria-hidden="true"
+          class="absolute left-[12.5%] right-[12.5%] top-1/2 hidden h-px -translate-y-[calc(50%+18px)] bg-green/50 sm:block"
+        ></span>
+        {#each LADDER as rung, i (rung.href)}
+          <li class="relative flex">
+            <a
+              href={rung.href}
+              class="group flex flex-1 flex-col items-center rounded-xl px-1 py-1 text-center transition-colors hover:bg-white/5"
+            >
+              <span
+                class="block h-3.5 w-3.5 shrink-0 rounded-full border-2 border-green bg-brand-950 transition-colors group-hover:bg-green"
+              ></span>
+              <span class="mono mt-1.5 text-xs font-bold text-white lg:text-sm"
+                >{$t.home.startLadder[i].label}</span
+              >
+              <span class="mt-0.5 line-clamp-2 text-[11px] leading-tight text-brand-200"
+                >{$t.home.startLadder[i].note}</span
+              >
+            </a>
+          </li>
+        {/each}
+      </ol>
+    </section>
+
+    <!-- ── B · What's coming up ─────────────────────────────────────────── -->
+    <section
+      data-band="coming"
+      class="flex min-h-0 flex-col rounded-2xl border border-reef-400/60 bg-reef-400/20 px-3 py-2 lg:flex-[2]"
+    >
+      <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+        <div>
+          <h2 class="text-sm font-bold text-reef-300 lg:text-base">{$t.home.comingTitle}</h2>
+          <p class="text-xs text-brand-100">{$t.home.comingText}</p>
+        </div>
+        <a
+          href="/calendar"
+          class="mono text-[11px] font-semibold text-reef-300 hover:text-white lg:text-xs"
+          >{$t.home.seeCalendar}</a
+        >
+      </div>
+
+      <div class="mt-2 grid min-h-0 flex-1 gap-2.5 lg:grid-cols-[minmax(0,1fr)_14rem]">
+        <div class="grid min-h-0 grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-rows-2">
+          {#if loading}
+            {#each Array(6) as _, i (i)}
+              <div
+                class="aspect-[16/10] animate-pulse rounded-xl bg-white/10 lg:aspect-auto lg:h-full"
+              ></div>
+            {/each}
+          {:else if events.length === 0}
+            <p class="col-span-full self-center text-center text-xs text-brand-200">
+              {$t.common.nothingScheduled}
+            </p>
+          {:else}
+            {#each events as ev (ev.id)}
+              {@render eventTile(ev)}
+            {/each}
+          {/if}
+        </div>
+
+        <!-- What the shop has been up to, beside what it has planned. Community
+             is the section written for people who already dive, so it keeps
+             their company rather than taking a band of its own. -->
+        <aside class="flex min-h-0 flex-col gap-1.5">
+          <h3 class="mono text-[10px] uppercase tracking-widest text-reef-200">
+            {$t.home.communityTitle}
+          </h3>
+          {#each rail as item (item.href)}
+            <a
+              href={item.href}
+              class="group flex min-h-0 flex-1 flex-col justify-center rounded-xl border border-white/10 px-3 py-1.5 transition-colors hover:border-reef-400/60 hover:bg-white/5"
+            >
+              <span class="mono text-xs font-bold text-white">{item.label}</span>
+              <span class="line-clamp-1 text-[11px] text-brand-200">
+                {item.href === '/surface-interval' ? (latestPost ?? item.note) : item.note}
+              </span>
+            </a>
+          {/each}
+        </aside>
+      </div>
+    </section>
+
+    <!-- ── C · Plan your own ────────────────────────────────────────────── -->
+    <section
+      data-band="plan"
+      class="flex min-h-0 flex-col rounded-2xl border border-peach/60 bg-peach/20 px-3 py-2 lg:flex-[1]"
+    >
+      <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+        <div>
+          <h2 class="text-sm font-bold text-peach lg:text-base">{$t.home.planTitle}</h2>
+          <p class="text-xs text-brand-100">{$t.home.planText}</p>
+        </div>
+        <a href="/go-diving" class="mono text-[11px] font-semibold text-peach hover:text-white"
+          >{$t.nav.goDiving} →</a
+        >
+      </div>
+
+      <div class="mt-2 grid min-h-0 flex-1 grid-cols-2 gap-2 sm:grid-cols-5">
+        {#each plan as item (item.href)}
+          <a
+            href={item.href}
+            class="flex min-h-0 flex-col items-center justify-center gap-1 rounded-xl border border-white/15 px-2 py-2 text-center transition-all hover:-translate-y-0.5 hover:border-peach/70 hover:bg-white/5"
+          >
+            <span class="mono text-xs font-bold text-white lg:text-sm">{item.label}</span>
+            <span class="line-clamp-2 text-[11px] leading-tight text-brand-200">{item.note}</span>
+          </a>
+        {/each}
+      </div>
+    </section>
+
+    <!-- Scroll hint: the three bands fill the screen, so Get In Touch and the
+         taglines sit below the fold and a bouncing chevron says so. In the flow
+         rather than fixed — a fixed one landed on top of band C's tiles the
+         moment the bands were sized to reach the bottom of the screen. It fades
+         when the reader leaves the top of the page, and never shows on a phone,
+         where the stacked layout already scrolls. Decorative. -->
+    <div
+      aria-hidden="true"
+      class={`pointer-events-none hidden shrink-0 justify-center transition-opacity duration-500 lg:flex ${atTop ? 'opacity-100' : 'opacity-0'}`}
+    >
+      <svg
+        class="h-7 w-7 animate-bounce text-reef-300 drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+      </svg>
+    </div>
   </div>
 </section>
-
-<!-- Scroll hint: on desktop the board fills the screen and the rest of the page
-     sits below the fold, so a gentle bouncing chevron nudges the reader onward.
-     It fades the moment they leave the top of the page, and never shows on a
-     phone (where the stacked layout already scrolls). Decorative. -->
-<div
-  aria-hidden="true"
-  class={`pointer-events-none fixed inset-x-0 bottom-5 z-30 hidden justify-center transition-opacity duration-500 lg:flex ${atTop ? 'opacity-100' : 'opacity-0'}`}
->
-  <svg
-    class="h-14 w-14 animate-bounce text-reef-300 drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    stroke-width="2"
-  >
-    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-  </svg>
-</div>
 
 <!-- Get In Touch -->
 <GetInTouch />
