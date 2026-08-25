@@ -2,9 +2,10 @@ import { test, expect } from '@playwright/test'
 import { visit, chooseLanguage, clickNavLink } from './helpers'
 
 // The sign-off at the bottom of every page — "Proudly created by the FunDivers
-// Team in Taipei, Taiwan" — links the word "Team" to that page. The bar links
-// there too now, so this is no longer the only way in, but it is still the
-// fragile one and the one people actually click from the foot of a page.
+// Team in Taipei, Taiwan" — links the word "Team" to the staff roster. The bar
+// links there too, under About Us, so this is no longer the only way in, but it
+// is still the fragile one and the one people actually click from the foot of a
+// page.
 //
 // The sentence is assembled by splitting a translated string on a `{team}`
 // marker and putting an anchor between the halves, so the ways it can break are
@@ -15,7 +16,7 @@ import { visit, chooseLanguage, clickNavLink } from './helpers'
 const footerLink = (page: import('@playwright/test').Page) =>
   page.locator('footer').getByRole('link', { name: 'Team', exact: true })
 
-test('the footer sign-off links to the team page', async ({ page }) => {
+test('the footer sign-off links to the roster', async ({ page }) => {
   await visit(page, '/')
 
   const link = footerLink(page)
@@ -24,7 +25,7 @@ test('the footer sign-off links to the team page', async ({ page }) => {
   await link.click()
 
   await expect(page).toHaveURL('/team')
-  await expect(page.getByRole('heading', { name: 'Fun Divers Team', level: 1 })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'The Team', level: 1 })).toBeVisible()
 })
 
 // The word sits inside a sentence, so a missing placeholder would leave the
@@ -50,7 +51,7 @@ for (const [language, word] of [
   ['日本語', 'チーム'],
   ['中文', '團隊'],
 ] as const) {
-  test(`the sign-off still links to the team page in ${language}`, async ({ page }) => {
+  test(`the sign-off still links to the roster in ${language}`, async ({ page }) => {
     await visit(page, '/')
     await chooseLanguage(page, language)
 
@@ -65,11 +66,11 @@ for (const [language, word] of [
 // The bar is the other half of this. The two routes in are independent — the
 // sign-off could keep working with the bar link dropped, and neither failure
 // shows up in the other's test.
-test('the navigation links to the team page too', async ({ page, isMobile }) => {
+test('the navigation links to the roster too', async ({ page, isMobile }) => {
   await visit(page, '/')
 
   await clickNavLink(page, 'Team', isMobile)
 
   await expect(page).toHaveURL('/team')
-  await expect(page.getByRole('heading', { name: 'Fun Divers Team', level: 1 })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'The Team', level: 1 })).toBeVisible()
 })

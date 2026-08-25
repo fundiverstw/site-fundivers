@@ -6,7 +6,7 @@ import type { ResponsiveImage } from '$engine/responsive-image'
 // One section per creature in the marine-life vocabulary, and nothing else —
 // the page is organised by what is in the picture. Every section exists whether
 // or not it has any photos yet, because the dive-site pages link to all of them:
-// a chip reading "Moray eels" points at /photos#moray_eels, and that has to land
+// a chip reading "Moray eels" points at /sealife#moray_eels, and that has to land
 // somewhere.
 //
 // To fill a section, create src/content/photos/gallery/<slug>/ and drop files

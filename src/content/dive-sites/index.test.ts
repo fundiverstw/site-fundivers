@@ -26,7 +26,7 @@ describe('the catalog', () => {
     expect(ids).toHaveLength(new Set(ids).size)
   })
 
-  // The id becomes the web address /sites/<id> and the name of a photo folder.
+  // The id becomes the web address (at the root) and the name of a photo folder.
   it('uses lowercase, hyphenated ids', () => {
     for (const id of ids) expect(id).toMatch(/^[a-z0-9-]+$/)
   })
@@ -86,7 +86,7 @@ describe('reading the catalog', () => {
   })
 
   it('builds the detail-page path', () => {
-    expect(diveSitePath({ id: 'bat-cave' })).toBe('/sites/bat-cave')
+    expect(diveSitePath({ id: 'bat-cave' })).toBe('/bat-cave')
   })
 })
 
@@ -95,7 +95,7 @@ describe('site folders', () => {
     .filter((e) => e.isDirectory())
     .map((e) => e.name)
 
-  // The folder name IS the site id — the /sites/<id> address, the details key and
+  // The folder name IS the site id — the address, the details key and
   // the photo folder all at once. A folder called 'bat_cave' or 'batcave' is not
   // an error anywhere: it simply never appears, and nobody notices for a month.
   it('are all named after a real dive site', () => {

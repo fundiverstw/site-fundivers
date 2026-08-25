@@ -42,9 +42,9 @@ folder". `$engine/router` means "the router, in the engine folder".
 Inside `content`, **anything with a page of its own is a folder named after its address**:
 
 ```
-src/content/dive-sites/bat-cave/     → fundiverstw.com/sites/bat-cave
+src/content/dive-sites/bat-cave/     → fundiverstw.com/bat-cave
 src/content/courses/padi-efr-course/ → fundiverstw.com/courses/padi-efr-course
-src/content/news/2026-06-14-womens-dive-day/ → fundiverstw.com/news/womens-dive-day
+src/content/news/2026-06-14-womens-dive-day/ → fundiverstw.com/surface-interval/womens-dive-day
 ```
 
 Each folder holds everything about that one thing: its facts, its write-up, its photos,
@@ -70,14 +70,14 @@ and all three languages. So "change the Bat Cave page" is one folder to open, an
 | What we charge for FunDive and for websites | `src/content/services.ts` |
 | The words on the Services page | `src/content/text/en.ts`, under `services:` |
 | The long write-up for one course | `src/content/courses/<id>/details.ts` |
-| Add a news post — a conference, a volunteer day, an outreach event | Make a folder in `src/content/news/` — see [Adding a news post](adding-news.md) |
-| A photo on the Photos gallery page | Drop a file in `src/content/photos/gallery/` — see [Adding photos](adding-photos.md) |
+| Add a Surface Interval post — a conference, a volunteer day, an outreach event | Make a folder in `src/content/news/` — see [Adding a news post](adding-news.md) |
+| A photo on the Sea Life gallery page (`/sealife`) | Drop a file in `src/content/photos/gallery/` — see [Adding photos](adding-photos.md) |
 | The photo on a dive-site or course card | Drop a file in that site's or course's `photos/` folder — see [Adding photos](adding-photos.md) |
 | A colour, a font, or how round the corners are | `src/styles/theme.css` — see [Changing how it looks](changing-look.md) |
 | The frosted-glass panel look | `src/styles/components.css` |
 | The underwater background | `src/styles/background.css` |
 | The layout of one particular page | That page's file in `src/pages/` |
-| Which links are in the navigation bar | `src/components/Nav.svelte` — but read [How it works](how-it-works.md#a-page-existing-is-not-the-same-as-a-page-being-reachable) first: the bar is nearly full, and some pages (Team) are reached from the footer instead |
+| Which links are in the navigation bar | `src/content/navigation.ts` — one list for the bar, the mobile menu and the four hub pages. Read [How it works](how-it-works.md#a-page-existing-is-not-the-same-as-a-page-being-reachable) first: pages outside the four sections are reached from the footer instead |
 
 ### Things you **cannot** change here
 

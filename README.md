@@ -2,7 +2,12 @@
 
 Public marketing site for **FunDivers TW** — a fast static SPA built with **Svelte + Vite**, deployed to **Cloudflare**. It reads public catalog data (dive sites, dives, courses, prices) from the **same Supabase project as [`app-fundivers`](../app-fundivers)** via the anon key, and links out to that app for booking and login.
 
-Structured to mirror [fundiverstw.com](https://www.fundiverstw.com/): **Courses · Sites · Photos · Calendar · Team**.
+Organised in four sections: **Education** (courses, sea life) · **Community**
+(Surface Interval, testimonials, reviews, the radio show, the FunDive app) ·
+**About Us** (Origins — the founders and the story; Team — the roster) ·
+**Go Diving** (calendar, dive sites, map, travel, build a trip).
+Each is a hub page and a dropdown in the bar; the list they are both built from is
+`src/content/navigation.ts`.
 
 ## Stack
 
@@ -109,11 +114,14 @@ The nav's "Sign in" is just a link out to that app's `/login`; there is no sessi
 | Page     | Source                                                    |
 | -------- | --------------------------------------------------------- |
 | Calendar | Month grid (ported from app-fundivers) — `EO_dives` + `EO_courses`, priced via `EO_prices`, dive trip/local color from `eo_dive_destinations`/`TravelDestinations` |
-| Sites    | One folder per site in `src/content/dive-sites/`, named by id — `site.ts`, `details.ts`, `photos/`, all three languages in each file. Regions in `dive-sites/regions.ts`. Grouped Domestic / International off each site's `international` flag (the shared `dive_sites` table was dropped upstream) |
+| Sites    | One folder per site in `src/content/dive-sites/`, named by id — **and the id is the address**, at the root of the site (`/bat-cave`); the list page keeps `/sites` — `site.ts`, `details.ts`, `photos/`, all three languages in each file. Regions in `dive-sites/regions.ts`. Grouped Domestic / International off each site's `international` flag (the shared `dive_sites` table was dropped upstream) |
 | Courses  | One folder per course in `src/content/courses/`, named by id — `card.ts` (tile), `details.ts` (write-up), `photos/`. Both files carry all three languages. The folder name is the `/courses/<id>` URL. Live upcoming sessions joined on the details' `matchCodes` |
-| Photos   | Self-hosted gallery discovered from `src/content/photos/gallery/`; one section per creature in `src/content/marine-life.ts`, captions in each folder's `photos.yaml` |
-| Team     | Placeholder roster (swap in real names/photos)            |
-| News     | One folder per post in `src/content/news/`, named `YYYY-MM-DD-slug` — the folder name *is* the date and the route. Up to three photos per post, discovered by glob. Translations sit in the post's own `article.ts` and are deliberately optional, falling back to English |
+| Sea Life (`/sealife`) | Self-hosted gallery discovered from `src/content/photos/gallery/`; one section per creature in `src/content/marine-life.ts`, captions in each folder's `photos.yaml`. Served by `Photos.svelte` — `photos` is the internal name, "Sea Life" the reader-facing one |
+| Origins & Team | `src/content/team.ts` — one entry per person with all three languages, an above-water and an underwater photo. `/origins` tells the founders' story; `/team` is the whole roster. The `/about` hub over them also carries the services overview and the Diving-in-Taiwan essay that used to sit under the landing page's event board |
+| Radio show | `/radio` — the same live stream as the bar's radio button, one `<audio>` element in `src/engine/radio.ts`. Nothing connects until somebody presses play |
+| Testimonials | `src/content/testimonials.ts` — **currently placeholder quotes**, and the file says so. Replace or empty before this goes live |
+| Reviews  | `src/content/reviews.ts` — links out to Google, Facebook, TripAdvisor and PADI. Three of the four are search URLs until somebody supplies the shop's real listing ids |
+| Surface Interval (`/surface-interval`) | One folder per post in `src/content/news/`, named `YYYY-MM-DD-slug` — the folder name *is* the date and the route. Up to three photos per post, discovered by glob. Translations sit in the post's own `article.ts` and are deliberately optional, falling back to English. `news` is the internal name throughout |
 
 Live data access lives in `src/engine/events.ts`.
 

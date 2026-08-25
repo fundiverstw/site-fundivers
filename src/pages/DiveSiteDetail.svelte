@@ -14,9 +14,11 @@
   import CoverPhoto from '$components/CoverPhoto.svelte'
   import DiveDescent from '$components/DiveDescent.svelte'
 
-  // The route param: /sites/<id>. The router serves this component for any
-  // /sites/<something> path, so we resolve the id from the current path.
-  let id = $derived($path.replace(/^\/sites\//, '').replace(/\/+$/, ''))
+  // The route param is the whole path: a dive site sits at the root of the
+  // site, so /bat-cave is Bat Cave. $engine/routes only sends an address here
+  // when it matches a folder that exists, so an id that resolves to nothing is
+  // a stale bookmark rather than a typo in the bar.
+  let id = $derived($path.replace(/^\//, '').replace(/\/+$/, ''))
   let site = $derived(diveSiteById(id))
   let details = $derived(site ? siteDetails(site.id, $locale) : null)
   // The site's name and tagline in the current language (English is the
@@ -178,7 +180,7 @@
                   {@const slug = marineSlug(m)}
                   {#if FILLED_SECTIONS.has(slug)}
                     <a
-                      href={`/photos#${slug}`}
+                      href={`/sealife#${slug}`}
                       class="rounded-full border border-reef-400/40 bg-reef-400/10 px-3 py-1 text-sm text-reef-100 transition-colors hover:border-reef-400 hover:bg-reef-400/20 hover:text-white"
                     >
                       {marineLabel(m, $locale)}

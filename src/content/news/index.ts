@@ -1,7 +1,9 @@
 import type { ResponsiveImage } from '$engine/responsive-image'
 
-// The /news feed: conferences, volunteer days, community outreach, educational
-// initiatives — the things the team turns up to.
+// The "Surface Interval" feed, served at /surface-interval: conferences,
+// volunteer days, community outreach, educational initiatives — the things the
+// team turns up to. `news` is the internal name and stays that way; only the
+// route and the labels in content/text/ carry the reader-facing one.
 //
 // ── Adding one ──────────────────────────────────────────────────────────────
 //
@@ -16,7 +18,7 @@ import type { ResponsiveImage } from '$engine/responsive-image'
 //       2-underwater.jpg
 //
 // **The folder name is the date and the address.** `2026-06-14-womens-dive-day`
-// publishes on 14 June 2026 at /news/womens-dive-day. There is deliberately no
+// publishes on 14 June 2026 at /surface-interval/womens-dive-day. There is deliberately no
 // `date:` or `slug:` field in article.ts to disagree with it — rename the
 // folder and both follow. news.test.ts rejects a folder that is not shaped
 // `YYYY-MM-DD-slug`, or whose date is not a real calendar day.
@@ -59,7 +61,8 @@ export type NewsArticleFile = NewsText & {
 export type NewsPhoto = { image: ResponsiveImage; caption: string | null; alt: string }
 
 export type NewsArticle = NewsText & {
-  /** From the folder name: the bit after the date. The address is /news/<slug>. */
+  /** From the folder name: the bit after the date. The address is
+   *  /surface-interval/<slug>. */
   slug: string
   /** From the folder name, `YYYY-MM-DD`. */
   date: string

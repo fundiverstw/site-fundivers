@@ -2,21 +2,22 @@
   import { CONTACT } from '$content/settings'
   import { t } from '$engine/i18n'
   import SocialIcons from './SocialIcons.svelte'
+  import { FOOTER_LINKS } from '$content/navigation'
   import logoUrl from '$assets/fd_logo.webp'
   import fundiveLogoUrl from '$assets/fundive-logo-dark.svg'
 
   const year = new Date().getFullYear()
 
-  // The sign-off carries the only link to the team page, so the word has to sit
+  // The sign-off carries a link to the staff roster, so the word has to sit
   // inside the sentence rather than beside it. Each language places {team}
   // where its own grammar wants it — hence a split rather than three fragments
   // glued in a fixed order. text.test.ts checks no translation drops the
-  // placeholder, which would quietly leave the page unreachable.
+  // placeholder.
   let proudly = $derived($t.footer.proudly.split('{team}'))
 </script>
 
 <footer id="contact" class="border-t border-white/10 text-brand-100">
-  <div class="mx-auto grid max-w-[1600px] gap-8 px-4 py-12 sm:px-6 md:grid-cols-3">
+  <div class="mx-auto grid max-w-[1600px] gap-8 px-4 py-12 sm:px-6 md:grid-cols-2 lg:grid-cols-4">
     <div>
       <div class="flex items-center gap-2">
         <img src={logoUrl} alt="FunDivers TW" class="h-10 w-auto" />
@@ -37,6 +38,18 @@
     <div>
       <h3 class="text-sm font-semibold uppercase tracking-wide text-white">{$t.footer.follow}</h3>
       <SocialIcons size={26} class="mt-3" />
+    </div>
+
+    <!-- The pages the four nav sections do not cover. The bar is deliberately
+         four links wide now, so this is the way in to the rest of the site —
+         which makes it load-bearing rather than decoration. -->
+    <div>
+      <h3 class="text-sm font-semibold uppercase tracking-wide text-white">{$t.footer.more}</h3>
+      <ul class="mt-3 space-y-2 text-sm">
+        {#each FOOTER_LINKS as link (link.href)}
+          <li><a class="hover:text-white" href={link.href}>{$t.nav[link.key]}</a></li>
+        {/each}
+      </ul>
     </div>
   </div>
 

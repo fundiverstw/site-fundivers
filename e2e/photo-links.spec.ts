@@ -7,29 +7,29 @@ import { visit, stubDatabase } from './helpers'
 // loading every photo on the site to show you the one you asked for.
 
 test('a marine-life chip links to its gallery section', async ({ page }) => {
-  await visit(page, '/sites/82-5')
+  await visit(page, '/82-5')
 
-  const chips = page.locator('a[href^="/photos#"]')
+  const chips = page.locator('a[href^="/sealife#"]')
   await expect(chips.first()).toBeVisible()
 
   // Every chip is a link, and every link names a section that exists.
   const hrefs = await chips.evaluateAll((els) => els.map((e) => e.getAttribute('href')))
   expect(hrefs.length).toBeGreaterThan(3)
-  expect(hrefs).toContain('/photos#moray_eels')
+  expect(hrefs).toContain('/sealife#moray_eels')
 
-  await page.goto('/photos')
+  await page.goto('/sealife')
   const keys = await page
     .locator('[id][class*="scroll-mt"]')
     .evaluateAll((els) => els.map((e) => e.id))
   for (const href of hrefs) {
     expect(keys, `${href} points at a section that does not exist`).toContain(
-      href!.replace('/photos#', ''),
+      href!.replace('/sealife#', ''),
     )
   }
 })
 
 test('the photos page opens one section and no more', async ({ page }) => {
-  await visit(page, '/photos')
+  await visit(page, '/sealife')
   // Scoped to main: the nav's language button also carries aria-expanded.
   const headers = page.locator('main [aria-expanded]')
   await expect(headers.first()).toBeVisible()
@@ -46,7 +46,7 @@ test('the photos page opens one section and no more', async ({ page }) => {
 })
 
 test('a shortcut exists for every group, including the empty ones', async ({ page }) => {
-  await visit(page, '/photos')
+  await visit(page, '/sealife')
   const shortcuts = page.locator('nav[aria-label] a[href^="#"]')
   const sections = page.locator('main [id][class*="scroll-mt"]')
 
@@ -63,7 +63,7 @@ test('a shortcut exists for every group, including the empty ones', async ({ pag
 test('the shortcuts and the sections lead with the showcase, then run alphabetical, in the same order', async ({
   page,
 }) => {
-  await visit(page, '/photos')
+  await visit(page, '/sealife')
   // One showcase leads the page — the shop's showpiece, open on arrival — and
   // everything after it is alphabetical. Sixty groups is well past the point
   // where anyone remembers an order, so after that one exception the rest has to
@@ -89,16 +89,16 @@ test('the shortcuts and the sections lead with the showcase, then run alphabetic
 })
 
 test('a chip is a link only when its section has photos', async ({ page }) => {
-  await visit(page, '/sites/82-5')
+  await visit(page, '/82-5')
 
   // The linked chips must all land somewhere with pictures in it. A link to a
   // "coming soon" heading is a dead end that looks like a destination.
   const targets = await page
-    .locator('a[href^="/photos#"]')
-    .evaluateAll((els) => els.map((e) => e.getAttribute('href')!.replace('/photos#', '')))
+    .locator('a[href^="/sealife#"]')
+    .evaluateAll((els) => els.map((e) => e.getAttribute('href')!.replace('/sealife#', '')))
   expect(targets.length).toBeGreaterThan(0)
 
-  await page.goto('/photos')
+  await page.goto('/sealife')
   for (const key of targets) {
     await expect(
       page.locator(`#${key} button`).first(),
@@ -108,7 +108,7 @@ test('a chip is a link only when its section has photos', async ({ page }) => {
 })
 
 test('a shortcut scrolls to its group and opens it', async ({ page }) => {
-  await visit(page, '/photos')
+  await visit(page, '/sealife')
   // Collapse the one that starts open, then reopen it from its shortcut. This
   // is the case where the hash is already in the address bar, so the browser
   // fires no event and only the click handler can do the work.
@@ -123,7 +123,7 @@ test('a shortcut scrolls to its group and opens it', async ({ page }) => {
 })
 
 test('opening a section shows its photos', async ({ page }) => {
-  await visit(page, '/photos')
+  await visit(page, '/sealife')
   // 'scorpionfish' has photos but, unlike nudibranchs, does not start open.
   const header = page.locator('#scorpionfish button').first()
   await expect(header).toHaveAttribute('aria-expanded', 'false')
@@ -135,7 +135,7 @@ test('opening a section shows its photos', async ({ page }) => {
 })
 
 test('a section with no photos says so and does not open', async ({ page }) => {
-  await visit(page, '/photos')
+  await visit(page, '/sealife')
   const header = page.locator('#whale_sharks button').first()
   // aria-disabled, not disabled: a `disabled` button is skipped by screen
   // readers, and "coming soon" is the thing worth hearing.
@@ -153,7 +153,7 @@ test('a section with no photos says so and does not open', async ({ page }) => {
 
 test('arriving at an anchor opens that section', async ({ page }) => {
   await stubDatabase(page)
-  await page.goto('/photos#nudibranchs')
+  await page.goto('/sealife#nudibranchs')
   const header = page.locator('#nudibranchs button').first()
   await expect(header).toHaveAttribute('aria-expanded', 'true')
   expect(await page.locator('#nudibranchs img').count()).toBeGreaterThan(0)
@@ -163,9 +163,9 @@ test('clicking a chip carries the anchor across the navigation', async ({ page }
   // The router moves between pages with pushState, which does not fire
   // hashchange — so this is the case that silently does nothing if the photos
   // page only listens for that one event.
-  await visit(page, '/sites/82-5')
-  await page.locator('a[href="/photos#nudibranchs"]').first().click()
+  await visit(page, '/82-5')
+  await page.locator('a[href="/sealife#nudibranchs"]').first().click()
 
-  await expect(page).toHaveURL(/\/photos#nudibranchs$/)
+  await expect(page).toHaveURL(/\/sealife#nudibranchs$/)
   await expect(page.locator('#nudibranchs button').first()).toHaveAttribute('aria-expanded', 'true')
 })

@@ -9,16 +9,44 @@
 
 export const en = {
   nav: {
+    // The bar is four sections. Each one is a hub page of its own *and* the
+    // label on a dropdown listing what sits under it — see Nav.svelte.
+    education: 'Education',
+    community: 'Community',
+    about: 'About Us',
+    goDiving: 'Go Diving',
+
+    // Under Education
     courses: 'Courses',
-    sites: 'Sites',
-    map: 'Map',
-    photos: 'Photos',
-    travel: 'Travel',
-    calendar: 'Calendar',
-    news: 'News',
-    gear: 'Gear',
-    services: 'Services',
+    life: 'Sea Life',
+    quiz: 'Quiz',
+
+    // Under Community. `news` is the internal name for the posts in
+    // src/content/news/; readers only ever see "Surface Interval".
+    news: 'Surface Interval',
+    testimonials: 'Testimonials',
+    reviews: 'Reviews',
+    fundive: 'FunDive App',
+
+    // Under About Us
+    origins: 'Origins',
     team: 'Team',
+
+    // Under Go Diving
+    calendar: 'Calendar',
+    sites: 'Dive Sites',
+    map: 'Map',
+    travel: 'Travel',
+    buildTrip: 'Build a Trip',
+
+    // Not in the bar — these label the footer's link map, which is now the
+    // way in to the pages the four sections do not cover.
+    services: 'Services',
+    gear: 'Gear',
+    cycling: 'Cycling Tours',
+    hiking: 'Hiking Tours',
+    websites: 'Websites',
+
     signIn: 'Sign in',
     radio: 'Radio show',
     menu: 'Toggle menu',
@@ -94,6 +122,9 @@ export const en = {
     loadingDetails: 'Loading details…',
     pendingImage: 'Image coming soon',
   },
+  // The landing page is the event board and nothing else. What used to sit
+  // beneath it — the services tiles and the Diving-in-Taiwan essay — now lives
+  // on About Us, under `about` below.
   home: {
     catchphrase: 'Breathe the Adventure. Explore with Confidence.',
     featured: 'Featured',
@@ -101,6 +132,83 @@ export const en = {
     upcomingCourses: 'Courses',
     upcomingTrips: 'Trips',
     adventures: 'Adventures',
+    taglineMain: 'Breathe the Adventure',
+    taglineSub: 'Explore with Confidence',
+  },
+  // The four section hubs. Each is a real page and the label on a nav dropdown.
+  education: {
+    title: 'Education',
+    subtitle: 'Learn to dive, dive better, and get to know what lives down there.',
+    coursesTitle: 'PADI Courses',
+    coursesDesc:
+      'The full PADI ladder, from a first breath underwater to going pro — taught in English, Mandarin and Japanese.',
+    lifeTitle: 'Sea Life',
+    lifeDesc:
+      'The creatures we meet on Taiwan’s reefs and wrecks, photographed by our own divers and sorted by what they are.',
+    quizTitle: 'Name that critter',
+    quizDesc: 'Flashcards over the whole gallery. See how many you can name before we tell you.',
+  },
+
+  community: {
+    title: 'Community',
+    subtitle: 'The people around the shop — what we get up to, and what they make of it.',
+    newsTitle: 'Surface Interval',
+    newsDesc:
+      'Conferences, volunteer days, outreach and teaching — what the team has been up to between dives.',
+    testimonialsTitle: 'Testimonials',
+    testimonialsDesc: 'In our divers’ own words: what it is like to learn and travel with us.',
+    reviewsTitle: 'Reviews',
+    reviewsDesc:
+      'What people say about us where we cannot edit it — Google, Facebook, TripAdvisor and PADI.',
+    radioTitle: 'Radio Show',
+    radioDesc: 'We broadcast live from the shop. Listen in here, or from the button in the bar.',
+    fundiveTitle: 'The FunDive App',
+    fundiveDesc:
+      'Book dives, follow your course progress and manage your bookings in our open-source dive-shop app.',
+  },
+
+  goDiving: {
+    title: 'Go Diving',
+    subtitle: 'Pick a date, pick a site, or draw your own line on the map.',
+    calendarTitle: 'Calendar',
+    calendarDesc: 'Every dive, course and trip on the schedule, with a place to reserve.',
+    sitesTitle: 'Dive Sites',
+    sitesDesc: 'Shore dives an hour from Taipei, through to world-class island walls.',
+    mapTitle: 'Map',
+    mapDesc: 'Taiwan’s dive sites, region by region, on a map you can zoom into.',
+    travelTitle: 'Dive Travel',
+    travelDesc: 'Planned group tours around Taiwan and across Asia, arranged end to end.',
+    buildTripTitle: 'Build a Trip',
+    buildTripDesc: 'Nothing on the calendar suits? Draft your own itinerary and we’ll price it.',
+  },
+
+  // About Us: the founders, the shop, the staff — then the services overview and
+  // the Diving-in-Taiwan essay, both moved here off the landing page.
+  about: {
+    title: 'About Us',
+    subtitle: 'Two instructors, a shop in Yonghe, and a lot of hours in the water.',
+    originsTitle: 'Origins',
+    originsDesc:
+      'How two instructors who could not stop talking about diving ended up with a shop in Yonghe.',
+    teamTitle: 'The Team',
+    teamDesc:
+      'The instructors and divemasters you will actually be in the water with — and why each of them dives.',
+    storyTitle: 'How FunDivers came to be',
+    storyParas: [
+      'FunDivers TW began the way most dive shops do: two instructors who could not stop talking about diving, and a list of friends that kept getting longer every time they came back from the coast.',
+      'Dennis Wong first breathed underwater in 1998. What caught him was the schooling fish — hundreds of them turning at once, as though something had told them all at the same moment — and he has been trying to show other people that ever since. He became a PADI Instructor in 2013 and has been IDC Staff since 2018, and PADI named him an Elite Instructor four years running, from 2020 to 2023, for exactly the kind of care that does not show up until something goes wrong and doesn’t.',
+      'Billy Evalt learned to dive in Vietnam in 2008, on a friend’s recommendation and against his own better judgement. He was hooked before the first dive was over. He has dived Thailand, Turkey, Italy and New Zealand since, became an instructor in 2012, and teaches for one reason: the moment a student’s eyes go wide underwater, the way his did.',
+      'The two met in Taipei and started running weekend trips out to the northeast coast — first for friends, then for friends of friends, then for enough people that it needed a name and a shop to keep the tanks in. FunDivers TW is what that turned into.',
+      'Today the shop teaches the full PADI range in three languages, guides Taiwan’s coast and islands year-round, runs group trips across Asia, and builds its own dive-shop software in the open. The list has grown. The reason has not: we still just want to take you down there and show you.',
+    ],
+    staffTitle: 'The people you dive with',
+    staffIntro:
+      'Instructors and divemasters who teach here week in, week out. Ask any of them why they dive and you get a different answer, which is rather the point.',
+    since: 'Diving since',
+    interests: 'Away from the water',
+    why: 'Why I dive',
+    aboveWater: 'Above the water',
+    underwater: 'Under the water',
     exploreServices: 'Explore our Services',
     exploreServicesIntro:
       'Discover the unique and valuable aspects that make Fun Divers TW the top choice for diving enthusiasts. With our extensive experience and dedication to customer satisfaction, we provide exceptional guided trips and convenient booking services as well as all PADI Recreational Dive Courses.',
@@ -139,9 +247,58 @@ export const en = {
       "Beyond Taiwan's shores, neighboring paradises like the Philippines and Indonesia offer complementary dive seasons, ensuring that the allure of underwater exploration knows no bounds.",
       "Embark on a journey through Taiwan's dive seasons and beyond, where every descent promises a glimpse into a world of wonder beneath the waves.",
     ],
-    taglineMain: 'Breathe the Adventure',
-    taglineSub: 'Explore with Confidence',
   },
+
+  origins: {
+    title: 'Origins',
+    subtitle: 'Where the shop came from, and the two people it came from.',
+  },
+
+  // The live show, at /radio under Community. The bar's radio button and this
+  // page drive the same stream — see $engine/radio.
+  radio: {
+    title: 'The FunDivers Radio Show',
+    subtitle: 'Diving talk, music, and whatever comes up — live from the shop.',
+    intro: [
+      'We broadcast live from the dive shop: what we saw last weekend, where we are going next, the odd argument about equipment, and music in between.',
+      'The stream only runs while a show is on. The rest of the time this page and the radio button in the bar both sit quietly and say so — nothing is buffering in the background.',
+    ],
+    listen: 'Listen live',
+    stop: 'Stop listening',
+    connecting: 'Connecting…',
+    live: 'On air now',
+    offAir: 'Off air',
+    offAirText:
+      'Nothing is broadcasting at the moment. Try again during a show, or follow along on social for a heads-up before we go on.',
+    idleText: 'Press play. If we are on air, you will hear us; if not, it will say so.',
+    barHint: 'The radio button in the bar does the same thing, from any page on the site.',
+  },
+
+  testimonials: {
+    title: 'Testimonials',
+    subtitle: 'What our divers say, in their own words.',
+    none: 'No testimonials yet.',
+    ctaTitle: 'Dived with us?',
+    ctaText: 'We would love to hear how it went — write to us, or leave a public review.',
+    leaveReview: 'Leave a review',
+    contact: 'Email us',
+  },
+
+  reviews: {
+    title: 'Reviews',
+    subtitle: 'We don’t host these. Read them where they were written.',
+    intro:
+      'Every review below sits on somebody else’s site, where we cannot edit or hide a word of it. Have a read — and if you have dived with us, adding yours genuinely helps a small shop get found.',
+    readReviews: 'Read reviews',
+    writeReview: 'Write a review',
+    platforms: {
+      google: 'The busiest of the four, and the one most people find first.',
+      facebook: 'Recommendations from divers who follow the shop day to day.',
+      tripadvisor: 'Where visiting divers planning a trip to Taiwan tend to look.',
+      padi: 'Our PADI dive centre listing, with ratings from certified students.',
+    },
+  },
+
   getInTouch: {
     title: 'Get In Touch',
     seeCalendar: 'See Full Calendar',
@@ -262,9 +419,11 @@ export const en = {
       loggedDives: 'Logged dives:',
     },
   },
+  // The gallery, served at /sealife. `photos` is the internal name: the files
+  // live in src/content/photos/ and the page is still a wall of photographs.
   photos: {
-    title: 'Photos',
-    subtitle: 'A glimpse of life beneath the waves with FunDivers TW.',
+    title: 'Sea Life',
+    subtitle: 'What lives down there — photographed on our own dives, creature by creature.',
     seeMore: 'See more on social',
     follow: 'Follow along for trip recaps, marine life, and behind-the-scenes.',
     comingSoon: 'Photos coming soon',
@@ -301,21 +460,24 @@ export const en = {
     empty: 'There are no gallery photos to quiz on yet.',
     backToPhotos: 'Back to the gallery',
   },
+  // The staff roster, at /team under About Us.
   team: {
-    title: 'Fun Divers Team',
+    title: 'The Team',
     subtitle: 'Dedication. Expertise. Passion.',
     visitWebsite: 'Visit website →',
     diveWithUs: 'Dive with us',
     diveWithUsText: 'Questions about a course or trip? We’re happy to help.',
     roles: { idc: 'IDC Staff Instructor', instructor: 'Instructor', divemaster: 'Divemaster' },
   },
+  // Presented as "Surface Interval" at /surface-interval. `news` is the internal
+  // name — the posts live in src/content/news/, one folder each.
   news: {
-    title: 'News',
+    title: 'Surface Interval',
     subtitle:
-      'Conferences, volunteer days, outreach and teaching — what the FunDivers team has been up to.',
+      'Conferences, volunteer days, outreach and teaching — what the FunDivers team gets up to between dives.',
     none: 'No news yet. Check back soon.',
     notFound: 'That story couldn’t be found.',
-    backToAll: 'All news',
+    backToAll: 'All posts',
     // The chip on each card. Keys must match NEWS_KINDS in content/news.ts.
     kinds: {
       conference: 'Conference',
@@ -328,8 +490,9 @@ export const en = {
     blurb: 'Guided dive trips, PADI courses, and the best dive sites across Taiwan and beyond.',
     contact: 'Contact',
     follow: 'Follow',
+    more: 'More',
     rights: 'Fun Divers Taiwan. All rights reserved.',
-    // {team} is replaced by a link to /team — the only route into that page.
+    // {team} is replaced by a link to the staff roster on /about.
     proudly: 'Proudly created by the FunDivers {team} in Taipei, Taiwan',
     team: 'Team',
     openSource: 'Open source',

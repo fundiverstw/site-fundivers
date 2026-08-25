@@ -12,9 +12,9 @@ case you drop the file in and it appears — no list of filenames to keep in syn
 | of a **dive site** | `src/content/dive-sites/<site-id>/photos/` | **No.** Just drop the file in. |
 | of a **course** | `src/content/courses/<course-id>/photos/` | **No.** |
 | of a **news event** | `src/content/news/<folder>/` | Only to caption it — see [Adding a news post](adding-news.md). |
-| for the **Photos gallery** page | `src/content/photos/gallery/<creature>/` | **No.** The section already exists. |
+| for the **Sea Life gallery** page (`/sealife`) | `src/content/photos/gallery/<creature>/` | **No.** The section already exists. |
 | a **calendar trip** with no site of its own | `src/content/photos/general/` | **No.** |
-| a **team headshot** | `src/content/photos/team/` | Yes — one line in `src/content/team.ts`. |
+| a **staff photo**, above water or under it | `src/content/photos/team/` | Yes — one line in `src/content/team.ts` (`above:` or `under:`). |
 
 ```
 src/content/
@@ -67,9 +67,9 @@ Each section is a folder named after the creature, lowercased with underscores:
 
 | The chip on a dive-site page | The folder to create | The link it answers |
 | --- | --- | --- |
-| Moray eels | `gallery/moray_eels/` | `/photos#moray_eels` |
-| Sea fans | `gallery/sea_fans/` | `/photos#sea_fans` |
-| Shrimp and crabs | `gallery/shrimp_and_crabs/` | `/photos#shrimp_and_crabs` |
+| Moray eels | `gallery/moray_eels/` | `/sealife#moray_eels` |
+| Sea fans | `gallery/sea_fans/` | `/sealife#sea_fans` |
+| Shrimp and crabs | `gallery/shrimp_and_crabs/` | `/sealife#shrimp_and_crabs` |
 
 Make the folder, drop photos in, and the section stops saying "coming soon" by itself.
 Every photo you add here also becomes a flashcard on **/quiz**, answered with the

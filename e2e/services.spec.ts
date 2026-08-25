@@ -1,12 +1,15 @@
 import { test, expect } from '@playwright/test'
-import { visit, clickNavLink } from './helpers'
+import { visit } from './helpers'
 
 // The /services hub: one card per offering, each linking to that service's page.
 
 test.describe('the services hub', () => {
-  test('is reachable from the navigation', async ({ page, isMobile }) => {
+  // The bar is four sections now and this is not one of them, so the footer's
+  // link map is the way in — which makes that map load-bearing rather than
+  // decoration, and worth a test of its own.
+  test('is reachable from the footer', async ({ page }) => {
     await visit(page, '/')
-    await clickNavLink(page, 'Services', isMobile)
+    await page.locator('footer').getByRole('link', { name: 'Services', exact: true }).click()
 
     await expect(page).toHaveURL('/services')
     await expect(page.getByRole('heading', { name: 'Our Services', level: 1 })).toBeVisible()

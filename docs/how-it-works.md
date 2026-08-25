@@ -38,42 +38,95 @@ If you add a page, add it to that list in `App.svelte`. Nothing else changes.
 anywhere. Adding a page there and stopping means a page only somebody who types the
 address can ever see.
 
-The navigation bar is a separate list, at the top of `src/components/Nav.svelte`:
+The navigation is a separate list, in `src/content/navigation.ts`:
 
 ```ts
-let leftLinks = $derived([
-  { href: '/courses', label: $t.nav.courses },
+export const SECTIONS: NavSection[] = [
+  {
+    id: 'education',
+    href: '/education',
+    key: 'education',
+    items: [
+      { href: '/courses', key: 'courses' },
+      { href: '/sealife', key: 'life' },
+    ],
+  },
   …
-])
+]
 ```
 
-Nine links fit beside the logo, and that is about the limit — two browser tests
+Four sections, each a hub page **and** a dropdown listing what is under it. Three things
+read that one list — the bar, the mobile menu, and the hub pages themselves — so a page
+cannot end up in the menu and missing from its hub. `key` is a key in the `nav` block of
+`src/content/text/`, so no label is written here.
+
+The bar used to be nine flat links, which was its limit: two browser tests
 (`the whole navigation fits` and `the bar stays on one row, in every language`) fail if
-the bar runs off a 1280px screen or wraps onto a second row. Watch the second one in
+it runs off a 1280px screen or wraps onto a second row. Watch the second one in
 particular: a Japanese label is half again as wide as its English twin, and CJK text
 breaks between any two characters, so a bar that has run out of room does not overflow —
-it quietly grows to two rows. **Adding a tenth link probably means taking one out.** So
-several pages are reached from somewhere else instead:
+it quietly grows to two rows. Four sections leave real headroom, but a fifth is a
+decision, not a line of code.
+
+Pages that are not in any section are reached from the footer's link map, built from
+`FOOTER_LINKS` in the same file:
 
 | Page | Reached from |
 | --- | --- |
-| Gear, Cycling, Hiking, FunDive, Websites | The cards on the Services page (`src/pages/Services.svelte`); Gear also from the Home page |
-| Quiz | The card at the top of the Photos page — it is the same photographs |
-| A single news story | Its card on the News page (`/news/<slug>`) |
+| Services, Gear, Cycling, Hiking, Websites | The footer's **More** column (`src/components/Footer.svelte`); Gear, Cycling and Hiking also from the cards on the Services page |
+| Quiz | The card at the top of the Sea Life page, and the Education hub — it is the same photographs |
+| A single Surface Interval story | Its card on the feed (`/surface-interval/<slug>`) |
 
-The **Team** page is in the bar *and* in the sign-off at the bottom of every page
-("Proudly created by the FunDivers **Team** in Taipei, Taiwan", in
-`src/components/Footer.svelte`), which was its only way in before.
+The staff roster (`/team`, under About Us) is in the bar *and* in the sign-off at the
+bottom of every page ("Proudly created by the FunDivers **Team** in Taipei, Taiwan", in
+`src/components/Footer.svelte`).
 
 **If you remove a link, check what else pointed at that page first.** A page whose last
 link goes is still there, still builds, still passes the type checker — and no visitor
-will ever find it. `e2e/footer.spec.ts` exists to catch precisely that for Team.
+will ever find it. `e2e/footer.spec.ts` and `e2e/sections.spec.ts` exist to catch
+precisely that.
 
-The keys in `App.svelte` starting with a `:` — `:site`, `:course`, `:news`, and `:missing`
-for the 404 — are the detail pages. They cannot be written as plain paths because one
-component serves every address underneath a prefix: `/news/reef-cleanup` and
-`/news/padi-conference` are both `:news`, which reads the slug back off the address and
-looks the story up.
+### The route table
+
+The addresses the site answers are listed in `src/engine/routes.ts` (`ROUTE_PATHS`), and
+the components that serve them are in `App.svelte`. The two are kept in step by the type
+rather than by care: App's table is a `Record<RouteKey, …>`, so an address with no
+component, or a component for an address that is not a route, fails `npm run check`.
+
+The keys starting with a `:` — `:site`, `:course`, `:news`, and `:missing` for the 404 —
+are the detail pages. They cannot be written as plain paths because one component serves many
+addresses: `/surface-interval/reef-cleanup` and `/surface-interval/padi-conference` are
+both `:news`, which reads the slug back off the address and looks the story up.
+
+**A dive site sits at the root of the site.** `/bat-cave`, not `/sites/bat-cave` — the
+list page keeps `/sites`. So a dive-site id and a page path are competing for the same
+namespace, and a page wins. That means a site whose folder happened to be named `map` or
+`radio` would never open: no error, no 404, just the wrong page under the right address,
+with the site still listed and still linked. Nothing else can catch that, so
+`src/engine/routes.test.ts` does, on every commit.
+
+`routeKey` only sends an address to `:site` when a folder of that name actually exists —
+the ids come from `src/content/dive-sites/ids.ts`, which globs the folder names without
+importing what is in them. An id that does not exist gets the 404 rather than a detail
+page apologising for itself, which is the better of the two answers: a search engine can
+tell them apart.
+
+### Addresses that moved
+
+Several addresses changed when the site was reorganised, and the old ones are still in
+bookmarks, in search results and on the shop's old Wix site. `MOVED` and `movedTo` in
+`src/engine/router.ts` rewrite them rather than letting them 404:
+
+| Old | New |
+| --- | --- |
+| `/photos` | `/sealife` |
+| `/news`, `/news/<slug>` | `/surface-interval`, `/surface-interval/<slug>` |
+| `/sites/<id>` | `/<id>` |
+
+The rewrite is a `replaceState`, not a push, so the Back button returns to wherever the
+visitor came from rather than bouncing off the old address again. Any anchor comes with
+it: `/photos#nudibranchs` lands on `/sealife#nudibranchs`. If you rename another page, add
+a row there and a case to `movedTo` in `src/engine/router.test.ts`.
 
 ---
 

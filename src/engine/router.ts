@@ -18,7 +18,7 @@ export const path = readable(window.location.pathname, (set) => {
  *  Not exported: nothing outside this file needs it yet. */
 function navigate(to: string): void {
   // Compare the whole address, not just the path. Comparing paths alone meant
-  // clicking "Photos" while sitting on /photos#nudibranchs did nothing at all —
+  // clicking "Sea Life" while sitting on /sealife#nudibranchs did nothing at all —
   // same path, so it returned early, leaving the stale anchor in the address bar
   // and the page still scrolled where it was.
   const next = new URL(to, window.location.href)
@@ -28,6 +28,38 @@ function navigate(to: string): void {
   window.dispatchEvent(new Event('app:navigate'))
   // A link to an anchor is asking for a place in the page, not the top of it.
   if (!next.hash) window.scrollTo({ top: 0, behavior: 'instant' })
+}
+
+// Addresses that moved when the site was reorganised into four sections. They
+// are still in people's bookmarks, in search results and on the old Wix site,
+// so they are answered by quietly rewriting the address rather than with a 404.
+const MOVED: Record<string, string> = {
+  '/photos': '/sealife',
+  '/news': '/surface-interval',
+}
+
+/** Where this path has moved to, or null if it has not moved.
+ *
+ *  Path only — the hash and query string are carried over by `replacePath`,
+ *  which is what keeps /photos#nudibranchs landing on the right section. */
+export function movedTo(pathname: string): string | null {
+  const p = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname
+  if (MOVED[p]) return MOVED[p]
+  // The articles moved with their feed: /news/<slug> -> /surface-interval/<slug>.
+  if (p.startsWith('/news/')) return `/surface-interval/${p.slice('/news/'.length)}`
+  // Dive sites came up to the root: /sites/bat-cave -> /bat-cave. The list page
+  // itself stays at /sites, which the length check leaves alone.
+  if (p.startsWith('/sites/') && p.length > '/sites/'.length) return p.slice('/sites'.length)
+  return null
+}
+
+/** Swap the address without adding a history entry — a moved page, not a
+ *  navigation. Going back must return to wherever the visitor came from, not to
+ *  the address that redirected them here a moment ago. */
+export function replacePath(pathname: string): void {
+  const { search, hash } = window.location
+  window.history.replaceState({}, '', pathname + search + hash)
+  window.dispatchEvent(new Event('app:navigate'))
 }
 
 /**

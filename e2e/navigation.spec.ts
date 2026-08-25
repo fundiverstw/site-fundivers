@@ -38,13 +38,13 @@ test('a dive-site card leads to that dive site', async ({ page }) => {
 
   await page.getByRole('link', { name: 'Bat Cave' }).first().click()
 
-  await expect(page).toHaveURL('/sites/bat-cave')
+  await expect(page).toHaveURL('/bat-cave')
   await expect(page.getByRole('heading', { name: 'Bat Cave', level: 1 })).toBeVisible()
 })
 
 test('going back returns to the previous page', async ({ page, isMobile }) => {
   await visit(page, '/')
-  await clickNavLink(page, 'Sites', isMobile)
+  await clickNavLink(page, 'Dive Sites', isMobile)
   await expect(page).toHaveURL('/sites')
 
   await page.goBack()
@@ -52,9 +52,11 @@ test('going back returns to the previous page', async ({ page, isMobile }) => {
   await expect(page.locator('header')).toBeVisible()
 })
 
-// Adding a ninth link to the nav widened the bar until it slid underneath the
-// promo banner that hangs off the logo, which then swallowed the click on the
-// first link. Nothing failed except this: the page simply did not change.
+// A too-wide bar once slid underneath the promo banner that hangs off the logo,
+// which then swallowed the click on the first link. Nothing failed except this:
+// the page simply did not change. Four sections leave far more room than the
+// nine flat links that caused it, which is exactly why this stays — the check is
+// cheap and the failure is silent.
 // Tagged rather than skipped: the desktop bar does not exist on a phone.
 test('nothing covers the navigation links', { tag: '@desktop-only' }, async ({ page }) => {
   await visit(page, '/')
@@ -99,8 +101,8 @@ test('the navigation offers a way in to the booking app', async ({ page, isMobil
   await expect(signIn).toHaveAttribute('rel', /noopener/)
 })
 
-// Nine links now, and the fit test above only ever sees English. A Japanese
-// label is half again as wide as its English twin — and CJK text may break
+// The fit test above only ever sees English. A Japanese label is half again as
+// wide as its English twin — and CJK text may break
 // between any two characters, so the bar does not overflow when it runs out of
 // room: the links quietly wrap and the bar grows to two rows, which no
 // scroll-width check notices. 1280 is the tightest width and 1536 the next, the
@@ -113,15 +115,28 @@ test('the bar stays on one row, in every language', { tag: '@desktop-only' }, as
       await page.setViewportSize({ width, height: 900 })
       await visit(page, '/')
 
+      // Measured as the vertical spread of the links against the tallest one of
+      // them. Counting distinct `top` values reads like the obvious check and
+      // is not: the sign-in link is a different height from a section link, so
+      // two items centred on the same row sit at different tops and the count
+      // says "two rows" while the bar is plainly one. On one row the union of
+      // every box can be no taller than the tallest box; on two it is about
+      // twice that, so there is nothing in between to be delicate about.
       const rows = await page.evaluate(() => {
         const bar = document.querySelector('header nav')!
-        const tops = new Set<number>()
-        for (const link of bar.querySelectorAll('a'))
-          tops.add(Math.round(link.getBoundingClientRect().top))
-        return { rows: tops.size, right: bar.getBoundingClientRect().right }
+        const boxes = [...bar.querySelectorAll('a')].map((a) => a.getBoundingClientRect())
+        const spread =
+          Math.max(...boxes.map((b) => b.bottom)) - Math.min(...boxes.map((b) => b.top))
+        return {
+          spread,
+          tallest: Math.max(...boxes.map((b) => b.height)),
+          right: bar.getBoundingClientRect().right,
+        }
       })
 
-      expect(rows.rows, `the ${locale} bar wrapped onto two rows at ${width}px`).toBe(1)
+      expect(rows.spread, `the ${locale} bar wrapped onto two rows at ${width}px`).toBeLessThan(
+        rows.tallest * 1.5,
+      )
 
       // And it stays inside the page's own margin, not just inside the window.
       const gutter = await page.evaluate(
@@ -138,9 +153,11 @@ test('the bar stays on one row, in every language', { tag: '@desktop-only' }, as
   }
 })
 
-// The desktop bar used to appear at 768px, where nine links and the logo do not
-// fit: the page scrolled sideways on every tablet and small laptop. It now
-// starts at 1280px, and below that the menu button takes over.
+// The desktop bar used to appear at 768px, where the links and the logo did not
+// fit: the page scrolled sideways on every tablet and small laptop. It starts at
+// 1280px, and below that the menu button takes over. The bar is four sections
+// wide now rather than nine links, but the dropdowns want a pointer, so the
+// breakpoint stays where it is.
 test('the whole navigation fits, at every width', { tag: '@desktop-only' }, async ({ page }) => {
   for (const width of [768, 1024, 1280, 1366, 1440, 1920]) {
     await page.setViewportSize({ width, height: 900 })

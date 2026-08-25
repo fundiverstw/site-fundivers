@@ -29,7 +29,7 @@ test.describe('every page', () => {
 
 test('a dive-site detail page renders its sections', async ({ page }) => {
   const problems = watchForProblems(page)
-  await visit(page, '/sites/bat-cave')
+  await visit(page, '/bat-cave')
   await page.waitForLoadState('networkidle')
 
   await expect(page.getByRole('heading', { name: 'Bat Cave', level: 1 })).toBeVisible()
@@ -48,10 +48,14 @@ test('an unknown address shows the not-found page, not a blank screen', async ({
   await expect(page.getByRole('heading', { name: 'Page not found' })).toBeVisible()
 })
 
-test('an unknown dive site says so instead of rendering an empty page', async ({ page }) => {
-  await visit(page, '/sites/no-such-dive-site')
+// Dive sites sit at the root, so an id that does not exist is not a dive site at
+// all — it is just an unknown address, and gets the 404 rather than a detail
+// page apologising for itself. That is the better answer of the two: a search
+// engine can tell the difference.
+test('an id that is not a dive site gets the 404, not an empty detail page', async ({ page }) => {
+  await visit(page, '/no-such-dive-site')
 
-  await expect(page.getByText(/that dive site couldn.t be found/i)).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Page not found' })).toBeVisible()
 })
 
 test('an unknown course says so instead of rendering an empty page', async ({ page }) => {

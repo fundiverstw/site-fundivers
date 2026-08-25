@@ -155,11 +155,11 @@
       <!-- Only offered once the answer is on the table: following it before you
            have guessed walks you into a gallery section that names the animal. -->
       {#if revealed}
-        <a href={`/photos#${card.key}`} class="font-semibold text-reef-300 hover:text-reef-200">
+        <a href={`/sealife#${card.key}`} class="font-semibold text-reef-300 hover:text-reef-200">
           {$t.quiz.seeInGallery}
         </a>
       {:else}
-        <a href="/photos" class="text-brand-100 underline underline-offset-4 hover:text-white">
+        <a href="/sealife" class="text-brand-100 underline underline-offset-4 hover:text-white">
           {$t.quiz.backToPhotos}
         </a>
       {/if}

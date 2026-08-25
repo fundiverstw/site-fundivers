@@ -6,6 +6,7 @@ import { COURSES_TEXT_EN, coursesJa, coursesZhTW } from './courses'
 import { COURSE_DETAILS, courseDetailsJa, courseDetailsZhTW } from './courses/details'
 import { MARINE_LIFE, marineLifeJa, marineLifeZhTW } from './marine-life'
 import { TEAM_TEXT_EN, teamJa, teamZhTW } from './team'
+import { TESTIMONIALS_TEXT_EN, testimonialsJa, testimonialsZhTW } from './testimonials'
 
 // Each content entity keeps its English as the canonical value and carries its
 // translations beside it, in the same file. TypeScript checks the *shape* of a
@@ -66,6 +67,11 @@ const domains = {
   courses: { en: COURSES_TEXT_EN, ja: coursesJa, 'zh-TW': coursesZhTW },
   'marine-life': { en: marineEn, ja: marineLifeJa, 'zh-TW': marineLifeZhTW },
   team: { en: TEAM_TEXT_EN, ja: teamJa, 'zh-TW': teamZhTW },
+  testimonials: {
+    en: TESTIMONIALS_TEXT_EN,
+    ja: testimonialsJa,
+    'zh-TW': testimonialsZhTW,
+  },
   'dive-site-details': { en: diveDetailsEn, ja: diveSiteDetailsJa, 'zh-TW': diveSiteDetailsZhTW },
   'course-details': { en: courseDetailsEn, ja: courseDetailsJa, 'zh-TW': courseDetailsZhTW },
 } as const

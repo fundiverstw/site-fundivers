@@ -17,15 +17,17 @@ import { visit } from './helpers'
 // drives — 412px wide at a device pixel ratio of 2.625 — asks for ~995px and
 // takes the largest copy there is. So the limit is tight rather than generous;
 // anything above it means a copy was served that the ladder should not contain.
+// The landing page is not in this list any more: it is the event board and
+// nothing else, and every photo on it comes from the database — which these
+// tests stub out. /about is where its static photography went.
 const PAGES = [
-  { route: '/', limit: 960 },
+  { route: '/about', limit: 960 },
   { route: '/courses', limit: 960 },
-  { route: '/team', limit: 960 },
   // The gallery grid is capped harder than the layout would imply — see the
   // `gallery` entry in src/engine/responsive-image.ts for why. 70vw on the same
   // phone asks for ~757px and takes the 768 copy; on desktop the 22rem column
   // takes 384. A thumbnail above 768 means that cap has been undone.
-  { route: '/photos', limit: 768 },
+  { route: '/sealife', limit: 768 },
 ]
 
 for (const { route, limit } of PAGES) {
@@ -93,7 +95,7 @@ test('the lightbox shows the full-size photo, not the thumbnail', async ({ page 
   // The other half of the gallery bargain: the grid is capped because the
   // lightbox is not. If this ever picks the thumbnail, the cap stops being a
   // trade and just becomes a downgrade.
-  await visit(page, '/photos')
+  await visit(page, '/sealife')
   await page.waitForLoadState('networkidle')
 
   // The gallery grid's photos are each wrapped in a button that opens the

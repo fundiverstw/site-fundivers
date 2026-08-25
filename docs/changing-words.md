@@ -19,7 +19,7 @@ Say the navigation bar says **Gear** and you want it to say **Shop**.
 Open `src/content/text/en.ts` and find the line:
 
 ```ts
-nav: { courses: 'Courses', sites: 'Sites', map: 'Map', photos: 'Photos', travel: 'Travel', calendar: 'Calendar', news: 'News', gear: 'Gear', services: 'Services', radio: 'Radio show' },
+nav: { education: 'Education', community: 'Community', about: 'About Us', goDiving: 'Go Diving', courses: 'Courses', life: 'Sea Life', news: 'Surface Interval', sites: 'Dive Sites', gear: 'Gear', … },
 ```
 
 Change only the part inside the quotes:
@@ -143,7 +143,8 @@ file to review.
 | A course's title and one-line summary | `src/content/courses/<id>/card.ts` |
 | The paragraphs on a course page | `src/content/courses/<id>/details.ts` |
 | A news post's headline, summary and write-up | `src/content/news/<folder>/article.ts` — **allowed to be incomplete**, see [Adding a news post](adding-news.md) |
-| A team member's bio | `src/content/team.ts` |
+| A team member's bio, interests, or why they dive | `src/content/team.ts` |
+| A testimonial | `src/content/testimonials.ts` — the quotes there are placeholders |
 | The creature names on the Photos page and the dive-site chips | `src/content/marine-life.ts` |
 | A region's label and the map blurb | `src/content/dive-sites/regions.ts` |
 

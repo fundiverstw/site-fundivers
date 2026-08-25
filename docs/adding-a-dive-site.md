@@ -7,7 +7,7 @@
 ```
 src/content/dive-sites/turtle-cove/
   site.ts      the row behind /sites and /map — name, coordinates, region, all 3 languages
-  details.ts     the write-up on /sites/turtle-cove — all 3 languages (optional)
+  details.ts     the write-up on /turtle-cove — all 3 languages (optional)
   photos/      pictures of the site (optional)
 ```
 
@@ -16,7 +16,7 @@ the folder needs editing.
 
 The folder name is the site's **id** and the only place it is written. Lowercase,
 hyphens instead of spaces. It becomes the web address:
-`fundiverstw.com/sites/turtle-cove`.
+`fundiverstw.com/turtle-cove`.
 
 ---
 

@@ -42,6 +42,13 @@ import { TEAM_TEXT_EN, teamJa, teamZhTW, type MemberText } from '$content/team'
 
 import { NEWS_TEXT_EN, newsJa, newsZhTW, type NewsText } from '$content/news'
 
+import {
+  TESTIMONIALS_TEXT_EN,
+  testimonialsJa,
+  testimonialsZhTW,
+  type TestimonialText,
+} from '$content/testimonials'
+
 // The long write-ups — the biggest translated payload — resolve in their
 // own module ($engine/i18n-details), imported only by the two detail pages that
 // render them. Keeping them out of here is what stops the Sites / Courses / Map
@@ -109,6 +116,26 @@ const TEAM_TEXT: Record<Locale, Record<string, MemberText>> = {
  *  English). */
 export function memberBio(name: string, l: Locale): string {
   return TEAM_TEXT[l][name]?.bio ?? TEAM_TEXT_EN[name]?.bio ?? ''
+}
+
+/** Everything translatable about a member — bio plus the two profile lines the
+ *  About page shows. Falls back to the English entry, then to empty strings, so
+ *  a member added without translations still renders. */
+export function memberText(name: string, l: Locale): MemberText {
+  return TEAM_TEXT[l][name] ?? TEAM_TEXT_EN[name] ?? { bio: '', interests: '', why: '' }
+}
+
+// ── Testimonials ────────────────────────────────────────────────────────────
+
+const TESTIMONIALS_TEXT: Record<Locale, Record<string, TestimonialText>> = {
+  en: TESTIMONIALS_TEXT_EN,
+  ja: testimonialsJa,
+  'zh-TW': testimonialsZhTW,
+}
+
+/** One testimonial's quote + context, keyed by its id (falls back to English). */
+export function testimonialText(id: string, l: Locale): TestimonialText {
+  return TESTIMONIALS_TEXT[l][id] ?? TESTIMONIALS_TEXT_EN[id] ?? { quote: '', context: '' }
 }
 
 // ── News ────────────────────────────────────────────────────────────────────

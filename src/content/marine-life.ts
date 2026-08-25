@@ -311,7 +311,7 @@ export const MARINE_TAXA: Record<MarineLife, string> = {
 /**
  * The anchor a chip links to, and the gallery folder that fills it.
  *
- * "Moray eels" -> "moray_eels", so /photos#moray_eels and
+ * "Moray eels" -> "moray_eels", so /sealife#moray_eels and
  * src/content/photos/gallery/moray_eels/ are the same name in both places.
  */
 export function marineSlug(label: string): string {

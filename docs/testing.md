@@ -160,7 +160,7 @@ it. They take about twelve seconds and they test what a visitor would notice:
 - the map zooms into a region — by mouse and by keyboard — and back out again
 - the footer sign-off still links to the Team page, in all three languages — that link is
   the only way in, so losing it hides a whole page without breaking anything
-- a news card opens its story, a pasted `/news/<slug>` works on a cold load, and an
+- a news card opens its story, a pasted `/surface-interval/<slug>` works on a cold load, and an
   untranslated story still reads in Japanese and Chinese rather than coming out blank
 - the octopus by the logo works through his four pitches in order, goes away, and comes
   back ten seconds later; names the real featured event; stands aside for the phone menu

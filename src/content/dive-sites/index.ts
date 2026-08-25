@@ -1,9 +1,9 @@
 // The dive-site catalog — the list behind the /sites and /map pages, assembled
 // from the folders beside this file.
 //
-// One folder per dive site. The folder name is the site id: it is the
-// /sites/<id> address, the key the write-up is found by, and the name of its
-// photos/ folder. To add a site, copy a folder —
+// One folder per dive site. The folder name is the site id: it is the address —
+// `/bat-cave`, at the root of the site — the key the write-up is found by, and
+// the name of its photos/ folder. To add a site, copy a folder —
 // there is no list to keep in step, and nothing to renumber.
 //
 // The row and the write-up are read by two separate barrels on purpose. /sites
@@ -69,14 +69,14 @@ export async function fetchDiveSites(): Promise<DiveSite[]> {
   return [...DIVE_SITES].sort((a, b) => a.name.localeCompare(b.name))
 }
 
-/** A single dive site by its id (the /sites/<id> route param), or null. */
+/** A single dive site by its id (which is its address), or null. */
 export function diveSiteById(id: string): DiveSite | null {
   return DIVE_SITES.find((s) => s.id === id) ?? null
 }
 
 /** Path to a dive site's dedicated detail page. */
 export function diveSitePath(site: Pick<DiveSite, 'id'>): string {
-  return `/sites/${site.id}`
+  return `/${site.id}`
 }
 
 // Which dive site is a calendar event about?

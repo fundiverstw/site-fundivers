@@ -7,10 +7,10 @@
   import { SIZES } from '$engine/responsive-image'
   import Photo from '$components/Photo.svelte'
 
-  // One article: /news/<slug>. The router serves this component for any
-  // /news/<something>, so the slug is read back off the current path — the same
-  // arrangement as DiveSiteDetail and CourseDetail.
-  let slug = $derived($path.replace(/^\/news\//, '').replace(/\/+$/, ''))
+  // One article: /surface-interval/<slug>. The router serves this component for
+  // any /surface-interval/<something>, so the slug is read back off the current
+  // path — the same arrangement as DiveSiteDetail and CourseDetail.
+  let slug = $derived($path.replace(/^\/surface-interval\//, '').replace(/\/+$/, ''))
   let article = $derived(newsBySlug(slug))
   let text = $derived(article ? newsText(article.slug, $locale) : null)
 
@@ -36,13 +36,13 @@
 {#if !article || !text}
   <section class="mx-auto max-w-2xl px-4 py-16 text-center sm:px-6">
     <p class="glass rounded-2xl p-8 text-brand-100">{$t.news.notFound}</p>
-    <a href="/news" class="mono mt-6 inline-block text-sm font-semibold text-reef-300"
+    <a href="/surface-interval" class="mono mt-6 inline-block text-sm font-semibold text-reef-300"
       >← {$t.news.backToAll}</a
     >
   </section>
 {:else}
   <article class="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-14">
-    <a href="/news" class="mono text-xs font-semibold text-reef-300 hover:text-reef-200"
+    <a href="/surface-interval" class="mono text-xs font-semibold text-reef-300 hover:text-reef-200"
       >← {$t.news.backToAll}</a
     >
 

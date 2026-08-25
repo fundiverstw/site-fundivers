@@ -14,7 +14,7 @@ const { fakeWindow } = vi.hoisted(() => {
   return { fakeWindow }
 })
 
-const { internalHref, hashId } = await import('./router')
+const { internalHref, hashId, movedTo } = await import('./router')
 
 // The router's own navigation — clicking a link, going back, deep-loading a
 // route — is driven by the browser tests (e2e/navigation.spec.ts), which is
@@ -130,5 +130,54 @@ describe('hashId', () => {
   it('strips only the first hash', () => {
     stubHash('##double')
     expect(hashId()).toBe('#double')
+  })
+})
+
+// ── Moved addresses ─────────────────────────────────────────────────────────
+//
+// The four-section reorganisation moved two pages. The old addresses are in
+// bookmarks, in search results and on the shop's old Wix site, and answering
+// them with a 404 loses that traffic silently — nobody reports a page they
+// found through Google that no longer exists.
+//
+// The mapping is a pure function of the path, so it is checked here rather than
+// in a browser; that the redirect actually happens is e2e's job.
+
+describe('movedTo', () => {
+  it('sends the moved pages to their new addresses', () => {
+    expect(movedTo('/photos')).toBe('/sealife')
+    expect(movedTo('/news')).toBe('/surface-interval')
+  })
+
+  it('brings a dive site up to the root, but not the list page', () => {
+    expect(movedTo('/sites/bat-cave')).toBe('/bat-cave')
+    expect(movedTo('/sites/82-5')).toBe('/82-5')
+    expect(movedTo('/sites'), 'the list page did not move').toBeNull()
+  })
+
+  it('moves an article with its feed', () => {
+    expect(movedTo('/news/womens-dive-day')).toBe('/surface-interval/womens-dive-day')
+  })
+
+  it('ignores a trailing slash', () => {
+    expect(movedTo('/photos/')).toBe('/sealife')
+    expect(movedTo('/news/')).toBe('/surface-interval')
+  })
+
+  it('leaves every other address alone', () => {
+    // Including the new addresses themselves: a redirect that fired on its own
+    // destination would replaceState in a loop.
+    // /team and /bat-cave are here on purpose. /team was a moved address until
+    // About Us split into /origins and /team; /bat-cave is where a dive site
+    // ends up, and a rule that also fired there would loop.
+    const untouched = ['/', '/sealife', '/surface-interval', '/about', '/team', '/bat-cave']
+    for (const p of untouched) {
+      expect(movedTo(p), p).toBeNull()
+    }
+  })
+
+  it('does not mistake a longer path for a moved one', () => {
+    expect(movedTo('/newsletter')).toBeNull()
+    expect(movedTo('/photography')).toBeNull()
   })
 })

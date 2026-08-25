@@ -1,6 +1,7 @@
 <script lang="ts">
   import { type Component } from 'svelte'
-  import { path, handleLinkClick, internalHref } from '$engine/router'
+  import { path, handleLinkClick, internalHref, movedTo, replacePath } from '$engine/router'
+  import { routeKey, type RouteKey } from '$engine/routes'
   import { locale } from '$engine/i18n'
   import Nav from '$components/Nav.svelte'
   import Footer from '$components/Footer.svelte'
@@ -13,50 +14,54 @@
   // extra request the first time you open a page, which `prefetch` below pays
   // early, while the pointer is still travelling towards the link.
   //
-  // The two keys starting with a colon are the detail pages; they cannot be
-  // plain paths because they match /sites/<anything>. `:missing` is the 404.
-  const PAGES: Record<string, () => Promise<{ default: Component }>> = {
+  // Typed as a Record over RouteKey, so this table and the address list in
+  // $engine/routes cannot drift apart: an address with no component here, or a
+  // component here for an address that is not a route, fails the type check.
+  const PAGES: Record<RouteKey, () => Promise<{ default: Component }>> = {
     '/': () => import('$pages/Home.svelte'),
+
+    '/education': () => import('$pages/Education.svelte'),
     '/courses': () => import('$pages/Courses.svelte'),
+    '/sealife': () => import('$pages/Photos.svelte'),
+    '/quiz': () => import('$pages/Quiz.svelte'),
+
+    '/community': () => import('$pages/Community.svelte'),
+    '/surface-interval': () => import('$pages/News.svelte'),
+    '/testimonials': () => import('$pages/Testimonials.svelte'),
+    '/reviews': () => import('$pages/Reviews.svelte'),
+    '/radio': () => import('$pages/Radio.svelte'),
+    '/fundive': () => import('$pages/FunDive.svelte'),
+
+    '/about': () => import('$pages/About.svelte'),
+    '/origins': () => import('$pages/Origins.svelte'),
+    '/team': () => import('$pages/Team.svelte'),
+
+    '/go-diving': () => import('$pages/GoDiving.svelte'),
+    '/calendar': () => import('$pages/Calendar.svelte'),
     '/sites': () => import('$pages/Sites.svelte'),
     '/map': () => import('$pages/Map.svelte'),
-    '/photos': () => import('$pages/Photos.svelte'),
-    '/quiz': () => import('$pages/Quiz.svelte'),
     '/travel': () => import('$pages/Travel.svelte'),
-    '/gear': () => import('$pages/Gear.svelte'),
+    '/build-trip': () => import('$pages/BuildTrip.svelte'),
+
     '/services': () => import('$pages/Services.svelte'),
-    '/fundive': () => import('$pages/FunDive.svelte'),
-    '/websites': () => import('$pages/Websites.svelte'),
+    '/gear': () => import('$pages/Gear.svelte'),
     '/cycling': () => import('$pages/Cycling.svelte'),
     '/hiking': () => import('$pages/Hiking.svelte'),
-    '/build-trip': () => import('$pages/BuildTrip.svelte'),
-    '/calendar': () => import('$pages/Calendar.svelte'),
-    '/team': () => import('$pages/Team.svelte'),
-    '/news': () => import('$pages/News.svelte'),
+    '/websites': () => import('$pages/Websites.svelte'),
+
     ':site': () => import('$pages/DiveSiteDetail.svelte'),
     ':course': () => import('$pages/CourseDetail.svelte'),
     ':news': () => import('$pages/NewsArticle.svelte'),
     ':missing': () => import('$pages/NotFound.svelte'),
   }
 
-  /** Which entry of PAGES serves this address. */
-  function routeKey(href: string): string {
-    // Links carry anchors and query strings (/photos#moray_eels); the page that
-    // serves them is the same either way.
-    const p = href.split(/[#?]/)[0]
-    if (p.startsWith('/sites/') && p.length > '/sites/'.length) return ':site'
-    if (p.startsWith('/courses/') && p.length > '/courses/'.length) return ':course'
-    if (p.startsWith('/news/') && p.length > '/news/'.length) return ':news'
-    return PAGES[p] ? p : ':missing'
-  }
-
   // Pages already fetched, so going back to one is instant and a prefetch that
   // has already happened is never repeated. A plain object, not a Map: nothing
   // renders from it, so it does not need to be reactive.
-  const loaded: Record<string, Component> = {}
+  const loaded: Partial<Record<RouteKey, Component>> = {}
 
   /** Start fetching a page without showing it. Safe to call repeatedly. */
-  function preload(key: string): void {
+  function preload(key: RouteKey): void {
     if (loaded[key]) return
     void PAGES[key]()
       .then((m) => (loaded[key] = m.default))
@@ -71,9 +76,19 @@
     if (href) preload(routeKey(href))
   }
 
+  // A bookmark or a search result pointing at one of the old addresses is
+  // rewritten to its new one — see MOVED in $engine/router. `route` is what the
+  // rest of this file works from, so the moved address never reaches routeKey
+  // and /photos cannot flash a 404 on its way to /sealife while replaceState
+  // catches up.
+  let route = $derived(movedTo($path) ?? $path)
+  $effect(() => {
+    if (route !== $path) replacePath(route)
+  })
+
   let Current = $state<Component | null>(null)
   $effect(() => {
-    const key = routeKey($path)
+    const key = routeKey(route)
     const cached = loaded[key]
     // Already have it: swap straight over, no flicker and no await.
     if (cached) return void (Current = cached)

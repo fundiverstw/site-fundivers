@@ -44,7 +44,7 @@
     else if (e.key === 'ArrowLeft') step(-1)
   }
 
-  // Arriving at /photos#moray_eels — from a dive-site chip, a jump-to pill, or
+  // Arriving at /sealife#moray_eels — from a dive-site chip, a jump-to pill, or
   // the back button — opens that section and scrolls to it. Without this the
   // browser would jump to a collapsed heading and appear to do nothing.
   function reveal(key: string) {

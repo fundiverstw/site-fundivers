@@ -13,7 +13,7 @@ const viewer = (page: import('@playwright/test').Page) => page.locator('[role="p
 /** Open the photos page with the nudibranch section already expanded. */
 async function openGallery(page: import('@playwright/test').Page) {
   await stubDatabase(page)
-  await page.goto('/photos#nudibranchs')
+  await page.goto('/sealife#nudibranchs')
   await expect(page.locator('#nudibranchs button').first()).toHaveAttribute('aria-expanded', 'true')
 }
 
@@ -95,7 +95,7 @@ test.describe('the photo viewer', () => {
   })
 
   test('ignores the arrow keys when the viewer is shut', async ({ page }) => {
-    await visit(page, '/photos')
+    await visit(page, '/sealife')
     await page.keyboard.press('ArrowRight')
     await expect(viewer(page)).toHaveCount(0)
   })

@@ -1,7 +1,8 @@
 // The shapes a dive-site folder is written in.
 //
 // One folder per dive site, named after the site id: `site.ts` is the catalog
-// row behind /sites and /map, `details.ts` is the write-up on /sites/<id>, and
+// row behind /sites and /map, `details.ts` is the write-up on the site's own
+// page, and
 // `photos/` holds its pictures. Both files carry all three languages, so
 // everything about a site — data, prose, photos — is in the one folder, and
 // deleting the folder deletes the site.

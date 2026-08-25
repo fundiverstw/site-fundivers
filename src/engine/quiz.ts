@@ -31,7 +31,7 @@ export type QuizCard = {
   image: ResponsiveImage
   /** The creature's English name — the identifier, which `marineLabel` translates. */
   creature: string
-  /** That creature's gallery slug, so a card can link to /photos#moray_eels. */
+  /** That creature's gallery slug, so a card can link to /sealife#moray_eels. */
   key: string
   /** The photo's own common name, or '' to fall back to the creature's label. */
   commonName: string

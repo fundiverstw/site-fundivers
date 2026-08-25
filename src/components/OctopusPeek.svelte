@@ -70,7 +70,7 @@
     const o = $t.octopus
     return [
       { prompt: o.trip.prompt, cta: o.trip.cta, href: '/build-trip' },
-      { prompt: o.news.prompt, cta: o.news.cta, href: '/news' },
+      { prompt: o.news.prompt, cta: o.news.cta, href: '/surface-interval' },
       ...(nextEvent
         ? [
             {

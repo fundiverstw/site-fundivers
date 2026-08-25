@@ -1,22 +1,33 @@
 import type { Page, Request } from '@playwright/test'
 
-/** Every page of the site, in the order they appear in the navigation. */
+/** Every page of the site, in the order they appear in the navigation: the four
+ *  section hubs with their children, then the pages the footer links to. */
 export const ROUTES = [
   '/',
+  '/education',
   '/courses',
+  '/sealife',
+  '/quiz',
+  '/community',
+  '/surface-interval',
+  '/testimonials',
+  '/reviews',
+  '/radio',
+  '/fundive',
+  '/about',
+  '/origins',
+  '/team',
+  '/go-diving',
+  '/calendar',
   '/sites',
   '/map',
-  '/photos',
-  '/quiz',
   '/travel',
-  '/gear',
+  '/build-trip',
   '/services',
-  '/fundive',
-  '/websites',
+  '/gear',
   '/cycling',
-  '/calendar',
-  '/team',
-  '/news',
+  '/hiking',
+  '/websites',
 ] as const
 
 /** The tables the site reads. Anything not listed answers with an empty list. */
@@ -122,13 +133,49 @@ async function ensureMobileMenuOpen(page: Page): Promise<void> {
 }
 
 /**
+ * Which section's dropdown holds each child link, keyed by the label in the bar.
+ *
+ * The four section labels themselves are not in here: they are always on screen.
+ * Everything under them is inside a dropdown that has to be opened first, on
+ * desktop — the mobile menu shows every section expanded, so it needs none of
+ * this. Labels are English; the language tests address the bar by section.
+ */
+const NAV_PARENT: Record<string, string> = {
+  Courses: 'education',
+  'Sea Life': 'education',
+  'Surface Interval': 'community',
+  Testimonials: 'community',
+  Reviews: 'community',
+  'Radio show': 'community',
+  'FunDive App': 'community',
+  Origins: 'about',
+  Team: 'about',
+  Calendar: 'go-diving',
+  'Dive Sites': 'go-diving',
+  Map: 'go-diving',
+  Travel: 'go-diving',
+  'Build a Trip': 'go-diving',
+}
+
+/**
  * A navigation link, in whichever layout is on screen.
  *
  * Both layouts exist in the DOM at once and only one is visible, hence
- * `:visible` rather than `.first()`, which would find the hidden one.
+ * `:visible` rather than `.first()`, which would find the hidden one. On desktop
+ * a link that lives under a section is not in the DOM at all until that
+ * section's dropdown is opened, so this opens it first.
  */
 export async function navLink(page: Page, name: string, isMobile: boolean) {
   if (isMobile) await ensureMobileMenuOpen(page)
+  else {
+    // Hover rather than click the caret. The caret is a toggle, and moving the
+    // pointer onto it already opened the menu on the way — so clicking it would
+    // shut the thing we came to open. Hovering is also what a real visitor with
+    // a mouse does; the caret is there for keyboards and thumbs, which do not
+    // fire pointerenter. The returned locator auto-waits for the menu to paint.
+    const parent = NAV_PARENT[name]
+    if (parent) await page.locator(`header [data-nav-section="${parent}"]:visible`).hover()
+  }
   return page.locator('header a:visible').filter({ hasText: new RegExp(`^${name}$`) })
 }
 

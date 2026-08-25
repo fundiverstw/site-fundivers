@@ -39,7 +39,7 @@ async function swipe(page: Page, from: number, to: number): Promise<void> {
 
 test('@mobile-only a touch screen keeps its own scrolling', async ({ page }) => {
   await stubDatabase(page)
-  await page.goto('/sites/bat-cave')
+  await page.goto('/bat-cave')
   await expect(page.locator('.overlay')).toBeAttached()
 
   // No takeover: the page is a normal scrolling page and nothing is pinned.
@@ -58,7 +58,7 @@ test('@mobile-only a touch screen keeps its own scrolling', async ({ page }) => 
 
 test('@mobile-only the surface line follows the page as it scrolls', async ({ page }) => {
   await stubDatabase(page)
-  await page.goto('/sites/bat-cave')
+  await page.goto('/bat-cave')
   await expect(page.locator('.overlay')).toBeAttached()
 
   const line = () =>
@@ -88,7 +88,7 @@ test('@desktop-only a mouse gets the scroll takeover, set up once', async ({ pag
     } as typeof window.addEventListener
   })
   await stubDatabase(page)
-  await page.goto('/sites/bat-cave')
+  await page.goto('/bat-cave')
   await expect(page.locator('.vp')).toBeVisible()
 
   // A couple of setups at mount are fine — the effect legitimately re-runs once

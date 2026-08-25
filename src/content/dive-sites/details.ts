@@ -1,4 +1,4 @@
-// The per-dive-site write-ups for the /sites/<id> detail pages, assembled from
+// The per-dive-site write-ups for the dive-site detail pages, assembled from
 // the `details.ts` in each site folder.
 //
 // The prose (overview, below/above the surface, how to get there, diver

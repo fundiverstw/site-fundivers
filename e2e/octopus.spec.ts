@@ -67,7 +67,7 @@ test.describe('the rotation', () => {
     await visit(page, '/', db())
 
     await expectPitch(page, '/build-trip')
-    await expectPitch(page, '/news')
+    await expectPitch(page, '/surface-interval')
     await expectPitch(page, '/calendar')
     await expectPitch(page, '/fundive')
 
@@ -96,7 +96,7 @@ test.describe('the rotation', () => {
     await visit(page, '/')
 
     await expectPitch(page, '/build-trip')
-    await expectPitch(page, '/news')
+    await expectPitch(page, '/surface-interval')
     // Straight to FunDive: the event line is not in the run at all.
     await expectPitch(page, '/fundive')
   })

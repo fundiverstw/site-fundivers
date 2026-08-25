@@ -5,16 +5,35 @@ import type { Dict } from './en'
 
 export const zhTW: Dict = {
   nav: {
+    education: '學習',
+    community: '社群',
+    about: '關於我們',
+    goDiving: '去潛水',
+
     courses: '課程',
+    life: '海洋生物',
+    quiz: '生物測驗',
+
+    news: '水面休息',
+    testimonials: '學員心得',
+    reviews: '評論',
+    fundive: 'FunDive App',
+
+    origins: '起源',
+    team: '團隊',
+
+    calendar: '行事曆',
     sites: '潛點',
     map: '地圖',
-    photos: '相片',
     travel: '旅遊',
-    calendar: '行事曆',
-    news: '最新消息',
-    gear: '裝備',
+    buildTrip: '自訂行程',
+
     services: '服務',
-    team: '團隊',
+    gear: '裝備',
+    cycling: '單車導覽',
+    hiking: '健行導覽',
+    websites: '網站服務',
+
     signIn: '登入',
     radio: '廣播節目',
     menu: '切換選單',
@@ -93,6 +112,73 @@ export const zhTW: Dict = {
     upcomingCourses: '課程',
     upcomingTrips: '旅遊',
     adventures: '探險',
+    taglineMain: '盡情探險',
+    taglineSub: '安心潛水',
+  },
+  education: {
+    title: '學習',
+    subtitle: '學會潛水、潛得更好，並認識水下的每一種生命。',
+    coursesTitle: 'PADI 課程',
+    coursesDesc: '完整的 PADI 課程體系，從第一次水下呼吸到專業等級，提供中文、英文與日文教學。',
+    lifeTitle: '海洋生物',
+    lifeDesc: '我們在台灣礁岩與沉船遇見的生物，由自家潛水員拍攝，依種類分門別類。',
+    quizTitle: '這是什麼生物？',
+    quizDesc: '以整個相簿出題的翻牌測驗。看看在我們公布答案前，你能認出幾種。',
+  },
+
+  community: {
+    title: '社群',
+    subtitle: '圍繞在潛店周圍的人 — 我們做了些什麼，以及他們怎麼看。',
+    newsTitle: '水面休息',
+    newsDesc: '研討會、志工活動、社區推廣與教學 — 潛水與潛水之間，團隊都在忙些什麼。',
+    testimonialsTitle: '學員心得',
+    testimonialsDesc: '用潛水員自己的話，說說和我們一起學習與旅行是什麼感覺。',
+    reviewsTitle: '評論',
+    reviewsDesc: '在我們無法編輯的地方，大家怎麼說我們 — Google、Facebook、TripAdvisor 與 PADI。',
+    radioTitle: '廣播節目',
+    radioDesc: '我們從潛店現場直播。可以在這裡收聽，或直接用導覽列上的按鈕。',
+    fundiveTitle: 'FunDive App',
+    fundiveDesc: '在我們的開源潛店應用程式中預約潛水、追蹤課程進度並管理你的報名。',
+  },
+
+  goDiving: {
+    title: '去潛水',
+    subtitle: '挑一個日期、挑一個潛點，或在地圖上畫出屬於你的路線。',
+    calendarTitle: '行事曆',
+    calendarDesc: '所有已排定的潛水、課程與行程，並可直接預約名額。',
+    sitesTitle: '潛點',
+    sitesDesc: '從距離台北一小時的岸潛，到世界級的離島陡壁。',
+    mapTitle: '地圖',
+    mapDesc: '台灣的潛點，依地區分布在一張可以放大的地圖上。',
+    travelTitle: '潛水旅遊',
+    travelDesc: '台灣與亞洲各地的既定團體潛旅，從頭到尾都替你安排好。',
+    buildTripTitle: '自訂行程',
+    buildTripDesc: '行事曆上沒有合適的？自己排一份行程，我們替你估價。',
+  },
+
+  about: {
+    title: '關於我們',
+    subtitle: '兩位教練、一間位於永和的潛店，以及大量泡在水裡的時光。',
+    originsTitle: '起源',
+    originsDesc: '兩位聊起潛水就停不下來的教練，如何在永和開起了一間潛店。',
+    teamTitle: '團隊成員',
+    teamDesc: '真正和你一起下水的教練與潛水長 — 以及他們各自潛水的理由。',
+    storyTitle: 'FunDivers 的起點',
+    storyParas: [
+      'FunDivers TW 的開始和多數潛店一樣：兩位聊起潛水就停不下來的教練，以及一份每次從海邊回來就又變長的朋友名單。',
+      'Dennis Wong 在 1998 年第一次於水下呼吸。真正抓住他的是成群的魚 — 數百尾同時轉向，彷彿在同一瞬間收到了同一個訊息 — 從此他便一直想把這一幕分享給別人。他在 2013 年成為 PADI 教練，2018 年起擔任 IDC 教練團隊成員，並在 2020 至 2023 連續四年獲 PADI 頒發菁英教練，靠的正是那種平時看不出來、出事時才顯現價值的細心。',
+      'Billy Evalt 在 2008 年於越南學會潛水，起因是朋友的推薦，也違背了他自己的判斷。第一支氣瓶還沒用完，他就已經著迷。之後他潛遍泰國、土耳其、義大利與紐西蘭，2012 年成為教練，而教學的理由只有一個：學員在水下睜大雙眼的那一刻，就像當年的他一樣。',
+      '兩人在台北相遇，開始帶著大家在週末前往東北角 — 一開始是朋友，接著是朋友的朋友，最後人多到需要一個名字，也需要一個放氣瓶的地方。FunDivers TW 就是這樣長出來的。',
+      '如今潛店以三種語言教授完整的 PADI 課程，全年帶潛台灣本島與離島，規劃跨越亞洲的團體行程，也公開開發自家的潛店管理軟體。做的事變多了，理由卻沒變：我們只是想帶你下去，讓你親眼看看。',
+    ],
+    staffTitle: '和你一起下水的人',
+    staffIntro:
+      '每週都在這裡授課的教練與潛水長。問他們為什麼潛水，你會得到不同的答案，而這正是重點。',
+    since: '開始潛水',
+    interests: '不在水裡的時候',
+    why: '我為什麼潛水',
+    aboveWater: '水面之上',
+    underwater: '水面之下',
     exploreServices: '探索我們的服務',
     exploreServicesIntro:
       '了解讓 Fun Divers TW 成為潛水愛好者首選的獨特之處。憑藉豐富的經驗與對顧客滿意度的堅持，我們提供出色的導潛行程、便捷的預約服務，以及全系列 PADI 休閒潛水課程。',
@@ -131,9 +217,55 @@ export const zhTW: Dict = {
       '在台灣之外，鄰近的菲律賓與印尼等潛水天堂擁有互補的潛水季節，讓水下探索的魅力永無止境。',
       '踏上一段穿越台灣潛水季節與更遠方的旅程，每一次下潛都是窺見波濤之下奇妙世界的機會。',
     ],
-    taglineMain: '盡情探險',
-    taglineSub: '安心潛水',
   },
+
+  origins: {
+    title: '起源',
+    subtitle: '這間潛店從哪裡來，又是從哪兩個人開始的。',
+  },
+
+  radio: {
+    title: 'FunDivers 廣播節目',
+    subtitle: '潛水閒聊、音樂，以及當下想到的一切 — 從潛店現場直播。',
+    intro: [
+      '我們從潛店現場直播：上週末看到了什麼、接下來要去哪裡、偶爾為了裝備爭論幾句，中間再放點音樂。',
+      '只有節目進行時才會有串流。其他時間，這個頁面和導覽列上的廣播按鈕都會安靜地告訴你 — 背景不會偷偷載入任何東西。',
+    ],
+    listen: '收聽直播',
+    stop: '停止收聽',
+    connecting: '連線中…',
+    live: '正在直播',
+    offAir: '目前未播出',
+    offAirText: '目前沒有節目正在播出。請在節目時間再試一次，或追蹤我們的社群，開播前會先通知。',
+    idleText: '按下播放。如果我們正在直播，你就會聽到；沒有的話，畫面也會告訴你。',
+    barHint: '導覽列上的廣播按鈕功能相同，在網站的任何頁面都能使用。',
+  },
+
+  testimonials: {
+    title: '學員心得',
+    subtitle: '用潛水員自己的話，說說和我們一起下水的感受。',
+    none: '目前還沒有心得分享。',
+    ctaTitle: '和我們潛過水嗎？',
+    ctaText: '我們很想知道你的感受 — 寫信給我們，或留下一則公開評論。',
+    leaveReview: '留下評論',
+    contact: '寄信給我們',
+  },
+
+  reviews: {
+    title: '評論',
+    subtitle: '這些評論不放在我們自己的網站上，請到它們原本的地方閱讀。',
+    intro:
+      '以下每一則評論都放在別人的平台上，我們無法編輯或隱藏其中任何一個字。歡迎讀一讀 — 如果你曾和我們一起下水，留下你的評論，對一間小潛店真的很有幫助。',
+    readReviews: '閱讀評論',
+    writeReview: '撰寫評論',
+    platforms: {
+      google: '四個平台中最熱鬧的一個，也是多數人最先找到的地方。',
+      facebook: '來自長期關注潛店動態的潛水員的推薦。',
+      tripadvisor: '計畫來台灣潛水的旅客通常會先看這裡。',
+      padi: '我們的 PADI 潛水中心頁面，以及已認證學員給的評分。',
+    },
+  },
+
   getInTouch: {
     title: '聯絡我們',
     seeCalendar: '查看完整行事曆',
@@ -250,8 +382,8 @@ export const zhTW: Dict = {
     },
   },
   photos: {
-    title: '相片',
-    subtitle: '與 FunDivers TW 一起一窺波濤之下的精彩。',
+    title: '海洋生物',
+    subtitle: '水下住著什麼 — 全部拍攝自我們自己的潛水，一種一種介紹。',
     seeMore: '在社群看更多',
     follow: '追蹤我們，看行程回顧、海洋生物與幕後花絮。',
     comingSoon: '照片即將上線',
@@ -288,7 +420,7 @@ export const zhTW: Dict = {
     backToPhotos: '回到相簿',
   },
   team: {
-    title: 'Fun Divers 團隊',
+    title: '我們的團隊',
     subtitle: '專注。專業。熱情。',
     visitWebsite: '造訪網站 →',
     diveWithUs: '與我們一起潛水',
@@ -296,11 +428,11 @@ export const zhTW: Dict = {
     roles: { idc: 'IDC 資深教練', instructor: '教練', divemaster: '潛水長' },
   },
   news: {
-    title: '最新消息',
-    subtitle: '研討會、志工活動、社區推廣與教育推廣 — FunDivers 團隊的近期動態。',
+    title: '水面休息',
+    subtitle: '研討會、志工活動、社區推廣與教學 — 潛水與潛水之間，FunDivers 團隊的近期動態。',
     none: '目前還沒有消息，敬請期待。',
     notFound: '找不到這篇文章。',
-    backToAll: '所有消息',
+    backToAll: '所有文章',
     kinds: {
       conference: '研討會',
       volunteering: '志工活動',
@@ -312,6 +444,7 @@ export const zhTW: Dict = {
     blurb: '導潛行程、PADI 課程，以及台灣與更遠方最棒的潛點。',
     contact: '聯絡',
     follow: '追蹤',
+    more: '更多',
     rights: 'Fun Divers Taiwan 版權所有。',
     proudly: '由 FunDivers {team}在台灣台北用心打造',
     team: '團隊',

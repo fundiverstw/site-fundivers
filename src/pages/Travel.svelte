@@ -4,7 +4,7 @@
   import { fetchUpcomingTripTitles } from '$engine/events'
   import { siteImage, fallbackImage } from '$engine/photo-pool'
   import type { ResponsiveImage } from '$engine/responsive-image'
-  import { DIVE_SITES } from '$content/dive-sites'
+  import { DIVE_SITES, diveSitePath } from '$content/dive-sites'
   import { t } from '$engine/i18n'
   import PageHeader from '$components/PageHeader.svelte'
   import CoverPhoto from '$components/CoverPhoto.svelte'
@@ -33,7 +33,7 @@
   })
 
   // The five "trip" destinations around Taiwan: the travel_destinations title,
-  // the matching /sites/<id> page, and a matcher for the free-text trip event
+  // the matching dive-site page, and a matcher for the free-text trip event
   // titles ("Seven Star in Kenting", "Lambai", …). A spot only appears when it
   // has an upcoming trip on the books.
   const TRIP_LOCATIONS = [
@@ -63,7 +63,14 @@
     return chosen.flatMap((loc) => {
       const dest = all.find((d) => d.title === loc.title)
       return dest
-        ? [{ ...dest, image: siteImage(loc.siteId), href: `/sites/${loc.siteId}`, internal: true }]
+        ? [
+            {
+              ...dest,
+              image: siteImage(loc.siteId),
+              href: diveSitePath({ id: loc.siteId }),
+              internal: true,
+            },
+          ]
         : []
     })
   })
@@ -79,7 +86,7 @@
       .map((d) => {
         const site = siteByName.get(d.title.toLowerCase())
         if (site)
-          return { ...d, image: siteImage(site.id), href: `/sites/${site.id}`, internal: true }
+          return { ...d, image: siteImage(site.id), href: diveSitePath(site), internal: true }
         return {
           ...d,
           image: fallbackImage(d.id),

@@ -152,7 +152,7 @@ Adds Turtle Cove to the dive-site list, with a write-up and one photo.
 The shop started running trips there in June and it isn't on the site.
 
 ## How I checked it
-npm run verify passes. Looked at /sites/turtle-cove and /map in the browser;
+npm run verify passes. Looked at /turtle-cove and /map in the browser;
 the pin is in the right bay.
 ```
 

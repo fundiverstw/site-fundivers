@@ -6,11 +6,15 @@
   import PageHeader from '$components/PageHeader.svelte'
   import CoverPhoto from '$components/CoverPhoto.svelte'
 
+  // The "Surface Interval" feed, served at /surface-interval. `news` is the
+  // internal name throughout — the posts are folders under src/content/news/ —
+  // and only the route and the labels carry the reader-facing name.
+  //
   // The feed: one card per article, newest first. NEWS is already in that
   // order — see src/content/news.ts, which sorts it at build time — so there is
   // no sorting here to fall out of step with the article page.
   //
-  // The full write-up lives at /news/<slug> (NewsArticle.svelte). A card shows
+  // The full write-up lives at /surface-interval/<slug> (NewsArticle.svelte). A card shows
   // the lead photo, the date, what kind of thing it was, and the one-line
   // summary; the summary is the only place that text appears, so it is worth
   // writing rather than repeating the first line of the body.
@@ -49,7 +53,8 @@
               <!-- Stretched link: the whole card opens the article. Only the
                    heading is a link, so a screen reader reads one link per card
                    with the headline as its name, not an unlabelled box. -->
-              <a href={`/news/${article.slug}`} class="after:absolute after:inset-0">{text.title}</a
+              <a href={`/surface-interval/${article.slug}`} class="after:absolute after:inset-0"
+                >{text.title}</a
               >
             </h2>
 

@@ -54,7 +54,7 @@ test.describe('the marine-life quiz', () => {
   })
 
   test('is reachable from the gallery', async ({ page }) => {
-    await visit(page, '/photos')
+    await visit(page, '/sealife')
     await page.getByRole('link', { name: /test yourself/i }).click()
     await expect(page).toHaveURL(/\/quiz$/)
     await expect(page.getByTestId('quiz-card')).toBeVisible()
