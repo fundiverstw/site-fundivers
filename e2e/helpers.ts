@@ -23,6 +23,7 @@ export const ROUTES = [
   '/map',
   '/travel',
   '/build-trip',
+  '/arcade',
   '/services',
   '/gear',
   '/cycling',

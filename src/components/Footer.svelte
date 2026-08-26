@@ -2,6 +2,7 @@
   import { CONTACT } from '$content/settings'
   import { t } from '$engine/i18n'
   import SocialIcons from './SocialIcons.svelte'
+  import Davey from './Davey.svelte'
   import { FOOTER_LINKS } from '$content/navigation'
   import logoUrl from '$assets/fd_logo.webp'
   import fundiveLogoUrl from '$assets/fundive-logo-dark.svg'
@@ -84,7 +85,27 @@
     <div
       class="mx-auto flex max-w-[1600px] flex-col gap-1 px-4 py-4 text-xs text-brand-300 sm:flex-row sm:items-center sm:justify-between sm:px-6"
     >
-      <span>© {year} {$t.footer.rights}</span>
+      <span class="flex items-center gap-2">
+        © {year}
+        {$t.footer.rights}
+        <!-- The easter egg. Davey is tucked into the copyright line at a tenth
+             of his opacity, and clicking him opens his arcade game. He is a
+             real link with a real label, not a hidden click target: an octopus
+             a screen reader cannot find is not a secret, it is a page nobody
+             can reach. Sighted readers have to spot him, which is the game.
+
+             Deliberately not in $content/navigation — the footer's link map is
+             the site's own index of itself, and this is not part of it. -->
+        <a
+          href="/arcade"
+          data-testid="davey-egg"
+          aria-label={$t.arcade.hidden}
+          title={$t.arcade.hidden}
+          class="inline-block opacity-10 transition-all duration-500 hover:rotate-6 hover:opacity-100 focus-visible:opacity-100"
+        >
+          <Davey size={22} />
+        </a>
+      </span>
       <span
         >{proudly[0]}<a
           href="/team"

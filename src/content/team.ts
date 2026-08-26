@@ -1,13 +1,19 @@
-import fabio from './photos/team/fabio.jpg?responsive'
+// The above-water half of each card. The underwater ones are still to be
+// taken — CoverPhoto draws a "coming soon" frame wherever one is missing, so a
+// card with only one photo still lays out correctly.
+import dennisAbove from './photos/team/dennis.jpg?responsive'
+import billyAbove from './photos/team/billy.jpg?responsive'
+import mikeAbove from './photos/team/mike.jpg?responsive'
+import ericAbove from './photos/team/eric.jpg?responsive'
 import type { ResponsiveImage } from '$engine/responsive-image'
 
 // The people on the staff roster, rendered inside /about.
 //
 // `above` is the above-water photo and `under` the underwater one; the About
 // page shows both side by side. Either can be null — CoverPhoto draws a
-// "coming soon" frame in its place, which is what most of the roster is using
-// until the real photos are taken. Drop a file in ./photos/team/ and import it
-// the way fabio.jpg is imported below.
+// "coming soon" frame in its place, which is what every `under` is using until
+// those photos are taken. Drop a file in ./photos/team/ and import it the way
+// the four above-water photos are imported below.
 //
 // `role` is an i18n key (translated in content/text/). A member's `name` stays
 // as written in every language — it is a personal name, and it keys the
@@ -26,6 +32,14 @@ import type { ResponsiveImage } from '$engine/responsive-image'
 //
 // The `interests` and `why` lines for Mike and Eric are placeholder copy drawn
 // from their existing bios rather than their own words. Ask them and replace.
+//
+// Nobody has an underwater photo yet — every `under` is a placeholder frame.
+//
+// Three of the four above-water photos are 256px wide, which is a shade under
+// what the card wants on a high-density screen (it draws them at 196 CSS px, so
+// about 400 real pixels). They look right on an ordinary display and slightly
+// soft on a retina one. If the originals turn up, re-export at 800px or wider
+// and the build will make the rest of the ladder on its own.
 
 export type MemberRole = 'idc' | 'instructor' | 'divemaster'
 
@@ -57,6 +71,7 @@ export const TEAM: Member[] = [
   {
     name: 'Dennis Wong',
     role: 'idc',
+    above: dennisAbove,
     since: 1998,
     bio: 'Dennis Wong has been scuba diving since 1998. Upon seeing fish big or small in large schools swimming in unison, he wanted to share this mesmerizing underwater world with everyone. He decided to become a PADI Instructor in 2013, and is now IDC Staff since 2018. PADI has awarded him Elite Instructor status for his vigilance and attention to detail from 2020-2023.',
     interests:
@@ -77,6 +92,7 @@ export const TEAM: Member[] = [
   {
     name: 'Billy Evalt',
     role: 'instructor',
+    above: billyAbove,
     since: 2008,
     bio: 'Billy is a PADI dive instructor from Seattle, Washington. He has been diving since 2008 and has been an instructor since 2012. He first started diving in Vietnam after a friend recommended it and once underwater, he was hooked! He has been diving in many countries, including: Thailand, Turkey, Italy and New Zealand. He became a dive instructor because he loves watching the students’ eyes light up, as his did, when the underwater world is revealed to them. He believes the more divers we have in the world, the better our chances of making a positive change for our oceans!',
     interests:
@@ -98,6 +114,7 @@ export const TEAM: Member[] = [
   {
     name: 'Mike Lee 李邁先',
     role: 'idc',
+    above: mikeAbove,
     bio: 'Mike is a PADI scuba instructor from Taiwan. He’s been teaching diving since 2017. Ever since his first dive, he’s been captivated by the peaceful and mysterious world beneath the surface. That passion led him to share the beauty of the ocean with others. He focuses on safety, patience, and building confidence underwater. He takes pride in creating a relaxed and supportive learning environment. Come dive with Mike and the Fun Divers Taiwan team, let’s explore the blue together and make unforgettable underwater memories!',
     interests:
       'Teaching, mostly — and the slow business of getting a nervous student to the point where they forget to be nervous.',
@@ -117,7 +134,7 @@ export const TEAM: Member[] = [
   {
     name: 'Eric Odle',
     role: 'divemaster',
-    above: fabio,
+    above: ericAbove,
     bio: `Hi, I’m Eric, and I like to dive,
 Mess with computers, and keep things alive.
 I like learning new stuff and having some fun,

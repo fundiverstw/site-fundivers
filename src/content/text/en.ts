@@ -751,6 +751,47 @@ export const en = {
     fundive: { prompt: 'We build dive-shop software, in the open.', cta: 'Meet FunDive' },
   },
 
+  // Davey's arcade — the easter egg at /arcade, reached by finding him hiding in
+  // the footer. He is the shop's mascot; the game is him fending off divers who
+  // are not looking where they are going.
+  //
+  // `taunts` is a rotation, not a random draw: the page walks the list in order
+  // so the same line never lands twice running, and the list can be any length
+  // in any language as long as it is the same length in all three (text.test.ts).
+  arcade: {
+    title: 'Davey’s Deep Trouble',
+    subtitle:
+      'You found Davey, the fun-diving octopus. He is having a day. Ink the drifting divers before they drift into him.',
+    hidden: 'Davey the octopus — play his game',
+    start: 'Start',
+    resume: 'Resume',
+    again: 'Play again',
+    paused: 'Paused',
+    over: 'Out of ink',
+    score: 'Score',
+    best: 'Best',
+    wave: 'Wave',
+    lives: 'Lives',
+    keys: 'Arrow keys or A/D to turn · W or ↑ to swim · Space to ink · P to pause',
+    touch: 'Use the buttons below to turn, swim and ink.',
+    left: 'Turn left',
+    right: 'Turn right',
+    thrust: 'Swim',
+    fire: 'Ink',
+    pause: 'Pause',
+    backHome: 'Back to the surface',
+    taunts: [
+      'Too many divers around me who can’t control their buoyancy!',
+      'Watch out! A group of clueless divers not looking where they are headed!',
+      'Fins in my face again. Every single weekend.',
+      'Buoyancy check, anyone? Anyone at all?',
+      'That is my house you are kicking, thank you.',
+      'Eight arms, and not one of them is a safety sausage.',
+      'Please. I was here first. By about 300 million years.',
+      'Ink is expensive, you know.',
+    ],
+  },
+
   buildTrip: {
     title: 'Build Your Own Trip',
     subtitle:

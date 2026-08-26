@@ -56,9 +56,23 @@ for (const { route, limit } of PAGES) {
       // which is the bug wearing a disguise.
       expect(srcset, `${src} on ${route} has no srcset`).toBeTruthy()
       expect(sizes, `${src} on ${route} has no sizes`).toBeTruthy()
-      expect(srcset!.split(',').length, `${src} on ${route} offers only one size`).toBeGreaterThan(
-        1,
-      )
+
+      // Normally a photo offers several copies. The one honest exception is a
+      // source smaller than the bottom of the ladder: vite.images.ts emits the
+      // original alone rather than inventing detail by upscaling it, and three
+      // of the staff portraits are 256px files. So a single copy is allowed
+      // only when it is narrower than the smallest step — which is still the
+      // failure this test is for, since a full-size photo served as one copy
+      // means the pipeline did not run.
+      const offered = srcset!
+        .split(',')
+        .map((part) => Number(part.trim().split(/\s+/)[1]?.slice(0, -1)))
+      if (offered.length === 1) {
+        expect(
+          offered[0],
+          `${src} on ${route} offers only one size, and it is not a small original`,
+        ).toBeLessThan(384)
+      }
     }
   })
 

@@ -45,6 +45,12 @@ export const ROUTE_PATHS = [
   '/travel',
   '/build-trip',
 
+  // Davey's arcade. Not in the bar and not in the footer's link map either —
+  // the only way in is to spot the octopus hiding in the footer. It is still a
+  // real address: an easter egg that 404s when someone shares the link is a
+  // broken page, not a secret.
+  '/arcade',
+
   // Not in the bar; reached from the footer's link map and from each other
   '/services',
   '/gear',

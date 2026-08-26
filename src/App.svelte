@@ -43,6 +43,8 @@
     '/travel': () => import('$pages/Travel.svelte'),
     '/build-trip': () => import('$pages/BuildTrip.svelte'),
 
+    '/arcade': () => import('$pages/Arcade.svelte'),
+
     '/services': () => import('$pages/Services.svelte'),
     '/gear': () => import('$pages/Gear.svelte'),
     '/cycling': () => import('$pages/Cycling.svelte'),
