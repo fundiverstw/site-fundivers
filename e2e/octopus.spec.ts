@@ -8,6 +8,11 @@ import { pricesFixture, type Row } from './fixtures'
 //
 // None of that is verifiable by reading the component: it is timers, a lazily
 // imported fetch, and a stacking order. These watch it happen.
+//
+// He is a desktop feature: below xl there is no room beside the logo for him,
+// so he does not run at all (the last test here holds that). Everything else in
+// this file is therefore @desktop-only — not because the behavior differs on a
+// phone, but because on a phone there is no octopus to have behavior.
 
 /** Whichever pitch is on screen, if any. The nav links to several of the same
  *  addresses, so this goes by test id rather than by href. */
@@ -57,7 +62,7 @@ function db(): Record<string, Row[]> {
 // The suite runs with `reducedMotion: 'reduce'` (playwright.config.ts), under
 // which the octopus deliberately does not animate or rotate — he just sits
 // there holding the first pitch. So the rotation has to ask for motion back.
-test.describe('the rotation', () => {
+test.describe('the rotation', { tag: '@desktop-only' }, () => {
   test.use({ contextOptions: { reducedMotion: 'no-preference' } })
 
   // A full run plus the rest afterwards is longer than the default per-test
@@ -106,17 +111,21 @@ test.describe('the rotation', () => {
 // behaviour worth pinning: he appears, holds one pitch, and never moves. The
 // failure this rules out is the easy reading of "respect reduced motion" —
 // hiding him entirely, which silently withholds four links from those readers.
-test('still shows up, without moving, for reduced motion', async ({ page }) => {
-  await visit(page, '/', db())
+test(
+  'still shows up, without moving, for reduced motion',
+  { tag: '@desktop-only' },
+  async ({ page }) => {
+    await visit(page, '/', db())
 
-  await expectPitch(page, '/build-trip')
+    await expectPitch(page, '/build-trip')
 
-  // Still the same pitch well after the rotation interval would have advanced.
-  await page.waitForTimeout(5000)
-  await expect(bubble(page)).toHaveAttribute('href', '/build-trip')
-})
+    // Still the same pitch well after the rotation interval would have advanced.
+    await page.waitForTimeout(5000)
+    await expect(bubble(page)).toHaveAttribute('href', '/build-trip')
+  },
+)
 
-test('dismissing him ends it for the session', async ({ page }) => {
+test('dismissing him ends it for the session', { tag: '@desktop-only' }, async ({ page }) => {
   await visit(page, '/', db())
   await expect(bubble(page)).toHaveCount(1)
 
@@ -141,7 +150,7 @@ test(
     await expect(bubble(page)).toHaveCount(1)
 
     const logo = page.locator('header img[alt="FunDivers TW"]:visible').first()
-    const octopus = page.locator('header svg[aria-hidden="true"]').first()
+    const octopus = page.getByTestId('octopus')
 
     const logoBox = (await logo.boundingBox())!
     const octoBox = (await octopus.boundingBox())!
@@ -159,18 +168,24 @@ test(
   },
 )
 
-// On a phone the bubble drops below the header — which is exactly where the
-// hamburger menu opens. It used to land on top of the menu's first link and eat
-// the tap: the link was visible, hit-testable and completely unclickable, and
-// the only symptom was that tapping "Courses" did nothing.
-test('gets out of the way of the mobile menu', { tag: '@mobile-only' }, async ({ page }) => {
+// On a phone he does not appear at all. He is positioned against the desktop
+// bar's logo, and below xl that logo moves and the space to its right fills up
+// with the globe, the radio button and the menu button — so the bubble used to
+// drop below the header and sit on top of the page's own first heading, and on
+// top of the hamburger menu when that was open.
+//
+// The check is deliberately patient rather than immediate: "not there yet" is
+// what a working octopus also looks like for the first second. This waits out
+// the appearance delay and the first two slides.
+test('stays away on a phone', { tag: '@mobile-only' }, async ({ page }) => {
   await visit(page, '/', db())
-  await expect(bubble(page)).toHaveCount(1)
 
+  await page.waitForTimeout(6000)
+  await expect(bubble(page), 'the octopus turned up on a phone').toHaveCount(0)
+  await expect(page.getByTestId('octopus'), 'the octopus is drawn but silent').toHaveCount(0)
+
+  // And the menu still works, which is what he used to break here.
   await page.locator('button[data-testid="menu-toggle"]:visible').click()
-  await expect(bubble(page), 'the octopus is sitting on the open menu').toHaveCount(0)
-
-  // And the first link in the menu is genuinely clickable, not merely present.
   await page.locator('header a[href="/courses"]:visible').click()
   await expect(page).toHaveURL('/courses')
 })

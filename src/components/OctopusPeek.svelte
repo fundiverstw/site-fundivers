@@ -13,14 +13,14 @@
   //
   // He comes out of the logo's *right edge*, which is why the offsets below are
   // pixel values rather than something tidier: they track where that edge
-  // actually is. The logo is 634×320, so its width is its height × 1.98 — 64px
-  // tall below xl and 96px above it (Nav.svelte) — giving a right edge at
-  // 16+127, 24+127 and 24+190 as the container padding goes 4→6. Each `left`
-  // here stops 20–35px short of that, so a third of him is behind the logo and
-  // he emerges from under it rather than standing beside it. The numbers were
-  // set by looking: the logo file carries transparent padding, so its box ends
-  // further right than its artwork does, and arithmetic alone put him in a
-  // visible gap.
+  // actually is. He only ever renders at xl and up (see below), so there is one
+  // position to hold rather than a responsive ladder of them. The logo is
+  // 634×320 and 80px tall there (Nav.svelte), so its box is 158px wide and its
+  // right edge sits at 24+158 with the container's `sm:px-6`. `left` stops
+  // short of that, so a third of him is behind the logo and he emerges from
+  // under it rather than standing beside it. The numbers were set by looking:
+  // the logo file carries transparent padding, so its box ends further right
+  // than its artwork does, and arithmetic alone put him in a visible gap.
   //
   // The tuck is real, not a trick of the timing: the octopus sits at `-z-10`,
   // so it paints beneath the logo image. Negative z-index resolves against the
@@ -30,12 +30,20 @@
   // giving it one would create a stacking context the speech bubble could not
   // then climb out of.
 
-  // Below sm the bubble drops beneath the header, which is exactly where the
-  // hamburger menu opens. Somebody who has just opened the menu is trying to go
-  // somewhere, and a promo sitting on top of the first link swallows the tap —
-  // silently, because the bubble is transparent enough to read through. So Nav
-  // tells us when the menu is open and the octopus stands down.
-  let { menuOpen = false }: { menuOpen?: boolean } = $props()
+  // ── Desktop only ───────────────────────────────────────────────────────────
+  //
+  // He is drawn to come out of the logo's right edge, and that edge only has
+  // room beside it in the desktop bar. Below xl (1280px) Nav switches to the
+  // hamburger layout, the logo moves, and there is nothing to his right but the
+  // globe, the radio button and the menu button — so the bubble drops below the
+  // header instead and lands on top of whatever the page opens with. This
+  // matches Nav's own breakpoint rather than picking a new one, so the mascot
+  // and the layout he was positioned against always agree.
+  //
+  // The query is live, not read once, so dragging a window across the boundary
+  // does the right thing in both directions.
+  const DESKTOP = '(min-width: 1280px)'
+  let isDesktop = $state(false)
 
   /** One thing the octopus has to say. */
   type Pitch = { prompt: string; cta: string; href: string; detail?: string }
@@ -110,6 +118,10 @@
     }
   }
 
+  /** Whether the one-off events fetch has been kicked off. Crossing the
+   *  breakpoint twice should not fetch twice. */
+  let fetched = false
+
   let slideTimer: ReturnType<typeof setInterval> | undefined
   let firstTimer: ReturnType<typeof setTimeout> | undefined
   let restTimer: ReturnType<typeof setTimeout> | undefined
@@ -134,12 +146,6 @@
     // slide-out transition is disabled in the markup with `motion-reduce:`, so
     // he is simply present rather than arriving.
     prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
-    if (prefersReducedMotion) {
-      peeking = true
-      return
-    }
-
-    void loadNextFeatured()
 
     const show = () => {
       if (dismissed) return
@@ -161,8 +167,45 @@
       }, SLIDE_MS)
     }
 
-    firstTimer = setTimeout(show, FIRST_MS)
+    /**
+     * Start him up, or pack him away, as the viewport crosses `DESKTOP`.
+     *
+     * Narrow means nothing runs: no timers, and no fetch either — which is the
+     * point of gating here rather than hiding him in CSS. A `hidden xl:block`
+     * would still mount the component on every phone, still set four timers
+     * going, and still pull `$engine/events` and the Supabase client into the
+     * page to fill in a bubble nobody can see.
+     */
+    const apply = (desktop: boolean) => {
+      isDesktop = desktop
+      if (!desktop) {
+        peeking = false
+        clearTimeout(firstTimer)
+        clearTimeout(restTimer)
+        stopSlides()
+        return
+      }
+      if (prefersReducedMotion) {
+        peeking = true
+        return
+      }
+      if (!fetched) {
+        fetched = true
+        void loadNextFeatured()
+      }
+      clearTimeout(firstTimer)
+      firstTimer = setTimeout(show, FIRST_MS)
+    }
+
+    const mql = window.matchMedia?.(DESKTOP)
+    const onChange = (e: MediaQueryListEvent) => apply(e.matches)
+    mql?.addEventListener('change', onChange)
+    // No matchMedia at all (a very old browser, or a test double): assume the
+    // desktop he was drawn for rather than removing him for everybody.
+    apply(mql?.matches ?? true)
+
     return () => {
+      mql?.removeEventListener('change', onChange)
       clearTimeout(firstTimer)
       clearTimeout(restTimer)
       stopSlides()
@@ -182,19 +225,21 @@
   }
 </script>
 
-{#if !dismissed && !menuOpen}
-  <div
-    class="pointer-events-none absolute left-[109px] top-[11px] flex flex-col items-start gap-1 sm:left-[117px] sm:flex-row sm:items-center sm:gap-2 xl:left-[193px] xl:top-[27px]"
-  >
+{#if !dismissed && isDesktop}
+  <div class="pointer-events-none absolute left-[193px] top-[27px] flex items-center gap-2">
     <!-- Octopus: slides out sideways from behind the logo when peeking -->
     <div
       class={`relative -z-10 origin-left transition-all duration-700 ease-out motion-reduce:transition-none ${peeking ? 'translate-x-0 rotate-0 opacity-100' : '-translate-x-[135%] -rotate-12 opacity-0'}`}
     >
+      <!-- The header is full of other decorative svg (the globe, the radio
+           button, the menu icon), so he carries a test id: "is there an
+           octopus" is otherwise indistinguishable from "is there an icon". -->
       <svg
         width="66"
         height="66"
         viewBox="0 0 120 120"
         aria-hidden="true"
+        data-testid="octopus"
         class="drop-shadow-[0_4px_8px_rgba(0,0,0,0.4)]"
       >
         <!-- Arms. Eight of them, and each path is a *swept outline*: a centre
@@ -286,14 +331,10 @@
     </div>
 
     <!-- Speech bubble. Keyed on the pitch, so each one fades in as its turn
-         comes round rather than the words swapping under the reader.
-         Below sm it drops underneath the octopus and slides back to the page
-         margin: a phone's header already has the globe, the radio and the menu
-         button along its right-hand side, and a bubble beside the logo lands on
-         top of all three. -->
+         comes round rather than the words swapping under the reader. -->
     {#if peeking}
       <div
-        class="pointer-events-auto relative -ml-[93px] flex max-w-[15rem] items-start gap-2 rounded-2xl border border-reef-400/40 bg-brand-950/95 px-3 py-2 shadow-lg backdrop-blur sm:ml-0 sm:max-w-none"
+        class="pointer-events-auto relative flex items-start gap-2 rounded-2xl border border-reef-400/40 bg-brand-950/95 px-3 py-2 shadow-lg backdrop-blur"
       >
         {#key current.href}
           <!-- The nav links to several of these same addresses, so the tests

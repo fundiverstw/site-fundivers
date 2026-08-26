@@ -58,7 +58,7 @@ and all three languages. So "change the Bat Cave page" is one folder to open, an
 | I want to change… | Open this file |
 | --- | --- |
 | The shop's phone number, email, or address | `src/content/settings.ts` |
-| What the octopus by the logo says | `src/content/text/en.ts`, under `octopus:` — one entry per pitch. He works through them four seconds apart; the "coming up next" one names whatever event is flagged **featured** in the booking app, so its wording is here but its content is not |
+| What the octopus by the logo says | `src/content/text/en.ts`, under `octopus:` — one entry per pitch. He works through them four seconds apart; the "coming up next" one names whatever event is flagged **featured** in the booking app, so its wording is here but its content is not. He only appears on wide screens — on a phone there is nowhere beside the logo for him to stand |
 | Instagram / Facebook / LINE links | `src/content/settings.ts` |
 | Any word or sentence on a page | `src/content/text/en.ts` — see [Changing words](changing-words.md) |
 | The Chinese or Japanese translation | `src/content/text/zh-TW.ts` or `ja.ts` |

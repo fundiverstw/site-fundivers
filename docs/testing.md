@@ -163,7 +163,8 @@ it. They take about twelve seconds and they test what a visitor would notice:
 - a news card opens its story, a pasted `/surface-interval/<slug>` works on a cold load, and an
   untranslated story still reads in Japanese and Chinese rather than coming out blank
 - the octopus by the logo works through his four pitches in order, goes away, and comes
-  back ten seconds later; names the real featured event; stands aside for the phone menu
+  back ten seconds later; names the real featured event; and never turns up on a phone,
+  where there is no room beside the logo for him
 
 The whole suite asks the browser for reduced motion, which is why the octopus sits
 still in most tests — `e2e/octopus.spec.ts` turns that off for the few tests that are

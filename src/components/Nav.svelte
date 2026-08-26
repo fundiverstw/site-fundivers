@@ -209,8 +209,10 @@
 
 <header class="relative z-30 bg-transparent">
   <div class="relative mx-auto max-w-[1600px] px-4 sm:px-6">
-    <!-- Cute octopus that peeks out from behind the logo now and then -->
-    <OctopusPeek menuOpen={open} />
+    <!-- Cute octopus that peeks out from behind the logo now and then. Desktop
+         only — he takes himself off below xl (see OctopusPeek.svelte), which is
+         the same breakpoint the bar itself uses. -->
+    <OctopusPeek />
     <!-- Desktop: logo at the far left, sections + globe to its right. Shown
          from xl (1280px). The dropdowns need a pointer or a deliberate tap,
          which is not what a narrow screen wants; below xl the menu button takes
