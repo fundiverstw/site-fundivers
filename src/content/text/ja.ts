@@ -110,7 +110,7 @@ export const ja: Dict = {
   },
   home: {
     startTitle: 'ダイビングを始める',
-    startText: '水中で息をしたことがない方へ。ここが出発点で、行き先はずっと先まであります。',
+    startText: '水中で息をしたことがない方へ。ここが出発点です！',
     startLadder: [
       { label: 'オープンウォーター', note: '水中での最初のひと呼吸' },
       { label: 'アドバンスド', note: 'より深く、そして夜も' },
@@ -122,8 +122,7 @@ export const ja: Dict = {
     whoWeAre: '私たちについて',
 
     comingTitle: '近日開催',
-    comingText:
-      '予定されているファンダイブ、ボートトリップ、アドベンチャー。コースは専用ページにあります。',
+    comingText: '予定されているファンダイブ、ボートトリップ、アドベンチャー。',
     seeCalendar: 'カレンダー全体 →',
     communityTitle: 'ショップの近況',
     noteSurfaceInterval: '最近行ってきた場所',
@@ -131,8 +130,8 @@ export const ja: Dict = {
     noteTestimonials: 'ダイバー自身の言葉で',
     noteReviews: '他のサイトでの評判',
 
-    planTitle: '自分で組み立てる',
-    planText: 'いつ、どこで一緒に潜れるか — そしてどれも合わないときにどうするか。',
+    planTitle: '経験者向けの情報',
+    planText: '次にいつ、どこで潜るかを端的にまとめました。',
 
     taglineMain: '冒険を呼吸しよう',
     taglineSub: '自信を持って潜ろう',

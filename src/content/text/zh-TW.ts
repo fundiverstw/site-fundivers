@@ -109,7 +109,7 @@ export const zhTW: Dict = {
   },
   home: {
     startTitle: '開始潛水',
-    startText: '從沒在水下呼吸過？就從這裡開始 — 而且可以走得很遠。',
+    startText: '從沒在水下呼吸過？就從這裡開始！',
     startLadder: [
       { label: '開放水域', note: '你在水下的第一口呼吸' },
       { label: '進階開放水域', note: '更深，也包括夜潛' },
@@ -121,7 +121,7 @@ export const zhTW: Dict = {
     whoWeAre: '我們是誰',
 
     comingTitle: '近期活動',
-    comingText: '已排定的休閒潛水、船潛行程與探險活動。課程請見課程頁面。',
+    comingText: '已排定的休閒潛水、船潛行程與探險活動。',
     seeCalendar: '完整行事曆 →',
     communityTitle: '潛店動態',
     noteSurfaceInterval: '我們最近去了哪裡',
@@ -129,8 +129,8 @@ export const zhTW: Dict = {
     noteTestimonials: '潛水員自己的話',
     noteReviews: '其他平台上的評價',
 
-    planTitle: '自己安排',
-    planText: '你可以在什麼時候、什麼地方和我們一起下水 — 以及都不合適時該怎麼辦。',
+    planTitle: '資深潛水員資源',
+    planText: '直接告訴你我們下一次何時、在哪裡下水。',
 
     taglineMain: '盡情探險',
     taglineSub: '安心潛水',

@@ -139,7 +139,7 @@ export const en = {
   home: {
     // ── A · Start diving ──
     startTitle: 'Start diving',
-    startText: 'Never breathed underwater? This is where it starts — and how far it goes.',
+    startText: 'Never breathed underwater? This is where you start!',
     // One per rung, in order, matched to the courses by position — see the
     // LADDER list in Home.svelte. The note is what that rung is actually for.
     startLadder: [
@@ -154,8 +154,7 @@ export const en = {
 
     // ── B · What's coming up ──
     comingTitle: 'What’s coming up',
-    comingText:
-      'Fun dives, boat trips and adventures on the schedule. Courses have their own page.',
+    comingText: 'Fun dives, boat trips, and adventures on the schedule.',
     seeCalendar: 'Full calendar →',
     communityTitle: 'From the shop',
     noteSurfaceInterval: 'Where we’ve been lately',
@@ -163,9 +162,9 @@ export const en = {
     noteTestimonials: 'In divers’ own words',
     noteReviews: 'What people say elsewhere',
 
-    // ── C · Plan your own ──
-    planTitle: 'Plan your own',
-    planText: 'When and where you can dive with us — and what to do when none of it fits.',
+    // ── C · Resources for experienced divers ──
+    planTitle: 'Resources for experienced divers',
+    planText: 'To-the-point information on when and where we are diving next.',
 
     taglineMain: 'Breathe the Adventure',
     taglineSub: 'Explore with Confidence',

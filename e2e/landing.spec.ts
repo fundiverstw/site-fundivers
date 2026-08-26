@@ -57,7 +57,9 @@ test.describe('the three bands', () => {
 
     await expect(page.getByRole('heading', { name: 'Start diving' })).toBeVisible()
     await expect(page.getByRole('heading', { name: 'What’s coming up' })).toBeVisible()
-    await expect(page.getByRole('heading', { name: 'Plan your own' })).toBeVisible()
+    await expect(
+      page.getByRole('heading', { name: 'Resources for experienced divers' }),
+    ).toBeVisible()
 
     const order = await page.evaluate(() =>
       [...document.querySelectorAll('[data-band]')].map((el) => el.getAttribute('data-band')),
@@ -182,9 +184,9 @@ test('C · plan your own leads to every Go Diving page', async ({ page }) => {
 // The slogan moved out of the page and into the header, where it sits under the
 // logo on every page. Two things have to hold: it is not a heading (the same
 // words on every page tell a screen reader nothing about where it is), and it is
-// centred on the logo rather than on the page.
+// centered on the logo rather than on the page.
 test.describe('the slogan', () => {
-  test('sits under the logo, centred on it', async ({ page, isMobile }) => {
+  test('sits under the logo, centered on it', async ({ page, isMobile }) => {
     await visit(page, '/')
 
     const logo = page.locator('header img[alt="FunDivers TW"]:visible').first()
@@ -197,7 +199,7 @@ test.describe('the slogan', () => {
     expect(s.y, 'the slogan is not below the logo').toBeGreaterThanOrEqual(l.y + l.height - 2)
     expect(
       Math.abs(l.x + l.width / 2 - (s.x + s.width / 2)),
-      'the slogan is not centred on the logo',
+      'the slogan is not centered on the logo',
     ).toBeLessThan(isMobile ? 8 : 4)
   })
 

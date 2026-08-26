@@ -29,7 +29,11 @@ test.describe('the nav radio player', () => {
     await expect(radio).toBeVisible()
     await radio.click()
 
-    await expect(page.getByText('LIVE').filter(visible)).toBeVisible()
+    // `exact` matters: the landing page's community rail has a "Live from the
+    // shop" card, and a loose text match picks that up as well — intermittently,
+    // depending on whether the lazily loaded page has rendered by the time this
+    // runs, which is the worst kind of failure to read.
+    await expect(page.getByText('LIVE', { exact: true }).filter(visible)).toBeVisible()
     await expect(radio).toHaveAttribute('aria-pressed', 'true')
   })
 
