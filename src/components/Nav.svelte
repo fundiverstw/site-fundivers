@@ -96,9 +96,9 @@
       aria-label={$t.nav.language}
       aria-haspopup="menu"
       aria-expanded={langOpen}
-      class="module flex items-center gap-1 rounded-xl px-2 py-2 text-brand-50"
+      class="module flex items-center gap-1 rounded-lg p-1 text-brand-50"
     >
-      <GlobeIcon size={28} />
+      <GlobeIcon size={20} />
     </button>
     {#if langOpen}
       <div
@@ -209,34 +209,69 @@
 
 <header class="relative z-30 bg-transparent">
   <div class="relative mx-auto max-w-[1600px] px-4 sm:px-6">
-    <!-- Cute octopus that peeks out from behind the logo now and then. Desktop
-         only — he takes himself off below xl (see OctopusPeek.svelte), which is
-         the same breakpoint the bar itself uses. -->
-    <OctopusPeek />
-    <!-- Desktop: logo at the far left, sections + globe to its right. Shown
-         from xl (1280px). The dropdowns need a pointer or a deliberate tap,
+    <!-- Language and radio: pinned to the top right of the header, above the
+         bar rather than inside it. Neither is navigation — one changes how the
+         whole site reads and the other starts an audio stream — so they were
+         the two things in the bar that were not a way to somewhere.
+
+         Rendered once, not once per layout: RadioPlayer owns an <audio>
+         element and a connection to the stream, and a second copy would mean a
+         second connection.
+
+         No panel behind them — they are two bare glyphs in the corner. That
+         puts them straight on the photograph, so they carry a drop shadow
+         instead: the backdrop is a bright blue-green underwater scene in
+         places and white-on-white would otherwise disappear. They sit high
+         enough to clear the bar underneath in both layouts — the desktop pill
+         is vertically centered in an 8rem header, and on mobile the menu button
+         drops to the bottom of its row. -->
+    <div
+      data-testid="utilities"
+      class="absolute right-4 top-0 z-40 flex items-center gap-1 text-brand-50 drop-shadow-[0_1px_4px_rgba(0,0,0,0.75)] sm:right-6"
+    >
+      {@render langSwitch()}
+      <RadioPlayer />
+    </div>
+
+    <!-- Desktop: logo at the far left, the four sections and sign-in to its
+         right. Shown from xl (1280px). The dropdowns need a pointer or a deliberate tap,
          which is not what a narrow screen wants; below xl the menu button takes
          over and shows every section expanded at once. -->
     <div class="hidden items-center justify-between gap-6 py-3 xl:flex">
-      <!-- Logo and slogan are one lockup: the slogan is centred on the logo
+      <!-- Logo and slogan are one lockup: the slogan is centered on the logo
            rather than on the page, which is why they share a column. It is a
            <p>, not a heading — it is the same words on every page, and a
            heading that never changes tells a screen reader nothing about where
            it is. The page's own <h1> lives in the page. -->
       <div class="flex shrink-0 flex-col items-center">
-        <a href="/" aria-label="FunDivers TW home" class="group block">
-          <!-- The logo is the first thing on screen on most pages, so it is
-               fetched at high priority. width/height are the file's own, to
-               reserve the space before it arrives; the classes size it. -->
-          <img
-            src={logoUrl}
-            alt="FunDivers TW"
-            width="634"
-            height="320"
-            fetchpriority="high"
-            class="h-16 w-auto transition-all duration-300 group-hover:scale-105 group-hover:brightness-110 group-hover:drop-shadow-[0_0_18px_rgba(44,208,197,0.55)] lg:h-20"
-          />
-        </a>
+        <!-- This wrapper is only here to give the octopus something to hold on
+             to. He hangs off the logo's right edge, and the logo is centered in
+             a column as wide as the slogan under it — so the edge he wants
+             moves with the length of the slogan, and in Chinese and Japanese it
+             is somewhere else entirely. Anchoring him to a box that is exactly
+             the logo is the only version of this that survives translation.
+             He is outside the <a>, not inside it: his speech bubble is itself a
+             link, and a link inside a link is not markup a browser will keep. -->
+        <div class="relative">
+          <a href="/" aria-label="FunDivers TW home" class="group block">
+            <!-- The logo is the first thing on screen on most pages, so it is
+                 fetched at high priority. width/height are the file's own, to
+                 reserve the space before it arrives; the classes size it. -->
+            <img
+              src={logoUrl}
+              alt="FunDivers TW"
+              width="634"
+              height="320"
+              fetchpriority="high"
+              class="h-16 w-auto transition-all duration-300 group-hover:scale-105 group-hover:brightness-110 group-hover:drop-shadow-[0_0_18px_rgba(44,208,197,0.55)] lg:h-20"
+            />
+          </a>
+          <!-- Cute octopus that peeks out from behind the logo now and then.
+               Desktop only, and he checks that for himself as well (see
+               OctopusPeek.svelte) — `hidden xl:flex` on the row above would
+               still mount him on a phone and start his timers running. -->
+          <OctopusPeek />
+        </div>
         <p
           class="slogan mt-1 max-w-[22rem] text-center text-sm leading-tight text-reef-100 drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)] lg:text-base"
         >
@@ -248,14 +283,11 @@
           {@render section(s)}
         {/each}
         <span class="mx-1 h-6 w-px bg-white/15"></span>
-        {@render langSwitch()}
-        <RadioPlayer />
-        <span class="mx-1 h-6 w-px bg-white/15"></span>
         {@render signIn()}
       </nav>
     </div>
 
-    <!-- Mobile: logo left · globe + menu toggle right -->
+    <!-- Mobile: logo left · menu toggle right, under the utility strip -->
     <div class="flex items-center justify-between py-3 xl:hidden">
       <div class="flex min-w-0 flex-col items-center">
         <a href="/" aria-label="FunDivers TW home" class="group block">
@@ -274,9 +306,10 @@
           {$t.nav.slogan}
         </p>
       </div>
-      <div class="flex items-center gap-3">
-        {@render langSwitch()}
-        <RadioPlayer />
+      <!-- Only the menu button now, and it sits at the bottom of the row: the
+           language and radio controls have moved to the strip pinned to the top
+           right of the header, which is directly above this corner. -->
+      <div class="flex items-center gap-3 self-end">
         <button
           class="text-brand-50 transition-colors hover:text-reef-300"
           aria-label={$t.nav.menu}

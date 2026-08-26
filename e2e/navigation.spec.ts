@@ -118,7 +118,7 @@ test('the bar stays on one row, in every language', { tag: '@desktop-only' }, as
       // Measured as the vertical spread of the links against the tallest one of
       // them. Counting distinct `top` values reads like the obvious check and
       // is not: the sign-in link is a different height from a section link, so
-      // two items centred on the same row sit at different tops and the count
+      // two items centered on the same row sit at different tops and the count
       // says "two rows" while the bar is plainly one. On one row the union of
       // every box can be no taller than the tallest box; on two it is about
       // twice that, so there is nothing in between to be delicate about.
@@ -189,4 +189,29 @@ test('the whole navigation fits, at every width', { tag: '@desktop-only' }, asyn
       ).toBeLessThanOrEqual(width)
     }
   }
+})
+
+// The language and radio controls were moved out of the bar to the top-right
+// corner of the header. Neither is navigation — one changes how the whole site
+// reads, the other starts an audio stream — but the corner they moved to is
+// directly above the bar on a desktop and directly above the menu button on a
+// phone, and at their first size they hung down over both. Nothing about that
+// throws or fails to render: the only symptom is two controls sitting on top of
+// a third, so it takes a measurement to catch.
+test('the language and radio icons clear the bar underneath them', async ({ page, isMobile }) => {
+  await visit(page, '/')
+
+  const strip = await page.getByTestId('utilities').boundingBox()
+  expect(strip, 'no utility icons in the header').not.toBeNull()
+
+  // Whatever occupies that same corner one row down.
+  const below = isMobile
+    ? page.locator('button[data-testid="menu-toggle"]:visible')
+    : page.locator('header nav:visible')
+  const box = (await below.first().boundingBox())!
+
+  expect(
+    strip!.y + strip!.height,
+    'the language and radio icons hang down over the bar',
+  ).toBeLessThanOrEqual(box.y)
 })

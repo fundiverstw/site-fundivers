@@ -25,7 +25,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: var(--color-brand-50);
-  /* The fish photo, covered and centred. It is nearly square (980 × 927) and a
+  /* The fish photo, covered and centered. It is nearly square (980 × 927) and a
      screen is not, so a centre crop is what keeps the densest part of the school
      on screen at any aspect ratio — and because the subject is a scatter rather
      than one thing, there is nothing a crop can cut in half.

@@ -165,6 +165,15 @@ test(
       logoBox.x + logoBox.width / 2,
     )
     expect(octoBox.x, 'the octopus has drifted past the logo').toBeLessThan(logoRight + 20)
+
+    // …and enough of him is in the open to be recognizable. The tuck is
+    // measured from an edge that moves — the logo is centered over a slogan
+    // whose length changes with the language — and when that edge got further
+    // away than the tuck, he ended up entirely behind the wordmark: still
+    // there, still rotating his pitches, and completely invisible.
+    expect(octoBox.x + octoBox.width, 'the octopus is hidden behind the logo').toBeGreaterThan(
+      logoRight + 20,
+    )
   },
 )
 

@@ -10,10 +10,10 @@
   aria-label={$t.nav.radio}
   aria-pressed={$radioState === 'playing'}
   title={$t.nav.radio}
-  class="module flex items-center gap-1.5 rounded-xl px-2 py-2 text-brand-50"
+  class="module flex items-center gap-1.5 rounded-lg p-1 text-brand-50"
   class:module-active={$radioState === 'playing' || $radioState === 'loading'}
 >
-  <RadioIcon size={28} />
+  <RadioIcon size={20} />
   {#if $radioState === 'loading'}
     <span class="mono text-xs font-semibold text-reef-200">···</span>
   {:else if $radioState === 'playing'}

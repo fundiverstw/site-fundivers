@@ -11,16 +11,21 @@
   //
   // ── Where he sits ──────────────────────────────────────────────────────────
   //
-  // He comes out of the logo's *right edge*, which is why the offsets below are
-  // pixel values rather than something tidier: they track where that edge
-  // actually is. He only ever renders at xl and up (see below), so there is one
-  // position to hold rather than a responsive ladder of them. The logo is
-  // 634×320 and 80px tall there (Nav.svelte), so its box is 158px wide and its
-  // right edge sits at 24+158 with the container's `sm:px-6`. `left` stops
-  // short of that, so a third of him is behind the logo and he emerges from
-  // under it rather than standing beside it. The numbers were set by looking:
-  // the logo file carries transparent padding, so its box ends further right
-  // than its artwork does, and arithmetic alone put him in a visible gap.
+  // He comes out of the logo's *right edge*, and he is mounted in a wrapper
+  // that is exactly the logo (Nav.svelte), so `left-full` is that edge — no
+  // arithmetic, and nothing to re-derive when the logo is resized or when a
+  // longer slogan in another language shifts it sideways. The one measured
+  // number left is the tuck: a negative margin pulling him back over the logo
+  // by about a third of his width, so he emerges from under it rather than
+  // standing beside it. Two-thirds of him stay in the open, which is what makes
+  // him read as an octopus at a glance rather than a pink smudge at the edge of
+  // the wordmark.
+  //
+  // `w-max` on that wrapper is load-bearing. An absolutely positioned box is
+  // sized against its containing block, and the containing block here is the
+  // logo — with `left-full` there is nothing left of it, so the bubble folded
+  // itself into a one-word-per-line column. Sizing to the content instead lets
+  // it run out over the page, which is where it has room.
   //
   // The tuck is real, not a trick of the timing: the octopus sits at `-z-10`,
   // so it paints beneath the logo image. Negative z-index resolves against the
@@ -226,7 +231,9 @@
 </script>
 
 {#if !dismissed && isDesktop}
-  <div class="pointer-events-none absolute left-[193px] top-[27px] flex items-center gap-2">
+  <div
+    class="pointer-events-none absolute left-full top-1/2 -ml-[22px] flex w-max -translate-y-1/2 items-center gap-2"
+  >
     <!-- Octopus: slides out sideways from behind the logo when peeking -->
     <div
       class={`relative -z-10 origin-left transition-all duration-700 ease-out motion-reduce:transition-none ${peeking ? 'translate-x-0 rotate-0 opacity-100' : '-translate-x-[135%] -rotate-12 opacity-0'}`}
@@ -334,7 +341,7 @@
          comes round rather than the words swapping under the reader. -->
     {#if peeking}
       <div
-        class="pointer-events-auto relative flex items-start gap-2 rounded-2xl border border-reef-400/40 bg-brand-950/95 px-3 py-2 shadow-lg backdrop-blur"
+        class="pointer-events-auto relative flex max-w-[18rem] items-start gap-2 rounded-2xl border border-reef-400/40 bg-brand-950/95 px-3 py-2 shadow-lg backdrop-blur"
       >
         {#key current.href}
           <!-- The nav links to several of these same addresses, so the tests
