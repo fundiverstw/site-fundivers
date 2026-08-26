@@ -7,6 +7,11 @@
   import EventModal from '$components/calendar/EventModal.svelte'
   import { t, locale } from '$engine/i18n'
   import CoverPhoto from '$components/CoverPhoto.svelte'
+  import CalendarIcon from '$components/icons/CalendarIcon.svelte'
+  import MapPinIcon from '$components/icons/MapPinIcon.svelte'
+  import MapIcon from '$components/icons/MapIcon.svelte'
+  import ParasolIcon from '$components/icons/ParasolIcon.svelte'
+  import PlusSquareIcon from '$components/icons/PlusSquareIcon.svelte'
 
   // The landing page is three bands, one per kind of visitor, and on a desktop
   // all three are on the first screen — 25% / 50% / 25% of what is left under
@@ -92,12 +97,37 @@
   // Band C: the Go Diving section, which is what someone planning their own
   // diving actually needs. Titles come from that section's own copy, so the
   // band and the hub can never describe the same page differently.
+  //
+  // The icons are the booking app's own, so a diver who uses both sees the same
+  // glyph for the same idea (see $components/icons/README.md). Decorative: each
+  // one repeats the label beside it, so they are aria-hidden and nothing is
+  // said twice to a screen reader.
   let plan = $derived([
-    { href: '/calendar', label: $t.goDiving.calendarTitle, note: $t.goDiving.calendarDesc },
-    { href: '/sites', label: $t.goDiving.sitesTitle, note: $t.goDiving.sitesDesc },
-    { href: '/map', label: $t.goDiving.mapTitle, note: $t.goDiving.mapDesc },
-    { href: '/travel', label: $t.goDiving.travelTitle, note: $t.goDiving.travelDesc },
-    { href: '/build-trip', label: $t.goDiving.buildTripTitle, note: $t.goDiving.buildTripDesc },
+    {
+      href: '/calendar',
+      icon: CalendarIcon,
+      label: $t.goDiving.calendarTitle,
+      note: $t.goDiving.calendarDesc,
+    },
+    {
+      href: '/sites',
+      icon: MapPinIcon,
+      label: $t.goDiving.sitesTitle,
+      note: $t.goDiving.sitesDesc,
+    },
+    { href: '/map', icon: MapIcon, label: $t.goDiving.mapTitle, note: $t.goDiving.mapDesc },
+    {
+      href: '/travel',
+      icon: ParasolIcon,
+      label: $t.goDiving.travelTitle,
+      note: $t.goDiving.travelDesc,
+    },
+    {
+      href: '/build-trip',
+      icon: PlusSquareIcon,
+      label: $t.goDiving.buildTripTitle,
+      note: $t.goDiving.buildTripDesc,
+    },
   ])
 
   // The newest Surface Interval post's headline, shown on its rail row when
@@ -272,7 +302,7 @@
       </div>
     </section>
 
-    <!-- ── C · Plan your own ────────────────────────────────────────────── -->
+    <!-- ── C · Resources for experienced divers ──────────────────────────── -->
     <section
       data-band="plan"
       class="flex min-h-0 flex-col rounded-2xl border border-peach/60 bg-peach/20 px-3 py-2 lg:flex-[1]"
@@ -289,10 +319,17 @@
 
       <div class="mt-2 grid min-h-0 flex-1 grid-cols-2 gap-2 sm:grid-cols-5">
         {#each plan as item (item.href)}
+          <!-- Svelte 5 renders a component held in a variable directly, so the
+               icon travels with its tile in `plan` rather than being matched up
+               by position here. -->
+          {@const Icon = item.icon}
           <a
             href={item.href}
-            class="flex min-h-0 flex-col items-center justify-center gap-1 rounded-xl border border-white/15 px-2 py-2 text-center transition-all hover:-translate-y-0.5 hover:border-peach/70 hover:bg-white/5"
+            class="group flex min-h-0 flex-col items-center justify-center gap-1 rounded-xl border border-white/15 px-2 py-2 text-center transition-all hover:-translate-y-0.5 hover:border-peach/70 hover:bg-white/5"
           >
+            <span class="text-peach/80 transition-colors group-hover:text-peach">
+              <Icon size={22} />
+            </span>
             <span class="mono text-xs font-bold text-white lg:text-sm">{item.label}</span>
             <span class="line-clamp-2 text-[11px] leading-tight text-brand-200">{item.note}</span>
           </a>
