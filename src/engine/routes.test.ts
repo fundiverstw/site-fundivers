@@ -52,9 +52,9 @@ describe('routeKey', () => {
 
   it('routes the two prefixed detail pages', () => {
     expect(routeKey('/courses/padi-open-water-course')).toBe(':course')
-    expect(routeKey('/surface-interval/example-post')).toBe(':news')
+    expect(routeKey('/logbook/example-post')).toBe(':news')
     // The list pages themselves are not detail pages.
     expect(routeKey('/courses')).toBe('/courses')
-    expect(routeKey('/surface-interval')).toBe('/surface-interval')
+    expect(routeKey('/logbook')).toBe('/logbook')
   })
 })

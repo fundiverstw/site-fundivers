@@ -26,9 +26,8 @@
     '/quiz': () => import('$pages/Quiz.svelte'),
 
     '/community': () => import('$pages/Community.svelte'),
-    '/surface-interval': () => import('$pages/News.svelte'),
-    '/testimonials': () => import('$pages/Testimonials.svelte'),
-    '/reviews': () => import('$pages/Reviews.svelte'),
+    '/logbook': () => import('$pages/News.svelte'),
+    '/reputation': () => import('$pages/Reputation.svelte'),
     '/radio': () => import('$pages/Radio.svelte'),
     '/fundive': () => import('$pages/FunDive.svelte'),
 

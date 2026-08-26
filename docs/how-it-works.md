@@ -75,7 +75,7 @@ Pages that are not in any section are reached from the footer's link map, built 
 | --- | --- |
 | Services, Gear, Cycling, Hiking, Websites | The footer's **More** column (`src/components/Footer.svelte`); Gear, Cycling and Hiking also from the cards on the Services page |
 | Quiz | The card at the top of the Sea Life page, and the Education hub — it is the same photographs |
-| A single Surface Interval story | Its card on the feed (`/surface-interval/<slug>`) |
+| A single Logbook story | Its card on the feed (`/logbook/<slug>`) |
 
 The staff roster (`/team`, under About Us) is in the bar *and* in the sign-off at the
 bottom of every page ("Proudly created by the FunDivers **Team** in Taipei, Taiwan", in
@@ -95,7 +95,7 @@ component, or a component for an address that is not a route, fails `npm run che
 
 The keys starting with a `:` — `:site`, `:course`, `:news`, and `:missing` for the 404 —
 are the detail pages. They cannot be written as plain paths because one component serves many
-addresses: `/surface-interval/reef-cleanup` and `/surface-interval/padi-conference` are
+addresses: `/logbook/reef-cleanup` and `/logbook/padi-conference` are
 both `:news`, which reads the slug back off the address and looks the story up.
 
 **A dive site sits at the root of the site.** `/bat-cave`, not `/sites/bat-cave` — the
@@ -120,7 +120,8 @@ bookmarks, in search results and on the shop's old Wix site. `MOVED` and `movedT
 | Old | New |
 | --- | --- |
 | `/photos` | `/sealife` |
-| `/news`, `/news/<slug>` | `/surface-interval`, `/surface-interval/<slug>` |
+| `/news`, `/news/<slug>`, `/surface-interval`, `/surface-interval/<slug>` | `/logbook`, `/logbook/<slug>` |
+| `/testimonials`, `/reviews` | `/reputation` |
 | `/sites/<id>` | `/<id>` |
 
 The rewrite is a `replaceState`, not a push, so the Back button returns to wherever the

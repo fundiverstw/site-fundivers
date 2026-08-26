@@ -14,9 +14,8 @@ export const ja: Dict = {
     life: '海の生き物',
     quiz: 'クイズ',
 
-    news: 'サーフェスインターバル',
-    testimonials: '体験者の声',
-    reviews: 'レビュー',
+    news: 'ログブック',
+    reputation: '評判',
     fundive: 'FunDive アプリ',
 
     origins: '始まり',
@@ -127,8 +126,7 @@ export const ja: Dict = {
     communityTitle: 'ショップの近況',
     noteSurfaceInterval: '最近行ってきた場所',
     noteRadio: 'ショップからの生放送',
-    noteTestimonials: 'ダイバー自身の言葉で',
-    noteReviews: '他のサイトでの評判',
+    noteReputation: 'ダイバーが語る私たち',
 
     planTitle: '経験者向けの情報',
     planText: '次にいつ、どこで潜るかを端的にまとめました。',
@@ -152,13 +150,12 @@ export const ja: Dict = {
   community: {
     title: 'コミュニティ',
     subtitle: 'ショップに集まる人たち — 私たちの活動と、みなさんの声。',
-    newsTitle: 'サーフェスインターバル',
+    newsTitle: 'ログブック',
     newsDesc:
       'カンファレンス、ボランティア、地域交流、教育 — ダイビングとダイビングの合間の活動です。',
-    testimonialsTitle: '体験者の声',
-    testimonialsDesc: '私たちと一緒に学び、旅をするとはどういうことか。ダイバー自身の言葉で。',
-    reviewsTitle: 'レビュー',
-    reviewsDesc: '私たちが手を加えられない場所での評判 — Google・Facebook・TripAdvisor・PADI。',
+    reputationTitle: '評判',
+    reputationDesc:
+      'ダイバー自身の言葉と、私たちが手を加えられない場所での評価 — Google・Facebook・TripAdvisor。',
     radioTitle: 'ラジオ',
     radioDesc:
       'ショップから生放送でお届けしています。このページからも、バーのボタンからも聴けます。',
@@ -269,9 +266,14 @@ export const ja: Dict = {
     barHint: 'バーのラジオボタンも同じ働きをします。サイトのどのページからでも使えます。',
   },
 
+  reputation: {
+    title: '評判',
+    subtitle:
+      'ダイバーが私たちについて語ること — 本人の言葉と、私たちが一文字も手を加えられない公開の評価。',
+  },
+
   testimonials: {
     title: '体験者の声',
-    subtitle: '一緒に潜ったダイバーが、自分の言葉で。',
     none: 'まだ体験者の声はありません。',
     ctaTitle: '一緒に潜りましたか？',
     ctaText: 'ぜひ感想を聞かせてください — メールでも、公開レビューでも。',
@@ -281,16 +283,14 @@ export const ja: Dict = {
 
   reviews: {
     title: 'レビュー',
-    subtitle: '私たちのサイトには置いていません。書かれた場所で読んでください。',
     intro:
       '以下のレビューはすべて他社のサイトにあり、私たちが 1 文字も編集も削除もできません。ぜひご覧ください。そして一緒に潜ったことがあるなら、あなたの一言が小さなショップにとって本当に力になります。',
     readReviews: 'レビューを読む',
     writeReview: 'レビューを書く',
     platforms: {
-      google: '4 つの中でいちばん賑やかで、多くの方が最初に見つける場所です。',
+      google: '3 つの中でいちばん賑やかで、多くの方が最初に見つける場所です。',
       facebook: '日ごろショップをフォローしてくれているダイバーからのおすすめ。',
       tripadvisor: '台湾でのダイビングを計画中の旅行者がよく見る場所です。',
-      padi: 'PADI ダイブセンターとしての掲載ページと、認定ダイバーからの評価。',
     },
   },
 
@@ -464,7 +464,7 @@ export const ja: Dict = {
     },
   },
   news: {
-    title: 'サーフェスインターバル',
+    title: 'ログブック',
     subtitle:
       'カンファレンス、ボランティア活動、地域交流、そして教育 — ダイビングの合間の FunDivers チームの活動です。',
     none: 'まだニュースはありません。またご覧ください。',

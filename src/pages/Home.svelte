@@ -88,10 +88,9 @@
   // The rail beside band B. Community is the section aimed at people who
   // already dive, so it sits with their events rather than in a band of its own.
   let rail = $derived([
-    { href: '/surface-interval', label: $t.nav.news, note: $t.home.noteSurfaceInterval },
+    { href: '/logbook', label: $t.nav.news, note: $t.home.noteSurfaceInterval },
     { href: '/radio', label: $t.nav.radio, note: $t.home.noteRadio },
-    { href: '/testimonials', label: $t.nav.testimonials, note: $t.home.noteTestimonials },
-    { href: '/reviews', label: $t.nav.reviews, note: $t.home.noteReviews },
+    { href: '/reputation', label: $t.nav.reputation, note: $t.home.noteReputation },
   ])
 
   // Band C: the Go Diving section, which is what someone planning their own
@@ -130,7 +129,7 @@
     },
   ])
 
-  // The newest Surface Interval post's headline, shown on its rail row when
+  // The newest The Logbook post's headline, shown on its rail row when
   // there is one — a date-stamped line is a better reason to click than a
   // category name. Falls back to the note when the feed is empty.
   let latestPost = $derived(NEWS[0] ? newsText(NEWS[0].slug, $locale).title : null)
@@ -294,7 +293,7 @@
             >
               <span class="mono text-xs font-bold text-white">{item.label}</span>
               <span class="line-clamp-1 text-[11px] text-brand-200">
-                {item.href === '/surface-interval' ? (latestPost ?? item.note) : item.note}
+                {item.href === '/logbook' ? (latestPost ?? item.note) : item.note}
               </span>
             </a>
           {/each}

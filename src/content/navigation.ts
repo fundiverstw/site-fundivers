@@ -37,9 +37,8 @@ export const SECTIONS: NavSection[] = [
     href: '/community',
     key: 'community',
     items: [
-      { href: '/surface-interval', key: 'news' },
-      { href: '/testimonials', key: 'testimonials' },
-      { href: '/reviews', key: 'reviews' },
+      { href: '/logbook', key: 'news' },
+      { href: '/reputation', key: 'reputation' },
       { href: '/radio', key: 'radio' },
       { href: '/fundive', key: 'fundive' },
     ],

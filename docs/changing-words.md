@@ -19,7 +19,7 @@ Say the navigation bar says **Gear** and you want it to say **Shop**.
 Open `src/content/text/en.ts` and find the line:
 
 ```ts
-nav: { education: 'Education', community: 'Community', about: 'About Us', goDiving: 'Go Diving', courses: 'Courses', life: 'Sea Life', news: 'Surface Interval', sites: 'Dive Sites', gear: 'Gear', … },
+nav: { education: 'Education', community: 'Community', about: 'About Us', goDiving: 'Go Diving', courses: 'Courses', life: 'Sea Life', news: 'The Logbook', sites: 'Dive Sites', gear: 'Gear', … },
 ```
 
 Change only the part inside the quotes:

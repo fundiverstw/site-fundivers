@@ -22,10 +22,9 @@ export const en = {
     quiz: 'Quiz',
 
     // Under Community. `news` is the internal name for the posts in
-    // src/content/news/; readers only ever see "Surface Interval".
-    news: 'Surface Interval',
-    testimonials: 'Testimonials',
-    reviews: 'Reviews',
+    // src/content/news/; readers only ever see "The Logbook".
+    news: 'The Logbook',
+    reputation: 'Reputation',
     fundive: 'FunDive App',
 
     // Under About Us
@@ -159,8 +158,7 @@ export const en = {
     communityTitle: 'From the shop',
     noteSurfaceInterval: 'Where we’ve been lately',
     noteRadio: 'Live from the shop',
-    noteTestimonials: 'In divers’ own words',
-    noteReviews: 'What people say elsewhere',
+    noteReputation: 'What divers say about us',
 
     // ── C · Resources for experienced divers ──
     planTitle: 'Resources for experienced divers',
@@ -186,14 +184,12 @@ export const en = {
   community: {
     title: 'Community',
     subtitle: 'The people around the shop — what we get up to, and what they make of it.',
-    newsTitle: 'Surface Interval',
+    newsTitle: 'The Logbook',
     newsDesc:
       'Conferences, volunteer days, outreach and teaching — what the team has been up to between dives.',
-    testimonialsTitle: 'Testimonials',
-    testimonialsDesc: 'In our divers’ own words: what it is like to learn and travel with us.',
-    reviewsTitle: 'Reviews',
-    reviewsDesc:
-      'What people say about us where we cannot edit it — Google, Facebook, TripAdvisor and PADI.',
+    reputationTitle: 'Reputation',
+    reputationDesc:
+      'What our divers say in their own words, and the reviews we cannot edit — Google, Facebook and TripAdvisor.',
     radioTitle: 'Radio Show',
     radioDesc: 'We broadcast live from the shop. Listen in here, or from the button in the bar.',
     fundiveTitle: 'The FunDive App',
@@ -311,9 +307,18 @@ export const en = {
     barHint: 'The radio button in the bar does the same thing, from any page on the site.',
   },
 
+  // /reputation is one page in two halves: the quotes we hold, and the reviews
+  // we do not. `testimonials` and `reviews` below are its two sections — their
+  // titles are the headings inside it, which is why neither has a subtitle of
+  // its own any more.
+  reputation: {
+    title: 'Reputation',
+    subtitle:
+      'What divers say about us — in their own words here, and in public where we cannot edit a syllable of it.',
+  },
+
   testimonials: {
     title: 'Testimonials',
-    subtitle: 'What our divers say, in their own words.',
     none: 'No testimonials yet.',
     ctaTitle: 'Dived with us?',
     ctaText: 'We would love to hear how it went — write to us, or leave a public review.',
@@ -323,16 +328,14 @@ export const en = {
 
   reviews: {
     title: 'Reviews',
-    subtitle: 'We don’t host these. Read them where they were written.',
     intro:
       'Every review below sits on somebody else’s site, where we cannot edit or hide a word of it. Have a read — and if you have dived with us, adding yours genuinely helps a small shop get found.',
     readReviews: 'Read reviews',
     writeReview: 'Write a review',
     platforms: {
-      google: 'The busiest of the four, and the one most people find first.',
+      google: 'The busiest of the three, and the one most people find first.',
       facebook: 'Recommendations from divers who follow the shop day to day.',
       tripadvisor: 'Where visiting divers planning a trip to Taiwan tend to look.',
-      padi: 'Our PADI dive centre listing, with ratings from certified students.',
     },
   },
 
@@ -506,10 +509,10 @@ export const en = {
     diveWithUsText: 'Questions about a course or trip? We’re happy to help.',
     roles: { idc: 'IDC Staff Instructor', instructor: 'Instructor', divemaster: 'Divemaster' },
   },
-  // Presented as "Surface Interval" at /surface-interval. `news` is the internal
+  // Presented as "The Logbook" at /logbook. `news` is the internal
   // name — the posts live in src/content/news/, one folder each.
   news: {
-    title: 'Surface Interval',
+    title: 'The Logbook',
     subtitle:
       'Conferences, volunteer days, outreach and teaching — what the FunDivers team gets up to between dives.',
     none: 'No news yet. Check back soon.',

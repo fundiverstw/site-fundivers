@@ -26,9 +26,8 @@ export const ROUTE_PATHS = [
 
   // Community
   '/community',
-  '/surface-interval',
-  '/testimonials',
-  '/reviews',
+  '/logbook',
+  '/reputation',
   '/radio',
   '/fundive',
 
@@ -77,7 +76,7 @@ export function routeKey(href: string): RouteKey {
   const p = href.split(/[#?]/)[0]
 
   if (p.startsWith('/courses/') && p.length > '/courses/'.length) return ':course'
-  const post = '/surface-interval/'
+  const post = '/logbook/'
   if (p.startsWith(post) && p.length > post.length) return ':news'
 
   // A page always wins over a dive site. That is the safe way round — a name

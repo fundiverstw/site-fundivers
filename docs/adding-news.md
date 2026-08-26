@@ -2,9 +2,9 @@
 
 [← Back to start](index.md)
 
-The **Surface Interval** page is the growing list of things the team turns up to —
+The **Logbook** page is the growing list of things the team turns up to —
 conferences, volunteer days, community outreach, teaching. Newest at the top. It lives
-under **Community** in the navigation, at `/surface-interval`.
+under **Community** in the navigation, at `/logbook`.
 
 "News" is the name it still goes by in the code — the folder is `src/content/news/`, the
 page is `News.svelte`, the words are under `news:` in `src/content/text/`. Only the
@@ -26,7 +26,7 @@ src/content/news/
     2-hauling-nets.jpg
 ```
 
-That publishes on **20 September 2026** at **`/surface-interval/reef-cleanup`**.
+That publishes on **20 September 2026** at **`/logbook/reef-cleanup`**.
 
 ---
 
@@ -37,7 +37,7 @@ Name it `YYYY-MM-DD-some-slug`.
 | Part | What it does |
 | --- | --- |
 | `2026-09-20` | The date shown on the post, and what the list is sorted by |
-| `reef-cleanup` | The web address: `fundiverstw.com/surface-interval/reef-cleanup` |
+| `reef-cleanup` | The web address: `fundiverstw.com/logbook/reef-cleanup` |
 
 **The folder name is the only place the date and the address are written.** There is no
 `date:` field to disagree with it. If you get the date wrong, rename the folder and both
@@ -136,7 +136,7 @@ caption stops matching; the tests catch that and name the file for you.
 npm run dev
 ```
 
-Open <http://localhost:5173/surface-interval>. The new post is at the top if it is the most recent.
+Open <http://localhost:5173/logbook>. The new post is at the top if it is the most recent.
 
 ---
 

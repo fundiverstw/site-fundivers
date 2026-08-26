@@ -35,7 +35,18 @@ function navigate(to: string): void {
 // so they are answered by quietly rewriting the address rather than with a 404.
 const MOVED: Record<string, string> = {
   '/photos': '/sealife',
-  '/news': '/surface-interval',
+  // The blog has been at three addresses now: /news when it was called News,
+  // /surface-interval when it was called that, and /logbook now that the name
+  // "Surface Interval" belongs to the quarterly newsletter instead. Both old
+  // addresses point straight at the current one rather than at each other —
+  // chained redirects work right up until somebody deletes the middle one.
+  '/news': '/logbook',
+  '/surface-interval': '/logbook',
+  // Testimonials and Reviews were two pages saying the same thing from two
+  // directions; they are one page now. Both addresses have been in the wild,
+  // so both still land somewhere.
+  '/testimonials': '/reputation',
+  '/reviews': '/reputation',
 }
 
 /** Where this path has moved to, or null if it has not moved.
@@ -45,8 +56,10 @@ const MOVED: Record<string, string> = {
 export function movedTo(pathname: string): string | null {
   const p = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname
   if (MOVED[p]) return MOVED[p]
-  // The articles moved with their feed: /news/<slug> -> /surface-interval/<slug>.
-  if (p.startsWith('/news/')) return `/surface-interval/${p.slice('/news/'.length)}`
+  // The articles moved with their feed, both times over.
+  for (const old of ['/news/', '/surface-interval/']) {
+    if (p.startsWith(old)) return `/logbook/${p.slice(old.length)}`
+  }
   // Dive sites came up to the root: /sites/bat-cave -> /bat-cave. The list page
   // itself stays at /sites, which the length check leaves alone.
   if (p.startsWith('/sites/') && p.length > '/sites/'.length) return p.slice('/sites'.length)

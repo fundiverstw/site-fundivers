@@ -146,7 +146,16 @@ describe('hashId', () => {
 describe('movedTo', () => {
   it('sends the moved pages to their new addresses', () => {
     expect(movedTo('/photos')).toBe('/sealife')
-    expect(movedTo('/news')).toBe('/surface-interval')
+    expect(movedTo('/news')).toBe('/logbook')
+    // The blog's middle name. Both of its old addresses point at the current
+    // one directly — a chain of redirects survives only until somebody tidies
+    // away the address in the middle.
+    expect(movedTo('/surface-interval')).toBe('/logbook')
+  })
+
+  it('sends both halves of the old reputation pages to the one that replaced them', () => {
+    expect(movedTo('/testimonials')).toBe('/reputation')
+    expect(movedTo('/reviews')).toBe('/reputation')
   })
 
   it('brings a dive site up to the root, but not the list page', () => {
@@ -156,12 +165,14 @@ describe('movedTo', () => {
   })
 
   it('moves an article with its feed', () => {
-    expect(movedTo('/news/womens-dive-day')).toBe('/surface-interval/womens-dive-day')
+    expect(movedTo('/news/womens-dive-day')).toBe('/logbook/womens-dive-day')
+    expect(movedTo('/surface-interval/womens-dive-day')).toBe('/logbook/womens-dive-day')
   })
 
   it('ignores a trailing slash', () => {
     expect(movedTo('/photos/')).toBe('/sealife')
-    expect(movedTo('/news/')).toBe('/surface-interval')
+    expect(movedTo('/news/')).toBe('/logbook')
+    expect(movedTo('/surface-interval/')).toBe('/logbook')
   })
 
   it('leaves every other address alone', () => {
@@ -170,7 +181,7 @@ describe('movedTo', () => {
     // /team and /bat-cave are here on purpose. /team was a moved address until
     // About Us split into /origins and /team; /bat-cave is where a dive site
     // ends up, and a rule that also fired there would loop.
-    const untouched = ['/', '/sealife', '/surface-interval', '/about', '/team', '/bat-cave']
+    const untouched = ['/', '/sealife', '/logbook', '/about', '/team', '/bat-cave']
     for (const p of untouched) {
       expect(movedTo(p), p).toBeNull()
     }

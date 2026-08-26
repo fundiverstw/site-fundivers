@@ -161,7 +161,7 @@ test.describe('B · what’s coming up', () => {
 
   test('carries the community rail beside the events', async ({ page }) => {
     await visit(page, '/', db())
-    for (const href of ['/surface-interval', '/radio', '/testimonials', '/reviews']) {
+    for (const href of ['/logbook', '/radio', '/reputation']) {
       await expect(band(page, 'coming').locator(`a[href="${href}"]`)).toHaveCount(1)
     }
   })

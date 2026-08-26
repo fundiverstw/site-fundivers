@@ -44,7 +44,7 @@ Inside `content`, **anything with a page of its own is a folder named after its 
 ```
 src/content/dive-sites/bat-cave/     → fundiverstw.com/bat-cave
 src/content/courses/padi-efr-course/ → fundiverstw.com/courses/padi-efr-course
-src/content/news/2026-06-14-womens-dive-day/ → fundiverstw.com/surface-interval/womens-dive-day
+src/content/news/2026-06-14-womens-dive-day/ → fundiverstw.com/logbook/womens-dive-day
 ```
 
 Each folder holds everything about that one thing: its facts, its write-up, its photos,
@@ -70,7 +70,7 @@ and all three languages. So "change the Bat Cave page" is one folder to open, an
 | What we charge for FunDive and for websites | `src/content/services.ts` |
 | The words on the Services page | `src/content/text/en.ts`, under `services:` |
 | The long write-up for one course | `src/content/courses/<id>/details.ts` |
-| Add a Surface Interval post — a conference, a volunteer day, an outreach event | Make a folder in `src/content/news/` — see [Adding a news post](adding-news.md) |
+| Add a Logbook post — a conference, a volunteer day, an outreach event | Make a folder in `src/content/news/` — see [Adding a news post](adding-news.md) |
 | A photo on the Sea Life gallery page (`/sealife`) | Drop a file in `src/content/photos/gallery/` — see [Adding photos](adding-photos.md) |
 | The photo on a dive-site or course card | Drop a file in that site's or course's `photos/` folder — see [Adding photos](adding-photos.md) |
 | A colour, a font, or how round the corners are | `src/styles/theme.css` — see [Changing how it looks](changing-look.md) |

@@ -19,7 +19,7 @@ const SECTIONS = [
     id: 'community',
     href: '/community',
     label: 'Community',
-    items: ['/surface-interval', '/testimonials', '/reviews', '/radio', '/fundive'],
+    items: ['/logbook', '/reputation', '/radio', '/fundive'],
   },
   { id: 'about', href: '/about', label: 'About Us', items: ['/origins', '/team'] },
   {
@@ -76,11 +76,11 @@ test.describe('the section dropdowns', { tag: '@desktop-only' }, () => {
     await link.focus()
 
     await expect(link).toHaveAttribute('aria-expanded', 'true')
-    await expect(barLink(page, '/testimonials')).toBeVisible()
+    await expect(barLink(page, '/reputation')).toBeVisible()
 
     // And the next Tab walks into the menu rather than past it.
     await page.keyboard.press('Tab')
-    await expect(barLink(page, '/surface-interval')).toBeFocused()
+    await expect(barLink(page, '/logbook')).toBeFocused()
   })
 
   test('say that they have a menu at all', async ({ page }) => {
@@ -139,10 +139,10 @@ test.describe('the section dropdowns', { tag: '@desktop-only' }, () => {
     await visit(page, '/')
     const link = barLink(page, '/community').first()
     await link.focus()
-    await expect(barLink(page, '/reviews')).toBeVisible()
+    await expect(barLink(page, '/reputation')).toBeVisible()
 
     await page.keyboard.press('Escape')
-    await expect(barLink(page, '/reviews')).toHaveCount(0)
+    await expect(barLink(page, '/reputation')).toHaveCount(0)
     // Not left inside a menu that is no longer on screen — the next Tab has to
     // start from somewhere the visitor can see.
     await expect(link).toBeFocused()
@@ -235,7 +235,7 @@ test.describe('the hub pages', () => {
 test.describe('the addresses that moved', () => {
   for (const [from, to] of [
     ['/photos', '/sealife'],
-    ['/news', '/surface-interval'],
+    ['/news', '/logbook'],
     ['/sites/bat-cave', '/bat-cave'],
   ]) {
     test(`${from} lands on ${to}`, async ({ page }) => {

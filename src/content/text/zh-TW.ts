@@ -14,9 +14,8 @@ export const zhTW: Dict = {
     life: '海洋生物',
     quiz: '生物測驗',
 
-    news: '水面休息',
-    testimonials: '學員心得',
-    reviews: '評論',
+    news: '潛水日誌',
+    reputation: '口碑',
     fundive: 'FunDive App',
 
     origins: '起源',
@@ -126,8 +125,7 @@ export const zhTW: Dict = {
     communityTitle: '潛店動態',
     noteSurfaceInterval: '我們最近去了哪裡',
     noteRadio: '從潛店現場直播',
-    noteTestimonials: '潛水員自己的話',
-    noteReviews: '其他平台上的評價',
+    noteReputation: '潛水員怎麼說我們',
 
     planTitle: '資深潛水員資源',
     planText: '直接告訴你我們下一次何時、在哪裡下水。',
@@ -149,12 +147,11 @@ export const zhTW: Dict = {
   community: {
     title: '社群',
     subtitle: '圍繞在潛店周圍的人 — 我們做了些什麼，以及他們怎麼看。',
-    newsTitle: '水面休息',
+    newsTitle: '潛水日誌',
     newsDesc: '研討會、志工活動、社區推廣與教學 — 潛水與潛水之間，團隊都在忙些什麼。',
-    testimonialsTitle: '學員心得',
-    testimonialsDesc: '用潛水員自己的話，說說和我們一起學習與旅行是什麼感覺。',
-    reviewsTitle: '評論',
-    reviewsDesc: '在我們無法編輯的地方，大家怎麼說我們 — Google、Facebook、TripAdvisor 與 PADI。',
+    reputationTitle: '口碑',
+    reputationDesc:
+      '用潛水員自己的話說說我們，以及在我們無法編輯的地方 — Google、Facebook 與 TripAdvisor 上的評論。',
     radioTitle: '廣播節目',
     radioDesc: '我們從潛店現場直播。可以在這裡收聽，或直接用導覽列上的按鈕。',
     fundiveTitle: 'FunDive App',
@@ -261,9 +258,13 @@ export const zhTW: Dict = {
     barHint: '導覽列上的廣播按鈕功能相同，在網站的任何頁面都能使用。',
   },
 
+  reputation: {
+    title: '口碑',
+    subtitle: '潛水員怎麼說我們 — 這裡是他們自己的話，也有我們一個字都無法編輯的公開評論。',
+  },
+
   testimonials: {
     title: '學員心得',
-    subtitle: '用潛水員自己的話，說說和我們一起下水的感受。',
     none: '目前還沒有心得分享。',
     ctaTitle: '和我們潛過水嗎？',
     ctaText: '我們很想知道你的感受 — 寫信給我們，或留下一則公開評論。',
@@ -273,16 +274,14 @@ export const zhTW: Dict = {
 
   reviews: {
     title: '評論',
-    subtitle: '這些評論不放在我們自己的網站上，請到它們原本的地方閱讀。',
     intro:
       '以下每一則評論都放在別人的平台上，我們無法編輯或隱藏其中任何一個字。歡迎讀一讀 — 如果你曾和我們一起下水，留下你的評論，對一間小潛店真的很有幫助。',
     readReviews: '閱讀評論',
     writeReview: '撰寫評論',
     platforms: {
-      google: '四個平台中最熱鬧的一個，也是多數人最先找到的地方。',
+      google: '三個平台中最熱鬧的一個，也是多數人最先找到的地方。',
       facebook: '來自長期關注潛店動態的潛水員的推薦。',
       tripadvisor: '計畫來台灣潛水的旅客通常會先看這裡。',
-      padi: '我們的 PADI 潛水中心頁面，以及已認證學員給的評分。',
     },
   },
 
@@ -448,7 +447,7 @@ export const zhTW: Dict = {
     roles: { idc: 'IDC 資深教練', instructor: '教練', divemaster: '潛水長' },
   },
   news: {
-    title: '水面休息',
+    title: '潛水日誌',
     subtitle: '研討會、志工活動、社區推廣與教學 — 潛水與潛水之間，FunDivers 團隊的近期動態。',
     none: '目前還沒有消息，敬請期待。',
     notFound: '找不到這篇文章。',

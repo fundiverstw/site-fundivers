@@ -1,6 +1,6 @@
 import { SOCIAL } from './settings'
 
-// The outside places people review us, listed at /reviews.
+// The outside places people review us, listed on /reputation.
 //
 // Nothing here is a review — this site hosts none. Each entry is a pair of
 // links: where to read what people wrote, and where to add to it. That is the
@@ -12,13 +12,13 @@ import { SOCIAL } from './settings'
 //
 // ── Links still to confirm ──────────────────────────────────────────────────
 //
-// Google, TripAdvisor and PADI are **search URLs, not the shop's own listing**:
-// a direct "write a review" link needs the Google place id and the TripAdvisor
-// and PADI listing ids, which nobody has handed over yet. They land the visitor
-// on the right result rather than the right page. Replace them with the real
-// listing URLs — open each listing, copy the address, and paste it below.
+// Google and TripAdvisor are **search URLs, not the shop's own listing**: a
+// direct "write a review" link needs the Google place id and the TripAdvisor
+// listing id, which nobody has handed over yet. They land the visitor on the
+// right result rather than the right page. Replace them with the real listing
+// URLs — open each listing, copy the address, and paste it below.
 
-export type ReviewPlatformId = 'google' | 'facebook' | 'tripadvisor' | 'padi'
+export type ReviewPlatformId = 'google' | 'facebook' | 'tripadvisor'
 
 export type ReviewPlatform = {
   id: ReviewPlatformId
@@ -50,11 +50,5 @@ export const REVIEW_PLATFORMS: ReviewPlatform[] = [
     label: 'TripAdvisor',
     readUrl: `https://www.tripadvisor.com/Search?q=${SHOP_QUERY}`,
     writeUrl: `https://www.tripadvisor.com/Search?q=${SHOP_QUERY}`,
-  },
-  {
-    id: 'padi',
-    label: 'PADI',
-    readUrl: 'https://www.padi.com/dive-shop-locator?location=Taipei%2C%20Taiwan',
-    writeUrl: 'https://www.padi.com/dive-shop-locator?location=Taipei%2C%20Taiwan',
   },
 ]

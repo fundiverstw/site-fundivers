@@ -6,27 +6,21 @@
   import { siteImage } from '$engine/photo-pool'
   import fundiveLogoUrl from '$assets/fundive-logo-dark.svg'
 
-  // The Community hub. Surface Interval leads with the newest post's own lead
+  // The Community hub. The Logbook leads with the newest post's own lead
   // photo, so the card changes as the feed does rather than showing a fixed
   // picture that slowly stops matching what is behind it.
   let cards = $derived([
     {
-      href: '/surface-interval',
+      href: '/logbook',
       title: $t.community.newsTitle,
       desc: $t.community.newsDesc,
       image: NEWS[0]?.photos[0]?.image ?? null,
     },
     {
-      href: '/testimonials',
-      title: $t.community.testimonialsTitle,
-      desc: $t.community.testimonialsDesc,
+      href: '/reputation',
+      title: $t.community.reputationTitle,
+      desc: $t.community.reputationDesc,
       image: siteImage('long-dong-bay'),
-    },
-    {
-      href: '/reviews',
-      title: $t.community.reviewsTitle,
-      desc: $t.community.reviewsDesc,
-      icon: '★',
     },
     {
       href: '/radio',
