@@ -77,15 +77,18 @@ test('answers the keyboard', { tag: '@desktop-only' }, async ({ page }) => {
   const score = page.getByTestId('arcade-score')
   await expect(score).toHaveText('0')
 
-  // Hold the fire key down for a couple of seconds while turning, which is
-  // enough shots in enough directions to hit one of the three groups on screen.
+  // Hold the fire key down while turning: enough shots in enough directions to
+  // hit one of the three groups on screen. How long that takes is luck — the
+  // groups drift, the shots have a range — so wait for the score to move rather
+  // than shoot for a fixed spell and then look. The game is driven by
+  // requestAnimationFrame, so on a machine running eight of these at once it
+  // gets fewer frames, which is fewer shots and a slower turn; a fixed 2.5s of
+  // shooting passed alone and failed in a full run.
   await page.keyboard.down('Space')
   await page.keyboard.down('ArrowRight')
-  await page.waitForTimeout(2500)
+  await expect(score).not.toHaveText('0', { timeout: 15_000 })
   await page.keyboard.up('Space')
   await page.keyboard.up('ArrowRight')
-
-  await expect(score).not.toHaveText('0')
 })
 
 test(
