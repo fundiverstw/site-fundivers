@@ -343,12 +343,19 @@ export const en = {
     title: 'Get In Touch',
     seeCalendar: 'See Full Calendar',
     tryDive: 'Schedule a Try-Dive',
+    dsd: 'Discover Scuba Dive (DSD)',
+    dsdDesc:
+      'Try-Dives allow you to experience diving without any training. A certified SCUBA instructor will handle everything while you experience breathing underwater for the first time.',
     requestCourse: 'Request a Course',
+    coursesDesc:
+      'PADI courses run from your first certification all the way to professional level. Tell us which one you are after and we will find dates that fit your trip.',
     name: 'Name',
     email: 'Email',
+    people: 'How many people',
+    availableFrom: 'Available from',
+    availableTo: 'Available until (optional)',
     request: 'Your Request',
-    requestPlaceholder:
-      "Dates you're interested in, experience level, anything else we should know...",
+    requestPlaceholder: "Experience level, where you're staying, anything else we should know...",
     cancel: 'Cancel',
     send: 'Send Request',
     sent: 'Your email app should have opened with your request ready to send. If it didn’t, email {email} directly.',

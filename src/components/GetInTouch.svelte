@@ -14,6 +14,17 @@
   const TILE =
     'glass flex aspect-[3/2] flex-col items-center justify-center gap-3 rounded-2xl p-4 text-center transition-all hover:-translate-y-0.5 hover:shadow-md'
 
+  // Six fields share one look; only the textarea adds anything of its own.
+  const LABEL = 'text-[0.7rem] font-semibold uppercase tracking-widest text-brand-200'
+  const FIELD =
+    'mt-1 w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-white placeholder:text-brand-300 focus:border-reef-300 focus:outline-none'
+
+  // A try-dive is a PADI course with a name, and the form says so. The id is
+  // the course's folder under content/courses, which is also its address;
+  // contact.spec.ts follows the link, so renaming the folder without renaming
+  // this fails the suite rather than quietly leaving a dead link behind.
+  const DSD_HREF = '/courses/padi-discover-scuba-diving-program'
+
   type RequestType = 'try-dive' | 'course'
 
   // `active` is bindable so a parent can open the form directly — e.g. the
@@ -23,7 +34,16 @@
   let sent = $state(false)
   let name = $state('')
   let email = $state('')
+  let people = $state(1)
+  let from = $state('')
+  let until = $state('')
   let message = $state('')
+
+  // The earliest date the pickers offer. Built from the browser's own clock
+  // rather than toISOString(), which is UTC: in Taipei that would offer
+  // yesterday to anyone filling the form before 08:00.
+  const now = new Date()
+  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
 
   let TITLES = $derived<Record<RequestType, string>>({
     'try-dive': $t.getInTouch.tryDive,
@@ -42,8 +62,17 @@
     e.preventDefault()
     if (!active) return
     const subject = `${TITLES[active]}: ${name || 'Website request'}`
+    // The end date is optional: someone free on one day only fills in the
+    // first. These labels stay in English whatever the visitor is reading,
+    // because they are read in the shop's inbox, not on the site.
+    const dates = until && until !== from ? `${from} to ${until}` : from
     const body =
-      `Request: ${TITLES[active]}\n` + `Name: ${name}\n` + `Email: ${email}\n\n` + `${message}`
+      `Request: ${TITLES[active]}\n` +
+      `Name: ${name}\n` +
+      `Email: ${email}\n` +
+      `People: ${people}\n` +
+      `Available: ${dates}\n\n` +
+      `${message}`
     window.location.href = `mailto:${CONTACT.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
     active = null
     sent = true
@@ -63,6 +92,18 @@
   >
     {@render shape()}
   </svg>
+{/snippet}
+
+<!-- What the request is for, under the heading of the form making it: the name
+     of the thing, and a plain sentence about it. -->
+{#snippet blurb(href: string, label: string, text: string)}
+  <a
+    {href}
+    class="mt-1 inline-block text-sm font-semibold text-reef-300 underline-offset-4 hover:underline"
+  >
+    {label}
+  </a>
+  <p class="mt-1 text-sm text-brand-200">{text}</p>
 {/snippet}
 
 {#snippet calendarShape()}
@@ -143,42 +184,68 @@
 
   {#if active}
     <form class="glass mt-4 rounded-2xl p-6" onsubmit={submit}>
-      <h3 class="mb-4 text-center text-lg font-bold text-white">{TITLES[active]}</h3>
+      <div class="mb-4 text-center">
+        <h3 class="text-lg font-bold text-white">{TITLES[active]}</h3>
+        <!-- A try-dive is sold as PADI's Discover Scuba Diving, and a course
+             request is for one of twenty-one courses. Either way this is where
+             someone who has just decided to ask can read what they are asking
+             for, and go and look at it without losing the form. -->
+        {#if active === 'try-dive'}
+          {@render blurb(DSD_HREF, $t.getInTouch.dsd, $t.getInTouch.dsdDesc)}
+        {:else}
+          {@render blurb('/courses', $t.courses.title, $t.getInTouch.coursesDesc)}
+        {/if}
+      </div>
       <div class="grid gap-4">
         <label class="block">
-          <span class="text-[0.7rem] font-semibold uppercase tracking-widest text-brand-200"
-            >{$t.getInTouch.name}</span
-          >
-          <input
-            bind:value={name}
-            required
-            autocomplete="name"
-            class="mt-1 w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-white placeholder:text-brand-300 focus:border-reef-300 focus:outline-none"
-          />
+          <span class={LABEL}>{$t.getInTouch.name}</span>
+          <input bind:value={name} required autocomplete="name" class={FIELD} />
         </label>
         <label class="block">
-          <span class="text-[0.7rem] font-semibold uppercase tracking-widest text-brand-200"
-            >{$t.getInTouch.email}</span
-          >
-          <input
-            bind:value={email}
-            type="email"
-            required
-            autocomplete="email"
-            class="mt-1 w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-white placeholder:text-brand-300 focus:border-reef-300 focus:outline-none"
-          />
+          <span class={LABEL}>{$t.getInTouch.email}</span>
+          <input bind:value={email} type="email" required autocomplete="email" class={FIELD} />
         </label>
+
+        <!-- How many, and when. The shop had to ask both by reply before it
+             could answer a single enquiry, so a request that arrives without
+             them costs a day. They sit on one row with the party size so the
+             form stays a form rather than becoming a questionnaire;
+             `color-scheme: dark` is what makes the browser's own calendar icon
+             and picker legible against this panel. -->
+        <div class="grid gap-4 sm:grid-cols-3">
+          <label class="block">
+            <span class={LABEL}>{$t.getInTouch.people}</span>
+            <input bind:value={people} type="number" min="1" max="20" required class={FIELD} />
+          </label>
+          <label class="block">
+            <span class={LABEL}>{$t.getInTouch.availableFrom}</span>
+            <input
+              bind:value={from}
+              type="date"
+              min={today}
+              required
+              class={`${FIELD} [color-scheme:dark]`}
+            />
+          </label>
+          <label class="block">
+            <span class={LABEL}>{$t.getInTouch.availableTo}</span>
+            <input
+              bind:value={until}
+              type="date"
+              min={from || today}
+              class={`${FIELD} [color-scheme:dark]`}
+            />
+          </label>
+        </div>
+
         <label class="block">
-          <span class="text-[0.7rem] font-semibold uppercase tracking-widest text-brand-200"
-            >{$t.getInTouch.request}</span
-          >
+          <span class={LABEL}>{$t.getInTouch.request}</span>
           <textarea
             bind:value={message}
             required
             rows="4"
             placeholder={$t.getInTouch.requestPlaceholder}
-            class="mt-1 w-full resize-y rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-white placeholder:text-brand-300 focus:border-reef-300 focus:outline-none"
-          ></textarea>
+            class={`${FIELD} resize-y`}></textarea>
         </label>
       </div>
       <div class="mt-5 flex flex-wrap justify-center gap-3">
