@@ -16,7 +16,7 @@
 <section class="mx-auto max-w-[1600px] px-4 pb-16 sm:px-6">
   <div class="grid gap-10 lg:grid-cols-12 lg:items-start">
     <div class="lg:col-span-7">
-      <h2 class="text-2xl font-bold tracking-tight text-white sm:text-3xl">
+      <h2 class="text-t1 font-bold tracking-tight text-white">
         {$t.about.storyTitle}
       </h2>
       <div class="mt-6 space-y-5 leading-relaxed text-brand-100">
@@ -27,7 +27,7 @@
 
       <a
         href="/team"
-        class="mono mt-8 inline-block text-sm font-semibold text-reef-300 hover:text-reef-200"
+        class="mono mt-8 inline-block text-t3 font-semibold text-reef-300 hover:text-reef-200"
       >
         {$t.about.teamTitle} →
       </a>

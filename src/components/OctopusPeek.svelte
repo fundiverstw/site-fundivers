@@ -266,12 +266,12 @@
             class="group block"
             in:fade={{ duration: prefersReducedMotion ? 0 : 200 }}
           >
-            <p class="text-xs text-brand-100">{current.prompt}</p>
-            <p class="text-sm font-bold text-reef-200 group-hover:text-reef-100">
+            <p class="text-t4 text-brand-100">{current.prompt}</p>
+            <p class="text-t3 font-bold text-reef-200 group-hover:text-reef-100">
               {current.cta} →
             </p>
             {#if current.detail}
-              <p class="mono text-[11px] text-brand-300">{current.detail}</p>
+              <p class="mono text-t4 text-brand-300">{current.detail}</p>
             {/if}
           </a>
         {/key}
@@ -279,7 +279,7 @@
           type="button"
           onclick={dismiss}
           aria-label={$t.octopus.dismiss}
-          class="shrink-0 text-xs leading-none text-brand-400 hover:text-white"
+          class="shrink-0 text-t4 leading-none text-brand-400 hover:text-white"
         >
           ✕
         </button>

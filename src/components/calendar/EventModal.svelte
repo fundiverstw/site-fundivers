@@ -63,17 +63,17 @@
       class="relative z-10 w-full max-w-lg space-y-4 rounded-2xl border border-red-500 bg-white/90 p-6 backdrop-blur-md"
     >
       <div class="flex items-center justify-between">
-        <span class={`rounded-full px-2 py-1 text-xs text-white ${TYPE_DOT[event.type]}`}>
+        <span class={`rounded-full px-2 py-1 text-t4 text-white ${TYPE_DOT[event.type]}`}>
           {TYPE_LABELS[event.type]}
         </span>
         <button
           onclick={onClose}
           aria-label="Close"
-          class="text-xl leading-none text-blue-900 hover:text-red-600">×</button
+          class="text-t2 leading-none text-blue-900 hover:text-red-600">×</button
         >
       </div>
-      <h2 id="event-modal-title" class="text-xl font-bold text-blue-900">{event.title}</h2>
-      <div class="space-y-1 text-sm font-medium text-blue-900">
+      <h2 id="event-modal-title" class="text-t2 font-bold text-blue-900">{event.title}</h2>
+      <div class="space-y-1 text-t3 font-medium text-blue-900">
         <p>{event.spanLabel}</p>
         {#if event.price != null}
           <p>
@@ -88,7 +88,7 @@
         {/if}
       </div>
       {#if detailsLoading}
-        <p class="text-sm text-blue-900/70">{$t.common.loadingDetails}</p>
+        <p class="text-t3 text-blue-900/70">{$t.common.loadingDetails}</p>
       {:else if details}
         <div class="border-t border-blue-900/10 pt-3">
           <EventDetailsView {details} />

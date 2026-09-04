@@ -153,7 +153,7 @@
 <!-- Prerequisites — an optional lead-in, the itemised list (or a single line),
      and an optional trailing note, all in one card. -->
 {#snippet prereqBlock()}
-  <h3 class="text-xl font-bold text-white">{$t.courseDetail.prerequisites}</h3>
+  <h3 class="text-t2 font-bold text-white">{$t.courseDetail.prerequisites}</h3>
   <div class="glass mt-3 rounded-2xl p-5">
     {#if details?.prereqLead}
       <p class="leading-relaxed text-brand-100">{details.prereqLead}</p>
@@ -178,7 +178,7 @@
 
 <!-- A labelled, always-expanded list (Materials / Equipment / Notes), in a card. -->
 {#snippet bulletList(label: string, items: string[])}
-  <h3 class="text-xl font-bold text-white">{label}</h3>
+  <h3 class="text-t2 font-bold text-white">{label}</h3>
   <ul class="glass mt-3 space-y-2 rounded-2xl p-5">
     {#each items as it}
       <li class="flex gap-2 text-brand-100">
@@ -194,14 +194,14 @@
 {#snippet block(key: BlockKey)}
   {#if key === 'overview'}
     <div>
-      <h2 class="text-xl font-bold text-white">{$t.courseDetail.overview}</h2>
+      <h2 class="text-t2 font-bold text-white">{$t.courseDetail.overview}</h2>
       <div class="glass mt-3 rounded-2xl p-5">
         <p class="leading-relaxed text-brand-100">{details?.overview}</p>
       </div>
     </div>
   {:else if key === 'topics'}
     <div>
-      <h2 class="text-xl font-bold text-white">
+      <h2 class="text-t2 font-bold text-white">
         {details?.topicsTitle ?? $t.courseDetail.youWillLearn}
       </h2>
       <ul class="glass mt-3 space-y-2 rounded-2xl p-5">
@@ -216,7 +216,7 @@
   {:else if key === 'reasons'}
     <div>
       {#if details?.reasonsTitle}
-        <h2 class="text-xl font-bold text-white">{details.reasonsTitle}</h2>
+        <h2 class="text-t2 font-bold text-white">{details.reasonsTitle}</h2>
       {/if}
       <ol class="glass mt-3 space-y-2 rounded-2xl p-5">
         {#each details?.reasons ?? [] as reason, i}
@@ -232,7 +232,7 @@
   {:else if key === 'timeFrame'}
     <div>
       {#if details?.timeFrame}
-        <h2 class="text-xl font-bold text-white">{$t.courseDetail.timeFrame}</h2>
+        <h2 class="text-t2 font-bold text-white">{$t.courseDetail.timeFrame}</h2>
         <div class="glass mt-3 rounded-2xl p-5">
           <p class="leading-relaxed text-brand-100">{details.timeFrame}</p>
         </div>
@@ -242,7 +242,7 @@
           {#each details.phases as ph}
             <li class="glass rounded-xl p-4">
               <p class="font-semibold text-white">{ph.name}</p>
-              <p class="mt-1 text-sm leading-relaxed text-brand-100">{ph.text}</p>
+              <p class="mt-1 text-t3 leading-relaxed text-brand-100">{ph.text}</p>
             </li>
           {/each}
         </ol>
@@ -260,7 +260,7 @@
           {#each details.covers as ph}
             <li class="glass rounded-xl p-4">
               <p class="font-semibold text-white">{ph.name}</p>
-              <p class="mt-1 text-sm leading-relaxed text-brand-100">{ph.text}</p>
+              <p class="mt-1 text-t3 leading-relaxed text-brand-100">{ph.text}</p>
             </li>
           {/each}
         </ol>
@@ -274,7 +274,7 @@
   {:else if key === 'materials'}
     {#if details?.materialsRecommended?.length}
       <div>
-        <h3 class="text-xl font-bold text-white">{$t.courseDetail.materials}</h3>
+        <h3 class="text-t2 font-bold text-white">{$t.courseDetail.materials}</h3>
         <div class="glass mt-3 rounded-2xl p-5">
           <ul class="space-y-2">
             {#each details?.materials ?? [] as it}
@@ -284,7 +284,7 @@
               </li>
             {/each}
           </ul>
-          <p class="mt-4 text-sm font-semibold uppercase tracking-wide text-brand-300">
+          <p class="mt-4 text-t3 font-semibold uppercase tracking-wide text-brand-300">
             {$t.courseDetail.recommended}
           </p>
           <ul class="mt-2 space-y-2">
@@ -303,7 +303,7 @@
   {:else if key === 'equipment'}
     {#if details?.equipmentText}
       <div>
-        <h3 class="text-xl font-bold text-white">{$t.courseDetail.equipment}</h3>
+        <h3 class="text-t2 font-bold text-white">{$t.courseDetail.equipment}</h3>
         <div class="glass mt-3 rounded-2xl p-5">
           <p class="leading-relaxed text-brand-100">{details.equipmentText}</p>
         </div>
@@ -327,7 +327,7 @@
   <article class="mx-auto max-w-[1100px] px-4 py-8 sm:px-6 sm:py-12">
     <a
       href="/courses"
-      class="text-sm font-medium text-reef-300 transition-colors hover:text-reef-200"
+      class="text-t3 font-medium text-reef-300 transition-colors hover:text-reef-200"
     >
       {$t.courseDetail.back}
     </a>
@@ -338,9 +338,9 @@
       {#each subsections as keys, i}
         {#snippet body()}
           {#if i === 0}
-            <h1 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">{courseTitle}</h1>
+            <h1 class="text-t1 font-bold tracking-tight text-white">{courseTitle}</h1>
             <div class="glass mt-4 rounded-2xl p-5">
-              <p class="text-base leading-relaxed text-brand-100 sm:text-lg">
+              <p class="text-t2 leading-relaxed text-brand-100">
                 {details?.intro ?? courseText(course, $locale).desc}
               </p>
             </div>
@@ -358,7 +358,7 @@
     </div>
 
     <!-- Upcoming sessions -->
-    <h2 class="mt-10 text-xl font-bold text-white sm:text-2xl">{$t.courseDetail.upcoming}</h2>
+    <h2 class="mt-10 text-t2 font-bold text-white">{$t.courseDetail.upcoming}</h2>
     {#if sessions.length === 0}
       <p class="mt-3 text-brand-100">{$t.courseDetail.noDates}</p>
     {:else}
@@ -367,19 +367,19 @@
           {@const price = twd(ev.startingAt)}
           <li class="glass flex items-center justify-between gap-4 rounded-xl p-4">
             <div class="min-w-0">
-              <p class="text-sm font-medium text-brand-200">
+              <p class="text-t3 font-medium text-brand-200">
                 {formatSpan(ev.startDate, ev.endDate, ev.time)}
               </p>
             </div>
             <div class="flex shrink-0 items-center gap-3">
-              {#if price}<span class="text-sm font-semibold text-white"
+              {#if price}<span class="text-t3 font-semibold text-white"
                   >{$t.common.fromPrice.replace('{price}', price)}</span
                 >{/if}
               <a
                 href={ev.fullyBooked ? '#contact' : registerUrl('course', ev.id)}
                 target={ev.fullyBooked ? undefined : '_blank'}
                 rel="noopener"
-                class="rounded-full bg-brand-600 px-4 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
+                class="rounded-full bg-brand-600 px-4 py-1.5 text-t3 font-semibold text-white transition-colors hover:bg-brand-700"
               >
                 {$t.courses.enroll}
               </a>
@@ -391,7 +391,7 @@
 
     <!-- Where to next -->
     {#if nextCourses.length}
-      <h2 class="mt-10 text-xl font-bold text-white sm:text-2xl">{$t.courseDetail.next}</h2>
+      <h2 class="mt-10 text-t2 font-bold text-white">{$t.courseDetail.next}</h2>
       <div class="mt-4 grid gap-4 sm:grid-cols-2">
         {#each nextCourses as nc}
           <a

@@ -12,7 +12,7 @@
     {#if logo}
       <img src={logo} alt={logoAlt} class="mb-5 h-14 w-auto max-w-full sm:h-16" />
     {/if}
-    <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">{title}</h1>
+    <h1 class="text-t1 font-bold tracking-tight">{title}</h1>
     {#if subtitle}
       <p class="mt-3 max-w-2xl text-brand-100">{subtitle}</p>
     {/if}

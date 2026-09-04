@@ -21,7 +21,7 @@
   )
 </script>
 
-<div class="max-h-72 space-y-3 overflow-y-auto pr-1 text-sm text-blue-900">
+<div class="max-h-72 space-y-3 overflow-y-auto pr-1 text-t3 text-blue-900">
   {#each sections as { key, label } (key)}
     {#if details[key]}
       <section>

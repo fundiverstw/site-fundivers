@@ -150,23 +150,23 @@
     <div class="absolute inset-x-0 bottom-0 px-2.5 pb-2 pt-4">
       {#if ev.featured}
         <span
-          class="mono rounded bg-mauve/25 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-mauve"
+          class="mono rounded bg-mauve/25 px-1.5 py-0.5 text-t4 font-bold uppercase tracking-wide text-mauve"
           >{$t.common.featured}</span
         >
       {/if}
       {#if ev.fullyBooked}
         <span
-          class="rounded bg-amber-400/25 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-200"
+          class="rounded bg-amber-400/25 px-1.5 py-0.5 text-t4 font-bold uppercase tracking-wide text-amber-200"
           >{$t.common.waitlist}</span
         >
       {/if}
-      <h3 class="line-clamp-1 text-sm font-bold leading-tight text-white lg:text-base">
+      <h3 class="line-clamp-1 text-t3 font-bold leading-tight text-white">
         {ev.title}
       </h3>
-      <p class="mono truncate text-xs text-sky-300">
+      <p class="mono truncate text-t4 text-sky-300">
         {formatSpan(ev.startDate, ev.endDate, ev.time)}
       </p>
-      {#if price}<p class="mono text-xs font-bold text-peach">
+      {#if price}<p class="mono text-t4 font-bold text-peach">
           {$t.common.fromPrice.replace('{price}', price)}
         </p>{/if}
     </div>
@@ -201,12 +201,10 @@
     >
       <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
         <div>
-          <h2 class="text-lg font-bold text-green lg:text-xl">{$t.home.startTitle}</h2>
-          <p class="text-sm text-brand-100">{$t.home.startText}</p>
+          <h2 class="text-t2 font-bold text-green">{$t.home.startTitle}</h2>
+          <p class="text-t3 text-brand-100">{$t.home.startText}</p>
         </div>
-        <nav
-          class="mono flex flex-wrap gap-x-4 gap-y-1 text-xs font-semibold text-green lg:text-sm"
-        >
+        <nav class="mono flex flex-wrap gap-x-4 gap-y-1 text-t3 font-semibold text-green">
           <a class="hover:text-white" href="/sealife">{$t.home.seeLife} →</a>
           <a class="hover:text-white" href="/map">{$t.home.whereWeDive} →</a>
           <a class="hover:text-white" href="/about">{$t.home.whoWeAre} →</a>
@@ -235,10 +233,10 @@
               <span
                 class="block h-3.5 w-3.5 shrink-0 rounded-full border-2 border-green bg-brand-950 transition-colors group-hover:bg-green"
               ></span>
-              <span class="mono mt-1.5 text-sm font-bold text-white lg:text-base"
+              <span class="mono mt-1.5 text-t3 font-bold text-white"
                 >{$t.home.startLadder[i].label}</span
               >
-              <span class="mt-0.5 line-clamp-2 text-xs leading-tight text-brand-200"
+              <span class="mt-0.5 line-clamp-2 text-t4 leading-tight text-brand-200"
                 >{$t.home.startLadder[i].note}</span
               >
             </a>
@@ -254,12 +252,10 @@
     >
       <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
         <div>
-          <h2 class="text-lg font-bold text-reef-300 lg:text-xl">{$t.home.comingTitle}</h2>
-          <p class="text-sm text-brand-100">{$t.home.comingText}</p>
+          <h2 class="text-t2 font-bold text-reef-300">{$t.home.comingTitle}</h2>
+          <p class="text-t3 text-brand-100">{$t.home.comingText}</p>
         </div>
-        <a
-          href="/calendar"
-          class="mono text-xs font-semibold text-reef-300 hover:text-white lg:text-sm"
+        <a href="/calendar" class="mono text-t3 font-semibold text-reef-300 hover:text-white"
           >{$t.home.seeCalendar}</a
         >
       </div>
@@ -273,7 +269,7 @@
               ></div>
             {/each}
           {:else if events.length === 0}
-            <p class="col-span-full self-center text-center text-sm text-brand-200">
+            <p class="col-span-full self-center text-center text-t3 text-brand-200">
               {$t.common.nothingScheduled}
             </p>
           {:else}
@@ -287,7 +283,7 @@
              is the section written for people who already dive, so it keeps
              their company rather than taking a band of its own. -->
         <aside class="flex min-h-0 flex-col gap-1.5">
-          <h3 class="mono text-xs uppercase tracking-widest text-reef-200">
+          <h3 class="mono text-t4 uppercase tracking-widest text-reef-200">
             {$t.home.communityTitle}
           </h3>
           {#each rail as item (item.href)}
@@ -295,8 +291,8 @@
               href={item.href}
               class="group flex min-h-0 flex-1 flex-col justify-center rounded-xl border border-white/10 px-3 py-1.5 transition-colors hover:border-reef-400/60 hover:bg-white/5"
             >
-              <span class="mono text-sm font-bold text-white">{item.label}</span>
-              <span class="line-clamp-1 text-xs text-brand-200">
+              <span class="mono text-t3 font-bold text-white">{item.label}</span>
+              <span class="line-clamp-1 text-t4 text-brand-200">
                 {item.href === '/logbook' ? (latestPost ?? item.note) : item.note}
               </span>
             </a>
@@ -312,12 +308,10 @@
     >
       <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
         <div>
-          <h2 class="text-lg font-bold text-peach lg:text-xl">{$t.home.planTitle}</h2>
-          <p class="text-sm text-brand-100">{$t.home.planText}</p>
+          <h2 class="text-t2 font-bold text-peach">{$t.home.planTitle}</h2>
+          <p class="text-t3 text-brand-100">{$t.home.planText}</p>
         </div>
-        <a
-          href="/go-diving"
-          class="mono text-xs font-semibold text-peach hover:text-white lg:text-sm"
+        <a href="/go-diving" class="mono text-t3 font-semibold text-peach hover:text-white"
           >{$t.nav.goDiving} →</a
         >
       </div>
@@ -330,12 +324,12 @@
           {@const Icon = item.icon}
           <a
             href={item.href}
-            class="group flex min-h-0 flex-col items-center justify-center gap-1 rounded-xl border border-white/15 px-2 py-2 text-center transition-all hover:-translate-y-0.5 hover:border-peach/70 hover:bg-white/5"
+            class="group flex min-h-0 flex-col items-center justify-center gap-0.5 rounded-xl border border-white/15 px-2 py-1.5 text-center transition-all hover:-translate-y-0.5 hover:border-peach/70 hover:bg-white/5"
           >
             <span class="text-peach/80 transition-colors group-hover:text-peach">
-              <Icon size={22} />
+              <Icon size={20} />
             </span>
-            <span class="mono text-sm font-bold text-white lg:text-base">{item.label}</span>
+            <span class="mono text-t3 font-bold text-white">{item.label}</span>
             <!-- The one line that goes when there is no room for it. Band C is a
                  quarter of the screen whatever the screen is, and on a 1280x800
                  laptop a tile of icon + label + two lines of note is taller than
@@ -343,7 +337,7 @@
                  of a word. Five labelled tiles with no notes is a worse tile and
                  a better band. -->
             <span
-              class="line-clamp-2 text-xs leading-tight text-brand-200 lg:[@media(max-height:860px)]:hidden"
+              class="line-clamp-2 text-t4 leading-tight text-brand-200 lg:[@media(max-height:860px)]:hidden"
               >{item.note}</span
             >
           </a>
@@ -382,8 +376,8 @@
   <div
     class="mx-auto flex max-w-[1600px] flex-col items-center gap-1 px-4 py-12 text-center sm:px-6 sm:py-14"
   >
-    <p class="text-2xl font-bold text-white sm:text-3xl">{$t.home.taglineMain}</p>
-    <p class="text-lg font-light text-reef-100">{$t.home.taglineSub}</p>
+    <p class="text-t1 font-bold text-white">{$t.home.taglineMain}</p>
+    <p class="text-t2 font-light text-reef-100">{$t.home.taglineSub}</p>
   </div>
 </section>
 

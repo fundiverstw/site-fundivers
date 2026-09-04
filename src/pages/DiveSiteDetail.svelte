@@ -77,7 +77,7 @@
     <article class="mx-auto max-w-[1100px] px-4 py-8 sm:px-6 sm:py-12">
       <a
         href="/sites"
-        class="text-sm font-medium text-reef-300 transition-colors hover:text-reef-200"
+        class="text-t3 font-medium text-reef-300 transition-colors hover:text-reef-200"
       >
         {$t.siteDetail.back}
       </a>
@@ -98,20 +98,20 @@
         ></div>
         <div class="relative z-10 p-6 sm:p-8">
           <div class="flex flex-wrap items-center gap-2">
-            <span class="mono text-xs font-medium uppercase tracking-wide text-sky-300"
+            <span class="mono text-t4 font-medium uppercase tracking-wide text-sky-300"
               >{regionName}</span
             >
             {#if site.dive_type}
               <span
-                class="rounded bg-reef-400/25 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-reef-100"
+                class="rounded bg-reef-400/25 px-1.5 py-0.5 text-t4 font-bold uppercase tracking-wide text-reef-100"
               >
                 {site.dive_type}
               </span>
             {/if}
           </div>
-          <h1 class="mt-1 text-3xl font-bold tracking-tight text-white sm:text-4xl">{siteName}</h1>
+          <h1 class="mt-1 text-t1 font-bold tracking-tight text-white">{siteName}</h1>
           {#if tagline}
-            <p class="mt-2 max-w-2xl text-sm text-white/90 sm:text-base">{tagline}</p>
+            <p class="mt-2 max-w-2xl text-t3 text-white/90">{tagline}</p>
           {/if}
         </div>
       </div>
@@ -120,7 +120,7 @@
         <!-- Main column -->
         <div class="min-w-0">
           {#if paragraphs.length}
-            <h2 class="text-xl font-bold text-white">{$t.siteDetail.overview}</h2>
+            <h2 class="text-t2 font-bold text-white">{$t.siteDetail.overview}</h2>
             <div class="mt-3 space-y-3 text-brand-100">
               {#each paragraphs as p}
                 <p class="leading-relaxed">{p}</p>
@@ -129,7 +129,7 @@
           {/if}
 
           {#if details?.highlights?.length}
-            <h2 class="mt-8 text-xl font-bold text-white">{$t.siteDetail.highlights}</h2>
+            <h2 class="mt-8 text-t2 font-bold text-white">{$t.siteDetail.highlights}</h2>
             <ul class="mt-3 space-y-2">
               {#each details.highlights as h}
                 <li class="flex gap-2 text-brand-100">
@@ -141,7 +141,7 @@
           {/if}
 
           {#if details?.aboveSurface}
-            <h2 class="mt-8 text-xl font-bold text-white">{$t.siteDetail.aboveSurface}</h2>
+            <h2 class="mt-8 text-t2 font-bold text-white">{$t.siteDetail.aboveSurface}</h2>
             <div class="mt-3 space-y-3 text-brand-100">
               {#each paras(details.aboveSurface) as p}
                 <p class="leading-relaxed">{p}</p>
@@ -154,7 +154,7 @@
              marker sets where the descent's water surface line sits. -->
           {#if details?.belowSurface || details?.marineLife?.length}
             <div data-surface aria-hidden="true" class="h-20"></div>
-            <h2 class="text-xl font-bold text-white">
+            <h2 class="text-t2 font-bold text-white">
               {details?.belowSurface ? $t.siteDetail.belowSurface : $t.siteDetail.marineLife}
             </h2>
             {#if details?.belowSurface}
@@ -181,13 +181,13 @@
                   {#if FILLED_SECTIONS.has(slug)}
                     <a
                       href={`/sealife#${slug}`}
-                      class="rounded-full border border-reef-400/40 bg-reef-400/10 px-3 py-1 text-sm text-reef-100 transition-colors hover:border-reef-400 hover:bg-reef-400/20 hover:text-white"
+                      class="rounded-full border border-reef-400/40 bg-reef-400/10 px-3 py-1 text-t3 text-reef-100 transition-colors hover:border-reef-400 hover:bg-reef-400/20 hover:text-white"
                     >
                       {marineLabel(m, $locale)}
                     </a>
                   {:else}
                     <span
-                      class="rounded-full border border-white/10 px-3 py-1 text-sm text-brand-200"
+                      class="rounded-full border border-white/10 px-3 py-1 text-t3 text-brand-200"
                     >
                       {marineLabel(m, $locale)}
                     </span>
@@ -198,7 +198,7 @@
           {/if}
 
           {#if details?.gettingThere}
-            <h2 class="mt-8 text-xl font-bold text-white">{$t.siteDetail.gettingThere}</h2>
+            <h2 class="mt-8 text-t2 font-bold text-white">{$t.siteDetail.gettingThere}</h2>
             <div class="mt-3 space-y-3 text-brand-100">
               {#each paras(details.gettingThere) as p}
                 <p class="leading-relaxed">{p}</p>
@@ -208,7 +208,7 @@
               href={mapsHref}
               target="_blank"
               rel="noopener"
-              class="mt-3 inline-block text-sm font-semibold text-reef-300 transition-colors hover:text-reef-200"
+              class="mt-3 inline-block text-t3 font-semibold text-reef-300 transition-colors hover:text-reef-200"
             >
               {$t.siteDetail.directions} →
             </a>
@@ -219,10 +219,10 @@
            this site" heading), not sticky, so it does not follow the scroll. -->
         <aside class="lg:self-start">
           <div class="glass rounded-2xl p-5">
-            <h2 class="text-sm font-semibold uppercase tracking-wide text-white">
+            <h2 class="text-t3 font-semibold uppercase tracking-wide text-white">
               {$t.siteDetail.quickFacts}
             </h2>
-            <dl class="mt-3 space-y-2.5 text-sm">
+            <dl class="mt-3 space-y-2.5 text-t3">
               {#each facts as f}
                 <div class="flex items-start justify-between gap-3">
                   <dt class="shrink-0 text-brand-300">{f.label}</dt>
@@ -234,7 +234,7 @@
             {#if requirements}
               <div class="mt-4 border-t border-white/10 pt-3">
                 <dt class="text-brand-300">{$t.siteDetail.requirements}</dt>
-                <dd class="mt-1 text-sm text-white/90">{requirements}</dd>
+                <dd class="mt-1 text-t3 text-white/90">{requirements}</dd>
               </div>
             {/if}
 
@@ -243,7 +243,7 @@
                 href={mapsHref}
                 target="_blank"
                 rel="noopener"
-                class="rounded-full border border-white/40 px-4 py-2 text-center text-sm font-bold text-white transition-colors hover:bg-white/15"
+                class="rounded-full border border-white/40 px-4 py-2 text-center text-t3 font-bold text-white transition-colors hover:bg-white/15"
               >
                 {$t.siteDetail.directions}
               </a>

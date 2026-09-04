@@ -302,13 +302,13 @@
 <svelte:window onkeydown={onKeyDown} onkeyup={onKeyUp} />
 
 <section class="mx-auto max-w-4xl px-4 pb-20 pt-8 sm:px-6">
-  <h1 class="text-2xl font-bold text-white sm:text-3xl">{$t.arcade.title}</h1>
-  <p class="mt-2 max-w-2xl text-sm text-brand-100">{$t.arcade.subtitle}</p>
+  <h1 class="text-t1 font-bold text-white">{$t.arcade.title}</h1>
+  <p class="mt-2 max-w-2xl text-t3 text-brand-100">{$t.arcade.subtitle}</p>
 
   <!-- The score line is real text rather than something painted into the
        canvas: it is the part of the game a screen reader can follow, and it is
        the part a reader actually reads. -->
-  <div class="mono mt-4 flex flex-wrap items-center gap-x-5 gap-y-1 text-sm text-reef-200">
+  <div class="mono mt-4 flex flex-wrap items-center gap-x-5 gap-y-1 text-t3 text-reef-200">
     <span>{$t.arcade.score}: <b class="text-white" data-testid="arcade-score">{score}</b></span>
     <span>{$t.arcade.best}: <b class="text-white">{best}</b></span>
     <span>{$t.arcade.wave}: <b class="text-white">{wave}</b></span>
@@ -332,7 +332,7 @@
       <p
         data-testid="arcade-taunt"
         aria-live="polite"
-        class="pointer-events-none absolute inset-x-3 bottom-3 rounded-xl bg-brand-950/80 px-3 py-2 text-center text-xs text-reef-100 sm:text-sm"
+        class="pointer-events-none absolute inset-x-3 bottom-3 rounded-xl bg-brand-950/80 px-3 py-2 text-center text-t3 text-reef-100"
       >
         “{line}”
       </p>
@@ -341,16 +341,16 @@
     {#if phase !== 'playing'}
       <div class="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-brand-950/70">
         {#if phase === 'over'}
-          <p class="text-xl font-bold text-white">{$t.arcade.over}</p>
-          <p class="mono text-sm text-reef-200">{$t.arcade.score}: {score}</p>
+          <p class="text-t2 font-bold text-white">{$t.arcade.over}</p>
+          <p class="mono text-t3 text-reef-200">{$t.arcade.score}: {score}</p>
         {:else if phase === 'paused'}
-          <p class="text-xl font-bold text-white">{$t.arcade.paused}</p>
+          <p class="text-t2 font-bold text-white">{$t.arcade.paused}</p>
         {/if}
         <button
           type="button"
           onclick={() => (phase === 'paused' ? (phase = 'playing') : begin())}
           data-testid="arcade-start"
-          class="module-active mono rounded-xl border border-reef-400/50 px-5 py-2 text-base font-bold"
+          class="module-active mono rounded-xl border border-reef-400/50 px-5 py-2 text-t3 font-bold"
         >
           {phase === 'paused'
             ? $t.arcade.resume
@@ -358,7 +358,7 @@
               ? $t.arcade.again
               : $t.arcade.start}
         </button>
-        <p class="max-w-sm px-4 text-center text-xs text-brand-200">{$t.arcade.keys}</p>
+        <p class="max-w-sm px-4 text-center text-t4 text-brand-200">{$t.arcade.keys}</p>
       </div>
     {/if}
   </div>
@@ -371,7 +371,7 @@
         <button
           type="button"
           aria-label={c.label}
-          class="module h-12 w-14 rounded-xl border border-white/15 text-lg text-white select-none"
+          class="module h-12 w-14 rounded-xl border border-white/15 text-t2 text-white select-none"
           onpointerdown={() => hold(c.k, true)}
           onpointerup={() => hold(c.k, false)}
           onpointerleave={() => hold(c.k, false)}
@@ -403,7 +403,7 @@
     </div>
   </div>
 
-  <p class="mt-6 text-sm">
+  <p class="mt-6 text-t3">
     <a href="/" class="mono font-semibold text-reef-300 hover:text-reef-200"
       >← {$t.arcade.backHome}</a
     >

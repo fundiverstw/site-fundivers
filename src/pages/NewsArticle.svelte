@@ -36,23 +36,23 @@
 {#if !article || !text}
   <section class="mx-auto max-w-2xl px-4 py-16 text-center sm:px-6">
     <p class="glass rounded-2xl p-8 text-brand-100">{$t.news.notFound}</p>
-    <a href="/logbook" class="mono mt-6 inline-block text-sm font-semibold text-reef-300"
+    <a href="/logbook" class="mono mt-6 inline-block text-t3 font-semibold text-reef-300"
       >← {$t.news.backToAll}</a
     >
   </section>
 {:else}
   <article class="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-14">
-    <a href="/logbook" class="mono text-xs font-semibold text-reef-300 hover:text-reef-200"
+    <a href="/logbook" class="mono text-t4 font-semibold text-reef-300 hover:text-reef-200"
       >← {$t.news.backToAll}</a
     >
 
-    <div class="mono mt-6 flex items-center gap-2 text-xs font-semibold text-reef-300">
+    <div class="mono mt-6 flex items-center gap-2 text-t4 font-semibold text-reef-300">
       <time datetime={article.date}>{formatNewsDate(article.date, $locale)}</time>
       <span aria-hidden="true">·</span>
       <span class="uppercase tracking-wider">{$t.news.kinds[article.kind]}</span>
     </div>
 
-    <h1 class="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">{text.title}</h1>
+    <h1 class="mt-3 text-t1 font-bold tracking-tight text-white">{text.title}</h1>
 
     {#if article.photos.length}
       <!-- Up to three. One fills the column; two or three share a row on a wide
@@ -70,7 +70,7 @@
               class="w-full rounded-2xl border border-white/10 object-cover"
             />
             {#if photo.caption}
-              <figcaption class="mt-2 text-xs text-brand-300">{photo.caption}</figcaption>
+              <figcaption class="mt-2 text-t4 text-brand-300">{photo.caption}</figcaption>
             {/if}
           </figure>
         {/each}

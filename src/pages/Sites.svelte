@@ -40,13 +40,13 @@
       {/each}
     </div>
   {:else if error}
-    <p class="rounded-lg bg-red-500/15 p-4 text-sm text-red-200">{$t.sites.loadError}: {error}</p>
+    <p class="rounded-lg bg-red-500/15 p-4 text-t3 text-red-200">{$t.sites.loadError}: {error}</p>
   {:else if sites.length === 0}
     <p class="glass rounded-lg p-6 text-center text-brand-100">{$t.sites.none}</p>
   {:else}
     {#each byArea as group}
       <div class="mb-12">
-        <h2 class="mb-5 text-2xl font-bold text-white">{$t.sites.areas[group.area]}</h2>
+        <h2 class="mb-5 text-t2 font-bold text-white">{$t.sites.areas[group.area]}</h2>
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {#each group.sites as s (s.id)}
             {@const img = siteImage(s.id)}
@@ -67,26 +67,26 @@
                    stretched link, except the map button which re-enables pointers. -->
               <div class="pointer-events-none relative z-20 p-5">
                 <div class="flex items-center justify-between gap-2">
-                  <h3 class="text-lg font-bold text-white">{siteText(s.id, $locale).name}</h3>
+                  <h3 class="text-t2 font-bold text-white">{siteText(s.id, $locale).name}</h3>
                   {#if s.dive_type}
                     <span
-                      class="rounded bg-reef-400/25 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-reef-100"
+                      class="rounded bg-reef-400/25 px-1.5 py-0.5 text-t4 font-bold uppercase tracking-wide text-reef-100"
                     >
                       {s.dive_type}
                     </span>
                   {/if}
                 </div>
-                <p class="mt-1 text-xs font-medium text-sky-300">
+                <p class="mt-1 text-t4 font-medium text-sky-300">
                   {regionLabel(s.region, $locale)}
                 </p>
                 {#if siteText(s.id, $locale).tagline}
-                  <p class="mt-2 line-clamp-2 text-sm text-white/85">
+                  <p class="mt-2 line-clamp-2 text-t3 text-white/85">
                     {siteText(s.id, $locale).tagline}
                   </p>
                 {/if}
                 <div class="mt-3 flex flex-wrap gap-2">
                   <span
-                    class="rounded-full bg-reef-400 px-4 py-1.5 text-xs font-bold text-brand-950 transition-colors group-hover:bg-reef-300"
+                    class="rounded-full bg-reef-400 px-4 py-1.5 text-t4 font-bold text-brand-950 transition-colors group-hover:bg-reef-300"
                   >
                     {$t.common.readMore}
                   </span>
@@ -94,7 +94,7 @@
                     href={mapsUrl(s)}
                     target="_blank"
                     rel="noopener"
-                    class="pointer-events-auto rounded-full border border-white/40 px-4 py-1.5 text-xs font-bold text-white transition-colors hover:bg-white/15"
+                    class="pointer-events-auto rounded-full border border-white/40 px-4 py-1.5 text-t4 font-bold text-white transition-colors hover:bg-white/15"
                   >
                     {$t.common.viewOnMap}
                   </a>

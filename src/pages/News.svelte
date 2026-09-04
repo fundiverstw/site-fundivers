@@ -43,13 +43,13 @@
           </div>
 
           <div class="flex flex-1 flex-col p-5">
-            <div class="mono flex items-center gap-2 text-xs font-semibold text-reef-300">
+            <div class="mono flex items-center gap-2 text-t4 font-semibold text-reef-300">
               <time datetime={article.date}>{formatNewsDate(article.date, $locale)}</time>
               <span aria-hidden="true">·</span>
               <span class="uppercase tracking-wider">{$t.news.kinds[article.kind]}</span>
             </div>
 
-            <h2 class="mt-2 text-lg font-bold text-white">
+            <h2 class="mt-2 text-t2 font-bold text-white">
               <!-- Stretched link: the whole card opens the article. Only the
                    heading is a link, so a screen reader reads one link per card
                    with the headline as its name, not an unlabelled box. -->
@@ -58,10 +58,10 @@
               >
             </h2>
 
-            <p class="mt-2 flex-1 text-sm text-brand-100">{text.summary}</p>
+            <p class="mt-2 flex-1 text-t3 text-brand-100">{text.summary}</p>
 
             <span
-              class="mono mt-4 text-xs font-semibold text-reef-300 transition-colors group-hover:text-reef-200"
+              class="mono mt-4 text-t4 font-semibold text-reef-300 transition-colors group-hover:text-reef-200"
               >{$t.common.readMore} →</span
             >
           </div>

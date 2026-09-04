@@ -37,8 +37,8 @@
           class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent"
         ></div>
         <div class="relative z-10 p-5">
-          <h3 class="text-lg font-bold text-white">{courseText(c, $locale).title}</h3>
-          <p class="mt-1 line-clamp-3 text-sm text-white/85">{courseText(c, $locale).desc}</p>
+          <h3 class="text-t2 font-bold text-white">{courseText(c, $locale).title}</h3>
+          <p class="mt-1 line-clamp-3 text-t3 text-white/85">{courseText(c, $locale).desc}</p>
         </div>
       </a>
     {/each}
@@ -48,7 +48,7 @@
 <!-- Live upcoming course sessions -->
 <section>
   <div class="mx-auto max-w-[1600px] px-4 py-12 sm:px-6">
-    <h2 class="text-2xl font-bold text-white">{$t.courses.upcomingDates}</h2>
+    <h2 class="text-t2 font-bold text-white">{$t.courses.upcomingDates}</h2>
     {#if loading}
       <div class="mt-6 grid gap-3">
         {#each Array(3) as _}
@@ -73,17 +73,17 @@
           <li class="glass flex items-center justify-between gap-4 rounded-xl p-4 shadow-sm">
             <div class="min-w-0">
               <h3 class="truncate font-semibold text-white">{ev.title}</h3>
-              <p class="text-sm text-brand-200">{formatSpan(ev.startDate, ev.endDate, ev.time)}</p>
+              <p class="text-t3 text-brand-200">{formatSpan(ev.startDate, ev.endDate, ev.time)}</p>
             </div>
             <div class="flex shrink-0 items-center gap-3">
-              {#if price}<span class="text-sm font-semibold text-white"
+              {#if price}<span class="text-t3 font-semibold text-white"
                   >{$t.common.fromPrice.replace('{price}', price)}</span
                 >{/if}
               <a
                 href={registerUrl('course', ev.id)}
                 target="_blank"
                 rel="noopener"
-                class="rounded-full bg-brand-600 px-4 py-1.5 text-sm font-semibold text-white hover:bg-brand-700"
+                class="rounded-full bg-brand-600 px-4 py-1.5 text-t3 font-semibold text-white hover:bg-brand-700"
               >
                 {$t.courses.enroll}
               </a>

@@ -15,11 +15,11 @@
     'glass flex aspect-[3/2] flex-col items-center justify-center gap-3 rounded-2xl p-4 text-center transition-all hover:-translate-y-0.5 hover:shadow-md'
 
   // Six fields share one look; only the textarea adds anything of its own.
-  // `text-base` on the field is 16px, which is also the size below which a
+  // `text-t3` on the field is 16px, which is also the size below which a
   // phone zooms the page in the moment the field takes focus.
-  const LABEL = 'text-sm font-semibold uppercase tracking-widest text-brand-200'
+  const LABEL = 'text-t4 font-semibold uppercase tracking-widest text-brand-200'
   const FIELD =
-    'mt-1 w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2.5 text-base text-white placeholder:text-brand-300 focus:border-reef-300 focus:outline-none'
+    'mt-1 w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2.5 text-t3 text-white placeholder:text-brand-300 focus:border-reef-300 focus:outline-none'
 
   // A try-dive is a PADI course with a name, and the form says so. The id is
   // the course's folder under content/courses, which is also its address;
@@ -101,11 +101,11 @@
 {#snippet blurb(href: string, label: string, text: string)}
   <a
     {href}
-    class="mt-1 inline-block text-base font-semibold text-reef-300 underline-offset-4 hover:underline"
+    class="mt-1 inline-block text-t3 font-semibold text-reef-300 underline-offset-4 hover:underline"
   >
     {label}
   </a>
-  <p class="mt-1 text-base text-brand-200">{text}</p>
+  <p class="mt-1 text-t3 text-brand-200">{text}</p>
 {/snippet}
 
 {#snippet calendarShape()}
@@ -128,12 +128,12 @@
 {/snippet}
 
 <section id="get-in-touch" class="mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16">
-  <h2 class="text-center text-3xl font-bold tracking-tight text-white">{$t.getInTouch.title}</h2>
+  <h2 class="text-center text-t1 font-bold tracking-tight text-white">{$t.getInTouch.title}</h2>
 
   <div class="mt-8 grid gap-4 sm:grid-cols-3">
     <a href="/calendar" class={TILE}>
       {@render icon(calendarShape)}
-      <span class="text-lg font-bold text-white">{$t.getInTouch.seeCalendar}</span>
+      <span class="text-t2 font-bold text-white">{$t.getInTouch.seeCalendar}</span>
     </a>
 
     <button
@@ -142,7 +142,7 @@
       class={`${TILE} ${active === 'try-dive' ? 'ring-2 ring-reef-300' : ''}`}
     >
       {@render icon(diverShape)}
-      <span class="text-lg font-bold text-white">{$t.getInTouch.tryDive}</span>
+      <span class="text-t2 font-bold text-white">{$t.getInTouch.tryDive}</span>
     </button>
 
     <button
@@ -151,19 +151,19 @@
       class={`${TILE} ${active === 'course' ? 'ring-2 ring-reef-300' : ''}`}
     >
       {@render icon(mortarboardShape)}
-      <span class="text-lg font-bold text-white">{$t.getInTouch.requestCourse}</span>
+      <span class="text-t2 font-bold text-white">{$t.getInTouch.requestCourse}</span>
     </button>
   </div>
 
   <!-- Direct-message channels -->
   <div class="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-    <span class="mono text-base text-brand-200">{$t.getInTouch.orMessage}</span>
+    <span class="mono text-t3 text-brand-200">{$t.getInTouch.orMessage}</span>
     <div class="flex flex-wrap justify-center gap-3">
       <a
         href={SOCIAL.line}
         target="_blank"
         rel="noopener"
-        class="flex items-center gap-2 rounded-full bg-[#06C755] px-5 py-2.5 text-base font-bold text-white shadow-sm transition-transform hover:-translate-y-0.5"
+        class="flex items-center gap-2 rounded-full bg-[#06C755] px-5 py-2.5 text-t3 font-bold text-white shadow-sm transition-transform hover:-translate-y-0.5"
       >
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
           ><path d={LINE_PATH} /></svg
@@ -174,7 +174,7 @@
         href={SOCIAL.whatsapp}
         target="_blank"
         rel="noopener"
-        class="flex items-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 text-base font-bold text-white shadow-sm transition-transform hover:-translate-y-0.5"
+        class="flex items-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 text-t3 font-bold text-white shadow-sm transition-transform hover:-translate-y-0.5"
       >
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
           ><path d={WHATSAPP_PATH} /></svg
@@ -187,7 +187,7 @@
   {#if active}
     <form class="glass mt-4 rounded-2xl p-6" onsubmit={submit}>
       <div class="mb-4 text-center">
-        <h3 class="text-xl font-bold text-white">{TITLES[active]}</h3>
+        <h3 class="text-t2 font-bold text-white">{TITLES[active]}</h3>
         <!-- A try-dive is sold as PADI's Discover Scuba Diving, and a course
              request is for one of twenty-one courses. Either way this is where
              someone who has just decided to ask can read what they are asking
@@ -257,13 +257,13 @@
         <button
           type="button"
           onclick={cancel}
-          class="rounded-full border border-white/30 px-6 py-2.5 text-base font-semibold text-white transition-colors hover:bg-white/10"
+          class="rounded-full border border-white/30 px-6 py-2.5 text-t3 font-semibold text-white transition-colors hover:bg-white/10"
         >
           {$t.getInTouch.cancel}
         </button>
         <button
           type="submit"
-          class="rounded-full bg-reef-400 px-6 py-2.5 text-base font-semibold text-brand-950 transition-colors hover:bg-reef-300"
+          class="rounded-full bg-reef-400 px-6 py-2.5 text-t3 font-semibold text-brand-950 transition-colors hover:bg-reef-300"
         >
           {$t.getInTouch.send}
         </button>

@@ -30,7 +30,7 @@
           imgClass="absolute inset-0 h-full w-full object-cover"
         />
         <figcaption
-          class="mono absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent px-2 py-1 text-[10px] uppercase tracking-widest text-white/85"
+          class="mono absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent px-2 py-1 text-t4 uppercase tracking-widest text-white/85"
         >
           {shot.label}
         </figcaption>
@@ -39,27 +39,27 @@
   </div>
 
   <div class="flex flex-1 flex-col p-6">
-    <span class="text-xs font-semibold uppercase tracking-wide text-reef-300"
+    <span class="text-t4 font-semibold uppercase tracking-wide text-reef-300"
       >{$t.team.roles[member.role]}</span
     >
-    <h3 class="text-lg font-bold text-white">{member.name}</h3>
+    <h3 class="text-t2 font-bold text-white">{member.name}</h3>
     {#if member.since}
-      <p class="mono mt-1 text-xs text-brand-300">{$t.about.since} {member.since}</p>
+      <p class="mono mt-1 text-t4 text-brand-300">{$t.about.since} {member.since}</p>
     {/if}
 
     {#if showBio}
-      <p class="mt-4 whitespace-pre-line text-sm leading-relaxed text-brand-100">{text.bio}</p>
+      <p class="mt-4 whitespace-pre-line text-t3 leading-relaxed text-brand-100">{text.bio}</p>
     {/if}
 
-    <dl class="mt-4 space-y-3 border-t border-white/10 pt-4 text-sm">
+    <dl class="mt-4 space-y-3 border-t border-white/10 pt-4 text-t3">
       <div>
-        <dt class="mono text-[11px] uppercase tracking-wide text-brand-300">
+        <dt class="mono text-t4 uppercase tracking-wide text-brand-300">
           {$t.about.interests}
         </dt>
         <dd class="mt-1 text-brand-100">{text.interests}</dd>
       </div>
       <div>
-        <dt class="mono text-[11px] uppercase tracking-wide text-brand-300">{$t.about.why}</dt>
+        <dt class="mono text-t4 uppercase tracking-wide text-brand-300">{$t.about.why}</dt>
         <dd class="mt-1 italic text-white">“{text.why}”</dd>
       </div>
     </dl>
@@ -69,7 +69,7 @@
         href={member.link}
         target="_blank"
         rel="noopener"
-        class="mono mt-4 inline-block text-xs font-semibold text-reef-300 hover:text-reef-200"
+        class="mono mt-4 inline-block text-t4 font-semibold text-reef-300 hover:text-reef-200"
       >
         {$t.team.visitWebsite}
       </a>

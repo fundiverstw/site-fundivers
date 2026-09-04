@@ -62,6 +62,34 @@
     'JetBrains Mono', 'Fira Code', ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas,
     monospace;
 
+  /* ── THE FOUR SIZES OF TEXT ───────────────────────────────────────────
+     Every piece of text on the site is one of these four, and nothing else.
+     Before them there were eleven sizes between 8px and 48px, chosen one
+     component at a time, and the small end of that range was genuinely hard
+     to read on a desktop: 10px dates under 11px labels.
+
+     t1  the title of a page, and the banner headings that carry a whole
+         band. Fluid, because a title is the one thing worth spending width
+         on: 30px on a phone, 36px once there is room.
+     t2  a heading inside a page — a card, a panel, a group of cards.
+     t3  body text. The default: paragraphs, links, form fields, buttons.
+     t4  the small print — dates, prices, chips, captions, meta. It is the
+         smallest text on the site and it is still 14px, because a price
+         nobody can read costs more than the room it saves.
+
+     Anything that wants a fifth size wants one of these four instead. The
+     exception is an emoji or a glyph used as a picture, which is sized like
+     one. Line heights come with the sizes: tight for a title, loose for a
+     paragraph, so a size change never leaves prose set solid. */
+  --text-t1: clamp(1.875rem, 1.35rem + 1.5vw, 2.25rem);
+  --text-t1--line-height: 1.15;
+  --text-t2: 1.25rem;
+  --text-t2--line-height: 1.35;
+  --text-t3: 1rem;
+  --text-t3--line-height: 1.55;
+  --text-t4: 0.875rem;
+  --text-t4--line-height: 1.45;
+
   /* Aggressive, squircle-style rounding site-wide — every rounded-* utility
      gets larger so cards/panels read as soft squares, not rectangles.
      (rounded-full pills are unaffected.) */

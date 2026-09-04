@@ -106,12 +106,12 @@
     <!-- Site palette -->
     <section>
       <div class="flex items-baseline justify-between gap-3">
-        <h2 class="text-xl font-bold text-white">{$t.buildTrip.sitesTitle}</h2>
-        <span class="mono shrink-0 text-xs text-reef-200">→ {dayLabel(activeDay)}</span>
+        <h2 class="text-t2 font-bold text-white">{$t.buildTrip.sitesTitle}</h2>
+        <span class="mono shrink-0 text-t4 text-reef-200">→ {dayLabel(activeDay)}</span>
       </div>
 
       {#snippet siteGroup(label: string, sites: typeof localSites)}
-        <h3 class="mono mt-5 text-xs font-semibold uppercase tracking-widest text-brand-300">
+        <h3 class="mono mt-5 text-t4 font-semibold uppercase tracking-widest text-brand-300">
           {label}
         </h3>
         <div class="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
@@ -127,11 +127,11 @@
                   <Photo {image} alt="" sizes="44px" class="h-full w-full object-cover" />
                 {/if}
               </span>
-              <span class="min-w-0 flex-1 truncate text-sm font-semibold text-white">
+              <span class="min-w-0 flex-1 truncate text-t3 font-semibold text-white">
                 {siteText(s.id, $locale).name}
               </span>
               <span
-                class="mono shrink-0 rounded-full border border-reef-400/50 px-2 py-0.5 text-xs text-reef-200 group-hover:bg-reef-400 group-hover:text-brand-950"
+                class="mono shrink-0 rounded-full border border-reef-400/50 px-2 py-0.5 text-t4 text-reef-200 group-hover:bg-reef-400 group-hover:text-brand-950"
               >
                 + {$t.buildTrip.add}
               </span>
@@ -147,9 +147,9 @@
     <!-- Itinerary -->
     <section>
       <div class="flex items-baseline justify-between gap-3">
-        <h2 class="text-xl font-bold text-white">{$t.buildTrip.yourTrip}</h2>
+        <h2 class="text-t2 font-bold text-white">{$t.buildTrip.yourTrip}</h2>
         {#if totalSites > 0}
-          <span class="mono shrink-0 text-xs text-brand-200">
+          <span class="mono shrink-0 text-t4 text-brand-200">
             {days.length}
             {$t.buildTrip.unitDays} · {totalDives}
             {$t.buildTrip.unitDives} · {totalSites}
@@ -159,7 +159,7 @@
       </div>
 
       {#if totalSites === 0}
-        <p class="glass mt-3 rounded-2xl border border-white/10 p-6 text-sm text-brand-200">
+        <p class="glass mt-3 rounded-2xl border border-white/10 p-6 text-t3 text-brand-200">
           {$t.buildTrip.emptyTrip}
         </p>
       {/if}
@@ -177,25 +177,25 @@
               >
                 <span class="font-bold text-white">{dayLabel(di)}</span>
                 {#if di === activeDay}
-                  <span class="mono text-[10px] text-reef-200">{$t.buildTrip.activeDayHint}</span>
+                  <span class="mono text-t4 text-reef-200">{$t.buildTrip.activeDayHint}</span>
                 {/if}
               </button>
               <button
                 type="button"
                 onclick={() => removeDay(di)}
-                class="mono text-xs text-brand-300 transition-colors hover:text-red-300"
+                class="mono text-t4 text-brand-300 transition-colors hover:text-red-300"
               >
                 {$t.buildTrip.removeDay}
               </button>
             </div>
 
             {#if d.entries.length === 0}
-              <p class="mt-2 text-xs text-brand-300">{$t.buildTrip.emptyDay}</p>
+              <p class="mt-2 text-t4 text-brand-300">{$t.buildTrip.emptyDay}</p>
             {:else}
               <ul class="mt-2 space-y-1.5">
                 {#each d.entries as e, ei (e.key)}
                   <li class="flex items-center gap-2 rounded-lg bg-black/20 px-2 py-1.5">
-                    <span class="min-w-0 flex-1 truncate text-sm text-white">
+                    <span class="min-w-0 flex-1 truncate text-t3 text-white">
                       {siteText(e.siteId, $locale).name}
                     </span>
                     <!-- dive-count stepper -->
@@ -207,7 +207,7 @@
                         class="flex h-5 w-5 items-center justify-center rounded bg-white/10 text-white hover:bg-white/20"
                         >−</button
                       >
-                      <span class="mono w-8 text-center text-xs text-reef-200">×{e.dives}</span>
+                      <span class="mono w-8 text-center text-t4 text-reef-200">×{e.dives}</span>
                       <button
                         type="button"
                         onclick={() => setDives(di, ei, 1)}
@@ -246,7 +246,7 @@
         <button
           type="button"
           onclick={addDay}
-          class="mono w-full rounded-2xl border border-dashed border-white/25 py-2.5 text-sm font-semibold text-reef-200 transition-colors hover:border-reef-400/60 hover:text-reef-100"
+          class="mono w-full rounded-2xl border border-dashed border-white/25 py-2.5 text-t3 font-semibold text-reef-200 transition-colors hover:border-reef-400/60 hover:text-reef-100"
         >
           + {$t.buildTrip.addDay}
         </button>
@@ -254,41 +254,41 @@
 
       <!-- Details + send -->
       <div class="glass mt-6 rounded-2xl border border-white/10 p-5">
-        <h3 class="text-sm font-bold text-white">{$t.buildTrip.yourDetails}</h3>
+        <h3 class="text-t3 font-bold text-white">{$t.buildTrip.yourDetails}</h3>
         <div class="mt-3 grid gap-3 sm:grid-cols-2">
           <input
             bind:value={name}
             placeholder={$t.buildTrip.name}
             autocomplete="name"
-            class="rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-sm text-white placeholder:text-brand-300 focus:border-reef-300 focus:outline-none"
+            class="rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-t3 text-white placeholder:text-brand-300 focus:border-reef-300 focus:outline-none"
           />
           <input
             bind:value={email}
             type="email"
             placeholder={$t.buildTrip.email}
             autocomplete="email"
-            class="rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-sm text-white placeholder:text-brand-300 focus:border-reef-300 focus:outline-none"
+            class="rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-t3 text-white placeholder:text-brand-300 focus:border-reef-300 focus:outline-none"
           />
           <input
             bind:value={dates}
             placeholder={$t.buildTrip.dates}
-            class="rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-sm text-white placeholder:text-brand-300 focus:border-reef-300 focus:outline-none"
+            class="rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-t3 text-white placeholder:text-brand-300 focus:border-reef-300 focus:outline-none"
           />
           <input
             bind:value={groupSize}
             placeholder={$t.buildTrip.groupSize}
-            class="rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-sm text-white placeholder:text-brand-300 focus:border-reef-300 focus:outline-none"
+            class="rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-t3 text-white placeholder:text-brand-300 focus:border-reef-300 focus:outline-none"
           />
         </div>
         <textarea
           bind:value={notes}
           rows="2"
           placeholder={$t.buildTrip.notes}
-          class="mt-3 w-full resize-y rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-sm text-white placeholder:text-brand-300 focus:border-reef-300 focus:outline-none"
+          class="mt-3 w-full resize-y rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-t3 text-white placeholder:text-brand-300 focus:border-reef-300 focus:outline-none"
         ></textarea>
 
         {#if error}
-          <p class="mt-3 text-sm font-medium text-red-300">{error}</p>
+          <p class="mt-3 text-t3 font-medium text-red-300">{error}</p>
         {/if}
         <button
           type="button"

@@ -85,7 +85,7 @@
   }
 
   const LINK =
-    'module mono whitespace-nowrap rounded-xl px-3 py-1.5 text-base font-semibold lg:text-lg 2xl:px-4 2xl:py-2 2xl:text-xl'
+    'module mono whitespace-nowrap rounded-xl px-3 py-1.5 text-t3 font-semibold lg:text-t2 2xl:px-4 2xl:py-2 2xl:text-t2'
 </script>
 
 {#snippet langSwitch()}
@@ -112,7 +112,7 @@
               setLocale(l.code)
               langOpen = false
             }}
-            class={`mono block w-full rounded-lg px-3 py-2 text-left text-base font-semibold transition-colors ${$locale === l.code ? 'module-active' : 'text-brand-100 hover:bg-white/10'}`}
+            class={`mono block w-full rounded-lg px-3 py-2 text-left text-t3 font-semibold transition-colors ${$locale === l.code ? 'module-active' : 'text-brand-100 hover:bg-white/10'}`}
           >
             {l.label}
           </button>
@@ -169,7 +169,7 @@
             <a
               href={item.href}
               role="menuitem"
-              class={`mono block whitespace-nowrap rounded-lg px-3 py-2 text-base font-semibold transition-colors ${
+              class={`mono block whitespace-nowrap rounded-lg px-3 py-2 text-t3 font-semibold transition-colors ${
                 $path === item.href ? 'module-active' : 'text-brand-100 hover:bg-white/10'
               }`}
             >
@@ -198,7 +198,7 @@
     data-testid="sign-in"
     aria-label={$t.nav.signIn}
     title={$t.nav.signIn}
-    class="module mono flex shrink-0 items-center gap-1.5 rounded-xl px-2 py-2 text-reef-200 2xl:px-3 2xl:text-lg 2xl:font-semibold"
+    class="module mono flex shrink-0 items-center gap-1.5 rounded-xl px-2 py-2 text-reef-200 2xl:px-3 2xl:text-t2 2xl:font-semibold"
   >
     <SignInIcon size={24} />
     <span class="hidden 2xl:inline">{$t.nav.signIn}</span>
@@ -273,7 +273,7 @@
           <OctopusPeek />
         </div>
         <p
-          class="slogan mt-1 max-w-[22rem] text-center text-sm leading-tight text-reef-100 drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)] lg:text-base"
+          class="slogan mt-1 max-w-[22rem] text-center text-t3 leading-tight text-reef-100 drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]"
         >
           {$t.nav.slogan}
         </p>
@@ -301,7 +301,7 @@
           />
         </a>
         <p
-          class="slogan mt-0.5 text-center text-[11px] leading-tight text-reef-100 drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]"
+          class="slogan mt-0.5 text-center text-t4 leading-tight text-reef-100 drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]"
         >
           {$t.nav.slogan}
         </p>
@@ -333,7 +333,7 @@
                otherwise the two layouts disagree about where you are. -->
           <a
             href={s.href}
-            class="module mono rounded-xl px-3 py-3 text-base font-semibold text-brand-50"
+            class="module mono rounded-xl px-3 py-3 text-t3 font-semibold text-brand-50"
             class:module-active={inSection(s, $path)}
           >
             {$t.nav[s.key]}
@@ -341,7 +341,7 @@
           {#each s.items as item (item.href)}
             <a
               href={item.href}
-              class="mono rounded-xl py-2 pl-8 pr-3 text-sm font-semibold text-brand-100"
+              class="mono rounded-xl py-2 pl-8 pr-3 text-t3 font-semibold text-brand-100"
               class:module-active={$path === item.href}
             >
               {$t.nav[item.key]}
@@ -354,7 +354,7 @@
           target="_blank"
           rel="noopener"
           data-testid="sign-in"
-          class="module mono flex items-center gap-2 rounded-xl px-3 py-3 text-base font-semibold text-reef-200"
+          class="module mono flex items-center gap-2 rounded-xl px-3 py-3 text-t3 font-semibold text-reef-200"
         >
           <SignInIcon size={20} />
           {$t.nav.signIn}

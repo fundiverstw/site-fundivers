@@ -15,11 +15,11 @@
 >
   <RadioIcon size={20} />
   {#if $radioState === 'loading'}
-    <span class="mono text-xs font-semibold text-reef-200">···</span>
+    <span class="mono text-t4 font-semibold text-reef-200">···</span>
   {:else if $radioState === 'playing'}
     <span class="live mono"><span class="dot"></span>LIVE</span>
   {:else if $radioState === 'error'}
-    <span class="mono text-xs font-semibold text-peach">off air</span>
+    <span class="mono text-t4 font-semibold text-peach">off air</span>
   {/if}
 </button>
 

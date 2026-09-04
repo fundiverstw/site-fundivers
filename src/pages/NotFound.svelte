@@ -30,7 +30,7 @@
        readers, since the picture above cannot. -->
   <div class="flex flex-col items-center gap-3">
     <span class="sr-only">{$t.notFound.code}</span>
-    <h1 class="text-2xl font-bold text-white">{$t.notFound.title}</h1>
+    <h1 class="text-t2 font-bold text-white">{$t.notFound.title}</h1>
     <p class="max-w-md text-brand-100">{$t.notFound.text}</p>
     <a
       href="/"

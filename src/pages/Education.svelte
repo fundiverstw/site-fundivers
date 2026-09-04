@@ -40,8 +40,8 @@
   >
     <span>
       <span class="block font-bold">{$t.education.quizTitle}</span>
-      <span class="mt-0.5 block text-sm text-brand-100">{$t.education.quizDesc}</span>
+      <span class="mt-0.5 block text-t3 text-brand-100">{$t.education.quizDesc}</span>
     </span>
-    <span class="mono shrink-0 text-sm font-semibold text-reef-300">{$t.quiz.linkFromPhotos}</span>
+    <span class="mono shrink-0 text-t3 font-semibold text-reef-300">{$t.quiz.linkFromPhotos}</span>
   </a>
 </section>

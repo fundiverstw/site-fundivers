@@ -106,9 +106,9 @@
   >
     <span>
       <span class="block font-bold">{$t.quiz.title}</span>
-      <span class="mt-0.5 block text-sm text-brand-100">{$t.quiz.tapToReveal}</span>
+      <span class="mt-0.5 block text-t3 text-brand-100">{$t.quiz.tapToReveal}</span>
     </span>
-    <span class="mono shrink-0 text-sm font-semibold text-reef-300">{$t.quiz.linkFromPhotos}</span>
+    <span class="mono shrink-0 text-t3 font-semibold text-reef-300">{$t.quiz.linkFromPhotos}</span>
   </a>
 
   <!-- Shortcuts to every group, so the whole gallery is one click away rather
@@ -130,7 +130,7 @@
       <a
         href={`#${sect.key}`}
         onclick={() => reveal(sect.key)}
-        class="mono rounded-full border px-3 py-1 text-xs font-semibold transition-colors {sect
+        class="mono rounded-full border px-3 py-1 text-t4 font-semibold transition-colors {sect
           .photos.length
           ? 'border-reef-400/40 bg-reef-400/10 text-reef-100 hover:border-reef-400 hover:bg-reef-400/20 hover:text-white'
           : 'border-white/10 text-brand-300 hover:border-white/30 hover:text-brand-100'}"
@@ -160,9 +160,9 @@
           <span class="mono text-reef-400" aria-hidden="true">
             {filled ? (open[sect.key] ? '▿' : '▹') : '·'}
           </span>
-          <span class="flex-1 text-lg font-bold text-white">{marineLabel(sect.label, $locale)}</span
+          <span class="flex-1 text-t2 font-bold text-white">{marineLabel(sect.label, $locale)}</span
           >
-          <span class="mono text-xs text-brand-300">
+          <span class="mono text-t4 text-brand-300">
             {filled ? `${sect.photos.length} ${$t.photos.photoCount}` : $t.photos.comingSoon}
           </span>
         </button>
@@ -200,14 +200,14 @@
   </div>
 
   <div class="glass rounded-2xl p-8 text-center">
-    <h2 class="text-xl font-bold text-white">{$t.photos.seeMore}</h2>
+    <h2 class="text-t2 font-bold text-white">{$t.photos.seeMore}</h2>
     <p class="mt-2 text-brand-100">{$t.photos.follow}</p>
     <div class="mt-4 flex flex-wrap justify-center gap-3">
       <a
         href={SOCIAL.instagram}
         target="_blank"
         rel="noopener"
-        class="rounded-full bg-brand-600 px-5 py-2 text-sm font-semibold text-white hover:bg-brand-700"
+        class="rounded-full bg-brand-600 px-5 py-2 text-t3 font-semibold text-white hover:bg-brand-700"
       >
         Instagram
       </a>
@@ -215,7 +215,7 @@
         href={SOCIAL.youtube}
         target="_blank"
         rel="noopener"
-        class="rounded-full border border-white/30 px-5 py-2 text-sm font-semibold text-white hover:bg-white/10"
+        class="rounded-full border border-white/30 px-5 py-2 text-t3 font-semibold text-white hover:bg-white/10"
       >
         YouTube
       </a>
@@ -252,10 +252,10 @@
           onclick={(e) => e.stopPropagation()}
           role="presentation"
         >
-          <dl class="space-y-2 text-sm">
+          <dl class="space-y-2 text-t3">
             {#each captionRows(shown.meta) as row (row.label)}
               <div>
-                <dt class="mono text-[11px] uppercase tracking-wide text-brand-300">{row.label}</dt>
+                <dt class="mono text-t4 uppercase tracking-wide text-brand-300">{row.label}</dt>
                 <dd class="text-white {row.label === $t.photos.meta.species ? 'italic' : ''}">
                   {row.value}
                 </dd>
@@ -263,7 +263,7 @@
             {/each}
           </dl>
           {#if shown.meta.notes}
-            <p class="mt-4 border-t border-white/10 pt-3 text-sm leading-relaxed text-brand-100">
+            <p class="mt-4 border-t border-white/10 pt-3 text-t3 leading-relaxed text-brand-100">
               {shown.meta.notes}
             </p>
           {/if}
@@ -275,7 +275,7 @@
       type="button"
       onclick={close}
       aria-label={$t.photos.close}
-      class="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-2xl text-white transition-colors hover:bg-white/20"
+      class="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-t2 text-white transition-colors hover:bg-white/20"
     >
       ✕
     </button>
@@ -286,7 +286,7 @@
         step(-1)
       }}
       aria-label={$t.photos.prev}
-      class="absolute left-3 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-2xl text-white transition-colors hover:bg-white/20 sm:left-6"
+      class="absolute left-3 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-t2 text-white transition-colors hover:bg-white/20 sm:left-6"
     >
       ‹
     </button>
@@ -297,12 +297,12 @@
         step(1)
       }}
       aria-label={$t.photos.next}
-      class="absolute right-3 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-2xl text-white transition-colors hover:bg-white/20 sm:right-6"
+      class="absolute right-3 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-t2 text-white transition-colors hover:bg-white/20 sm:right-6"
     >
       ›
     </button>
     <span
-      class="mono absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-black/50 px-3 py-1 text-xs text-white/80"
+      class="mono absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-black/50 px-3 py-1 text-t4 text-white/80"
     >
       {(lightbox ?? 0) + 1} / {ALL_PHOTOS.length}
     </span>

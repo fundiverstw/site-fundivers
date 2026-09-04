@@ -32,14 +32,14 @@
   </section>
 
   <section class="mt-14">
-    <h2 class="text-2xl font-bold text-white">{$t.cycling.highlightsTitle}</h2>
+    <h2 class="text-t2 font-bold text-white">{$t.cycling.highlightsTitle}</h2>
     <div class="mt-6 grid gap-4 sm:grid-cols-2">
       {#each $t.cycling.highlights as h, i (h.label)}
         <div class="glass flex gap-4 rounded-2xl p-6">
           <div class="text-3xl" aria-hidden="true">{icons[i]}</div>
           <div>
-            <h3 class="text-lg font-bold text-white">{h.label}</h3>
-            <p class="mt-1 text-sm leading-relaxed text-brand-100">{h.text}</p>
+            <h3 class="text-t2 font-bold text-white">{h.label}</h3>
+            <p class="mt-1 text-t3 leading-relaxed text-brand-100">{h.text}</p>
           </div>
         </div>
       {/each}
@@ -52,13 +52,13 @@
       class="glow-teal flex flex-col gap-5 rounded-3xl border border-reef-400/30 bg-reef-400/5 p-6 sm:p-8"
     >
       <div>
-        <h2 class="text-2xl font-bold text-white">{$t.cycling.ctaTitle}</h2>
+        <h2 class="text-t2 font-bold text-white">{$t.cycling.ctaTitle}</h2>
         <p class="mt-2 text-brand-100">{$t.cycling.ctaText}</p>
       </div>
       <div class="flex flex-wrap gap-2">
         <a
           href={`mailto:${CONTACT.email}?subject=${encodeURIComponent('Taipei cycling tour')}`}
-          class="flex items-center gap-2 rounded-full bg-reef-400 px-5 py-2 text-sm font-bold text-brand-950 transition-colors hover:bg-reef-300"
+          class="flex items-center gap-2 rounded-full bg-reef-400 px-5 py-2 text-t3 font-bold text-brand-950 transition-colors hover:bg-reef-300"
         >
           <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path
@@ -71,7 +71,7 @@
           href={SOCIAL.line}
           target="_blank"
           rel="noopener"
-          class="flex items-center gap-2 rounded-full border border-white/40 px-5 py-2 text-sm font-bold text-white transition-colors hover:bg-white/15"
+          class="flex items-center gap-2 rounded-full border border-white/40 px-5 py-2 text-t3 font-bold text-white transition-colors hover:bg-white/15"
         >
           <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d={LINE_PATH} />
@@ -82,7 +82,7 @@
           href={SOCIAL.whatsapp}
           target="_blank"
           rel="noopener"
-          class="flex items-center gap-2 rounded-full border border-white/40 px-5 py-2 text-sm font-bold text-white transition-colors hover:bg-white/15"
+          class="flex items-center gap-2 rounded-full border border-white/40 px-5 py-2 text-t3 font-bold text-white transition-colors hover:bg-white/15"
         >
           <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d={WHATSAPP_PATH} />

@@ -22,7 +22,7 @@
   <!-- The hike catalog — one card per hike (grows as hikes are added to
        content/hikes.ts). Not links: hikes have no detail page yet. -->
   <section class="mt-14">
-    <h2 class="text-2xl font-bold text-white">{$t.hiking.hikesTitle}</h2>
+    <h2 class="text-t2 font-bold text-white">{$t.hiking.hikesTitle}</h2>
     <div class="mt-6 grid gap-6 sm:grid-cols-2">
       {#each HIKES as hike (hike.id)}
         {@const image = hikeImage(hike.id)}
@@ -49,12 +49,12 @@
               class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"
             ></div>
             <div class="absolute inset-x-0 bottom-0 p-5">
-              <h3 class="text-xl font-bold text-white">{hike.name}</h3>
-              <p class="mono mt-0.5 text-xs text-reef-200">{hike.location}</p>
+              <h3 class="text-t2 font-bold text-white">{hike.name}</h3>
+              <p class="mono mt-0.5 text-t4 text-reef-200">{hike.location}</p>
             </div>
           </div>
           <div class="flex flex-1 flex-col p-6">
-            <p class="text-sm leading-relaxed text-brand-100">{hike.tagline}</p>
+            <p class="text-t3 leading-relaxed text-brand-100">{hike.tagline}</p>
           </div>
         </article>
       {/each}
@@ -67,13 +67,13 @@
       class="glow-teal flex flex-col gap-5 rounded-3xl border border-reef-400/30 bg-reef-400/5 p-6 sm:p-8"
     >
       <div>
-        <h2 class="text-2xl font-bold text-white">{$t.hiking.ctaTitle}</h2>
+        <h2 class="text-t2 font-bold text-white">{$t.hiking.ctaTitle}</h2>
         <p class="mt-2 text-brand-100">{$t.hiking.ctaText}</p>
       </div>
       <div class="flex flex-wrap gap-2">
         <a
           href={`mailto:${CONTACT.email}?subject=${encodeURIComponent('Taipei hiking tour')}`}
-          class="flex items-center gap-2 rounded-full bg-reef-400 px-5 py-2 text-sm font-bold text-brand-950 transition-colors hover:bg-reef-300"
+          class="flex items-center gap-2 rounded-full bg-reef-400 px-5 py-2 text-t3 font-bold text-brand-950 transition-colors hover:bg-reef-300"
         >
           <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path
@@ -86,7 +86,7 @@
           href={SOCIAL.line}
           target="_blank"
           rel="noopener"
-          class="flex items-center gap-2 rounded-full border border-white/40 px-5 py-2 text-sm font-bold text-white transition-colors hover:bg-white/15"
+          class="flex items-center gap-2 rounded-full border border-white/40 px-5 py-2 text-t3 font-bold text-white transition-colors hover:bg-white/15"
         >
           <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d={LINE_PATH} />
@@ -97,7 +97,7 @@
           href={SOCIAL.whatsapp}
           target="_blank"
           rel="noopener"
-          class="flex items-center gap-2 rounded-full border border-white/40 px-5 py-2 text-sm font-bold text-white transition-colors hover:bg-white/15"
+          class="flex items-center gap-2 rounded-full border border-white/40 px-5 py-2 text-t3 font-bold text-white transition-colors hover:bg-white/15"
         >
           <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d={WHATSAPP_PATH} />

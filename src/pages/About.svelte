@@ -74,7 +74,7 @@
 <!-- What we do — moved here off the landing page -->
 <section class="mx-auto max-w-[1600px] px-4 py-12 sm:px-6 sm:py-16">
   <div class="mx-auto max-w-3xl text-center">
-    <h2 class="text-3xl font-bold tracking-tight text-white">{$t.about.exploreServices}</h2>
+    <h2 class="text-t1 font-bold tracking-tight text-white">{$t.about.exploreServices}</h2>
     <p class="mt-3 text-brand-100">{$t.about.exploreServicesIntro}</p>
   </div>
 
@@ -93,8 +93,8 @@
           class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"
         ></div>
         <div class="relative z-10 p-6 sm:p-7">
-          <h3 class="text-lg font-bold text-white">{$t.about.services[i].title}</h3>
-          <p class="mt-1 line-clamp-3 text-sm text-white/85">{$t.about.services[i].desc}</p>
+          <h3 class="text-t2 font-bold text-white">{$t.about.services[i].title}</h3>
+          <p class="mt-1 line-clamp-3 text-t3 text-white/85">{$t.about.services[i].desc}</p>
         </div>
       </a>
     {/each}
@@ -105,7 +105,7 @@
 <section class="mx-auto max-w-[1600px] px-4 py-12 sm:px-6 sm:py-16">
   <div class="grid gap-8 lg:grid-cols-12 lg:items-start">
     <div class="lg:col-span-7">
-      <h2 class="text-3xl font-bold tracking-tight text-white">{$t.about.divingTitle}</h2>
+      <h2 class="text-t1 font-bold tracking-tight text-white">{$t.about.divingTitle}</h2>
       <div class="mt-6 space-y-5 text-brand-100">
         {#each $t.about.divingParas as para (para)}
           <p>{para}</p>

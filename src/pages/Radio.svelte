@@ -41,7 +41,7 @@
 
     {#if status}
       <p
-        class="mono mt-5 flex items-center justify-center gap-2 text-sm font-semibold uppercase tracking-widest"
+        class="mono mt-5 flex items-center justify-center gap-2 text-t3 font-semibold uppercase tracking-widest"
         class:text-reef-200={playing || busy}
         class:text-peach={$radioState === 'error'}
       >
@@ -59,7 +59,7 @@
       {playing || busy ? $t.radio.stop : $t.radio.listen}
     </button>
 
-    <p class="mt-5 text-sm text-brand-100">
+    <p class="mt-5 text-t3 text-brand-100">
       {$radioState === 'error' ? $t.radio.offAirText : $t.radio.idleText}
     </p>
   </div>
@@ -70,10 +70,10 @@
     {/each}
   </div>
 
-  <p class="mono mt-8 text-sm text-brand-300">{$t.radio.barHint}</p>
+  <p class="mono mt-8 text-t3 text-brand-300">{$t.radio.barHint}</p>
 
   <div class="mt-8 flex flex-col items-center gap-3 border-t border-white/10 pt-8">
-    <p class="text-sm text-brand-100">{$t.photos.follow}</p>
+    <p class="text-t3 text-brand-100">{$t.photos.follow}</p>
     <SocialIcons size={26} />
     <!-- The mount the player connects to, spelled out for anyone who would
          rather point their own player at it than use ours. -->
@@ -81,7 +81,7 @@
       href={SOCIAL.radioStream}
       target="_blank"
       rel="noopener"
-      class="mono break-all text-xs text-brand-300 hover:text-brand-100"
+      class="mono break-all text-t4 text-brand-300 hover:text-brand-100"
     >
       {SOCIAL.radioStream}
     </a>

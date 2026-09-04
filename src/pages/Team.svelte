@@ -23,9 +23,9 @@
   </div>
 
   <div class="glass mt-10 rounded-2xl p-8 text-center">
-    <h2 class="text-xl font-bold text-white">{$t.team.diveWithUs}</h2>
+    <h2 class="text-t2 font-bold text-white">{$t.team.diveWithUs}</h2>
     <p class="mt-2 text-brand-100">{$t.team.diveWithUsText}</p>
-    <div class="mt-4 flex flex-wrap justify-center gap-4 text-sm">
+    <div class="mt-4 flex flex-wrap justify-center gap-4 text-t3">
       <a class="font-semibold text-reef-300 hover:text-reef-200" href={`mailto:${CONTACT.email}`}
         >{CONTACT.email}</a
       >

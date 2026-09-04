@@ -92,12 +92,12 @@
            not move out from under the pointer. -->
       <div class="flex min-h-[7.5rem] flex-col justify-center px-5 py-5 sm:px-7">
         {#if revealed}
-          <p class="text-2xl font-bold text-white sm:text-3xl">{commonName}</p>
+          <p class="text-t1 font-bold text-white">{commonName}</p>
           {#if card.species}
             <!-- Italics are the genus and the species, and only those: `sp.` and
                  `spp.` stand in for a name instead of being one, so they are set
                  upright next to it. See nameParts. -->
-            <p class="mono mt-1 text-base text-reef-300 sm:text-lg">
+            <p class="mono mt-1 text-t2 text-reef-300">
               {#each nameParts(card.species) as part, n (n)}
                 {@const text = n > 0 ? ` ${part.text}` : part.text}
                 {#if part.italic}<em>{text}</em>{:else}{text}{/if}
@@ -105,7 +105,7 @@
             </p>
           {/if}
           {#if card.commonName}
-            <p class="mt-2 text-sm text-brand-100">
+            <p class="mt-2 text-t3 text-brand-100">
               {marineLabel(card.creature, $locale)}
             </p>
           {/if}
@@ -121,27 +121,27 @@
       <button
         type="button"
         onclick={() => step(-1)}
-        class="rounded-full border border-white/30 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+        class="rounded-full border border-white/30 px-5 py-2 text-t3 font-semibold text-white transition-colors hover:bg-white/10"
       >
         {$t.quiz.prev}
       </button>
       <button
         type="button"
         onclick={() => (revealed = !revealed)}
-        class="rounded-full border border-white/30 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+        class="rounded-full border border-white/30 px-5 py-2 text-t3 font-semibold text-white transition-colors hover:bg-white/10"
       >
         {revealed ? $t.quiz.hideAgain : $t.quiz.reveal}
       </button>
       <button
         type="button"
         onclick={() => step(1)}
-        class="rounded-full bg-brand-600 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
+        class="rounded-full bg-brand-600 px-5 py-2 text-t3 font-semibold text-white transition-colors hover:bg-brand-700"
       >
         {$t.quiz.next}
       </button>
     </div>
 
-    <div class="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm">
+    <div class="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-t3">
       <p class="mono text-brand-100">
         {$t.quiz.progress.replace('{n}', String(i + 1)).replace('{total}', String(deck.length))}
       </p>

@@ -49,7 +49,7 @@
 
 <section class="mx-auto max-w-5xl px-4 pb-12 sm:px-6">
   {#if error}
-    <p class="mb-4 rounded-lg bg-red-500/15 p-4 text-sm text-red-200">
+    <p class="mb-4 rounded-lg bg-red-500/15 p-4 text-t3 text-red-200">
       {$t.calendar.loadError}: {error}
     </p>
   {/if}

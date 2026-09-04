@@ -213,7 +213,7 @@
       <button
         type="button"
         onclick={() => (selected = null)}
-        class="mono text-xs font-semibold text-reef-300 hover:text-reef-200"
+        class="mono text-t4 font-semibold text-reef-300 hover:text-reef-200"
       >
         {$t.map.back}
       </button>
@@ -337,7 +337,7 @@
       <button
         type="button"
         onclick={() => pick(id)}
-        class={`mono rounded-xl border p-3 text-left text-sm transition-all ${active ? 'border-reef-400/60 bg-reef-400/15 font-semibold text-reef-200 shadow-[0_0_18px_-6px_rgba(44,208,197,0.7)]' : 'border-white/15 bg-white/5 text-brand-50 hover:border-white/25 hover:bg-white/10'}`}
+        class={`mono rounded-xl border p-3 text-left text-t3 transition-all ${active ? 'border-reef-400/60 bg-reef-400/15 font-semibold text-reef-200 shadow-[0_0_18px_-6px_rgba(44,208,197,0.7)]' : 'border-white/15 bg-white/5 text-brand-50 hover:border-white/25 hover:bg-white/10'}`}
       >
         {mapRegionText(id, $locale).name}
       </button>
@@ -348,20 +348,20 @@
   {#if selected}
     <div class="glass rounded-2xl p-5">
       <div class="mb-2 flex items-start justify-between gap-2">
-        <h2 class="text-lg font-bold text-white">{mapRegionText(selected, $locale).name}</h2>
+        <h2 class="text-t2 font-bold text-white">{mapRegionText(selected, $locale).name}</h2>
         <button
           type="button"
           onclick={() => (selected = null)}
           aria-label={$t.map.close}
-          class="-mt-1 px-2 text-2xl leading-none text-white/60 hover:text-white">×</button
+          class="-mt-1 px-2 text-t2 leading-none text-white/60 hover:text-white">×</button
         >
       </div>
-      <p class="mb-3 text-sm text-brand-100">{mapRegionText(selected, $locale).description}</p>
+      <p class="mb-3 text-t3 text-brand-100">{mapRegionText(selected, $locale).description}</p>
       {#if visibleSites.length > 0}
-        <h3 class="mono mb-2 text-xs font-semibold uppercase tracking-wider text-reef-300">
+        <h3 class="mono mb-2 text-t4 font-semibold uppercase tracking-wider text-reef-300">
           {$t.map.diveSites}
         </h3>
-        <ul class="space-y-2 text-sm text-brand-50">
+        <ul class="space-y-2 text-t3 text-brand-50">
           {#each visibleSites as s (s.id)}
             <li>
               <a
@@ -369,7 +369,7 @@
                 class="font-semibold text-white underline decoration-reef-400/50 underline-offset-2 hover:decoration-reef-300"
                 >{siteText(s.id, $locale).name}</a
               >
-              {#if siteText(s.id, $locale).tagline}<p class="mt-0.5 text-xs text-brand-200">
+              {#if siteText(s.id, $locale).tagline}<p class="mt-0.5 text-t4 text-brand-200">
                   {siteText(s.id, $locale).tagline}
                 </p>{/if}
             </li>

@@ -45,6 +45,41 @@ The numbers go from `50` (nearly white) to `950` (nearly black). `brand` is the 
 
 ---
 
+## How big text is → the four sizes
+
+Every piece of text on the site is one of **four sizes**, and nothing else. They live in
+`theme.css` beside the colours, and you use them the same way — by name, in a `class`.
+
+| Write this class | What it is for | How big |
+| --- | --- | --- |
+| `text-t1` | the title of a page, or a banner heading that carries a whole band | 30px, growing to 36px on a wide screen |
+| `text-t2` | a heading inside a page — a card, a panel, a group of cards | 20px |
+| `text-t3` | body text: paragraphs, links, form fields, buttons | 16px |
+| `text-t4` | the small print — dates, prices, chips, captions | 14px |
+
+```svelte
+<h2 class="text-t2 font-bold text-white">Domestic</h2>
+<p class="text-t3 text-brand-100">From shore dives in the north…</p>
+<span class="text-t4 text-brand-200">Sat, Sep 12 · 13:00</span>
+```
+
+Two rules keep it uniform:
+
+- **Never type a size that is not one of the four** — no `text-sm`, no `text-[11px]`. If
+  something looks like it wants a fifth size, it wants one of these four. The site had
+  eleven sizes once, chosen a component at a time, and the small end of that range was
+  hard to read on a desktop.
+- **14px is the floor.** A date or a price nobody can read costs more than the room it
+  saves.
+
+The one exception is an emoji or a glyph used as a picture — the icons on the hub cards,
+the big quote mark on the reputation page. Those are sized like pictures (`text-4xl`),
+because they are not text.
+
+Making everything a step bigger is one edit: change the four values in `theme.css`.
+
+---
+
 ## The reusable looks → `src/styles/components.css`
 
 Four named looks. Put the name in a `class` and the element takes on that look:

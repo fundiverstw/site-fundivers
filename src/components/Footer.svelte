@@ -22,14 +22,14 @@
     <div>
       <div class="flex items-center gap-2">
         <img src={logoUrl} alt="FunDivers TW" class="h-10 w-auto" />
-        <span class="text-lg font-bold text-white">FunDivers TW</span>
+        <span class="text-t2 font-bold text-white">FunDivers TW</span>
       </div>
-      <p class="mt-3 max-w-xs text-sm text-brand-200">{$t.footer.blurb}</p>
+      <p class="mt-3 max-w-xs text-t3 text-brand-200">{$t.footer.blurb}</p>
     </div>
 
     <div>
-      <h3 class="text-sm font-semibold uppercase tracking-wide text-white">{$t.footer.contact}</h3>
-      <ul class="mt-3 space-y-2 text-sm">
+      <h3 class="text-t3 font-semibold uppercase tracking-wide text-white">{$t.footer.contact}</h3>
+      <ul class="mt-3 space-y-2 text-t3">
         <li><a class="hover:text-white" href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a></li>
         <li><a class="hover:text-white" href={CONTACT.phoneHref}>{CONTACT.phone}</a></li>
         <li class="text-brand-200">{CONTACT.address}, 23446</li>
@@ -37,7 +37,7 @@
     </div>
 
     <div>
-      <h3 class="text-sm font-semibold uppercase tracking-wide text-white">{$t.footer.follow}</h3>
+      <h3 class="text-t3 font-semibold uppercase tracking-wide text-white">{$t.footer.follow}</h3>
       <SocialIcons size={26} class="mt-3" />
     </div>
 
@@ -45,8 +45,8 @@
          four links wide now, so this is the way in to the rest of the site —
          which makes it load-bearing rather than decoration. -->
     <div>
-      <h3 class="text-sm font-semibold uppercase tracking-wide text-white">{$t.footer.more}</h3>
-      <ul class="mt-3 space-y-2 text-sm">
+      <h3 class="text-t3 font-semibold uppercase tracking-wide text-white">{$t.footer.more}</h3>
+      <ul class="mt-3 space-y-2 text-t3">
         {#each FOOTER_LINKS as link (link.href)}
           <li><a class="hover:text-white" href={link.href}>{$t.nav[link.key]}</a></li>
         {/each}
@@ -70,7 +70,7 @@
           class="h-20 w-auto max-w-full opacity-90 transition-opacity group-hover:opacity-100 sm:h-28"
         />
         <span
-          class="max-w-md text-xs leading-relaxed text-brand-300 transition-colors group-hover:text-brand-100 sm:text-sm"
+          class="max-w-md text-t3 leading-relaxed text-brand-300 transition-colors group-hover:text-brand-100"
         >
           {$t.footer.openSourceBlurb}
           <span class="whitespace-nowrap font-semibold text-reef-300 group-hover:text-reef-200"
@@ -83,7 +83,7 @@
 
   <div class="border-t border-white/10">
     <div
-      class="mx-auto flex max-w-[1600px] flex-col gap-1 px-4 py-4 text-xs text-brand-300 sm:flex-row sm:items-center sm:justify-between sm:px-6"
+      class="mx-auto flex max-w-[1600px] flex-col gap-1 px-4 py-4 text-t4 text-brand-300 sm:flex-row sm:items-center sm:justify-between sm:px-6"
     >
       <span class="flex items-center gap-2">
         © {year}

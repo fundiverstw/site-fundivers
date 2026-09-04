@@ -84,10 +84,10 @@
           {/if}
         </div>
         <div class="flex flex-1 flex-col p-6">
-          <h2 class="text-lg font-bold text-white">{c.title}</h2>
-          <p class="mt-2 flex-1 text-sm leading-relaxed text-brand-100">{c.desc}</p>
+          <h2 class="text-t2 font-bold text-white">{c.title}</h2>
+          <p class="mt-2 flex-1 text-t3 leading-relaxed text-brand-100">{c.desc}</p>
           <span
-            class="mono mt-4 inline-block text-sm font-semibold text-reef-300 group-hover:text-reef-200"
+            class="mono mt-4 inline-block text-t3 font-semibold text-reef-300 group-hover:text-reef-200"
           >
             {$t.services.learnMore} →
           </span>

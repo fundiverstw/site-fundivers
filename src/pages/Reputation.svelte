@@ -29,7 +29,7 @@
 <div class="mx-auto max-w-[1600px] px-4 pb-16 sm:px-6">
   <!-- ── In their own words ─────────────────────────────────────────────── -->
   <section aria-labelledby="testimonials">
-    <h2 id="testimonials" class="text-xl font-bold text-white sm:text-2xl">
+    <h2 id="testimonials" class="text-t2 font-bold text-white">
       {$t.testimonials.title}
     </h2>
 
@@ -50,7 +50,7 @@
             <blockquote class="mt-2 flex-1 leading-relaxed text-brand-100">{text.quote}</blockquote>
             <figcaption class="mt-5 border-t border-white/10 pt-4">
               <span class="block font-bold text-white">{item.name}</span>
-              <span class="mono mt-0.5 block text-xs text-brand-300">{text.context}</span>
+              <span class="mono mt-0.5 block text-t4 text-brand-300">{text.context}</span>
             </figcaption>
           </figure>
         {/each}
@@ -60,14 +60,14 @@
 
   <!-- ── Where we cannot edit a word ────────────────────────────────────── -->
   <section aria-labelledby="reviews" class="mt-14">
-    <h2 id="reviews" class="text-xl font-bold text-white sm:text-2xl">{$t.reviews.title}</h2>
+    <h2 id="reviews" class="text-t2 font-bold text-white">{$t.reviews.title}</h2>
     <p class="mt-3 max-w-2xl leading-relaxed text-brand-100">{$t.reviews.intro}</p>
 
     <div class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {#each REVIEW_PLATFORMS as p (p.id)}
         <div class="glass flex flex-col rounded-3xl border border-white/10 p-6 shadow-sm">
-          <h3 class="text-lg font-bold text-white">{p.label}</h3>
-          <p class="mt-2 flex-1 text-sm leading-relaxed text-brand-100">
+          <h3 class="text-t2 font-bold text-white">{p.label}</h3>
+          <p class="mt-2 flex-1 text-t3 leading-relaxed text-brand-100">
             {$t.reviews.platforms[p.id]}
           </p>
           <div class="mt-5 flex flex-wrap gap-3">
@@ -75,7 +75,7 @@
               href={p.readUrl}
               target="_blank"
               rel="noopener"
-              class="mono rounded-full bg-reef-400 px-4 py-2 text-xs font-semibold text-brand-950 transition-colors hover:bg-reef-300"
+              class="mono rounded-full bg-reef-400 px-4 py-2 text-t4 font-semibold text-brand-950 transition-colors hover:bg-reef-300"
             >
               {$t.reviews.readReviews} ↗
             </a>
@@ -83,7 +83,7 @@
               href={p.writeUrl}
               target="_blank"
               rel="noopener"
-              class="mono rounded-full border border-white/30 px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-white/10"
+              class="mono rounded-full border border-white/30 px-4 py-2 text-t4 font-semibold text-white transition-colors hover:bg-white/10"
             >
               {$t.reviews.writeReview} ↗
             </a>
@@ -98,20 +98,20 @@
        the first review platform is the nearest thing to "leave a review", so
        that is where the button goes. -->
   <div class="glass mt-14 rounded-2xl p-8 text-center">
-    <h2 class="text-xl font-bold text-white">{$t.testimonials.ctaTitle}</h2>
+    <h2 class="text-t2 font-bold text-white">{$t.testimonials.ctaTitle}</h2>
     <p class="mt-2 text-brand-100">{$t.testimonials.ctaText}</p>
     <div class="mt-5 flex flex-wrap justify-center gap-3">
       <a
         href={REVIEW_PLATFORMS[0].writeUrl}
         target="_blank"
         rel="noopener"
-        class="mono rounded-full bg-reef-400 px-5 py-2.5 text-sm font-semibold text-brand-950 transition-colors hover:bg-reef-300"
+        class="mono rounded-full bg-reef-400 px-5 py-2.5 text-t3 font-semibold text-brand-950 transition-colors hover:bg-reef-300"
       >
         {$t.testimonials.leaveReview} ↗
       </a>
       <a
         href={`mailto:${CONTACT.email}`}
-        class="mono rounded-full border border-white/30 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+        class="mono rounded-full border border-white/30 px-5 py-2.5 text-t3 font-semibold text-white transition-colors hover:bg-white/10"
       >
         {$t.testimonials.contact}
       </a>

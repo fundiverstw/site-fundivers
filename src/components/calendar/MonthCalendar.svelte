@@ -199,7 +199,7 @@
 
 <div class="space-y-4">
   <!-- Filter legend -->
-  <div class="flex items-center gap-2 text-xs" bind:this={legendEl}>
+  <div class="flex items-center gap-2 text-t4" bind:this={legendEl}>
     <button
       type="button"
       onclick={() => (diveShown = !diveShown)}
@@ -254,7 +254,7 @@
         </span>
         {$t.calendar.courses}
         {#if hiddenCourses.size > 0 && !allCoursesHidden}
-          <span class="ml-0.5 text-[10px] font-medium text-blue-900"
+          <span class="ml-0.5 text-t4 font-medium text-blue-900"
             >({visibleCourses}/{courseCategories.length})</span
           >
         {/if}
@@ -267,7 +267,7 @@
           class="absolute left-0 top-full z-20 mt-1 min-w-[180px] space-y-1 rounded-lg border border-red-500 bg-white p-2 shadow-lg"
         >
           {#if courseCategories.length === 0}
-            <p class="px-2 py-1 text-xs font-medium text-blue-900">
+            <p class="px-2 py-1 text-t4 font-medium text-blue-900">
               {$t.calendar.noCoursesInRange}
             </p>
           {/if}
@@ -282,7 +282,7 @@
                 class="accent-blue-900"
               />
               <span class={`h-2 w-2 rounded-full ${COURSE_DOT[color]}`} aria-hidden="true"></span>
-              <span class="text-xs font-semibold text-blue-900">{category}</span>
+              <span class="text-t4 font-semibold text-blue-900">{category}</span>
             </label>
           {/each}
         </div>
@@ -295,25 +295,25 @@
     <button
       onclick={() => onMonthChange(subMonths(month, 1))}
       aria-label={$t.calendar.prevMonth}
-      class="flex flex-1 items-center justify-center rounded-xl border border-white/30 bg-white/10 px-4 py-2 text-2xl leading-none text-white transition-colors hover:bg-white/20"
+      class="flex flex-1 items-center justify-center rounded-xl border border-white/30 bg-white/10 px-4 py-2 text-t2 leading-none text-white transition-colors hover:bg-white/20"
       >‹</button
     >
-    <h2 class="shrink-0 text-lg font-bold text-white">{format(month, 'MMMM yyyy')}</h2>
+    <h2 class="shrink-0 text-t2 font-bold text-white">{format(month, 'MMMM yyyy')}</h2>
     <button
       onclick={() => onMonthChange(addMonths(month, 1))}
       aria-label={$t.calendar.nextMonth}
-      class="flex flex-1 items-center justify-center rounded-xl border border-white/30 bg-white/10 px-4 py-2 text-2xl leading-none text-white transition-colors hover:bg-white/20"
+      class="flex flex-1 items-center justify-center rounded-xl border border-white/30 bg-white/10 px-4 py-2 text-t2 leading-none text-white transition-colors hover:bg-white/20"
       >›</button
     >
   </div>
 
   <!-- Grid -->
   <div
-    class="grid grid-cols-7 overflow-hidden rounded-xl border border-sky-200 bg-white/80 text-sm backdrop-blur-md"
+    class="grid grid-cols-7 overflow-hidden rounded-xl border border-sky-200 bg-white/80 text-t3 backdrop-blur-md"
   >
     {#each ['S', 'M', 'T', 'W', 'T', 'F', 'S'] as d, i (i)}
       <div
-        class="border-b border-sky-200 bg-sky-100 py-1 text-center text-xs font-semibold text-blue-900"
+        class="border-b border-sky-200 bg-sky-100 py-1 text-center text-t4 font-semibold text-blue-900"
       >
         {d}
       </div>
@@ -334,7 +334,7 @@
         style={`min-height:${cellMinHeight}px`}
       >
         <span
-          class={`mx-auto flex h-5 w-5 items-center justify-center text-center text-[10px] ${isToday ? 'font-bold text-red-700' : 'text-blue-900'}`}
+          class={`mx-auto flex h-5 w-5 items-center justify-center text-center text-t4 ${isToday ? 'font-bold text-red-700' : 'text-blue-900'}`}
         >
           {format(day, 'd')}
         </span>
@@ -354,7 +354,7 @@
               onmouseleave={() => (hoveredEventId = null)}
               aria-disabled={disabled || undefined}
               title={disabled ? `${seg.event.title} (already happened)` : seg.event.title}
-              class={`absolute truncate px-1 text-left text-[10px] font-semibold transition-all ${eventBarClass(seg.event, hoveredEventId === seg.event.id)} ${seg.isStart ? 'rounded-l-sm' : ''} ${seg.isEnd ? 'rounded-r-sm' : ''} ${disabled ? 'cursor-default opacity-40 saturate-50' : ''}`}
+              class={`absolute truncate px-1 text-left text-t4 font-semibold transition-all ${eventBarClass(seg.event, hoveredEventId === seg.event.id)} ${seg.isStart ? 'rounded-l-sm' : ''} ${seg.isEnd ? 'rounded-r-sm' : ''} ${disabled ? 'cursor-default opacity-40 saturate-50' : ''}`}
               style={barStyle(seg, track)}
             >
               {#if seg.showTitle}
@@ -371,11 +371,11 @@
 
   <!-- This-month list -->
   <div class="space-y-2">
-    <h3 class="text-sm font-semibold uppercase tracking-wider text-white/70">
+    <h3 class="text-t3 font-semibold uppercase tracking-wider text-white/70">
       {$t.calendar.thisMonth}
     </h3>
     {#if inMonthEvents.length === 0}
-      <p class="text-sm font-medium text-white/80">{$t.calendar.noEvents}</p>
+      <p class="text-t3 font-medium text-white/80">{$t.calendar.noEvents}</p>
     {/if}
     {#each inMonthEvents as ev (`${ev.id}_${ev.start_time}`)}
       <button
@@ -385,16 +385,16 @@
         <div class="flex items-start justify-between gap-2">
           <div>
             <div class="flex items-center gap-2">
-              <span class={`rounded-full px-1.5 py-0.5 text-xs ${eventBarClass(ev, false)}`}
+              <span class={`rounded-full px-1.5 py-0.5 text-t4 ${eventBarClass(ev, false)}`}
                 >{TYPE_LABELS[ev.type]}</span
               >
-              <span class="text-sm font-medium text-blue-900">{ev.title}</span>
-              {#if ev.featured}<span class="text-xs text-red-600">★</span>{/if}
+              <span class="text-t3 font-medium text-blue-900">{ev.title}</span>
+              {#if ev.featured}<span class="text-t4 text-red-600">★</span>{/if}
             </div>
-            <p class="mt-1 text-xs font-medium text-blue-900">{formatEventSpan(ev)}</p>
+            <p class="mt-1 text-t4 font-medium text-blue-900">{formatEventSpan(ev)}</p>
           </div>
           {#if ev.price != null}
-            <span class="shrink-0 text-xs font-semibold text-blue-900"
+            <span class="shrink-0 text-t4 font-semibold text-blue-900"
               >from NT${ev.price.toLocaleString('en-US')}</span
             >
           {/if}

@@ -73,6 +73,6 @@
       <circle cx="8.5" cy="8.5" r="1.6" />
       <path d="M21 15l-5-5L5 21" />
     </svg>
-    <span class="mono text-[11px] uppercase tracking-widest">{$t.common.pendingImage}</span>
+    <span class="mono text-t4 uppercase tracking-widest">{$t.common.pendingImage}</span>
   </div>
 {/if}
